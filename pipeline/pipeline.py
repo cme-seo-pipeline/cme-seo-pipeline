@@ -29,10 +29,18 @@ CONFIG = {
     "MODEL": "claude-haiku-4-5-20251001",
     "MAX_TOKENS": 1000,
     "MAX_CHARS_PAR_URL": 3000,
-    "JOURS_PUBLICATION": [1, 3, 5],  # Mardi, Jeudi, Samedi
+    "JOURS_PUBLICATION": [0, 1, 2, 3, 4],  # Mardi, Jeudi, Samedi
     "heure_publication": 8,
-    "nb_articles_par_run": 5,
+    "nb_articles_par_run": 3,
     "fenetre_anti_doublon_jours": 90,
+    # Planning hebdomadaire : 0=Lun, 1=Mar, 2=Mer, 3=Jeu, 4=Ven
+    "PLANNING_SILOS": {
+        0: "5. Électricité",
+        1: "1. Gaz",
+        2: "4. Solaire",
+        3: "3. Aide Énergétique",
+        4: "2. Rénovation Énergétique"
+    },
 }
 
 WP_CONFIG = {
@@ -208,22 +216,43 @@ def est_jour_publication(config):
 
 
 def verifier_doublons(titre, mot_cle, client_bq, config):
+    """Vérifie si le sous-silo a déjà été traité dans la fenêtre anti-doublon.
+    Vérifie dans historique_publications (source de vérité) ET briefs_editoriaux.
+    """
     date_limite = (datetime.now() - timedelta(
         days=config['fenetre_anti_doublon_jours']
     )).strftime('%Y-%m-%d')
-    query = f"""
+    # Vérification principale : historique_publications
+    titre_safe = titre[:20].replace("'", "\'")
+    mot_cle_safe = mot_cle.replace("'", "\'")
+    query_hist = f"""
+    SELECT COUNT(*) as nb
+    FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+    WHERE (
+        LOWER(titre) LIKE LOWER('%{titre_safe}%')
+        OR LOWER(mot_cle) = LOWER('{mot_cle_safe}')
+        OR LOWER(IFNULL(sous_silo_strategique,'')) LIKE LOWER('%{titre_safe}%')
+    )
+    AND date_publication >= '{date_limite}'
+    """
+    # Vérification secondaire : briefs_editoriaux
+    query_brief = f"""
     SELECT COUNT(*) as nb
     FROM `{PROJECT_ID}.{DATASET_ID}.briefs_editoriaux`
     WHERE (
-        LOWER(titre_seo) LIKE LOWER('%{titre[:20]}%')
-        OR LOWER(mot_cle_principal) = LOWER('{mot_cle}')
+        LOWER(titre_seo) LIKE LOWER('%{titre_safe}%')
+        OR LOWER(mot_cle_principal) = LOWER('{mot_cle_safe}')
     )
     AND date_run >= '{date_limite}'
     """
     try:
-        result = client_bq.query(query).to_dataframe()
-        return result['nb'].iloc[0] > 0
-    except:
+        r1 = client_bq.query(query_hist).to_dataframe()
+        if r1['nb'].iloc[0] > 0:
+            return True
+        r2 = client_bq.query(query_brief).to_dataframe()
+        return r2['nb'].iloc[0] > 0
+    except Exception as e:
+        print(f"  ⚠️ verifier_doublons erreur: {e}")
         return False
 
 
@@ -250,56 +279,103 @@ def creer_table_historique(client_bq):
 
 
 def selectionner_silos_a_traiter(client_bq, config):
+    """
+    Logique 5j/semaine : chaque jour = 1 silo fixe.
+    NOUVELLE LOGIQUE : seo_opportunities (GSC + GA4 + anti-doublons).
+    Fallback automatique sur l ancienne logique si vue vide.
+    """
     try:
-        df_traites = client_bq.query("""
-        SELECT DISTINCT silo, sous_silo_strategique
-        FROM `seo-data-hub-cme.04_pipeline_seo.historique_publications`
-        WHERE sous_silo_strategique IS NOT NULL AND sous_silo_strategique != ''
-        AND date_publication >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 90 DAY)
-        """).to_dataframe()
+        jour = datetime.now().weekday()  # 0=Lun ... 4=Ven
+        planning = config.get("PLANNING_SILOS", {})
+        silo_du_jour = planning.get(jour)
+        if not silo_du_jour:
+            print(f"⏸️ Pas de silo planifie pour le jour {jour}")
+            return None
 
-        df_strategie = client_bq.query("""
+        print(f"📅 Jour {jour} → Silo : {silo_du_jour}")
+        nb = CONFIG.get('nb_articles_par_run', 3)
+        silo_safe = silo_du_jour.replace("'", "''")
+
+        # ── STRATÉGIE 1 : seo_opportunities (GSC + GA4) ──────────
+        try:
+            df_opp = client_bq.query(f"""
+            SELECT
+                '{silo_du_jour}' AS silo,
+                COALESCE(NULLIF(sous_silo, ''), 'general') AS sous_silo,
+                query AS mot_cle,
+                score_opportunite,
+                ROUND(position, 1) AS position,
+                impressions,
+                jours_depuis_pub
+            FROM `{PROJECT_ID}.03_final.seo_opportunities`
+            WHERE silo = '{silo_safe}'
+              AND jours_depuis_pub >= 30
+              AND sous_silo IS NOT NULL
+            ORDER BY score_opportunite DESC
+            LIMIT {nb}
+            """).to_dataframe()
+
+            if not df_opp.empty:
+                df_opp['priorite'] = range(1, len(df_opp) + 1)
+                print(f"✅ {len(df_opp)} opportunites GSC+GA4 selectionnees :")
+                for _, row in df_opp.iterrows():
+                    print(f"   ✅ {row['silo']} | {row['sous_silo']} — "
+                          f"'{row['mot_cle']}' (pos {row['position']}, "
+                          f"score {row['score_opportunite']:.0f})")
+                return df_opp[['silo', 'sous_silo', 'priorite', 'mot_cle']]
+            else:
+                print("⚠️ seo_opportunities vide pour ce silo — fallback")
+        except Exception as e_opp:
+            print(f"⚠️ seo_opportunities indisponible : {e_opp} — fallback")
+
+        # ── FALLBACK : ancienne logique par ancienneté ─────────────
+        print("↩️ Fallback : selection par anciennete")
+        df_strategie = client_bq.query(f"""
         SELECT silo, sous_silo, priorite
-        FROM `seo-data-hub-cme.04_pipeline_seo.sous_silos_strategiques`
-        ORDER BY silo ASC, priorite ASC
+        FROM `{PROJECT_ID}.{DATASET_ID}.sous_silos_strategiques`
+        WHERE silo = '{silo_safe}'
+        ORDER BY priorite ASC
         """).to_dataframe()
 
-        if not df_traites.empty:
-            combos_traites = set(zip(df_traites['silo'], df_traites['sous_silo_strategique']))
-            df_strategie['combo'] = list(zip(df_strategie['silo'], df_strategie['sous_silo']))
-            df_vierges = df_strategie[~df_strategie['combo'].isin(combos_traites)].drop(columns=['combo'])
-            df_deja_traites = df_strategie[df_strategie['combo'].isin(combos_traites)].drop(columns=['combo'])
-        else:
-            df_vierges = df_strategie.copy()
-            df_deja_traites = df_strategie.iloc[0:0]
-        if not df_vierges.empty:
-            df_disponibles = df_vierges
-            print(f"   → {len(df_vierges)} sous-silos vierges (priorité absolue)")
-        else:
-            df_disponibles = df_deja_traites
-            print("♻️ Tous couverts — nouveaux angles")
-        if df_disponibles.empty:
-            print("♻️ CYCLE COMPLET — Réinitialisation")
-            df_disponibles = df_strategie
-        df_selection = df_disponibles.sort_values(
-            by=['silo', 'priorite']
-        ).drop_duplicates(subset=['silo'], keep='first')
-        df_final = df_selection.head(config.get('nb_articles_par_run', 5))
+        if df_strategie.empty:
+            print(f"❌ Aucun sous-silo trouve pour {silo_du_jour}")
+            return None
 
-        print(f"✅ {len(df_final)} silos sélectionnés :")
+        df_hist = client_bq.query(f"""
+        SELECT sous_silo_strategique,
+               MAX(date_publication) AS derniere_pub,
+               COUNT(*) AS nb_articles
+        FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+        WHERE silo = '{silo_safe}'
+          AND sous_silo_strategique IS NOT NULL
+        GROUP BY sous_silo_strategique
+        """).to_dataframe()
+
+        df_merge = df_strategie.merge(
+            df_hist, left_on='sous_silo',
+            right_on='sous_silo_strategique', how='left'
+        )
+        df_merge['derniere_pub'] = df_merge['derniere_pub'].fillna(
+            pd.Timestamp('2000-01-01', tz='UTC')
+        )
+        df_merge['nb_articles'] = df_merge['nb_articles'].fillna(0)
+        df_merge = df_merge.sort_values(
+            by=['nb_articles', 'derniere_pub'],
+            ascending=[True, True]
+        )
+        df_final = df_merge.head(nb)[['silo', 'sous_silo', 'priorite']].copy()
+        df_final['mot_cle'] = ''
+
+        print(f"✅ {len(df_final)} sous-silos selectionnes (fallback) :")
         for _, row in df_final.iterrows():
-            print(f"   → {row['silo']} | {row['sous_silo']} (priorité {row['priorite']})")
-
+            print(f"   ✅ {row['silo']} | {row['sous_silo']}")
         return df_final
 
     except Exception as e:
-        print(f"❌ Erreur sélection silos : {e}")
+        print(f"❌ Erreur selection silos : {e}")
         return None
 
 
-# ============================================================
-# CELLULE 4 — SCRAPING SEARCHAPI
-# ============================================================
 def generate_niche_query(silo, subcat):
     clean_silo = silo.split('. ')[-1] if '. ' in silo else silo
     clean_subcat = str(subcat).strip() if subcat and str(subcat) not in ['', 'nan'] else ''
@@ -369,7 +445,7 @@ def scraper_concurrents(silos_a_traiter, search_api_key):
             print(f"❌ Erreur scraping : {e}")
 
     df_market = pd.DataFrame(all_market_data)
-    df_market = df_market.groupby('Silo').head(5)
+    df_market = df_market.groupby(['Silo', 'Sous-Silo']).head(5)
     return df_market
 
 
@@ -810,7 +886,7 @@ def generer_tous_briefs(df_final, client_bq, config):
         if erreur:
             print(f"  ❌ {silo_name} : {erreur}")
         else:
-            all_briefs_finaux[silo_name] = brief
+            all_briefs_finaux[f"{silo_name}||{sous_silo_name}"] = brief
             print(f"  ✅ {silo_name} | {brief.get('sous_silo')} — {brief.get('titre_seo')}")
     return all_briefs_finaux
 
@@ -847,7 +923,11 @@ def exporter_bigquery(df_final, all_briefs_finaux, client_bq):
 
     # Export briefs_editoriaux
     rows = []
-    for silo_name, brief in all_briefs_finaux.items():
+    for _cle, brief in all_briefs_finaux.items():
+        parts = _cle.split('||', 1)
+        silo_name = parts[0]
+        sous_silo_override = parts[1] if len(parts) > 1 else ''
+
         rows.append({
             "run_id": run_id, "date_run": date_run, "silo": silo_name,
             "titre_seo": brief.get('titre_seo', ''),
@@ -984,44 +1064,50 @@ def get_ou_creer_categorie(sous_silo, parent_id, wp_config):
 
 def logger_publication_bq(client_bq, post_id, silo, titre,
                           mot_cle, url_wp, run_id, sous_silo_strategique, image_id=None):
-    try:
-        df_check = client_bq.query(f"""
-        SELECT COUNT(*) as nb
-        FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
-        WHERE post_id = {post_id}
-        """).to_dataframe()
-
-        if df_check['nb'].iloc[0] > 0:
-            query = f"""
-            UPDATE `{PROJECT_ID}.{DATASET_ID}.historique_publications`
-            SET date_publication = CURRENT_TIMESTAMP(),
-                silo = '{silo.replace("'", "''")}',
-                titre = '{titre.replace("'", "''")}',
-                mot_cle = '{mot_cle.replace("'", "''")}',
-                url_wp = '{url_wp}',
-                run_id = '{run_id}',
-                sous_silo_strategique = '{sous_silo_strategique}',
-                image_id = {"'" + image_id + "'" if image_id else 'NULL'}
+    """Log publication dans BQ avec retry x3 pour robustesse."""
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            df_check = client_bq.query(f"""
+            SELECT COUNT(*) as nb
+            FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
             WHERE post_id = {post_id}
-            """
-        else:
-            query = f"""
-            INSERT INTO `{PROJECT_ID}.{DATASET_ID}.historique_publications`
-            (date_publication, post_id, silo, titre, mot_cle,
-             url_wp, run_id, sous_silo_strategique, image_id)
-            VALUES (CURRENT_TIMESTAMP(), {post_id},
-                '{silo.replace("'", "''")}',
-                '{titre.replace("'", "''")}',
-                '{mot_cle.replace("'", "''")}',
-                '{url_wp}', '{run_id}',
-                '{sous_silo_strategique.replace("'", "''")}',
-                {"'" + image_id + "'" if image_id else 'NULL'})
-            """
-        client_bq.query(query).result()
-        return True
-    except Exception as e:
-        print(f"  ⚠️ Log BQ échoué : {e}")
-        return False
+            """).to_dataframe()
+
+            if df_check['nb'].iloc[0] > 0:
+                query = f"""
+                UPDATE `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+                SET date_publication = CURRENT_TIMESTAMP(),
+                    silo = '{silo.replace("'", "''")}',
+                    titre = '{titre.replace("'", "''")}',
+                    mot_cle = '{mot_cle.replace("'", "''")}',
+                    url_wp = '{url_wp}',
+                    run_id = '{run_id}',
+                    sous_silo_strategique = '{sous_silo_strategique}',
+                    image_id = {"'" + image_id + "'" if image_id else 'NULL'}
+                WHERE post_id = {post_id}
+                """
+            else:
+                query = f"""
+                INSERT INTO `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+                (date_publication, post_id, silo, titre, mot_cle,
+                 url_wp, run_id, sous_silo_strategique, image_id)
+                VALUES (CURRENT_TIMESTAMP(), {post_id},
+                    '{silo.replace("'", "''")}',
+                    '{titre.replace("'", "''")}',
+                    '{mot_cle.replace("'", "''")}',
+                    '{url_wp}', '{run_id}',
+                    '{sous_silo_strategique.replace("'", "''")}',
+                    {"'" + image_id + "'" if image_id else 'NULL'})
+                """
+            client_bq.query(query).result()
+            return True
+        except Exception as e:
+            print(f"  ⚠️ Log BQ tentative {attempt+1}/{max_retries} échoué : {e}")
+            if attempt < max_retries - 1:
+                import time; time.sleep(2)
+    print(f"  ❌ Log BQ définitivement échoué après {max_retries} tentatives")
+    return False
 
 
 def recuperer_articles_meme_silo(silo_name, wp_config):
@@ -1057,6 +1143,81 @@ def recuperer_articles_meme_silo(silo_name, wp_config):
     ][:5]
 
 
+def verifier_article_wp_existe(slug, wp_config):
+    """Vérifie si un article avec ce slug existe déjà sur WordPress."""
+    try:
+        r = requests.get(
+            f"{wp_config['url']}/wp-json/wp/v2/posts",
+            params={"slug": slug, "status": "publish", "per_page": 1},
+            auth=(wp_config['username'], wp_config['app_password']),
+            timeout=15
+        )
+        if r.status_code == 200:
+            posts = r.json()
+            if posts:
+                print(f"  ⚠️ Article déjà publié sur WP : {posts[0].get('link', slug)}")
+                return True, posts[0]['id']
+        return False, None
+    except Exception as e:
+        print(f"  ⚠️ Vérif WP échouée : {e}")
+        return False, None
+
+
+
+# ============================================================
+# CTA — Boutons vers les simulateurs (injectes dans chaque article)
+# ============================================================
+CTA_TOOLS = {
+    "1. Gaz": {
+        "url": "https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/",
+        "titre": "Comparez les offres Gaz au meilleur prix",
+        "texte": "Trouvez l'offre la moins chere selon votre profil en 2 minutes, gratuitement.",
+        "bouton": "Comparer les offres gaz",
+        "couleur1": "#1e3a8a", "couleur2": "#3b82f6"
+    },
+    "5. Electricite": {
+        "url": "https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/",
+        "titre": "Comparez les offres Electricite au meilleur prix",
+        "texte": "Trouvez l'offre la moins chere selon votre profil en 2 minutes, gratuitement.",
+        "bouton": "Comparer les offres electricite",
+        "couleur1": "#1e3a8a", "couleur2": "#3b82f6"
+    },
+    "4. Solaire": {
+        "url": "https://www.comprendre-mon-energie.fr/devis-panneau-solaire/",
+        "titre": "Estimez votre installation solaire",
+        "texte": "Rentabilite, nombre de panneaux et puissance kWc en 2 minutes, gratuitement.",
+        "bouton": "Simuler mon projet solaire",
+        "couleur1": "#052e16", "couleur2": "#16a34a"
+    },
+    "2. Renovation Energetique": {
+        "url": "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
+        "titre": "Calculez vos aides a la renovation",
+        "texte": "MaPrimeRenov', CEE, Eco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
+        "bouton": "Simuler mes aides",
+        "couleur1": "#78350f", "couleur2": "#f59e0b"
+    },
+    "3. Aide Energetique": {
+        "url": "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
+        "titre": "Calculez vos aides a la renovation",
+        "texte": "MaPrimeRenov', CEE, Eco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
+        "bouton": "Simuler mes aides",
+        "couleur1": "#78350f", "couleur2": "#f59e0b"
+    },
+}
+
+def generer_cta_html(silo_name):
+    """Genere le bloc CTA HTML a injecter en fin d'article selon le silo."""
+    cfg = CTA_TOOLS.get(silo_name)
+    if not cfg:
+        return ""
+    return f'''
+<div style="background:linear-gradient(135deg,{cfg["couleur1"]},{cfg["couleur2"]});border-radius:16px;padding:1.75rem;text-align:center;margin:32px 0;">
+  <h3 style="color:#fff;font-size:20px;font-weight:700;margin:0 0 8px">{cfg["titre"]}</h3>
+  <p style="color:rgba(255,255,255,.9);font-size:14px;margin:0 0 18px;line-height:1.5">{cfg["texte"]}</p>
+  <a href="{cfg["url"]}" style="display:inline-block;background:#fff;color:{cfg["couleur2"]};font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">{cfg["bouton"]} &rarr;</a>
+</div>
+'''
+
 def publier_article(brief, silo_name, sous_silo_val, contenu_html,
                     wp_config, client_bq, run_id, config):
     # Slug
@@ -1086,6 +1247,38 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
         categories_ids = [cat_enfant_id]
     else:
         categories_ids = [cat_parent_id]
+
+    # Vérification anti-doublon WordPress avant publication
+    existe_wp, post_id_existant = verifier_article_wp_existe(slug, wp_config)
+    if existe_wp and post_id_existant:
+        titre_existant = ''
+        try:
+            check = requests.get(
+                f"{wp_config['url']}/wp-json/wp/v2/posts/{post_id_existant}",
+                auth=(wp_config['username'], wp_config['app_password']),
+                timeout=10
+            )
+            if check.status_code == 200:
+                titre_existant = check.json().get('title', {}).get('rendered', '').strip()
+        except Exception as e:
+            print(f"  ⚠️ Vérif titre existant échouée : {e}")
+
+        if titre_existant and titre_existant == titre_seo.strip():
+            url_wp = f"{wp_config['url']}/?p={post_id_existant}"
+            print(f"  ↩️ Article existant récupéré (post_id={post_id_existant})")
+            logger_publication_bq(
+                client_bq, post_id_existant, silo_name, titre_seo,
+                brief.get('mot_cle_principal', ''), url_wp, run_id,
+                sous_silo_val or ''
+            )
+            return {"success": True, "post_id": post_id_existant, "url": url_wp, "existant": True}
+        else:
+            suffixe = datetime.now().strftime('%m%d')
+            slug = f"{slug}-{suffixe}"
+            print(f"  ⚠️ Collision de slug (titre different: '{titre_existant}' != '{titre_seo}')")
+            print(f"  🔀 Nouveau slug généré : {slug}")
+
+    contenu_html = contenu_html + generer_cta_html(silo_name)
 
     payload = {
         "title": titre_seo,
@@ -1131,7 +1324,10 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
     print("✍️ RÉDACTION + PUBLICATION...")
     silos_df = pd.DataFrame(silos_a_traiter)
 
-    for silo_name, brief in all_briefs_finaux.items():
+    for _cle, brief in all_briefs_finaux.items():
+        parts = _cle.split('||', 1)
+        silo_name = parts[0]
+        sous_silo_override = parts[1] if len(parts) > 1 else ''
         print(f"\n{'='*55}")
         print(f"📂 {silo_name} — {brief.get('titre_seo')}")
 
@@ -1148,11 +1344,13 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
         print(f"  🔗 {len(liens)} liens internes | {nb_mots} mots")
 
         try:
-            sous_silo_val = silos_df[silos_df['silo'] == silo_name]['sous_silo'].iloc[0]
-            if pd.isna(sous_silo_val):
-                sous_silo_val = ''
+            if sous_silo_override:
+                sous_silo_val = sous_silo_override
+            else:
+                sous_silo_val = silos_df[silos_df['silo'] == silo_name]['sous_silo'].iloc[0]
+                if pd.isna(sous_silo_val): sous_silo_val = ''
         except:
-            sous_silo_val = ''
+            sous_silo_val = sous_silo_override or ''
 
         resultat = publier_article(
             brief, silo_name, sous_silo_val, contenu_html,
@@ -1704,14 +1902,12 @@ def run_pipeline(force=False):
         return
 
     # Vérification anti-doublons
-    silos_valides = []
-    for _, row in silos_a_traiter.iterrows():
-        if not verifier_doublons(row['silo'], row['sous_silo'], client_bq, CONFIG):
-            silos_valides.append(row)
+    # Pas de filtre doublon par titre : la rotation gère la diversité
+    silos_valides = list(silos_a_traiter.iterrows())
     if not silos_valides:
-        print("⚠️ Tous les silos sont des doublons")
+        print("⚠️ Aucun silo disponible")
         return
-    silos_a_traiter = pd.DataFrame(silos_valides)
+    # silos_a_traiter déjà prêt
 
     # ── SCRAPING ───────────────────────────────────────────
     print("\n🔎 SCRAPING CONCURRENTS...")
