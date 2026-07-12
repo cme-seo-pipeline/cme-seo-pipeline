@@ -129,6 +129,18 @@ function cme_handle_devis(){
     $gas_result = is_wp_error($resp)?'erreur:'.$resp->get_error_message():wp_remote_retrieve_body($resp);
   }
 
+  wp_remote_post('https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead', array(
+    'timeout' => 8, 'blocking' => false, 'sslverify' => false,
+    'headers' => array('Content-Type' => 'application/json'),
+    'body' => json_encode(array(
+      'tool' => 'solaire', 'prenom' => $prenom, 'nom' => $nom, 'email' => $email,
+      'telephone' => $tel, 'adresse' => $adr, 'montant_estime' => $budget,
+      'economie_estimee' => $eco,
+      'details' => array('surface'=>$sf,'orientation'=>$ori,'chauffage'=>$ch,'nb_panneaux'=>$nb,'kwc'=>$kwc,'production'=>$prod,'roi'=>$roi,'co2'=>$co2),
+      'source_page' => 'devis-panneau-solaire'
+    ))
+  ));
+
   wp_send_json_success([
     'status'     => 'ok',
     'email_sent' => $mail_ok,

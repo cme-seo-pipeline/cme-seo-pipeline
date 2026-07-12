@@ -133,6 +133,18 @@ function cme_aid_handle_lead(){
     $gas_result = is_wp_error($resp)?'erreur:'.$resp->get_error_message():wp_remote_retrieve_body($resp);
   }
 
+  wp_remote_post('https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead', array(
+    'timeout' => 8, 'blocking' => false, 'sslverify' => false,
+    'headers' => array('Content-Type' => 'application/json'),
+    'body' => json_encode(array(
+      'tool' => 'aides-renovation', 'prenom' => $prenom, 'nom' => $nom, 'email' => $email,
+      'telephone' => $tel, 'adresse' => $adresse, 'montant_estime' => $budget,
+      'economie_estimee' => $total_aides,
+      'details' => array('profil'=>$profil,'travaux'=>$travaux,'montant_mpr'=>$mpr,'montant_cee'=>$cee,'reste_a_charge'=>$reste),
+      'source_page' => 'simulateur-aides-renovation-energetique'
+    ))
+  ));
+
   wp_send_json_success(array('status'=>'ok','email_sent'=>$mail_ok,'gas'=>$gas_result));
 }
 endif;

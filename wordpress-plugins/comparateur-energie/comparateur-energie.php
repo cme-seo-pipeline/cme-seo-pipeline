@@ -112,6 +112,17 @@ function cme_cmp_handle_lead(){
     $gas_result = is_wp_error($resp)?'erreur:'.$resp->get_error_message():wp_remote_retrieve_body($resp);
   }
 
+  wp_remote_post('https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead', array(
+    'timeout' => 8, 'blocking' => false, 'sslverify' => false,
+    'headers' => array('Content-Type' => 'application/json'),
+    'body' => json_encode(array(
+      'tool' => 'comparateur-energie', 'prenom' => $prenom, 'nom' => $nom, 'email' => $email,
+      'telephone' => $tel, 'montant_estime' => $prix, 'economie_estimee' => $eco,
+      'details' => array('energie'=>$energie,'fournisseur'=>$fourn,'offre'=>$offre,'kwh'=>$kwh,'option_tarifaire'=>$opt,'lien_offre'=>$lien),
+      'source_page' => 'comparateur-energie-electricite-gaz'
+    ))
+  ));
+
   wp_send_json_success(array('status'=>'ok','email_sent'=>$mail_ok,'gas'=>$gas_result));
 }
 endif;
