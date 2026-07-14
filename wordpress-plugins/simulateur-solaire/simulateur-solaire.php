@@ -137,7 +137,8 @@ function cme_handle_devis(){
       'telephone' => $tel, 'adresse' => $adr, 'montant_estime' => $budget,
       'economie_estimee' => $eco,
       'details' => array('surface'=>$sf,'orientation'=>$ori,'chauffage'=>$ch,'nb_panneaux'=>$nb,'kwc'=>$kwc,'production'=>$prod,'roi'=>$roi,'co2'=>$co2),
-      'source_page' => 'devis-panneau-solaire'
+      'source_page' => 'devis-panneau-solaire',
+      'source_post_id' => sanitize_text_field($data['src_post'] ?? '')
     ))
   ));
 
@@ -1644,7 +1645,8 @@ function submitDevis(){
     economie:R.eco,budget:R.budget,roi:R.roi,co2:R.co2,
     // Source calcul
     pvgis_utilise:S.pvgis_prod&&S.pvgis_prod>0?'Oui (satellite)':'Non (estimation)',
-    timestamp:new Date().toISOString()
+    timestamp:new Date().toISOString(),
+    src_post:new URLSearchParams(window.location.search).get('src_post')||''
   };
   // Log tracking BigQuery
   fetch(TRACK+'/api/log-clic',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'simulateur-solaire-v24',offre_id:'devis-formulaire',energie:'solaire',kwh:R.prod,prix_annuel:R.budget,economie:R.eco,user_agent:navigator.userAgent.slice(0,120)})}).catch(function(){});

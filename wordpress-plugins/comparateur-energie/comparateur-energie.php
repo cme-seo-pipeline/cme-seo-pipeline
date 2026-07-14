@@ -119,7 +119,8 @@ function cme_cmp_handle_lead(){
       'tool' => 'comparateur-energie', 'prenom' => $prenom, 'nom' => $nom, 'email' => $email,
       'telephone' => $tel, 'montant_estime' => $prix, 'economie_estimee' => $eco,
       'details' => array('energie'=>$energie,'fournisseur'=>$fourn,'offre'=>$offre,'kwh'=>$kwh,'option_tarifaire'=>$opt,'lien_offre'=>$lien),
-      'source_page' => 'comparateur-energie-electricite-gaz'
+      'source_page' => 'comparateur-energie-electricite-gaz',
+      'source_post_id' => sanitize_text_field($data['src_post'] ?? '')
     ))
   ));
 
@@ -743,7 +744,8 @@ function submitLead(){
   var data=Object.assign({
     prenom:prn.trim(),nom:nom.trim(),email:mail.trim(),telephone:tel.trim(),
     logement:S.logement,surface:S.surface,personnes:S.personnes,chauffage:S.chauffage,
-    codepostal:S.codepostal,pdl:S.pdl,pce:S.pce
+    codepostal:S.codepostal,pdl:S.pdl,pce:S.pce,
+    src_post:new URLSearchParams(window.location.search).get('src_post')||''
   },LEAD_CTX);
 
   // Rediriger l'onglet deja ouvert vers l'offre - instantane

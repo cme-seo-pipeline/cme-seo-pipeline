@@ -20,4 +20,5 @@ COPY server.py .
 
 ENV PORT=8080
 
+ENV PYTHONUNBUFFERED=1
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--timeout", "3600", "--workers", "1", "server:app"]

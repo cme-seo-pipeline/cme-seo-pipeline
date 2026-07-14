@@ -80,6 +80,7 @@ def log_lead():
             "details":           json.dumps(data.get("details", {}), ensure_ascii=False)[:2000],
             "user_agent":        str(data.get("user_agent", ""))[:120],
             "source_page":       str(data.get("source_page", ""))[:250],
+            "source_post_id":    str(data.get("source_post_id", ""))[:20],
         }
         errors = client_bq.insert_rows_json(
             "seo-data-hub-cme.04_pipeline_seo.leads_convertis", [row]

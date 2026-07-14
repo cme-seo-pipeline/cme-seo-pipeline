@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import time
 # ============================================================
 # CME SEO AI PIPELINE — pipeline.py
 # Version Cloud Run
@@ -29,9 +30,9 @@ CONFIG = {
     "MODEL": "claude-haiku-4-5-20251001",
     "MAX_TOKENS": 1000,
     "MAX_CHARS_PAR_URL": 3000,
-    "JOURS_PUBLICATION": [0, 1, 2, 3, 4],  # Mardi, Jeudi, Samedi
+    "JOURS_PUBLICATION": [0, 1, 2, 3, 4, 5, 6],  # 7j/7
     "heure_publication": 8,
-    "nb_articles_par_run": 3,
+    "nb_articles_par_run": 5,  # 1 par silo, 5 silos, 7j/7
     "fenetre_anti_doublon_jours": 90,
     # Planning hebdomadaire : 0=Lun, 1=Mar, 2=Mer, 3=Jeu, 4=Ven
     "PLANNING_SILOS": {
@@ -280,23 +281,21 @@ def creer_table_historique(client_bq):
 
 def selectionner_silos_a_traiter(client_bq, config):
     """
-    Logique 5j/semaine : chaque jour = 1 silo fixe.
-    NOUVELLE LOGIQUE : seo_opportunities (GSC + GA4 + anti-doublons).
-    Fallback automatique sur l ancienne logique si vue vide.
+    NOUVELLE LOGIQUE 7j/7 : les 5 silos sont traites a CHAQUE run,
+    1 article par silo (au lieu d'1 seul silo par jour).
+    Utilise seo_opportunities (GSC+GA4) en priorite, fallback anciennete.
     """
-    try:
-        jour = datetime.now().weekday()  # 0=Lun ... 4=Ven
-        planning = config.get("PLANNING_SILOS", {})
-        silo_du_jour = planning.get(jour)
-        if not silo_du_jour:
-            print(f"⏸️ Pas de silo planifie pour le jour {jour}")
-            return None
+    tous_silos = [
+        "5. Électricité", "1. Gaz", "4. Solaire",
+        "3. Aide Énergétique", "2. Rénovation Énergétique"
+    ]
+    print(f"📅 Run 7j/7 → {len(tous_silos)} silos a traiter : {', '.join(tous_silos)}")
+    resultats = []
 
-        print(f"📅 Jour {jour} → Silo : {silo_du_jour}")
-        nb = CONFIG.get('nb_articles_par_run', 3)
+    for silo_du_jour in tous_silos:
         silo_safe = silo_du_jour.replace("'", "''")
+        trouve = False
 
-        # ── STRATÉGIE 1 : seo_opportunities (GSC + GA4) ──────────
         try:
             df_opp = client_bq.query(f"""
             SELECT
@@ -312,68 +311,98 @@ def selectionner_silos_a_traiter(client_bq, config):
               AND jours_depuis_pub >= 30
               AND sous_silo IS NOT NULL
             ORDER BY score_opportunite DESC
-            LIMIT {nb}
+            LIMIT 1
             """).to_dataframe()
 
             if not df_opp.empty:
-                df_opp['priorite'] = range(1, len(df_opp) + 1)
-                print(f"✅ {len(df_opp)} opportunites GSC+GA4 selectionnees :")
-                for _, row in df_opp.iterrows():
-                    print(f"   ✅ {row['silo']} | {row['sous_silo']} — "
-                          f"'{row['mot_cle']}' (pos {row['position']}, "
-                          f"score {row['score_opportunite']:.0f})")
-                return df_opp[['silo', 'sous_silo', 'priorite', 'mot_cle']]
+                df_opp['priorite'] = 1
+                row = df_opp.iloc[0]
+
+                # 'general' est un placeholder technique — jamais un vrai sous-silo
+                # WordPress. On le remplace par le sous-silo strategique le moins
+                # recemment publie, en gardant le mot-cle GSC reel pour le contenu.
+                if row['sous_silo'] == 'general':
+                    try:
+                        df_strat_fix = client_bq.query(f"""
+                        SELECT s.sous_silo, MAX(h.date_publication) AS derniere_pub
+                        FROM `{PROJECT_ID}.{DATASET_ID}.sous_silos_strategiques` s
+                        LEFT JOIN `{PROJECT_ID}.{DATASET_ID}.historique_publications` h
+                          ON h.silo = '{silo_safe}' AND h.sous_silo_strategique = s.sous_silo
+                        WHERE s.silo = '{silo_safe}'
+                        GROUP BY s.sous_silo
+                        ORDER BY derniere_pub ASC NULLS FIRST
+                        LIMIT 1
+                        """).to_dataframe()
+                        if not df_strat_fix.empty:
+                            vrai_sous_silo = df_strat_fix.iloc[0]['sous_silo']
+                            print(f"   🔀 'general' remplace par sous-silo reel : {vrai_sous_silo}")
+                            df_opp.loc[df_opp.index[0], 'sous_silo'] = vrai_sous_silo
+                            row = df_opp.iloc[0]
+                    except Exception as e_gen:
+                        print(f"   ⚠️ Impossible de remplacer 'general' : {e_gen}")
+
+                print(f"   ✅ {row['silo']} | {row['sous_silo']} — "
+                      f"'{row['mot_cle']}' (pos {row['position']}, "
+                      f"score {row['score_opportunite']:.0f})")
+                resultats.append(df_opp[['silo', 'sous_silo', 'priorite', 'mot_cle']])
+                trouve = True
             else:
-                print("⚠️ seo_opportunities vide pour ce silo — fallback")
+                print(f"   ⚠️ {silo_du_jour} : seo_opportunities vide — fallback anciennete")
         except Exception as e_opp:
-            print(f"⚠️ seo_opportunities indisponible : {e_opp} — fallback")
+            print(f"   ⚠️ {silo_du_jour} : seo_opportunities indisponible ({e_opp}) — fallback")
 
-        # ── FALLBACK : ancienne logique par ancienneté ─────────────
-        print("↩️ Fallback : selection par anciennete")
-        df_strategie = client_bq.query(f"""
-        SELECT silo, sous_silo, priorite
-        FROM `{PROJECT_ID}.{DATASET_ID}.sous_silos_strategiques`
-        WHERE silo = '{silo_safe}'
-        ORDER BY priorite ASC
-        """).to_dataframe()
+        if trouve:
+            continue
 
-        if df_strategie.empty:
-            print(f"❌ Aucun sous-silo trouve pour {silo_du_jour}")
-            return None
+        # ── FALLBACK par silo : ancienneté ──────────────────────
+        try:
+            df_strategie = client_bq.query(f"""
+            SELECT silo, sous_silo, priorite
+            FROM `{PROJECT_ID}.{DATASET_ID}.sous_silos_strategiques`
+            WHERE silo = '{silo_safe}'
+            ORDER BY priorite ASC
+            """).to_dataframe()
 
-        df_hist = client_bq.query(f"""
-        SELECT sous_silo_strategique,
-               MAX(date_publication) AS derniere_pub,
-               COUNT(*) AS nb_articles
-        FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
-        WHERE silo = '{silo_safe}'
-          AND sous_silo_strategique IS NOT NULL
-        GROUP BY sous_silo_strategique
-        """).to_dataframe()
+            if df_strategie.empty:
+                print(f"   ❌ Aucun sous-silo trouve pour {silo_du_jour}")
+                continue
 
-        df_merge = df_strategie.merge(
-            df_hist, left_on='sous_silo',
-            right_on='sous_silo_strategique', how='left'
-        )
-        df_merge['derniere_pub'] = df_merge['derniere_pub'].fillna(
-            pd.Timestamp('2000-01-01', tz='UTC')
-        )
-        df_merge['nb_articles'] = df_merge['nb_articles'].fillna(0)
-        df_merge = df_merge.sort_values(
-            by=['nb_articles', 'derniere_pub'],
-            ascending=[True, True]
-        )
-        df_final = df_merge.head(nb)[['silo', 'sous_silo', 'priorite']].copy()
-        df_final['mot_cle'] = ''
+            df_hist = client_bq.query(f"""
+            SELECT sous_silo_strategique,
+                   MAX(date_publication) AS derniere_pub,
+                   COUNT(*) AS nb_articles
+            FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+            WHERE silo = '{silo_safe}'
+              AND sous_silo_strategique IS NOT NULL
+            GROUP BY sous_silo_strategique
+            """).to_dataframe()
 
-        print(f"✅ {len(df_final)} sous-silos selectionnes (fallback) :")
-        for _, row in df_final.iterrows():
-            print(f"   ✅ {row['silo']} | {row['sous_silo']}")
-        return df_final
+            df_merge = df_strategie.merge(
+                df_hist, left_on='sous_silo',
+                right_on='sous_silo_strategique', how='left'
+            )
+            df_merge['derniere_pub'] = df_merge['derniere_pub'].fillna(
+                pd.Timestamp('2000-01-01', tz='UTC')
+            )
+            df_merge['nb_articles'] = df_merge['nb_articles'].fillna(0)
+            df_merge = df_merge.sort_values(
+                by=['nb_articles', 'derniere_pub'],
+                ascending=[True, True]
+            )
+            df_final = df_merge.head(1)[['silo', 'sous_silo', 'priorite']].copy()
+            df_final['mot_cle'] = ''
+            print(f"   ✅ {silo_du_jour} | {df_final.iloc[0]['sous_silo']} (fallback anciennete)")
+            resultats.append(df_final)
+        except Exception as e_fb:
+            print(f"   ❌ {silo_du_jour} : fallback echoue aussi ({e_fb})")
 
-    except Exception as e:
-        print(f"❌ Erreur selection silos : {e}")
+    if not resultats:
+        print("❌ Aucun silo n'a pu etre traite")
         return None
+
+    df_tous = pd.concat(resultats, ignore_index=True)
+    print(f"\n✅ TOTAL : {len(df_tous)} sujets selectionnes sur {len(tous_silos)} silos")
+    return df_tous
 
 
 def generate_niche_query(silo, subcat):
@@ -418,31 +447,40 @@ def scraper_concurrents(silos_a_traiter, search_api_key):
             "location": "France",
             "api_key": search_api_key
         }
-        try:
-            response = requests.get(
-                "https://www.searchapi.io/api/v1/search",
-                params=params, timeout=30
-            )
-            organic_results = response.json().get("organic_results", [])
-            count = 0
-            for r in organic_results:
-                if count >= 5:
-                    break
-                link = r.get("link", "")
-                title = r.get("title", "").lower()
-                if not any(d in link for d in BLACKLIST_DOMAINS) \
-                   and not any(w in title for w in NEGATIVE_WORDS):
-                    all_market_data.append({
-                        "Requête_Niche": search_query,
-                        "Silo": silo,
-                        "Sous-Silo": subcat,
-                        "Position": r.get("position"),
-                        "Concurrent": r.get("title"),
-                        "URL": link
-                    })
-                    count += 1
-        except Exception as e:
-            print(f"❌ Erreur scraping : {e}")
+        organic_results = []
+        for tentative in range(3):
+            try:
+                response = requests.get(
+                    "https://www.searchapi.io/api/v1/search",
+                    params=params, timeout=45
+                )
+                organic_results = response.json().get("organic_results", [])
+                break
+            except Exception as e:
+                if tentative < 2:
+                    attente = 5 * (tentative + 1)
+                    print(f"⚠️ Scraping échoué (tentative {tentative+1}/3) : {e} — retry dans {attente}s")
+                    time.sleep(attente)
+                else:
+                    print(f"❌ Scraping abandonné après 3 tentatives pour '{search_query}' : {e}")
+
+        count = 0
+        for r in organic_results:
+            if count >= 5:
+                break
+            link = r.get("link", "")
+            title = r.get("title", "").lower()
+            if not any(d in link for d in BLACKLIST_DOMAINS) \
+               and not any(w in title for w in NEGATIVE_WORDS):
+                all_market_data.append({
+                    "Requête_Niche": search_query,
+                    "Silo": silo,
+                    "Sous-Silo": subcat,
+                    "Position": r.get("position"),
+                    "Concurrent": r.get("title"),
+                    "URL": link
+                })
+                count += 1
 
     df_market = pd.DataFrame(all_market_data)
     df_market = df_market.groupby(['Silo', 'Sous-Silo']).head(5)
@@ -1016,7 +1054,7 @@ RÈGLES :
     }
     try:
         r = requests.post("https://api.anthropic.com/v1/messages",
-                         headers=headers, json=body, timeout=120)
+                         headers=headers, json=body, timeout=240)
         r.raise_for_status()
         contenu = r.json()['content'][0]['text']
         contenu = contenu.strip()
@@ -1175,7 +1213,7 @@ CTA_TOOLS = {
         "bouton": "Comparer les offres gaz",
         "couleur1": "#1e3a8a", "couleur2": "#3b82f6"
     },
-    "5. Electricite": {
+    "5. Électricité": {
         "url": "https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/",
         "titre": "Comparez les offres Electricite au meilleur prix",
         "texte": "Trouvez l'offre la moins chere selon votre profil en 2 minutes, gratuitement.",
@@ -1189,14 +1227,14 @@ CTA_TOOLS = {
         "bouton": "Simuler mon projet solaire",
         "couleur1": "#052e16", "couleur2": "#16a34a"
     },
-    "2. Renovation Energetique": {
+    "2. Rénovation Énergétique": {
         "url": "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
         "titre": "Calculez vos aides a la renovation",
         "texte": "MaPrimeRenov', CEE, Eco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
         "bouton": "Simuler mes aides",
         "couleur1": "#78350f", "couleur2": "#f59e0b"
     },
-    "3. Aide Energetique": {
+    "3. Aide Énergétique": {
         "url": "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
         "titre": "Calculez vos aides a la renovation",
         "texte": "MaPrimeRenov', CEE, Eco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
@@ -1205,16 +1243,22 @@ CTA_TOOLS = {
     },
 }
 
-def generer_cta_html(silo_name):
-    """Genere le bloc CTA HTML a injecter en fin d'article selon le silo."""
+def generer_cta_html(silo_name, post_id=None):
+    """Genere le bloc CTA HTML a injecter en fin d'article selon le silo.
+    Si post_id est fourni, ajoute ?src_post={post_id} au lien pour tracer
+    l'attribution article -> clic -> lead jusqu'a BigQuery."""
     cfg = CTA_TOOLS.get(silo_name)
     if not cfg:
         return ""
+    url_finale = cfg["url"]
+    if post_id:
+        sep = '&' if '?' in url_finale else '?'
+        url_finale = f"{url_finale}{sep}src_post={post_id}"
     return f'''
 <div style="background:linear-gradient(135deg,{cfg["couleur1"]},{cfg["couleur2"]});border-radius:16px;padding:1.75rem;text-align:center;margin:32px 0;">
   <h3 style="color:#fff;font-size:20px;font-weight:700;margin:0 0 8px">{cfg["titre"]}</h3>
   <p style="color:rgba(255,255,255,.9);font-size:14px;margin:0 0 18px;line-height:1.5">{cfg["texte"]}</p>
-  <a href="{cfg["url"]}" style="display:inline-block;background:#fff;color:{cfg["couleur2"]};font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">{cfg["bouton"]} &rarr;</a>
+  <a href="{url_finale}" style="display:inline-block;background:#fff;color:{cfg["couleur2"]};font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">{cfg["bouton"]} &rarr;</a>
 </div>
 '''
 
@@ -1278,8 +1322,6 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
             print(f"  ⚠️ Collision de slug (titre different: '{titre_existant}' != '{titre_seo}')")
             print(f"  🔀 Nouveau slug généré : {slug}")
 
-    contenu_html = contenu_html + generer_cta_html(silo_name)
-
     payload = {
         "title": titre_seo,
         "content": contenu_html,
@@ -1307,6 +1349,24 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
             url_wp = data.get('link')
             print(f"  ✅ Publié : {url_wp}")
             print(f"  🆔 Post ID : {post_id}")
+
+            # PATCH : injecter le CTA avec l'attribution ?src_post={post_id}
+            # (impossible de le faire avant, le post_id n'existait pas encore)
+            try:
+                cta_final = generer_cta_html(silo_name, post_id)
+                r_patch = requests.post(
+                    f"{wp_config['url']}/wp-json/wp/v2/posts/{post_id}",
+                    json={"content": contenu_html + cta_final},
+                    auth=(wp_config['username'], wp_config['app_password']),
+                    timeout=30
+                )
+                if r_patch.status_code == 200:
+                    print(f"  🎯 CTA avec attribution injecté (src_post={post_id})")
+                else:
+                    print(f"  ⚠️ PATCH CTA échoué : HTTP {r_patch.status_code}")
+            except Exception as e_cta:
+                print(f"  ⚠️ Erreur injection CTA : {e_cta}")
+
             logger_publication_bq(
                 client_bq, post_id, silo_name, titre_seo,
                 brief.get('mot_cle_principal', ''),

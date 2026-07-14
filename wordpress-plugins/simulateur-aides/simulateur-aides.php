@@ -141,7 +141,8 @@ function cme_aid_handle_lead(){
       'telephone' => $tel, 'adresse' => $adresse, 'montant_estime' => $budget,
       'economie_estimee' => $total_aides,
       'details' => array('profil'=>$profil,'travaux'=>$travaux,'montant_mpr'=>$mpr,'montant_cee'=>$cee,'reste_a_charge'=>$reste),
-      'source_page' => 'simulateur-aides-renovation-energetique'
+      'source_page' => 'simulateur-aides-renovation-energetique',
+      'source_post_id' => sanitize_text_field($data['src_post'] ?? '')
     ))
   ));
 
@@ -839,7 +840,7 @@ function submitLead(){
   if(!prn.trim()||!nom.trim()||!mail.trim()||!tel.trim()||!rgpd){if(err)err.style.display='block';return;}
   if(err)err.style.display='none';
   var sub=g('lm-sub');if(sub){sub.disabled=true;sub.textContent='Envoi en cours...';}
-  var data=Object.assign({prenom:prn.trim(),nom:nom.trim(),email:mail.trim(),telephone:tel.trim(),adresse:S.adresse},LEAD_CTX);
+  var data=Object.assign({prenom:prn.trim(),nom:nom.trim(),email:mail.trim(),telephone:tel.trim(),adresse:S.adresse,src_post:new URLSearchParams(window.location.search).get('src_post')||''},LEAD_CTX);
   showLeadSuccess();
   var fd=new FormData();fd.append('action','cme_aid_lead');fd.append('nonce',AIDNONCE);fd.append('payload',JSON.stringify(data));
   fetch(AJAX_URL,{method:'POST',body:fd}).then(function(r){return r.json();})
