@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Pas de mode sombre automatique — le site est toujours en theme clair,
+   coherent avec l'identite visuelle du site principal */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Securite supplementaire : force le texte et le fond des champs,
+   independamment des preferences systeme de l'utilisateur */
+input,
+textarea,
+select {
+  background-color: #ffffff;
+  color: #111827;
+}

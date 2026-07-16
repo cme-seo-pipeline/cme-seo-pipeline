@@ -9,11 +9,31 @@ app = Flask(__name__)
 firebase_admin.initialize_app()
 db = firestore.client()
 
+# Origines autorisées : le site de production + tout sous-domaine Cloud Shell
+# (pour le developpement). A resserrer une fois le domaine final de
+# l'espace client connu (ex: espace-client.comprendre-mon-energie.fr).
+ALLOWED_ORIGIN_SUFFIXES = [
+    "https://www.comprendre-mon-energie.fr",
+    ".cloudshell.dev",
+    "http://localhost:3000",
+]
+
+
+def _origine_autorisee(origin):
+    if not origin:
+        return False
+    return any(
+        origin == s or origin.endswith(s) for s in ALLOWED_ORIGIN_SUFFIXES
+    )
+
 
 def _cors(response):
-    response.headers['Access-Control-Allow-Origin'] = 'https://www.comprendre-mon-energie.fr'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PATCH'
+    origin = request.headers.get("Origin", "")
+    if _origine_autorisee(origin):
+        response.headers["Access-Control-Allow-Origin"] = origin
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, OPTIONS"
+    response.headers["Vary"] = "Origin"
     return response
 
 
