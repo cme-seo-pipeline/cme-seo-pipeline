@@ -631,8 +631,20 @@ function buildForm(root){
   ap(step,sm);ap(step,sv);ap(step,sp2);ap(hW,step);ap(gH,hW);
 
   var rW=mk('div');ap(rW,mk('label',null,'Revenu fiscal de référence (RFR)'));
-  var rI=document.createElement('input');rI.type='number';rI.value=S.rfr;rI.min=0;rI.step=500;
-  rI.addEventListener('input',function(){S.rfr=parseInt(rI.value)||0;updatePrev();});
+  var rI=document.createElement('input');rI.type='text';rI.inputMode='numeric';
+  rI.value=S.rfr>0?fmtNum(S.rfr)+' EUR':'';
+  rI.addEventListener('focus',function(){
+    rI.value=S.rfr>0?String(S.rfr):'';
+  });
+  rI.addEventListener('input',function(){
+    var brut=rI.value.replace(/[^0-9]/g,'');
+    S.rfr=parseInt(brut)||0;
+    rI.value=brut;
+    updatePrev();
+  });
+  rI.addEventListener('blur',function(){
+    rI.value=S.rfr>0?fmtNum(S.rfr)+' EUR':'';
+  });
   ap(rW,rI);ap(gH,rW);ap(s1,gH);
   ap(s1,mk('div','hint','RFR de l\'ensemble du foyer (avis d\'imposition, année N-1)'));
 
