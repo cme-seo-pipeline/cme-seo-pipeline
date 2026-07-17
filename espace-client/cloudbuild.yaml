@@ -1,0 +1,23 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'europe-west1-docker.pkg.dev/seo-data-hub-cme/cme-pipeline/espace-client:v2'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyBDjYXPDQdpEsIVjEaI0C8WVft5alFm7Cw'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=seo-data-hub-cme.firebaseapp.com'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_FIREBASE_PROJECT_ID=seo-data-hub-cme'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=seo-data-hub-cme.firebasestorage.app'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=217943559750'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_FIREBASE_APP_ID=1:217943559750:web:e2e61e6f0abad21676c447'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_CLIENT_API_URL=https://cme-client-api-217943559750.europe-west1.run.app'
+      - '.'
+images:
+  - 'europe-west1-docker.pkg.dev/seo-data-hub-cme/cme-pipeline/espace-client:v2'

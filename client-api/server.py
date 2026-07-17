@@ -9,11 +9,10 @@ app = Flask(__name__)
 firebase_admin.initialize_app()
 db = firestore.client()
 
-# Origines autorisées : le site de production + tout sous-domaine Cloud Shell
-# (pour le developpement). A resserrer une fois le domaine final de
-# l'espace client connu (ex: espace-client.comprendre-mon-energie.fr).
+# Origines autorisées : production + developpement.
 ALLOWED_ORIGIN_SUFFIXES = [
     "https://www.comprendre-mon-energie.fr",
+    "https://espace-client-217943559750.europe-west1.run.app",
     ".cloudshell.dev",
     "http://localhost:3000",
 ]
