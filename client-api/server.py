@@ -93,6 +93,44 @@ def register():
         return _cors(jsonify({"error": str(e)})), 400
 
 
+@app.route('/users/me', methods=['GET', 'PATCH', 'OPTIONS'])
+def user_me():
+    """GET : recupere le profil du compte connecte.
+    PATCH : met a jour les infos personnelles et/ou le(s) fournisseur(s)."""
+    if request.method == 'OPTIONS':
+        return _cors(jsonify({})), 200
+
+    uid = verifier_token(request)
+    if not uid:
+        return _cors(jsonify({"error": "Non authentifie"})), 401
+
+    user_ref = db.collection('users').document(uid)
+
+    if request.method == 'GET':
+        doc = user_ref.get()
+        if not doc.exists:
+            return _cors(jsonify({"error": "Profil introuvable"})), 404
+        return _cors(jsonify(doc.to_dict())), 200
+
+    # PATCH — seuls certains champs sont modifiables par le client lui-meme
+    # (jamais 'role' ni 'email', qui restent geres par l'admin/l'auth)
+    data = request.get_json(silent=True) or {}
+    champs_autorises = ['nom', 'prenom', 'telephone', 'adresse_postale', 'fournisseurs']
+    maj = {}
+    for champ in champs_autorises:
+        if champ in data:
+            maj[champ] = data[champ]
+
+    if not maj:
+        return _cors(jsonify({"error": "Aucun champ valide a mettre a jour"})), 400
+
+    try:
+        user_ref.update(maj)
+        return _cors(jsonify({"status": "ok"})), 200
+    except Exception as e:
+        return _cors(jsonify({"error": str(e)})), 500
+
+
 @app.route('/leads', methods=['GET', 'POST', 'OPTIONS'])
 def leads():
     if request.method == 'OPTIONS':
@@ -108,6 +146,7 @@ def leads():
         return _cors(jsonify({"leads": result})), 200
 
     # POST : creation d'un nouveau lead lie au compte
+    # (utilise aussi bien par les simulateurs que par "Rendez-vous avec un expert")
     data = request.get_json(silent=True) or {}
     lead_ref = db.collection('users').document(uid).collection('leads').document()
     lead_ref.set({
@@ -136,13 +175,10 @@ def admin_leads():
         return _cors(jsonify({"error": "Acces reserve aux administrateurs"})), 403
 
     try:
-        # Collection group query : parcourt la sous-collection "leads"
-        # de TOUS les documents users/{uid}, peu importe le parent.
         docs = db.collection_group('leads').stream()
         result = []
         for d in docs:
             lead_data = d.to_dict()
-            # Le parent du document (users/{uid}) donne l'uid du proprietaire
             owner_uid = d.reference.parent.parent.id
             lead_data['id'] = d.id
             lead_data['owner_uid'] = owner_uid
@@ -154,8 +190,7 @@ def admin_leads():
 
 @app.route('/admin/users', methods=['GET', 'OPTIONS'])
 def admin_users():
-    """Liste tous les comptes clients (pour associer nom/email aux leads
-    dans l'interface admin). Reserve aux comptes role=admin."""
+    """Liste tous les comptes clients. Reserve aux comptes role=admin."""
     if request.method == 'OPTIONS':
         return _cors(jsonify({})), 200
 

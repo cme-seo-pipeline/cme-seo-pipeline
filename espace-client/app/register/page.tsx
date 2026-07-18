@@ -50,7 +50,7 @@ function RegisterForm() {
     setLoading(true);
     try {
       await register(form);
-      router.push("/dashboard");
+      router.push("/simulations");
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Erreur lors de l'inscription.";
