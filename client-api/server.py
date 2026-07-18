@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
+import requests
+import json
 
 app = Flask(__name__)
 
@@ -8,6 +10,10 @@ app = Flask(__name__)
 # via Application Default Credentials (déjà configuré sur Cloud Run)
 firebase_admin.initialize_app()
 db = firestore.client()
+
+# Webhook Apps Script — notifie Sheets + email a chaque nouveau lead
+# cree depuis l'espace client (rendez-vous, ou tout futur formulaire).
+GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzHDlqaGbnzMlmTYTY1IN8UJU19bHbqUomrRPhO8QrfTx4S-yW7Ug82dJch5-QCDdxK6g/exec"
 
 # Origines autorisées : production + developpement.
 ALLOWED_ORIGIN_SUFFIXES = [
@@ -62,6 +68,32 @@ def verifier_admin(uid):
         return False
 
 
+def notifier_gas(uid, lead_data):
+    """Notifie Sheets + email via Apps Script. Ne bloque jamais la reponse
+    au client meme si la notification echoue (best-effort)."""
+    try:
+        profil_doc = db.collection('users').document(uid).get()
+        profil = profil_doc.to_dict() if profil_doc.exists else {}
+
+        payload = {
+            'tool': lead_data.get('tool', ''),
+            'prenom': profil.get('prenom', ''),
+            'nom': profil.get('nom', ''),
+            'email': profil.get('email', ''),
+            'telephone': profil.get('telephone', ''),
+            'montant_estime': lead_data.get('montant_estime', 0),
+            'details': lead_data.get('details', {}),
+            'owner_uid': uid,
+        }
+        requests.get(
+            GAS_WEBHOOK_URL,
+            params={'payload': json.dumps(payload, ensure_ascii=False)},
+            timeout=15
+        )
+    except Exception as e:
+        print(f"notifier_gas error: {e}")
+
+
 @app.route('/', methods=['GET'])
 def health():
     return jsonify({"service": "CME Client API", "status": "ok"}), 200
@@ -112,8 +144,6 @@ def user_me():
             return _cors(jsonify({"error": "Profil introuvable"})), 404
         return _cors(jsonify(doc.to_dict())), 200
 
-    # PATCH — seuls certains champs sont modifiables par le client lui-meme
-    # (jamais 'role' ni 'email', qui restent geres par l'admin/l'auth)
     data = request.get_json(silent=True) or {}
     champs_autorises = ['nom', 'prenom', 'telephone', 'adresse_postale', 'fournisseurs']
     maj = {}
@@ -149,7 +179,7 @@ def leads():
     # (utilise aussi bien par les simulateurs que par "Rendez-vous avec un expert")
     data = request.get_json(silent=True) or {}
     lead_ref = db.collection('users').document(uid).collection('leads').document()
-    lead_ref.set({
+    lead_data = {
         'tool': data.get('tool', ''),
         'statut': 'nouveau',
         'source_post_id': data.get('source_post_id', ''),
@@ -157,7 +187,12 @@ def leads():
         'economie_estimee': data.get('economie_estimee', 0),
         'details': data.get('details', {}),
         'derniere_maj': firestore.SERVER_TIMESTAMP
-    })
+    }
+    lead_ref.set(lead_data)
+
+    # Notification Sheets + email — best-effort, ne bloque jamais la reponse
+    notifier_gas(uid, lead_data)
+
     return _cors(jsonify({"status": "ok", "lead_id": lead_ref.id})), 201
 
 

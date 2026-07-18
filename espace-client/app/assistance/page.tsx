@@ -19,9 +19,16 @@ export default function AssistancePage() {
           <p className="text-xs text-gray-400 mt-1">Réponse sous 48h</p>
         </a>
 
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 opacity-70">
+          <div className="text-2xl mb-2">📞</div>
+          <h2 className="font-semibold text-gray-900 mb-1">Par téléphone</h2>
+          <p className="text-sm text-gray-400 italic">Numéro à venir</p>
+          <p className="text-xs text-gray-400 mt-1">Bientôt disponible</p>
+        </div>
+
         <a
           href="/rendez-vous"
-          className="bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-md transition-shadow"
+          className="bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-md transition-shadow sm:col-span-2"
         >
           <div className="text-2xl mb-2">📅</div>
           <h2 className="font-semibold text-gray-900 mb-1">
