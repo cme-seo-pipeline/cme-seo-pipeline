@@ -49,6 +49,19 @@ def verifier_token(req):
         return None
 
 
+def verifier_admin(uid):
+    """Verifie que l'utilisateur a le role admin. Retourne True/False."""
+    if not uid:
+        return False
+    try:
+        doc = db.collection('users').document(uid).get()
+        if not doc.exists:
+            return False
+        return doc.to_dict().get('role') == 'admin'
+    except Exception:
+        return False
+
+
 @app.route('/', methods=['GET'])
 def health():
     return jsonify({"service": "CME Client API", "status": "ok"}), 200
@@ -107,6 +120,86 @@ def leads():
         'derniere_maj': firestore.SERVER_TIMESTAMP
     })
     return _cors(jsonify({"status": "ok", "lead_id": lead_ref.id})), 201
+
+
+@app.route('/admin/leads', methods=['GET', 'OPTIONS'])
+def admin_leads():
+    """Liste TOUS les leads de TOUS les utilisateurs (collection group query).
+    Reserve aux comptes role=admin."""
+    if request.method == 'OPTIONS':
+        return _cors(jsonify({})), 200
+
+    uid = verifier_token(request)
+    if not uid:
+        return _cors(jsonify({"error": "Non authentifie"})), 401
+    if not verifier_admin(uid):
+        return _cors(jsonify({"error": "Acces reserve aux administrateurs"})), 403
+
+    try:
+        # Collection group query : parcourt la sous-collection "leads"
+        # de TOUS les documents users/{uid}, peu importe le parent.
+        docs = db.collection_group('leads').stream()
+        result = []
+        for d in docs:
+            lead_data = d.to_dict()
+            # Le parent du document (users/{uid}) donne l'uid du proprietaire
+            owner_uid = d.reference.parent.parent.id
+            lead_data['id'] = d.id
+            lead_data['owner_uid'] = owner_uid
+            result.append(lead_data)
+        return _cors(jsonify({"leads": result, "total": len(result)})), 200
+    except Exception as e:
+        return _cors(jsonify({"error": str(e)})), 500
+
+
+@app.route('/admin/users', methods=['GET', 'OPTIONS'])
+def admin_users():
+    """Liste tous les comptes clients (pour associer nom/email aux leads
+    dans l'interface admin). Reserve aux comptes role=admin."""
+    if request.method == 'OPTIONS':
+        return _cors(jsonify({})), 200
+
+    uid = verifier_token(request)
+    if not uid:
+        return _cors(jsonify({"error": "Non authentifie"})), 401
+    if not verifier_admin(uid):
+        return _cors(jsonify({"error": "Acces reserve aux administrateurs"})), 403
+
+    try:
+        docs = db.collection('users').stream()
+        result = [{**d.to_dict(), 'uid': d.id} for d in docs]
+        return _cors(jsonify({"users": result})), 200
+    except Exception as e:
+        return _cors(jsonify({"error": str(e)})), 500
+
+
+@app.route('/admin/leads/<lead_owner_uid>/<lead_id>/status', methods=['PATCH', 'OPTIONS'])
+def admin_update_lead_status(lead_owner_uid, lead_id):
+    """Met a jour le statut d'un lead specifique. Reserve aux admins."""
+    if request.method == 'OPTIONS':
+        return _cors(jsonify({})), 200
+
+    uid = verifier_token(request)
+    if not uid:
+        return _cors(jsonify({"error": "Non authentifie"})), 401
+    if not verifier_admin(uid):
+        return _cors(jsonify({"error": "Acces reserve aux administrateurs"})), 403
+
+    data = request.get_json(silent=True) or {}
+    nouveau_statut = data.get('statut', '')
+    statuts_valides = ['nouveau', 'en_cours', 'documents_manquants', 'traite', 'abandonne']
+    if nouveau_statut not in statuts_valides:
+        return _cors(jsonify({"error": "Statut invalide"})), 400
+
+    try:
+        lead_ref = db.collection('users').document(lead_owner_uid).collection('leads').document(lead_id)
+        lead_ref.update({
+            'statut': nouveau_statut,
+            'derniere_maj': firestore.SERVER_TIMESTAMP
+        })
+        return _cors(jsonify({"status": "ok"})), 200
+    except Exception as e:
+        return _cors(jsonify({"error": str(e)})), 500
 
 
 if __name__ == '__main__':

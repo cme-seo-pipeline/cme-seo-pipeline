@@ -33,6 +33,16 @@ service cloud.firestore {
       }
     }
 
+    // Collection group query : necessaire pour que le back-office admin
+    // puisse lister TOUS les leads de TOUS les utilisateurs en une seule
+    // requete (collectionGroup('leads')), plutot que de parcourir chaque
+    // utilisateur un par un. Sans cette regle explicite au niveau racine,
+    // la collection group query est refusee meme pour un admin legitime,
+    // meme si la regle nichee ci-dessus l'autoriserait en acces direct.
+    match /{path=**}/leads/{leadId} {
+      allow read: if isAdmin();
+    }
+
     // Tout le reste : refuse par defaut (principe du moindre privilege)
     match /{document=**} {
       allow read, write: if false;
