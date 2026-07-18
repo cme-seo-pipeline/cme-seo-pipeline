@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const { register } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [form, setForm] = useState({
     prenom: "",
     nom: "",
@@ -17,6 +19,20 @@ export default function RegisterPage() {
   });
   const [erreur, setErreur] = useState("");
   const [loading, setLoading] = useState(false);
+  const [venantDunSimulateur, setVenantDunSimulateur] = useState(false);
+
+  // Pré-remplissage depuis les parametres URL (redirection post-lead
+  // depuis un des 3 simulateurs WordPress)
+  useEffect(() => {
+    const prenom = searchParams.get("prenom") || "";
+    const nom = searchParams.get("nom") || "";
+    const email = searchParams.get("email") || "";
+    const telephone = searchParams.get("telephone") || "";
+    if (prenom || nom || email || telephone) {
+      setForm((f) => ({ ...f, prenom, nom, email, telephone }));
+      setVenantDunSimulateur(true);
+    }
+  }, [searchParams]);
 
   function update(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -54,6 +70,12 @@ export default function RegisterPage() {
         <p className="text-sm text-gray-500 mb-6">
           Suivez vos dossiers solaire, aides et énergie en un seul endroit
         </p>
+
+        {venantDunSimulateur && (
+          <div className="bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-4 text-sm text-green-800">
+            ✓ Vos informations ont été pré-remplies depuis votre simulation
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
@@ -148,5 +170,13 @@ export default function RegisterPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="flex-1 flex items-center justify-center"><p className="text-gray-500">Chargement...</p></div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }

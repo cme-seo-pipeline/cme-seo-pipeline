@@ -1,0 +1,15 @@
+.git/
+.gitignore
+**/node_modules/
+**/.next/
+espace-client/
+pipeline/
+tracking-api/
+client-api/
+wordpress-plugins/
+apps-scripts/
+scripts-maintenance/
+maj-trimestrielle/
+*.zip
+*.log
+__pycache__/
