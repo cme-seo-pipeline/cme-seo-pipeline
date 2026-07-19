@@ -19,6 +19,7 @@ GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzHDlqaGbnzMlmTYTY1IN
 ALLOWED_ORIGIN_SUFFIXES = [
     "https://www.comprendre-mon-energie.fr",
     "https://espace-client-217943559750.europe-west1.run.app",
+    "https://espace-client.comprendre-mon-energie.fr",
     ".cloudshell.dev",
     "http://localhost:3000",
 ]

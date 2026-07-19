@@ -776,8 +776,18 @@ function showLeadSuccess(){
     var nom=(document.getElementById(UID+'-lm-nom')||{}).value||'';
     var mail=(document.getElementById(UID+'-lm-mail')||{}).value||'';
     var tel=(document.getElementById(UID+'-lm-tel')||{}).value||'';
-    var lienCompte='https://espace-client-217943559750.europe-west1.run.app/register?prenom='
-      +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel);
+    var srcPost=new URLSearchParams(window.location.search).get('src_post')||'';
+    var ctx=LEAD_CTX||{};
+    var leadData={
+      tool:'comparateur-energie',
+      source_post_id:srcPost,
+      montant_estime:ctx.prix_annuel||0,
+      economie_estimee:ctx.economie||0,
+      details:{energie:ctx.energie||'',fournisseur:ctx.fournisseur||'',offre:ctx.offre||'',kwh:ctx.kwh||0,option_tarifaire:ctx.option_tarifaire||''}
+    };
+    var lienCompte='https://espace-client.comprendre-mon-energie.fr/register?prenom='
+      +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel)
+      +'&lead_data='+encodeURIComponent(JSON.stringify(leadData));
     form.innerHTML='<div style="text-align:center;padding:20px 10px">'
       +'<div style="width:52px;height:52px;border-radius:50%;background:#d1fae5;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px">\u2713</div>'
       +'<div style="font-weight:700;font-size:16px;color:#111827;margin-bottom:6px">Demande envoy\u00e9e !</div>'

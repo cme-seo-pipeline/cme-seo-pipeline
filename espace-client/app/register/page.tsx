@@ -5,8 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 
+const API_URL = process.env.NEXT_PUBLIC_CLIENT_API_URL;
+
 function RegisterForm() {
-  const { register } = useAuth();
+  const { register, getToken } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -50,6 +52,31 @@ function RegisterForm() {
     setLoading(true);
     try {
       await register(form);
+
+      // Si l'inscription vient d'un simulateur (lead_data present dans
+      // l'URL), on enregistre automatiquement ce dossier dans Firestore
+      // pour qu'il apparaisse immediatement dans "Mes simulations".
+      // Non bloquant : si ca echoue, le compte reste cree normalement.
+      const leadDataRaw = searchParams.get("lead_data");
+      if (leadDataRaw) {
+        try {
+          const leadData = JSON.parse(decodeURIComponent(leadDataRaw));
+          const token = await getToken();
+          if (token) {
+            await fetch(`${API_URL}/leads`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(leadData),
+            });
+          }
+        } catch {
+          // silencieux : ne bloque jamais l'inscription
+        }
+      }
+
       router.push("/simulations");
     } catch (err) {
       const message =
@@ -175,7 +202,13 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="flex-1 flex items-center justify-center"><p className="text-gray-500">Chargement...</p></div>}>
+    <Suspense
+      fallback={
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-gray-500">Chargement...</p>
+        </div>
+      }
+    >
       <RegisterForm />
     </Suspense>
   );

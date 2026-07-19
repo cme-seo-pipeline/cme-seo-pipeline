@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Comprendre Mon Énergie",
+    "slug": "cme-espace-client",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "cme-espace-client",
+    "splash": {
+      "backgroundColor": "#16a34a"
+    },
+    "android": {
+      "package": "fr.comprendremonenergie.espaceclient"
+    },
+    "ios": {
+      "bundleIdentifier": "fr.comprendremonenergie.espaceclient",
+      "supportsTablet": false
+    },
+    "plugins": ["expo-router"],
+    "extra": {
+      "eas": {
+        "projectId": "A_REMPLIR_APRES_eas_init"
+      }
+    }
+  }
+}
