@@ -89,7 +89,7 @@ export default function ProfilScreen() {
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ padding: 20, paddingTop: 60 }}>
+    <ScrollView style={styles.container} contentContainerStyle={{ padding: 20, paddingTop: 20 }}>
       <Text style={styles.titre}>Mon profil</Text>
 
       <View style={styles.carte}>
