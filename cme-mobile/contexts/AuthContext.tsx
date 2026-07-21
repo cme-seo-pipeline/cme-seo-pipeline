@@ -3,6 +3,8 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
+  sendEmailVerification,
+  sendPasswordResetEmail,
   User,
 } from "firebase/auth";
 import { auth } from "../lib/firebase";
@@ -20,10 +22,14 @@ interface RegisterForm {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  emailVerified: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (form: RegisterForm) => Promise<void>;
   logout: () => Promise<void>;
   getToken: () => Promise<string | null>;
+  resendVerification: () => Promise<void>;
+  refreshEmailStatus: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,10 +37,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [emailVerified, setEmailVerified] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u);
+      setEmailVerified(u?.emailVerified ?? false);
       setLoading(false);
     });
     return unsubscribe;
@@ -55,6 +63,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(data.error || "Erreur lors de l'inscription");
     }
     await signInWithEmailAndPassword(auth, form.email, form.password);
+
+    // Envoi automatique de l'email de verification a la creation du compte.
+    // Non bloquant : le compte reste utilisable meme si l'envoi echoue.
+    if (auth.currentUser) {
+      try {
+        await sendEmailVerification(auth.currentUser);
+      } catch {
+        // silencieux
+      }
+    }
   }
 
   async function logout() {
@@ -66,8 +84,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return auth.currentUser.getIdToken();
   }
 
+  async function resendVerification() {
+    if (auth.currentUser) {
+      await sendEmailVerification(auth.currentUser);
+    }
+  }
+
+  async function refreshEmailStatus() {
+    if (auth.currentUser) {
+      await auth.currentUser.reload();
+      setEmailVerified(auth.currentUser.emailVerified);
+    }
+  }
+
+  async function resetPassword(email: string) {
+    await sendPasswordResetEmail(auth, email);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, getToken }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        emailVerified,
+        login,
+        register,
+        logout,
+        getToken,
+        resendVerification,
+        refreshEmailStatus,
+        resetPassword,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

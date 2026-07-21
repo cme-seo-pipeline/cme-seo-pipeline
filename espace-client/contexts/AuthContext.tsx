@@ -11,6 +11,8 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
+  sendEmailVerification,
+  sendPasswordResetEmail,
   User,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -26,10 +28,14 @@ interface RegisterData {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  emailVerified: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   getToken: () => Promise<string | null>;
+  resendVerification: () => Promise<void>;
+  refreshEmailStatus: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,10 +45,12 @@ const API_URL = process.env.NEXT_PUBLIC_CLIENT_API_URL;
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [emailVerified, setEmailVerified] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
+      setEmailVerified(firebaseUser?.emailVerified ?? false);
       setLoading(false);
     });
     return () => unsubscribe();
@@ -67,6 +75,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Une fois le compte cree, on connecte immediatement l'utilisateur
     // (le SDK client a besoin de sa propre session, distincte de la creation serveur)
     await signInWithEmailAndPassword(auth, data.email, data.password);
+
+    // Envoi automatique de l'email de verification a la creation du compte.
+    // Non bloquant : le compte reste utilisable meme si l'envoi echoue.
+    if (auth.currentUser) {
+      try {
+        await sendEmailVerification(auth.currentUser);
+      } catch {
+        // silencieux
+      }
+    }
   }
 
   async function logout() {
@@ -78,9 +96,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return auth.currentUser.getIdToken();
   }
 
+  async function resendVerification() {
+    if (auth.currentUser) {
+      await sendEmailVerification(auth.currentUser);
+    }
+  }
+
+  async function refreshEmailStatus() {
+    if (auth.currentUser) {
+      await auth.currentUser.reload();
+      setEmailVerified(auth.currentUser.emailVerified);
+    }
+  }
+
+  async function resetPassword(email: string) {
+    await sendPasswordResetEmail(auth, email);
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, register, logout, getToken }}
+      value={{
+        user,
+        loading,
+        emailVerified,
+        login,
+        register,
+        logout,
+        getToken,
+        resendVerification,
+        refreshEmailStatus,
+        resetPassword,
+      }}
     >
       {children}
     </AuthContext.Provider>

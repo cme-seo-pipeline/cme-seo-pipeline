@@ -59,6 +59,13 @@ export default function LoginScreen() {
           onChangeText={setPassword}
         />
 
+        <TouchableOpacity
+          style={styles.lienMdp}
+          onPress={() => router.push("/forgot-password")}
+        >
+          <Text style={styles.lienMdpTexte}>Mot de passe oublié ?</Text>
+        </TouchableOpacity>
+
         {erreur ? <Text style={styles.erreur}>{erreur}</Text> : null}
 
         <TouchableOpacity
@@ -71,6 +78,15 @@ export default function LoginScreen() {
           ) : (
             <Text style={styles.boutonTexte}>Se connecter</Text>
           )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.lienInscription}
+          onPress={() => router.push("/register")}
+        >
+          <Text style={styles.lienInscriptionTexte}>
+            Pas encore de compte ? Créer un compte
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -106,6 +122,8 @@ const styles = StyleSheet.create({
     color: "#111827",
     backgroundColor: "#fff",
   },
+  lienMdp: { alignItems: "flex-end", marginBottom: 4 },
+  lienMdpTexte: { color: "#16a34a", fontSize: 12, fontWeight: "600" },
   erreur: {
     color: "#dc2626",
     backgroundColor: "#fef2f2",
@@ -114,6 +132,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     fontSize: 13,
+    marginTop: 8,
     marginBottom: 12,
   },
   bouton: {
@@ -125,4 +144,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   boutonTexte: { color: "#fff", fontWeight: "600", fontSize: 15 },
+  lienInscription: { marginTop: 16, alignItems: "center" },
+  lienInscriptionTexte: { color: "#16a34a", fontWeight: "600", fontSize: 13 },
 });

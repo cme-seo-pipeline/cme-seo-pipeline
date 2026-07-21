@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Tabs, router } from "expo-router";
 import { Text, View, ActivityIndicator, Image } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+import EmailVerificationBanner from "../../components/EmailVerificationBanner";
 
 const LOGO_URL =
   "https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/03/cropped-logo-officiel-comprendre-mon-energie-observatoire.png";
@@ -38,36 +39,41 @@ export default function TabsLayout() {
   }
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: true,
-        headerTitle: () => <HeaderTitre />,
-        headerStyle: { backgroundColor: "#fff" },
-        headerShadowVisible: true,
-        tabBarActiveTintColor: "#16a34a",
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Mes dossiers",
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📋</Text>,
-        }}
-      />
-      <Tabs.Screen
-        name="rendez-vous"
-        options={{
-          title: "Rendez-vous",
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📅</Text>,
-        }}
-      />
-      <Tabs.Screen
-        name="profil"
-        options={{
-          title: "Profil",
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>👤</Text>,
-        }}
-      />
-    </Tabs>
+    <View style={{ flex: 1 }}>
+      <EmailVerificationBanner />
+      <View style={{ flex: 1 }}>
+        <Tabs
+          screenOptions={{
+            headerShown: true,
+            headerTitle: () => <HeaderTitre />,
+            headerStyle: { backgroundColor: "#fff" },
+            headerShadowVisible: true,
+            tabBarActiveTintColor: "#16a34a",
+          }}
+        >
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: "Mes dossiers",
+              tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📋</Text>,
+            }}
+          />
+          <Tabs.Screen
+            name="rendez-vous"
+            options={{
+              title: "Rendez-vous",
+              tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📅</Text>,
+            }}
+          />
+          <Tabs.Screen
+            name="profil"
+            options={{
+              title: "Profil",
+              tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>👤</Text>,
+            }}
+          />
+        </Tabs>
+      </View>
+    </View>
   );
 }
