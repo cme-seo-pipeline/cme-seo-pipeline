@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Comprendre Mon Énergie",
+    "name": "Comprendre Mon \u00c9nergie",
     "slug": "cme-espace-client",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,17 +10,25 @@
       "backgroundColor": "#16a34a"
     },
     "android": {
-      "package": "fr.comprendremonenergie.espaceclient"
+      "package": "fr.comprendremonenergie.espaceclient",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#ffffff"
+      }
     },
     "ios": {
       "bundleIdentifier": "fr.comprendremonenergie.espaceclient",
-      "supportsTablet": false
+      "supportsTablet": false,
+      "icon": "./assets/icon.png"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router"
+    ],
     "extra": {
       "eas": {
         "projectId": "A_REMPLIR_APRES_eas_init"
       }
-    }
+    },
+    "icon": "./assets/icon.png"
   }
 }

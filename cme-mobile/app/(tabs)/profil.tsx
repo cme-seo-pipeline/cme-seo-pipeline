@@ -19,12 +19,33 @@ interface Profil {
   telephone?: string;
 }
 
+function messageErreurMdp(err: unknown): string {
+  const code = err instanceof Error ? err.message : "";
+  if (code.includes("wrong-password") || code.includes("invalid-credential")) {
+    return "Mot de passe actuel incorrect.";
+  }
+  if (code.includes("weak-password")) {
+    return "Le nouveau mot de passe doit contenir au moins 6 caractères.";
+  }
+  if (code.includes("requires-recent-login")) {
+    return "Par sécurité, merci de vous reconnecter puis de réessayer.";
+  }
+  return "Une erreur est survenue, merci de réessayer.";
+}
+
 export default function ProfilScreen() {
-  const { user, logout, getToken } = useAuth();
+  const { user, logout, getToken, changePassword } = useAuth();
   const [profil, setProfil] = useState<Profil>({});
   const [loading, setLoading] = useState(true);
   const [sauvegarde, setSauvegarde] = useState(false);
   const [succes, setSucces] = useState(false);
+
+  const [mdpActuel, setMdpActuel] = useState("");
+  const [mdpNouveau, setMdpNouveau] = useState("");
+  const [mdpConfirmation, setMdpConfirmation] = useState("");
+  const [mdpEnCours, setMdpEnCours] = useState(false);
+  const [mdpErreur, setMdpErreur] = useState("");
+  const [mdpSucces, setMdpSucces] = useState(false);
 
   useEffect(() => {
     fetchProfil();
@@ -72,6 +93,33 @@ export default function ProfilScreen() {
       // silencieux
     } finally {
       setSauvegarde(false);
+    }
+  }
+
+  async function handleChangePassword() {
+    setMdpErreur("");
+    setMdpSucces(false);
+
+    if (mdpNouveau.length < 6) {
+      setMdpErreur("Le nouveau mot de passe doit contenir au moins 6 caractères.");
+      return;
+    }
+    if (mdpNouveau !== mdpConfirmation) {
+      setMdpErreur("Les deux mots de passe ne correspondent pas.");
+      return;
+    }
+
+    setMdpEnCours(true);
+    try {
+      await changePassword(mdpActuel, mdpNouveau);
+      setMdpSucces(true);
+      setMdpActuel("");
+      setMdpNouveau("");
+      setMdpConfirmation("");
+    } catch (err) {
+      setMdpErreur(messageErreurMdp(err));
+    } finally {
+      setMdpEnCours(false);
     }
   }
 
@@ -131,6 +179,56 @@ export default function ProfilScreen() {
         </TouchableOpacity>
       </View>
 
+      <View style={styles.carte}>
+        <Text style={styles.sectionTitre}>Sécurité</Text>
+        <Text style={styles.sectionSousTitre}>
+          Par sécurité, indiquez votre mot de passe actuel avant de le modifier.
+        </Text>
+
+        <Text style={styles.label}>Mot de passe actuel</Text>
+        <TextInput
+          style={styles.input}
+          secureTextEntry
+          value={mdpActuel}
+          onChangeText={setMdpActuel}
+        />
+
+        <Text style={styles.label}>Nouveau mot de passe</Text>
+        <TextInput
+          style={styles.input}
+          secureTextEntry
+          value={mdpNouveau}
+          onChangeText={setMdpNouveau}
+          placeholder="6 caractères minimum"
+          placeholderTextColor="#9ca3af"
+        />
+
+        <Text style={styles.label}>Confirmer le nouveau mot de passe</Text>
+        <TextInput
+          style={styles.input}
+          secureTextEntry
+          value={mdpConfirmation}
+          onChangeText={setMdpConfirmation}
+        />
+
+        {mdpErreur ? <Text style={styles.erreur}>{mdpErreur}</Text> : null}
+        {mdpSucces ? (
+          <Text style={styles.succes}>✓ Mot de passe modifié avec succès</Text>
+        ) : null}
+
+        <TouchableOpacity
+          style={styles.bouton}
+          onPress={handleChangePassword}
+          disabled={mdpEnCours}
+        >
+          {mdpEnCours ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.boutonTexte}>Modifier le mot de passe</Text>
+          )}
+        </TouchableOpacity>
+      </View>
+
       <TouchableOpacity style={styles.boutonDeco} onPress={handleLogout}>
         <Text style={styles.boutonDecoTexte}>Se déconnecter</Text>
       </TouchableOpacity>
@@ -150,7 +248,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 6,
     elevation: 1,
+    marginBottom: 16,
   },
+  sectionTitre: { fontSize: 15, fontWeight: "700", color: "#111827" },
+  sectionSousTitre: { fontSize: 12, color: "#6b7280", marginTop: 2, marginBottom: 12 },
   label: { fontSize: 12, color: "#6b7280", fontWeight: "600", marginBottom: 6, marginTop: 12 },
   input: {
     height: 46,
@@ -173,6 +274,16 @@ const styles = StyleSheet.create({
     marginTop: 16,
     textAlign: "center",
   },
+  erreur: {
+    color: "#dc2626",
+    backgroundColor: "#fef2f2",
+    borderWidth: 1,
+    borderColor: "#fecaca",
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 13,
+    marginTop: 16,
+  },
   bouton: {
     height: 48,
     backgroundColor: "#16a34a",
@@ -182,6 +293,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   boutonTexte: { color: "#fff", fontWeight: "600", fontSize: 15 },
-  boutonDeco: { marginTop: 20, alignItems: "center", padding: 12 },
+  boutonDeco: { marginTop: 4, alignItems: "center", padding: 12 },
   boutonDecoTexte: { color: "#dc2626", fontWeight: "600", fontSize: 14 },
 });

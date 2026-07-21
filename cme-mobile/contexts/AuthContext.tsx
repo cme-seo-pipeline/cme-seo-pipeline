@@ -5,6 +5,9 @@ import {
   signOut as firebaseSignOut,
   sendEmailVerification,
   sendPasswordResetEmail,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
   User,
 } from "firebase/auth";
 import { auth } from "../lib/firebase";
@@ -30,6 +33,7 @@ interface AuthContextType {
   resendVerification: () => Promise<void>;
   refreshEmailStatus: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -64,8 +68,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     await signInWithEmailAndPassword(auth, form.email, form.password);
 
-    // Envoi automatique de l'email de verification a la creation du compte.
-    // Non bloquant : le compte reste utilisable meme si l'envoi echoue.
     if (auth.currentUser) {
       try {
         await sendEmailVerification(auth.currentUser);
@@ -101,6 +103,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await sendPasswordResetEmail(auth, email);
   }
 
+  async function changePassword(currentPassword: string, newPassword: string) {
+    if (!auth.currentUser || !auth.currentUser.email) {
+      throw new Error("Aucun utilisateur connecté");
+    }
+    const credential = EmailAuthProvider.credential(
+      auth.currentUser.email,
+      currentPassword
+    );
+    await reauthenticateWithCredential(auth.currentUser, credential);
+    await updatePassword(auth.currentUser, newPassword);
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -114,6 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         resendVerification,
         refreshEmailStatus,
         resetPassword,
+        changePassword,
       }}
     >
       {children}

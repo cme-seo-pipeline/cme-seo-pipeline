@@ -24,17 +24,39 @@ const FOURNISSEURS_LISTE = [
   "Mint Énergie", "OHM Énergie", "Alterna", "Vattenfall", "Autre",
 ];
 
+function messageErreurMdp(err: unknown): string {
+  const code = err instanceof Error ? err.message : "";
+  if (code.includes("wrong-password") || code.includes("invalid-credential")) {
+    return "Mot de passe actuel incorrect.";
+  }
+  if (code.includes("weak-password")) {
+    return "Le nouveau mot de passe doit contenir au moins 6 caractères.";
+  }
+  if (code.includes("requires-recent-login")) {
+    return "Par sécurité, merci de vous reconnecter puis de réessayer.";
+  }
+  return "Une erreur est survenue, merci de réessayer.";
+}
+
 function ProfilContent() {
-  const { user, loading, getToken } = useAuth();
+  const { user, loading, getToken, changePassword } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [onglet, setOnglet] = useState<"infos" | "fournisseur">("infos");
+  const [onglet, setOnglet] = useState<"infos" | "fournisseur" | "securite">("infos");
   const [profil, setProfil] = useState<Profil>({});
   const [dataLoading, setDataLoading] = useState(true);
   const [sauvegarde, setSauvegarde] = useState(false);
   const [succes, setSucces] = useState(false);
   const [erreur, setErreur] = useState("");
+
+  // Etat dedie au formulaire de changement de mot de passe
+  const [mdpActuel, setMdpActuel] = useState("");
+  const [mdpNouveau, setMdpNouveau] = useState("");
+  const [mdpConfirmation, setMdpConfirmation] = useState("");
+  const [mdpEnCours, setMdpEnCours] = useState(false);
+  const [mdpErreur, setMdpErreur] = useState("");
+  const [mdpSucces, setMdpSucces] = useState(false);
 
   useEffect(() => {
     if (searchParams.get("tab") === "fournisseur") {
@@ -108,6 +130,34 @@ function ProfilContent() {
     }
   }
 
+  async function handleChangePassword(e: React.FormEvent) {
+    e.preventDefault();
+    setMdpErreur("");
+    setMdpSucces(false);
+
+    if (mdpNouveau.length < 6) {
+      setMdpErreur("Le nouveau mot de passe doit contenir au moins 6 caractères.");
+      return;
+    }
+    if (mdpNouveau !== mdpConfirmation) {
+      setMdpErreur("Les deux mots de passe ne correspondent pas.");
+      return;
+    }
+
+    setMdpEnCours(true);
+    try {
+      await changePassword(mdpActuel, mdpNouveau);
+      setMdpSucces(true);
+      setMdpActuel("");
+      setMdpNouveau("");
+      setMdpConfirmation("");
+    } catch (err) {
+      setMdpErreur(messageErreurMdp(err));
+    } finally {
+      setMdpEnCours(false);
+    }
+  }
+
   if (loading || dataLoading) {
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -147,20 +197,30 @@ function ProfilContent() {
         >
           Fournisseur
         </button>
+        <button
+          onClick={() => setOnglet("securite")}
+          className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+            onglet === "securite"
+              ? "border-green-600 text-green-600"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          Sécurité
+        </button>
       </div>
 
-      {erreur && (
+      {onglet !== "securite" && erreur && (
         <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-4">
           {erreur}
         </p>
       )}
-      {succes && (
+      {onglet !== "securite" && succes && (
         <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-4">
           ✓ Enregistré avec succès
         </p>
       )}
 
-      {onglet === "infos" ? (
+      {onglet === "infos" && (
         <div className="bg-white rounded-2xl border border-gray-200 p-6 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -225,7 +285,9 @@ function ProfilContent() {
             {sauvegarde ? "Enregistrement..." : "Enregistrer"}
           </button>
         </div>
-      ) : (
+      )}
+
+      {onglet === "fournisseur" && (
         <div className="bg-white rounded-2xl border border-gray-200 p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -296,6 +358,76 @@ function ProfilContent() {
           >
             {sauvegarde ? "Enregistrement..." : "Enregistrer"}
           </button>
+        </div>
+      )}
+
+      {onglet === "securite" && (
+        <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <h2 className="text-sm font-semibold text-gray-900 mb-1">
+            Changer mon mot de passe
+          </h2>
+          <p className="text-xs text-gray-500 mb-4">
+            Par sécurité, indiquez votre mot de passe actuel avant de le modifier.
+          </p>
+
+          <form onSubmit={handleChangePassword} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Mot de passe actuel
+              </label>
+              <input
+                type="password"
+                required
+                value={mdpActuel}
+                onChange={(e) => setMdpActuel(e.target.value)}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nouveau mot de passe
+              </label>
+              <input
+                type="password"
+                required
+                value={mdpNouveau}
+                onChange={(e) => setMdpNouveau(e.target.value)}
+                className={inputClass}
+                placeholder="6 caractères minimum"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Confirmer le nouveau mot de passe
+              </label>
+              <input
+                type="password"
+                required
+                value={mdpConfirmation}
+                onChange={(e) => setMdpConfirmation(e.target.value)}
+                className={inputClass}
+              />
+            </div>
+
+            {mdpErreur && (
+              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                {mdpErreur}
+              </p>
+            )}
+            {mdpSucces && (
+              <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                ✓ Mot de passe modifié avec succès
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={mdpEnCours}
+              className="w-full h-11 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white font-semibold rounded-lg transition-colors"
+            >
+              {mdpEnCours ? "Modification..." : "Modifier le mot de passe"}
+            </button>
+          </form>
         </div>
       )}
     </div>

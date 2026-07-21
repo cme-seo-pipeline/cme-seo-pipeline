@@ -13,6 +13,9 @@ import {
   signOut as firebaseSignOut,
   sendEmailVerification,
   sendPasswordResetEmail,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
   User,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -36,6 +39,7 @@ interface AuthContextType {
   resendVerification: () => Promise<void>;
   refreshEmailStatus: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -61,8 +65,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function register(data: RegisterData) {
-    // Le compte est cree cote serveur par cme-client-api (deja teste en Sprint 1),
-    // qui cree a la fois le compte Firebase Auth ET le document Firestore.
     const res = await fetch(`${API_URL}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -72,12 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.error || "Erreur lors de l'inscription");
     }
-    // Une fois le compte cree, on connecte immediatement l'utilisateur
-    // (le SDK client a besoin de sa propre session, distincte de la creation serveur)
     await signInWithEmailAndPassword(auth, data.email, data.password);
 
-    // Envoi automatique de l'email de verification a la creation du compte.
-    // Non bloquant : le compte reste utilisable meme si l'envoi echoue.
     if (auth.currentUser) {
       try {
         await sendEmailVerification(auth.currentUser);
@@ -113,6 +111,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await sendPasswordResetEmail(auth, email);
   }
 
+  async function changePassword(currentPassword: string, newPassword: string) {
+    if (!auth.currentUser || !auth.currentUser.email) {
+      throw new Error("Aucun utilisateur connecté");
+    }
+    // Firebase exige une reconnexion recente avant de changer le mot de passe
+    const credential = EmailAuthProvider.credential(
+      auth.currentUser.email,
+      currentPassword
+    );
+    await reauthenticateWithCredential(auth.currentUser, credential);
+    await updatePassword(auth.currentUser, newPassword);
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -126,6 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         resendVerification,
         refreshEmailStatus,
         resetPassword,
+        changePassword,
       }}
     >
       {children}
