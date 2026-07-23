@@ -6,16 +6,11 @@ import json
 
 app = Flask(__name__)
 
-# Initialisation Firebase Admin — utilise le compte de service
-# via Application Default Credentials (déjà configuré sur Cloud Run)
 firebase_admin.initialize_app()
 db = firestore.client()
 
-# Webhook Apps Script — notifie Sheets + email a chaque nouveau lead
-# cree depuis l'espace client (rendez-vous, ou tout futur formulaire).
 GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzHDlqaGbnzMlmTYTY1IN8UJU19bHbqUomrRPhO8QrfTx4S-yW7Ug82dJch5-QCDdxK6g/exec"
 
-# Origines autorisées : production + developpement.
 ALLOWED_ORIGIN_SUFFIXES = [
     "https://www.comprendre-mon-energie.fr",
     "https://espace-client-217943559750.europe-west1.run.app",
@@ -38,13 +33,12 @@ def _cors(response):
     if _origine_autorisee(origin):
         response.headers["Access-Control-Allow-Origin"] = origin
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, OPTIONS"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, DELETE, OPTIONS"
     response.headers["Vary"] = "Origin"
     return response
 
 
 def verifier_token(req):
-    """Verifie le token Firebase envoye dans le header Authorization, retourne l'uid ou None."""
     auth_header = req.headers.get('Authorization', '')
     if not auth_header.startswith('Bearer '):
         return None
@@ -57,7 +51,6 @@ def verifier_token(req):
 
 
 def verifier_admin(uid):
-    """Verifie que l'utilisateur a le role admin. Retourne True/False."""
     if not uid:
         return False
     try:
@@ -70,8 +63,6 @@ def verifier_admin(uid):
 
 
 def notifier_gas(uid, lead_data):
-    """Notifie Sheets + email via Apps Script. Ne bloque jamais la reponse
-    au client meme si la notification echoue (best-effort)."""
     try:
         profil_doc = db.collection('users').document(uid).get()
         profil = profil_doc.to_dict() if profil_doc.exists else {}
@@ -126,10 +117,14 @@ def register():
         return _cors(jsonify({"error": str(e)})), 400
 
 
-@app.route('/users/me', methods=['GET', 'PATCH', 'OPTIONS'])
+@app.route('/users/me', methods=['GET', 'PATCH', 'DELETE', 'OPTIONS'])
 def user_me():
     """GET : recupere le profil du compte connecte.
-    PATCH : met a jour les infos personnelles et/ou le(s) fournisseur(s)."""
+    PATCH : met a jour les infos personnelles et/ou le(s) fournisseur(s).
+    DELETE : supprime definitivement le compte et toutes ses donnees
+    (conforme a l'obligation Google Play / Apple sur les apps avec creation
+    de compte). Ne necessite pas de re-authentification recente : le SDK
+    Admin agit avec les pleins pouvoirs cote serveur."""
     if request.method == 'OPTIONS':
         return _cors(jsonify({})), 200
 
@@ -144,6 +139,23 @@ def user_me():
         if not doc.exists:
             return _cors(jsonify({"error": "Profil introuvable"})), 404
         return _cors(jsonify(doc.to_dict())), 200
+
+    if request.method == 'DELETE':
+        try:
+            # Supprimer tous les leads/dossiers de l'utilisateur
+            leads_ref = user_ref.collection('leads')
+            for doc in leads_ref.stream():
+                doc.reference.delete()
+
+            # Supprimer le document profil
+            user_ref.delete()
+
+            # Supprimer le compte d'authentification Firebase lui-meme
+            auth.delete_user(uid)
+
+            return _cors(jsonify({"status": "ok"})), 200
+        except Exception as e:
+            return _cors(jsonify({"error": str(e)})), 500
 
     data = request.get_json(silent=True) or {}
     champs_autorises = ['nom', 'prenom', 'telephone', 'adresse_postale', 'fournisseurs']
@@ -176,8 +188,6 @@ def leads():
         result = [{**d.to_dict(), 'id': d.id} for d in docs]
         return _cors(jsonify({"leads": result})), 200
 
-    # POST : creation d'un nouveau lead lie au compte
-    # (utilise aussi bien par les simulateurs que par "Rendez-vous avec un expert")
     data = request.get_json(silent=True) or {}
     lead_ref = db.collection('users').document(uid).collection('leads').document()
     lead_data = {
@@ -191,7 +201,6 @@ def leads():
     }
     lead_ref.set(lead_data)
 
-    # Notification Sheets + email — best-effort, ne bloque jamais la reponse
     notifier_gas(uid, lead_data)
 
     return _cors(jsonify({"status": "ok", "lead_id": lead_ref.id})), 201
@@ -199,8 +208,6 @@ def leads():
 
 @app.route('/admin/leads', methods=['GET', 'OPTIONS'])
 def admin_leads():
-    """Liste TOUS les leads de TOUS les utilisateurs (collection group query).
-    Reserve aux comptes role=admin."""
     if request.method == 'OPTIONS':
         return _cors(jsonify({})), 200
 
@@ -226,7 +233,6 @@ def admin_leads():
 
 @app.route('/admin/users', methods=['GET', 'OPTIONS'])
 def admin_users():
-    """Liste tous les comptes clients. Reserve aux comptes role=admin."""
     if request.method == 'OPTIONS':
         return _cors(jsonify({})), 200
 
@@ -246,7 +252,6 @@ def admin_users():
 
 @app.route('/admin/leads/<lead_owner_uid>/<lead_id>/status', methods=['PATCH', 'OPTIONS'])
 def admin_update_lead_status(lead_owner_uid, lead_id):
-    """Met a jour le statut d'un lead specifique. Reserve aux admins."""
     if request.method == 'OPTIONS':
         return _cors(jsonify({})), 200
 

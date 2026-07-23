@@ -3,7 +3,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'europe-west1-docker.pkg.dev/seo-data-hub-cme/cme-pipeline/espace-client:v12'
+      - 'europe-west1-docker.pkg.dev/seo-data-hub-cme/cme-pipeline/espace-client:v14'
       - '--build-arg'
       - 'NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyBDjYXPDQdpEsIVjEaI0C8WVft5alFm7Cw'
       - '--build-arg'
@@ -20,4 +20,4 @@ steps:
       - 'NEXT_PUBLIC_CLIENT_API_URL=https://cme-client-api-217943559750.europe-west1.run.app'
       - '.'
 images:
-  - 'europe-west1-docker.pkg.dev/seo-data-hub-cme/cme-pipeline/espace-client:v12'
+  - 'europe-west1-docker.pkg.dev/seo-data-hub-cme/cme-pipeline/espace-client:v14'

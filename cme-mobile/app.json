@@ -12,7 +12,7 @@
     "android": {
       "package": "fr.comprendremonenergie.espaceclient",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
@@ -24,11 +24,13 @@
     "plugins": [
       "expo-router"
     ],
+    "icon": "./assets/icon.png",
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": "A_REMPLIR_APRES_eas_init"
+        "projectId": "cc72b354-6613-49c1-accb-94cc75d4494a"
       }
     },
-    "icon": "./assets/icon.png"
+    "owner": "comprendre-mon-energie"
   }
 }

@@ -40,6 +40,7 @@ interface AuthContextType {
   refreshEmailStatus: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -115,13 +116,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!auth.currentUser || !auth.currentUser.email) {
       throw new Error("Aucun utilisateur connecté");
     }
-    // Firebase exige une reconnexion recente avant de changer le mot de passe
     const credential = EmailAuthProvider.credential(
       auth.currentUser.email,
       currentPassword
     );
     await reauthenticateWithCredential(auth.currentUser, credential);
     await updatePassword(auth.currentUser, newPassword);
+  }
+
+  async function deleteAccount() {
+    const token = await getToken();
+    if (!token) {
+      throw new Error("Non authentifié");
+    }
+    const res = await fetch(`${API_URL}/users/me`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      throw new Error("Erreur lors de la suppression du compte");
+    }
+    // Le compte Firebase Auth est deja supprime cote serveur (SDK Admin).
+    // On nettoie simplement la session locale.
+    await firebaseSignOut(auth);
   }
 
   return (
@@ -138,6 +155,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         refreshEmailStatus,
         resetPassword,
         changePassword,
+        deleteAccount,
       }}
     >
       {children}

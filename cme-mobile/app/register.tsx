@@ -9,9 +9,11 @@ import {
   Platform,
   ActivityIndicator,
   ScrollView,
+  Linking,
 } from "react-native";
 import { router } from "expo-router";
 import { useAuth } from "../contexts/AuthContext";
+import PasswordInput from "../components/PasswordInput";
 
 export default function RegisterScreen() {
   const { register } = useAuth();
@@ -20,6 +22,7 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
   const [password, setPassword] = useState("");
+  const [accepteCgu, setAccepteCgu] = useState(false);
   const [erreur, setErreur] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -31,6 +34,10 @@ export default function RegisterScreen() {
     }
     if (password.length < 6) {
       setErreur("Le mot de passe doit contenir au moins 6 caractères.");
+      return;
+    }
+    if (!accepteCgu) {
+      setErreur("Merci d'accepter les conditions générales pour continuer.");
       return;
     }
     setLoading(true);
@@ -94,14 +101,37 @@ export default function RegisterScreen() {
             value={telephone}
             onChangeText={setTelephone}
           />
-          <TextInput
+          <PasswordInput
+            containerStyle={{ marginBottom: 12 }}
             style={styles.input}
             placeholder="Mot de passe (6 caractères min.)"
             placeholderTextColor="#9ca3af"
-            secureTextEntry
             value={password}
             onChangeText={setPassword}
           />
+
+          <TouchableOpacity
+            style={styles.cguRow}
+            onPress={() => setAccepteCgu((v) => !v)}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.checkbox, accepteCgu && styles.checkboxCoche]}>
+              {accepteCgu ? <Text style={styles.checkboxCoche2}>✓</Text> : null}
+            </View>
+            <Text style={styles.cguTexte}>
+              J&apos;accepte les{" "}
+              <Text
+                style={styles.cguLien}
+                onPress={() =>
+                  Linking.openURL(
+                    "https://www.comprendre-mon-energie.fr/cadre-legal-et-confidentialite/"
+                  )
+                }
+              >
+                conditions générales et la politique de confidentialité
+              </Text>
+            </Text>
+          </TouchableOpacity>
 
           {erreur ? <Text style={styles.erreur}>{erreur}</Text> : null}
 
@@ -148,6 +178,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   inputHalf: { flex: 1 },
+  cguRow: { flexDirection: "row", alignItems: "flex-start", gap: 10, marginTop: 4, marginBottom: 8 },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderRadius: 5,
+    borderWidth: 1.5,
+    borderColor: "#d1d5db",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 1,
+  },
+  checkboxCoche: { backgroundColor: "#16a34a", borderColor: "#16a34a" },
+  checkboxCoche2: { color: "#fff", fontSize: 13, fontWeight: "700" },
+  cguTexte: { flex: 1, fontSize: 13, color: "#6b7280", lineHeight: 18 },
+  cguLien: { color: "#16a34a", fontWeight: "600" },
   erreur: {
     color: "#dc2626",
     backgroundColor: "#fef2f2",

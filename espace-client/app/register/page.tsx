@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import PasswordInput from "@/components/PasswordInput";
 
 const API_URL = process.env.NEXT_PUBLIC_CLIENT_API_URL;
 
@@ -19,12 +20,11 @@ function RegisterForm() {
     telephone: "",
     password: "",
   });
+  const [accepteCgu, setAccepteCgu] = useState(false);
   const [erreur, setErreur] = useState("");
   const [loading, setLoading] = useState(false);
   const [venantDunSimulateur, setVenantDunSimulateur] = useState(false);
 
-  // Pré-remplissage depuis les parametres URL (redirection post-lead
-  // depuis un des 3 simulateurs WordPress)
   useEffect(() => {
     const prenom = searchParams.get("prenom") || "";
     const nom = searchParams.get("nom") || "";
@@ -48,15 +48,15 @@ function RegisterForm() {
       setErreur("Le mot de passe doit contenir au moins 6 caractères.");
       return;
     }
+    if (!accepteCgu) {
+      setErreur("Merci d'accepter les conditions générales pour continuer.");
+      return;
+    }
 
     setLoading(true);
     try {
       await register(form);
 
-      // Si l'inscription vient d'un simulateur (lead_data present dans
-      // l'URL), on enregistre automatiquement ce dossier dans Firestore
-      // pour qu'il apparaisse immediatement dans "Mes simulations".
-      // Non bloquant : si ca echoue, le compte reste cree normalement.
       const leadDataRaw = searchParams.get("lead_data");
       if (leadDataRaw) {
         try {
@@ -164,14 +164,34 @@ function RegisterForm() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Mot de passe
             </label>
-            <input
-              type="password"
+            <PasswordInput
               required
               value={form.password}
               onChange={(e) => update("password", e.target.value)}
               className={inputClass}
               placeholder="6 caractères minimum"
             />
+          </div>
+
+          <div className="flex items-start gap-2">
+            <input
+              type="checkbox"
+              id="cgu"
+              checked={accepteCgu}
+              onChange={(e) => setAccepteCgu(e.target.checked)}
+              className="mt-1 h-4 w-4 accent-green-600"
+            />
+            <label htmlFor="cgu" className="text-sm text-gray-600">
+              J&apos;accepte les{" "}
+              <a
+                href="https://www.comprendre-mon-energie.fr/cadre-legal-et-confidentialite/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-600 font-medium hover:underline"
+              >
+                conditions générales et la politique de confidentialité
+              </a>
+            </label>
           </div>
 
           {erreur && (

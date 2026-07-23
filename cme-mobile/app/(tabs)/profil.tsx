@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { useAuth } from "../../contexts/AuthContext";
+import PasswordInput from "../../components/PasswordInput";
 
 const API_URL = process.env.EXPO_PUBLIC_CLIENT_API_URL;
 
@@ -34,7 +35,7 @@ function messageErreurMdp(err: unknown): string {
 }
 
 export default function ProfilScreen() {
-  const { user, logout, getToken, changePassword } = useAuth();
+  const { user, logout, getToken, changePassword, deleteAccount } = useAuth();
   const [profil, setProfil] = useState<Profil>({});
   const [loading, setLoading] = useState(true);
   const [sauvegarde, setSauvegarde] = useState(false);
@@ -46,6 +47,11 @@ export default function ProfilScreen() {
   const [mdpEnCours, setMdpEnCours] = useState(false);
   const [mdpErreur, setMdpErreur] = useState("");
   const [mdpSucces, setMdpSucces] = useState(false);
+
+  const [suppressionOuverte, setSuppressionOuverte] = useState(false);
+  const [confirmationTexte, setConfirmationTexte] = useState("");
+  const [suppressionEnCours, setSuppressionEnCours] = useState(false);
+  const [suppressionErreur, setSuppressionErreur] = useState("");
 
   useEffect(() => {
     fetchProfil();
@@ -123,6 +129,22 @@ export default function ProfilScreen() {
     }
   }
 
+  async function handleDeleteAccount() {
+    if (confirmationTexte !== "SUPPRIMER") {
+      setSuppressionErreur('Merci de saisir exactement "SUPPRIMER" pour confirmer.');
+      return;
+    }
+    setSuppressionErreur("");
+    setSuppressionEnCours(true);
+    try {
+      await deleteAccount();
+      router.replace("/login");
+    } catch {
+      setSuppressionErreur("Une erreur est survenue, merci de réessayer.");
+      setSuppressionEnCours(false);
+    }
+  }
+
   async function handleLogout() {
     await logout();
     router.replace("/login");
@@ -186,17 +208,17 @@ export default function ProfilScreen() {
         </Text>
 
         <Text style={styles.label}>Mot de passe actuel</Text>
-        <TextInput
+        <PasswordInput
+          containerStyle={{ marginTop: 0 }}
           style={styles.input}
-          secureTextEntry
           value={mdpActuel}
           onChangeText={setMdpActuel}
         />
 
         <Text style={styles.label}>Nouveau mot de passe</Text>
-        <TextInput
+        <PasswordInput
+          containerStyle={{ marginTop: 0 }}
           style={styles.input}
-          secureTextEntry
           value={mdpNouveau}
           onChangeText={setMdpNouveau}
           placeholder="6 caractères minimum"
@@ -204,9 +226,9 @@ export default function ProfilScreen() {
         />
 
         <Text style={styles.label}>Confirmer le nouveau mot de passe</Text>
-        <TextInput
+        <PasswordInput
+          containerStyle={{ marginTop: 0 }}
           style={styles.input}
-          secureTextEntry
           value={mdpConfirmation}
           onChangeText={setMdpConfirmation}
         />
@@ -227,6 +249,66 @@ export default function ProfilScreen() {
             <Text style={styles.boutonTexte}>Modifier le mot de passe</Text>
           )}
         </TouchableOpacity>
+      </View>
+
+      {/* Zone dangereuse */}
+      <View style={styles.carteDanger}>
+        <Text style={styles.dangerTitre}>Zone dangereuse</Text>
+        <Text style={styles.dangerSousTitre}>
+          La suppression de votre compte est définitive et supprime l&apos;ensemble
+          de vos données (profil, dossiers, historique). Cette action est
+          irréversible.
+        </Text>
+
+        {!suppressionOuverte ? (
+          <TouchableOpacity
+            style={styles.boutonDangerContour}
+            onPress={() => setSuppressionOuverte(true)}
+          >
+            <Text style={styles.boutonDangerContourTexte}>Supprimer mon compte</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.boiteConfirmation}>
+            <Text style={styles.boiteConfirmationTexte}>
+              Pour confirmer, saisissez SUPPRIMER ci-dessous :
+            </Text>
+            <TextInput
+              style={styles.inputDanger}
+              value={confirmationTexte}
+              onChangeText={setConfirmationTexte}
+              placeholder="SUPPRIMER"
+              placeholderTextColor="#fca5a5"
+              autoCapitalize="characters"
+            />
+            {suppressionErreur ? (
+              <Text style={styles.erreurDanger}>{suppressionErreur}</Text>
+            ) : null}
+            <View style={styles.boutonsDanger}>
+              <TouchableOpacity
+                style={styles.boutonConfirmerDanger}
+                onPress={handleDeleteAccount}
+                disabled={suppressionEnCours}
+              >
+                {suppressionEnCours ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.boutonTexte}>Confirmer la suppression</Text>
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.boutonAnnuler}
+                onPress={() => {
+                  setSuppressionOuverte(false);
+                  setConfirmationTexte("");
+                  setSuppressionErreur("");
+                }}
+                disabled={suppressionEnCours}
+              >
+                <Text style={styles.boutonAnnulerTexte}>Annuler</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
 
       <TouchableOpacity style={styles.boutonDeco} onPress={handleLogout}>
@@ -293,6 +375,64 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   boutonTexte: { color: "#fff", fontWeight: "600", fontSize: 15 },
-  boutonDeco: { marginTop: 4, alignItems: "center", padding: 12 },
+  boutonDeco: { marginTop: 4, marginBottom: 20, alignItems: "center", padding: 12 },
   boutonDecoTexte: { color: "#dc2626", fontWeight: "600", fontSize: 14 },
+
+  carteDanger: {
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#fecaca",
+    marginBottom: 16,
+  },
+  dangerTitre: { fontSize: 15, fontWeight: "700", color: "#b91c1c" },
+  dangerSousTitre: { fontSize: 12, color: "#6b7280", marginTop: 4, marginBottom: 14, lineHeight: 17 },
+  boutonDangerContour: {
+    height: 44,
+    borderWidth: 1,
+    borderColor: "#fca5a5",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  boutonDangerContourTexte: { color: "#dc2626", fontWeight: "600", fontSize: 14 },
+  boiteConfirmation: {
+    backgroundColor: "#fef2f2",
+    borderWidth: 1,
+    borderColor: "#fecaca",
+    borderRadius: 12,
+    padding: 14,
+  },
+  boiteConfirmationTexte: { fontSize: 13, color: "#991b1b", marginBottom: 10 },
+  inputDanger: {
+    height: 46,
+    borderWidth: 1,
+    borderColor: "#fca5a5",
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    fontSize: 15,
+    color: "#111827",
+    backgroundColor: "#fff",
+  },
+  erreurDanger: { fontSize: 12, color: "#b91c1c", marginTop: 8 },
+  boutonsDanger: { flexDirection: "row", gap: 8, marginTop: 12 },
+  boutonConfirmerDanger: {
+    flex: 1,
+    height: 44,
+    backgroundColor: "#dc2626",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  boutonAnnuler: {
+    height: 44,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: "#d1d5db",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  boutonAnnulerTexte: { color: "#374151", fontWeight: "600", fontSize: 14 },
 });

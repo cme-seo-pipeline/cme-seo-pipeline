@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import PasswordInput from "@/components/PasswordInput";
 
 const API_URL = process.env.NEXT_PUBLIC_CLIENT_API_URL;
 
@@ -39,7 +40,7 @@ function messageErreurMdp(err: unknown): string {
 }
 
 function ProfilContent() {
-  const { user, loading, getToken, changePassword } = useAuth();
+  const { user, loading, getToken, changePassword, deleteAccount } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -50,13 +51,17 @@ function ProfilContent() {
   const [succes, setSucces] = useState(false);
   const [erreur, setErreur] = useState("");
 
-  // Etat dedie au formulaire de changement de mot de passe
   const [mdpActuel, setMdpActuel] = useState("");
   const [mdpNouveau, setMdpNouveau] = useState("");
   const [mdpConfirmation, setMdpConfirmation] = useState("");
   const [mdpEnCours, setMdpEnCours] = useState(false);
   const [mdpErreur, setMdpErreur] = useState("");
   const [mdpSucces, setMdpSucces] = useState(false);
+
+  const [suppressionOuverte, setSuppressionOuverte] = useState(false);
+  const [confirmationTexte, setConfirmationTexte] = useState("");
+  const [suppressionEnCours, setSuppressionEnCours] = useState(false);
+  const [suppressionErreur, setSuppressionErreur] = useState("");
 
   useEffect(() => {
     if (searchParams.get("tab") === "fournisseur") {
@@ -158,6 +163,22 @@ function ProfilContent() {
     }
   }
 
+  async function handleDeleteAccount() {
+    if (confirmationTexte !== "SUPPRIMER") {
+      setSuppressionErreur('Merci de saisir exactement "SUPPRIMER" pour confirmer.');
+      return;
+    }
+    setSuppressionErreur("");
+    setSuppressionEnCours(true);
+    try {
+      await deleteAccount();
+      router.push("/login");
+    } catch {
+      setSuppressionErreur("Une erreur est survenue, merci de réessayer.");
+      setSuppressionEnCours(false);
+    }
+  }
+
   if (loading || dataLoading) {
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -175,7 +196,6 @@ function ProfilContent() {
     <div className="flex-1 max-w-2xl w-full mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Mon profil</h1>
 
-      {/* Onglets */}
       <div className="flex gap-1 mb-6 border-b border-gray-200">
         <button
           onClick={() => setOnglet("infos")}
@@ -362,72 +382,126 @@ function ProfilContent() {
       )}
 
       {onglet === "securite" && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <h2 className="text-sm font-semibold text-gray-900 mb-1">
-            Changer mon mot de passe
-          </h2>
-          <p className="text-xs text-gray-500 mb-4">
-            Par sécurité, indiquez votre mot de passe actuel avant de le modifier.
-          </p>
+        <div className="space-y-6">
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <h2 className="text-sm font-semibold text-gray-900 mb-1">
+              Changer mon mot de passe
+            </h2>
+            <p className="text-xs text-gray-500 mb-4">
+              Par sécurité, indiquez votre mot de passe actuel avant de le modifier.
+            </p>
 
-          <form onSubmit={handleChangePassword} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Mot de passe actuel
-              </label>
-              <input
-                type="password"
-                required
-                value={mdpActuel}
-                onChange={(e) => setMdpActuel(e.target.value)}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nouveau mot de passe
-              </label>
-              <input
-                type="password"
-                required
-                value={mdpNouveau}
-                onChange={(e) => setMdpNouveau(e.target.value)}
-                className={inputClass}
-                placeholder="6 caractères minimum"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Confirmer le nouveau mot de passe
-              </label>
-              <input
-                type="password"
-                required
-                value={mdpConfirmation}
-                onChange={(e) => setMdpConfirmation(e.target.value)}
-                className={inputClass}
-              />
-            </div>
+            <form onSubmit={handleChangePassword} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Mot de passe actuel
+                </label>
+                <PasswordInput
+                  required
+                  value={mdpActuel}
+                  onChange={(e) => setMdpActuel(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nouveau mot de passe
+                </label>
+                <PasswordInput
+                  required
+                  value={mdpNouveau}
+                  onChange={(e) => setMdpNouveau(e.target.value)}
+                  className={inputClass}
+                  placeholder="6 caractères minimum"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Confirmer le nouveau mot de passe
+                </label>
+                <PasswordInput
+                  required
+                  value={mdpConfirmation}
+                  onChange={(e) => setMdpConfirmation(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
 
-            {mdpErreur && (
-              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-                {mdpErreur}
-              </p>
+              {mdpErreur && (
+                <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                  {mdpErreur}
+                </p>
+              )}
+              {mdpSucces && (
+                <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                  ✓ Mot de passe modifié avec succès
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={mdpEnCours}
+                className="w-full h-11 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white font-semibold rounded-lg transition-colors"
+              >
+                {mdpEnCours ? "Modification..." : "Modifier le mot de passe"}
+              </button>
+            </form>
+          </div>
+
+          {/* Zone dangereuse */}
+          <div className="bg-white rounded-2xl border border-red-200 p-6">
+            <h2 className="text-sm font-semibold text-red-700 mb-1">Zone dangereuse</h2>
+            <p className="text-xs text-gray-500 mb-4">
+              La suppression de votre compte est définitive et supprime l&apos;ensemble
+              de vos données (profil, dossiers, historique). Cette action est
+              irréversible.
+            </p>
+
+            {!suppressionOuverte ? (
+              <button
+                onClick={() => setSuppressionOuverte(true)}
+                className="text-sm font-medium text-red-600 border border-red-300 hover:bg-red-50 rounded-lg px-4 py-2 transition-colors"
+              >
+                Supprimer mon compte
+              </button>
+            ) : (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 space-y-3">
+                <p className="text-sm text-red-800">
+                  Pour confirmer, saisissez <strong>SUPPRIMER</strong> ci-dessous :
+                </p>
+                <input
+                  type="text"
+                  value={confirmationTexte}
+                  onChange={(e) => setConfirmationTexte(e.target.value)}
+                  className="w-full h-11 px-3 border border-red-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  placeholder="SUPPRIMER"
+                />
+                {suppressionErreur && (
+                  <p className="text-sm text-red-700">{suppressionErreur}</p>
+                )}
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleDeleteAccount}
+                    disabled={suppressionEnCours}
+                    className="flex-1 h-11 bg-red-600 hover:bg-red-700 disabled:opacity-60 text-white font-semibold rounded-lg transition-colors"
+                  >
+                    {suppressionEnCours ? "Suppression..." : "Confirmer la suppression"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSuppressionOuverte(false);
+                      setConfirmationTexte("");
+                      setSuppressionErreur("");
+                    }}
+                    disabled={suppressionEnCours}
+                    className="h-11 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              </div>
             )}
-            {mdpSucces && (
-              <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
-                ✓ Mot de passe modifié avec succès
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={mdpEnCours}
-              className="w-full h-11 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white font-semibold rounded-lg transition-colors"
-            >
-              {mdpEnCours ? "Modification..." : "Modifier le mot de passe"}
-            </button>
-          </form>
+          </div>
         </div>
       )}
     </div>

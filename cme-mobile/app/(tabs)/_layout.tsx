@@ -66,6 +66,13 @@ export default function TabsLayout() {
             }}
           />
           <Tabs.Screen
+            name="assistance"
+            options={{
+              title: "Assistance",
+              tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>💬</Text>,
+            }}
+          />
+          <Tabs.Screen
             name="profil"
             options={{
               title: "Profil",
