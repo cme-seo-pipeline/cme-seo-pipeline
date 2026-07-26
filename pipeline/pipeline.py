@@ -853,8 +853,8 @@ Génère un brief en JSON STRICT :
   "silo": "{silo}",
   "sous_silo": "{sous_silo}",
   "angle_choisi": "prix | installation | comparatif | aides | fonctionnement | guide",
-  "titre_seo": "titre H1 MAX 60 caractères",
-  "meta_description": "meta MAX 160 caractères",
+  "titre_seo": "titre SEO percutant, ENTRE 50 ET 60 CARACTERES pile (jamais plus, jamais moins de 50), phrase ou expression complete, ne JAMAIS couper un mot en cours de generation",
+  "meta_description": "meta description incitant au clic, ENTRE 150 ET 160 CARACTERES pile (jamais plus, jamais moins de 150), phrase complete se terminant par un point, ne JAMAIS couper un mot en cours de generation",
   "slug_article": "slug-article-uniquement",
   "slug_complet": "/{slug_silo}/{slug_sous_silo}/[slug-article]/",
   "mot_cle_principal": "mot-clé principal",
@@ -1259,10 +1259,29 @@ CTA_TOOLS = {
     },
 }
 
+def tronquer_proprement(texte, limite):
+    """Tronque un texte a la limite de caracteres donnee sans jamais
+    couper un mot en deux. Filet de securite si l'IA depasse malgre
+    les instructions du prompt. Retourne le texte tel quel s'il est
+    deja dans la limite."""
+    if not texte or len(texte) <= limite:
+        return texte
+    tronque = texte[:limite]
+    dernier_espace = tronque.rfind(' ')
+    if dernier_espace > 0:
+        return tronque[:dernier_espace].rstrip('.,;:!?-')
+    return tronque
+
+
 def generer_cta_html(silo_name, post_id=None):
     """Genere le bloc CTA HTML a injecter en fin d'article selon le silo.
     Si post_id est fourni, ajoute ?src_post={post_id} au lien pour tracer
-    l'attribution article -> clic -> lead jusqu'a BigQuery."""
+    l'attribution article -> clic -> lead jusqu'a BigQuery.
+
+    Le div clear:both en tete de bloc evite le chevauchement visuel avec
+    le footer quand l'article se termine par un tableau HTML genere par
+    l'IA (tableaux parfois plus larges que leur conteneur, ce qui casse
+    le flux de la page sans ce clearfix)."""
     cfg = CTA_TOOLS.get(silo_name)
     if not cfg:
         return ""
@@ -1271,7 +1290,8 @@ def generer_cta_html(silo_name, post_id=None):
         sep = '&' if '?' in url_finale else '?'
         url_finale = f"{url_finale}{sep}src_post={post_id}"
     return f'''
-<div style="background:linear-gradient(135deg,{cfg["couleur1"]},{cfg["couleur2"]});border-radius:16px;padding:1.75rem;text-align:center;margin:32px 0;">
+<div style="clear:both;overflow:hidden;"></div>
+<div style="background:linear-gradient(135deg,{cfg["couleur1"]},{cfg["couleur2"]});border-radius:16px;padding:1.75rem;text-align:center;margin:32px 0;max-width:100%;box-sizing:border-box;">
   <h3 style="color:#fff;font-size:20px;font-weight:700;margin:0 0 8px">{cfg["titre"]}</h3>
   <p style="color:rgba(255,255,255,.9);font-size:14px;margin:0 0 18px;line-height:1.5">{cfg["texte"]}</p>
   <a href="{url_finale}" style="display:inline-block;background:#fff;color:{cfg["couleur2"]};font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">{cfg["bouton"]} &rarr;</a>
@@ -1296,8 +1316,8 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
     if len(slug) > 75:
         slug = slug[:slug[:75].rfind('-')] if '-' in slug[:75] else slug[:75]
 
-    titre_seo = brief.get('titre_seo', '')[:60]
-    meta_desc = brief.get('meta_description', '')[:160]
+    titre_seo = tronquer_proprement(brief.get('titre_seo', ''), 60)
+    meta_desc = tronquer_proprement(brief.get('meta_description', ''), 160)
 
     # Catégories
     silo_propre = silo_name.split('. ')[-1] if '. ' in silo_name else silo_name
