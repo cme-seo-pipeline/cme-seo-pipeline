@@ -28,9 +28,10 @@
 │   3. 🧠  CLAUDE API        → Generate SEO article                │
 │   4. 🔗  INTERNAL LINKING  → Auto maillage interne                │
 │   5. 📊  SCHEMA / TABLES   → Structured data & rich content      │
-│   6. 🖼️  IMAGES            → Auto-generated visuals               │
+│   6. 🖼️  IMAGES            → Auto-generated visuals (DALL·E)      │
 │   7. 🎯  CTA INJECTION     → Silo-based link to matching simulator│
 │   8. 📤  WORDPRESS API     → Auto-publish via REST API            │
+│   9. 📘  FACEBOOK PUBLISH  → Auto-post to Page (article intro)    │
 └────────────────────────────┬────────────────────────────────────┘
                              │
                              ▼
@@ -65,11 +66,13 @@
 | **AI Model** | Claude (Anthropic API) |
 | **Data Warehouse** | BigQuery |
 | **CMS** | WordPress REST API |
+| **Social Publishing** | Meta Graph API (Facebook Page) |
 | **Automation** | Google Apps Script (GSC/GA4 sync, lead sheets) |
 | **PDF Generation** | jsPDF (client-side, base64-delivered) |
 | **Containerization** | Docker |
 | **Hosting** | Google Cloud Run |
 | **Scheduling** | Google Cloud Scheduler |
+| **Secrets** | Google Secret Manager |
 | **CI/CD** | GitHub → Cloud Run (auto-deploy) |
 
 ---
@@ -83,7 +86,41 @@ Fully automated SEO article generation, 3 articles/day, 5 silos (Gaz, Rénovatio
 - **GA4** engagement data (sessions, bounce rate)
 - **Publication history** (anti-duplicate, freshness scoring)
 
-Each article is scored on ranking potential and automatically gets a **CTA block** linking to the matching simulator based on its silo.
+Each article is scored on ranking potential and automatically gets a **CTA block** linking to the matching simulator based on its silo. The CTA block includes a `clear:both` defensive wrapper to prevent visual overlap when the AI-generated article ends with an HTML table.
+
+Titles and meta descriptions are generated within strict SEO-friendly bounds (50–60 / 150–160 characters) and, as a safety net, truncated at the nearest word boundary if the model ever overshoots — never mid-word.
+
+---
+
+## 📘 Meta / Facebook Integration (`pipeline/`)
+
+Every article published to WordPress is automatically cross-posted to the CME Facebook Page, using the article's **real introduction paragraph** as the post description (not a separately generated marketing blurb) — Facebook auto-generates the link preview (image, title) from the article's Open Graph tags.
+
+### Storage
+Credentials live in **Google Secret Manager**, mounted as env vars on Cloud Run — same pattern as `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `WP_APP_PASSWORD`:
+
+| Secret | Purpose |
+|---|---|
+| `FACEBOOK_PAGE_ID` | Target Page ID |
+| `FACEBOOK_PAGE_ACCESS_TOKEN` | Long-lived Page access token (~60 days) |
+
+### Publish flow
+1. `extraire_introduction_article()` parses the article's HTML and extracts the first `<p>` as the post message (truncated cleanly via `tronquer_proprement()`, shared with the SEO meta description logic)
+2. If extraction fails (no paragraph found), `generer_legende_facebook()` falls back to a Claude-generated caption
+3. `publier_facebook()` posts to `POST /{page-id}/feed` with `message` + `link` (Graph API v21.0)
+4. Every attempt — success or failure — is logged to BigQuery via `logger_publication_facebook_bq()`
+
+### Testing
+Validated manually via the **Graph API Explorer** (`developers.facebook.com/tools/explorer`) before wiring into the pipeline: generated a User token with `pages_show_list` + `pages_manage_posts` + `pages_read_engagement`, exchanged it for a long-lived token, fetched the Page token via `/me/accounts`, and confirmed a real post (`HTTP 200`, returned post ID) before enabling automatic publishing.
+
+### ⚠️ Token renewal — currently manual
+The Page access token expires after **~60 days**. There is **no automatic renewal mechanism yet** — when it expires, Facebook publishing will silently fail (logged as an error in `historique_publications_facebook`, but won't block WordPress publishing). To renew manually:
+1. Generate a fresh User token via Graph API Explorer (with the 3 permissions above)
+2. Exchange it for a long-lived token (`oauth/access_token?grant_type=fb_exchange_token...`)
+3. Fetch the Page token via `/me/accounts`
+4. Update the secret: `echo -n "NEW_TOKEN" | gcloud secrets versions add FACEBOOK_PAGE_ACCESS_TOKEN --data-file=-`
+
+*Possible future improvement: a scheduled Cloud Function that refreshes the token automatically before expiry, removing the need for manual renewal every ~60 days.*
 
 ---
 
@@ -123,11 +160,16 @@ Three standalone WordPress plugins, each a self-contained eligibility/quote simu
 01_raw/               Raw ingested data (GSC, GA4)
 03_final/              seo_opportunities — scored publication targets (GSC+GA4+history join)
 04_pipeline_seo/
-  ├── historique_publications         Every article ever published (silo, slug, post_id)
-  ├── historique_clics_comparateur    Anonymous comparateur click tracking
-  ├── leads_convertis                 Converted leads with contact info, all 3 tools
-  ├── analyse_concurrents             Scraped competitor data per run
-  └── briefs_editoriaux               Generated editorial briefs
+  ├── historique_publications          Every article ever published (silo, slug, post_id)
+  ├── historique_publications_facebook Every Facebook post attempt (success/failure, post id, message used)
+  ├── historique_clics_comparateur     Anonymous comparateur click tracking
+  ├── leads_convertis                  Converted leads with contact info, all 3 tools
+  ├── analyse_concurrents              Scraped competitor data per run
+  ├── briefs_editoriaux                Generated editorial briefs
+  ├── url_mapping                      Legacy URL → current silo/sous-silo mapping (post-migration)
+  ├── sous_silos_strategiques          Strategic sub-silo reference table
+  └── vue_arbre_performance (view)     Silo → Sous-silo → Article performance rollup for Looker Studio
+                                       (GSC impressions/clicks/position + conversions, full-site coverage)
 ```
 
 ---
@@ -148,6 +190,7 @@ Three standalone WordPress plugins, each a self-contained eligibility/quote simu
 │   ├── comparateur-energie/
 │   └── simulateur-aides/
 ├── apps-scripts/
+├── bigquery/                     # Standalone SQL: views, migrations, one-off data fixes
 ├── scripts-maintenance/          # One-off migration/fix scripts (slug collisions, CTA backfill)
 └── maj-trimestrielle/            # Quarterly regulated tariff updater
 ```
