@@ -1409,6 +1409,9 @@ def publier_tous_facebook(df_publications, client_bq, config, facebook_config):
         message = extraire_introduction_article(contenu_html)
         if not message:
             message = generer_legende_facebook(titre_article, silo_name, config)
+        emoji_silo = SILO_EMOJIS.get(silo_name, "")
+        if emoji_silo and message:
+            message = f"{emoji_silo} {message}"
 
         succes, resultat = publier_facebook(titre_article, url_article, message, facebook_config)
         if succes:
@@ -1419,6 +1422,15 @@ def publier_tous_facebook(df_publications, client_bq, config, facebook_config):
             print(f"  ❌ {titre_article[:50]}... — {resultat}")
             logger_publication_facebook_bq(client_bq, post_id, silo_name, titre_article,
                                             url_article, None, message, False, erreur=resultat)
+
+
+SILO_EMOJIS = {
+    "1. Gaz": "🔥",
+    "5. Électricité": "⚡",
+    "4. Solaire": "☀️",
+    "2. Rénovation Énergétique": "🏠",
+    "3. Aide Énergétique": "💶",
+}
 
 
 def generer_cta_html(silo_name, post_id=None):
