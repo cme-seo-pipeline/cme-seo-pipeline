@@ -3,7 +3,7 @@
  * Plugin Name: CME Comparateur Énergie
  * Plugin URI:  https://www.comprendre-mon-energie.fr
  * Description: Comparateur gaz & électricité — v3.0 vanilla JS, design complet, zéro conflit WordPress
- * Version:     3.4.2
+ * Version:     3.4.4
  * Author:      CME
  * License:     GPL-2.0+
  */
@@ -155,7 +155,7 @@ ob_start();?>
 #<?php echo $uid;?> .hint{font-size:12px;color:#9ca3af;margin-top:5px;line-height:1.4}
 #<?php echo $uid;?> .stitle{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px}
 #<?php echo $uid;?> .tog{display:flex;gap:6px;flex-wrap:wrap}
-#<?php echo $uid;?> .tbtn{flex:1;min-width:80px;height:44px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;color:#374151;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;padding:0 8px;line-height:1.2}
+#<?php echo $uid;?> .tbtn{flex:1;min-width:80px;min-height:44px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;color:#374151;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;padding:8px 6px;line-height:1.2;display:flex;align-items:center;justify-content:center;text-align:center}
 #<?php echo $uid;?> .tbtn.on{border:1.5px solid #3b82f6;background:#eff6ff;color:#1d4ed8;font-weight:500}
 #<?php echo $uid;?> .sbar{display:flex;align-items:center;gap:6px;margin-bottom:20px}
 #<?php echo $uid;?> .sdot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;border:1.5px solid #d1d5db;background:#f3f4f6;color:#9ca3af;transition:all .2s}
@@ -785,15 +785,28 @@ function showLeadSuccess(){
       economie_estimee:ctx.economie||0,
       details:{energie:ctx.energie||'',fournisseur:ctx.fournisseur||'',offre:ctx.offre||'',kwh:ctx.kwh||0,option_tarifaire:ctx.option_tarifaire||''}
     };
-    var lienCompte='https://espace-client.comprendre-mon-energie.fr/register?prenom='
-      +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel)
-      +'&lead_data='+encodeURIComponent(JSON.stringify(leadData));
-    form.innerHTML='<div style="text-align:center;padding:20px 10px">'
-      +'<div style="width:52px;height:52px;border-radius:50%;background:#d1fae5;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px">\u2713</div>'
-      +'<div style="font-weight:700;font-size:16px;color:#111827;margin-bottom:6px">Demande envoy\u00e9e !</div>'
-      +'<div style="font-size:13px;color:#6b7280;line-height:1.5">Nous vous recontactons sous 48h.<br>L\'offre du fournisseur s\'est ouverte dans un nouvel onglet.</div>'
-      +'<a href="'+lienCompte+'" target="_blank" style="display:inline-block;margin-top:16px;background:#3b82f6;color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px">Créer mon espace client &rarr;</a>'
-      +'</div>';
+    if(window.CME_APP_TOKEN){
+      fetch('https://cme-client-api-217943559750.europe-west1.run.app/leads',{
+        method:'POST',
+        headers:{'Authorization':'Bearer '+window.CME_APP_TOKEN,'Content-Type':'application/json'},
+        body:JSON.stringify(leadData)
+      }).catch(function(){});
+      form.innerHTML='<div style="text-align:center;padding:20px 10px">'
+        +'<div style="width:52px;height:52px;border-radius:50%;background:#d1fae5;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px">\u2713</div>'
+        +'<div style="font-weight:700;font-size:16px;color:#111827;margin-bottom:6px">Demande envoy\u00e9e !</div>'
+        +'<div style="font-size:13px;color:#6b7280;line-height:1.5">Ajout\u00e9e \u00e0 vos dossiers dans l\'app.<br>Nous vous recontactons sous 48h.</div>'
+        +'</div>';
+    }else{
+      var lienCompte='https://espace-client.comprendre-mon-energie.fr/register?prenom='
+        +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel)
+        +'&lead_data='+encodeURIComponent(JSON.stringify(leadData));
+      form.innerHTML='<div style="text-align:center;padding:20px 10px">'
+        +'<div style="width:52px;height:52px;border-radius:50%;background:#d1fae5;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px">\u2713</div>'
+        +'<div style="font-weight:700;font-size:16px;color:#111827;margin-bottom:6px">Demande envoy\u00e9e !</div>'
+        +'<div style="font-size:13px;color:#6b7280;line-height:1.5">Nous vous recontactons sous 48h.<br>L\'offre du fournisseur s\'est ouverte dans un nouvel onglet.</div>'
+        +'<a href="'+lienCompte+'" target="_blank" style="display:inline-block;margin-top:16px;background:#3b82f6;color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px">Créer mon espace client &rarr;</a>'
+        +'</div>';
+    }
   }
   setTimeout(closeLeadModal,6000);
 }

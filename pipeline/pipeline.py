@@ -62,6 +62,8 @@ FACEBOOK_CONFIG = {
     "page_id": os.environ.get("FACEBOOK_PAGE_ID", ""),
     "access_token": os.environ.get("FACEBOOK_PAGE_ACCESS_TOKEN", ""),
 }
+CLIENT_API_URL = os.environ.get("CLIENT_API_URL", "https://cme-client-api-217943559750.europe-west1.run.app")
+BROADCAST_API_KEY = os.environ.get("BROADCAST_API_KEY", "")
 
 BLACKLIST_DOMAINS = [
     'gouv.fr', 'energie-info', 'grdf', 'service-public.fr',
@@ -1378,6 +1380,36 @@ def logger_publication_facebook_bq(client_bq, post_id, silo, titre, url_article,
         print(f"  ⚠️ Erreur log Facebook BQ : {e}")
 
 
+def notifier_nouveaux_articles(df_publications, config):
+    """Notifie tous les utilisateurs de l'app mobile ayant active les
+    notifications qu'un nouveau lot d'articles vient d'etre publie.
+    Un seul envoi groupe par run, pas un par article (evite le spam)."""
+    nb = len(df_publications)
+    if nb == 0 or not BROADCAST_API_KEY:
+        return
+    if nb == 1:
+        corps = "1 nouvel article vient d'etre publie"
+    else:
+        corps = f"{nb} nouveaux articles viennent d'etre publies"
+    try:
+        r = requests.post(
+            f"{CLIENT_API_URL}/notifications/broadcast",
+            json={
+                "title": "Nouveaux articles disponibles",
+                "body": corps,
+                "data": {"type": "nouveaux_articles"}
+            },
+            headers={"X-Broadcast-Key": BROADCAST_API_KEY, "Content-Type": "application/json"},
+            timeout=15
+        )
+        if r.status_code == 200:
+            print(f"  📱 Notification push envoyee : {r.json().get('count', 0)} appareils")
+        else:
+            print(f"  ⚠️ Notification push echouee : HTTP {r.status_code}")
+    except Exception as e:
+        print(f"  ⚠️ Erreur notification push : {e}")
+
+
 def publier_tous_facebook(df_publications, client_bq, config, facebook_config):
     """Publie chaque article du run sur la Page Facebook, avec en
     description l'introduction reelle de l'article (repli sur une legende
@@ -2217,6 +2249,7 @@ def run_pipeline(force=False):
     generer_featured_images(df_publications, client_bq, CONFIG, OPENAI_CONFIG, WP_CONFIG)
     # ── PUBLICATION FACEBOOK ────────────────────────────────
     publier_tous_facebook(df_publications, client_bq, CONFIG, FACEBOOK_CONFIG)
+    notifier_nouveaux_articles(df_publications, CONFIG)
 
     print(f"\n{'='*60}")
     print(f"✅ PIPELINE TERMINÉ — {len(df_publications)} articles publiés")

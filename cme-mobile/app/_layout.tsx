@@ -1,7 +1,6 @@
 import { Stack } from "expo-router";
 import { AuthProvider } from "../contexts/AuthContext";
 import { StatusBar } from "expo-status-bar";
-
 export default function RootLayout() {
   return (
     <AuthProvider>
@@ -11,6 +10,8 @@ export default function RootLayout() {
         <Stack.Screen name="login" />
         <Stack.Screen name="register" />
         <Stack.Screen name="forgot-password" />
+        <Stack.Screen name="webview" />
+        <Stack.Screen name="notifications" options={{ headerShown: true, presentation: "modal" }} />
       </Stack>
     </AuthProvider>
   );

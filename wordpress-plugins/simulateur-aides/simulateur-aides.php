@@ -3,7 +3,7 @@
  * Plugin Name: CME Simulateur Aides Rénovation
  * Plugin URI:  https://www.comprendre-mon-energie.fr
  * Description: Simulateur d'éligibilité MaPrimeRénov' + CEE + Éco-PTZ + TVA réduite + aides locales
- * Version:     1.0.1
+ * Version:     1.0.7
  * Author:      CME
  */
 if(!defined('ABSPATH'))exit;
@@ -178,17 +178,17 @@ $aid_nonce=wp_create_nonce('cme_aid_lead_nonce');
 $aid_ajax=esc_js(admin_url('admin-ajax.php'));
 ob_start();?>
 <style>
-#<?php echo $uid;?>{--g1:#78350f;--g2:#b45309;--g3:#f59e0b;--g4:#d97706;--gb:#fffbeb;--gbl:#fde68a;--gbm:#fcd34d;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;width:100%;max-width:1400px;margin:0 auto;background:#f1f5f9}
+#<?php echo $uid;?>{--g1:#78350f;--g2:#b45309;--g3:#f59e0b;--g4:#d97706;--gb:#fffbeb;--gbl:#fde68a;--gbm:#fcd34d;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;width:100%;max-width:1400px;margin:0 auto;background:#f1f5f9;overflow-x:hidden}
 #<?php echo $uid;?> *{box-sizing:border-box;-webkit-text-size-adjust:100%}
 #<?php echo $uid;?> .aid-hero{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 55%,var(--g3) 100%);color:#fff;padding:2.25rem 2rem 2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
-#<?php echo $uid;?> .hero-text{flex:1;min-width:200px}
+#<?php echo $uid;?> .hero-text{flex:1;min-width:0}
 #<?php echo $uid;?> .hero-title{font-size:clamp(20px,3vw,28px);font-weight:800;margin:0 0 6px}
 #<?php echo $uid;?> .hero-sub{font-size:clamp(13px,1.5vw,15px);opacity:.85;margin:0 0 12px;line-height:1.5}
 #<?php echo $uid;?> .hbadge{background:rgb(255 255 255 / .15);border:1px solid rgb(255 255 255 / .25);border-radius:20px;padding:4px 12px;font-size:12px;margin-right:6px;margin-bottom:4px;display:inline-block}
-#<?php echo $uid;?> .aid-body{display:grid;grid-template-columns:1fr;gap:0}
+#<?php echo $uid;?> .aid-body{display:grid;grid-template-columns:1fr;gap:0;min-width:0}
 @media(min-width:860px){#<?php echo $uid;?> .aid-body{grid-template-columns:62% 38%}}
-#<?php echo $uid;?> .aid-left{padding:1.25rem;display:flex;flex-direction:column;gap:12px}
-#<?php echo $uid;?> .aid-right{padding:1.25rem 1.25rem 1.25rem 0;display:flex;flex-direction:column;gap:12px}
+#<?php echo $uid;?> .aid-left{padding:1.25rem;display:flex;flex-direction:column;gap:12px;min-width:0}
+#<?php echo $uid;?> .aid-right{padding:1.25rem 1.25rem 1.25rem 0;display:flex;flex-direction:column;gap:12px;min-width:0}
 @media(max-width:859px){#<?php echo $uid;?> .aid-right{padding:0 1.25rem 1.25rem}}
 @media(min-width:860px){#<?php echo $uid;?> .aid-right{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto}}
 #<?php echo $uid;?> .sc{background:#fff;border-radius:14px;padding:1.25rem;box-shadow:0 1px 4px rgb(0 0 0 / .06)}
@@ -211,10 +211,12 @@ ob_start();?>
 #<?php echo $uid;?> .addr-status{font-size:12px;color:#6b7280;margin-top:5px;display:none}
 #<?php echo $uid;?> .info-grn{background:var(--gb);border:1px solid var(--gbl);border-radius:8px;padding:9px 12px;font-size:13px;color:var(--g4);margin-top:8px;display:none}
 #<?php echo $uid;?> input[type=number]{border:1.5px solid #e5e7eb;border-radius:10px;padding:0 8px 0 14px;height:52px;font-size:16px;background:#f9fafb;color:#111827;width:100%;outline:none;font-family:inherit;-moz-appearance:textfield;transition:border .15s}
+#<?php echo $uid;?> input[type=text]{border:1.5px solid #e5e7eb;border-radius:10px;padding:0 14px;height:52px;font-size:16px;background:#f9fafb;color:#111827;width:100%;outline:none;font-family:inherit;-webkit-appearance:none;transition:border .15s;box-sizing:border-box}
+#<?php echo $uid;?> input[type=text]:focus{border-color:var(--g3);background:#fff;box-shadow:0 0 0 3px rgba(245,158,11,.1)}
 #<?php echo $uid;?> input[type=number]:focus{border-color:var(--g3);background:#fff;box-shadow:0 0 0 3px rgb(245 158 11 / .1)}
 #<?php echo $uid;?> .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-#<?php echo $uid;?> .tog{display:flex;gap:8px}
-#<?php echo $uid;?> .tbtn{flex:1;height:52px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;color:#374151;font-size:14px;cursor:pointer;font-family:inherit;transition:all .15s;font-weight:500}
+#<?php echo $uid;?> .tog{display:flex;gap:8px;flex-wrap:wrap}
+#<?php echo $uid;?> .tbtn{flex:1;min-width:90px;min-height:52px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;color:#374151;font-size:14px;cursor:pointer;font-family:inherit;transition:all .15s;font-weight:500;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px}
 #<?php echo $uid;?> .tbtn.on{border-color:var(--g3);background:var(--g3);color:#fff;font-weight:600}
 #<?php echo $uid;?> .stepper{display:flex;align-items:center;border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#fff;height:52px}
 #<?php echo $uid;?> .step-btn{width:52px;height:100%;border:none;background:#fff0;font-size:22px;cursor:pointer;color:#374151;flex-shrink:0;transition:background .15s}
@@ -298,6 +300,7 @@ ob_start();?>
 .lmodal-sub{width:calc(100% - 44px);margin:16px 22px 22px;height:46px;border:none;border-radius:10px;background:#f59e0b;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
 .lmodal-sub:disabled{opacity:.6;cursor:not-allowed}
 @media(max-width:480px){.lmfrow{grid-template-columns:1fr}}
+@media(max-width:480px){#<?php echo $uid;?> .g2,#<?php echo $uid;?> .opts,#<?php echo $uid;?> .prev-grid{grid-template-columns:1fr}#<?php echo $uid;?> .aid-left,#<?php echo $uid;?> .aid-right{padding:1rem}}
 </style>
 <div id="<?php echo $uid;?>"><p style="color:#9ca3af;font-size:14px;padding:1rem">⏳ Chargement...</p></div>
 <script>
@@ -874,11 +877,20 @@ function showLeadSuccess(){
       economie_estimee:0,
       details:{profil:ctx.profil||'',travaux:ctx.travaux||'',montant_mpr:ctx.montant_mpr||0,montant_cee:ctx.montant_cee||0,reste_a_charge:ctx.reste_a_charge||0,budget:ctx.budget||0}
     };
-    var lienCompte='https://espace-client.comprendre-mon-energie.fr/register?prenom='
-      +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel)
-      +'&lead_data='+encodeURIComponent(JSON.stringify(leadData));
-    form.innerHTML='<div style="text-align:center;padding:20px 10px"><div style="width:52px;height:52px;border-radius:50%;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px">✓</div><div style="font-weight:700;font-size:16px;color:#111827;margin-bottom:6px">Demande envoyée !</div><div style="font-size:13px;color:#6b7280;line-height:1.5">Un conseiller vous recontacte sous 48h.</div>'
-      +'<a href="'+lienCompte+'" target="_blank" style="display:inline-block;margin-top:16px;background:#f59e0b;color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px">Créer mon espace client &rarr;</a></div>';
+    if(window.CME_APP_TOKEN){
+      fetch('https://cme-client-api-217943559750.europe-west1.run.app/leads',{
+        method:'POST',
+        headers:{'Authorization':'Bearer '+window.CME_APP_TOKEN,'Content-Type':'application/json'},
+        body:JSON.stringify(leadData)
+      }).catch(function(){});
+      form.innerHTML='<div style="text-align:center;padding:20px 10px"><div style="width:52px;height:52px;border-radius:50%;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px">✓</div><div style="font-weight:700;font-size:16px;color:#111827;margin-bottom:6px">Demande envoyée !</div><div style="font-size:13px;color:#6b7280;line-height:1.5">Ajoutée à vos dossiers dans l\'app.</div></div>';
+    }else{
+      var lienCompte='https://espace-client.comprendre-mon-energie.fr/register?prenom='
+        +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel)
+        +'&lead_data='+encodeURIComponent(JSON.stringify(leadData));
+      form.innerHTML='<div style="text-align:center;padding:20px 10px"><div style="width:52px;height:52px;border-radius:50%;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px">✓</div><div style="font-weight:700;font-size:16px;color:#111827;margin-bottom:6px">Demande envoyée !</div><div style="font-size:13px;color:#6b7280;line-height:1.5">Un conseiller vous recontacte sous 48h.</div>'
+        +'<a href="'+lienCompte+'" target="_blank" style="display:inline-block;margin-top:16px;background:#f59e0b;color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px">Créer mon espace client &rarr;</a></div>';
+    }
   }
   setTimeout(closeLeadModal,6000);
 }
@@ -1098,10 +1110,20 @@ async function genererPDF(S, R, aidesData) {
 
   var dateStr=new Date().toISOString().split('T')[0];
   try{
-    var pdfBlob=doc.output('blob');var blobUrl=URL.createObjectURL(pdfBlob);
-    var dlLink=document.createElement('a');dlLink.href=blobUrl;dlLink.download='Estimation-Aides-CME-'+dateStr+'.pdf';
-    dlLink.style.display='none';document.body.appendChild(dlLink);dlLink.click();
-    setTimeout(function(){document.body.removeChild(dlLink);URL.revokeObjectURL(blobUrl);},2000);
+    var pdfBlob=doc.output('blob');
+    if(window.ReactNativeWebView){
+      var reader=new FileReader();
+      reader.onloadend=function(){
+        var base64=String(reader.result).split(',')[1];
+        window.ReactNativeWebView.postMessage(JSON.stringify({type:'pdf_ready',base64:base64,filename:'Estimation-Aides-CME-'+dateStr+'.pdf'}));
+      };
+      reader.readAsDataURL(pdfBlob);
+    }else{
+      var blobUrl=URL.createObjectURL(pdfBlob);
+      var dlLink=document.createElement('a');dlLink.href=blobUrl;dlLink.download='Estimation-Aides-CME-'+dateStr+'.pdf';
+      dlLink.style.display='none';document.body.appendChild(dlLink);dlLink.click();
+      setTimeout(function(){document.body.removeChild(dlLink);URL.revokeObjectURL(blobUrl);},2000);
+    }
   }catch(saveErr){doc.save('Estimation-Aides-CME-'+dateStr+'.pdf');}
 }
 

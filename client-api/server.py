@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
@@ -174,6 +175,91 @@ def user_me():
         return _cors(jsonify({"error": str(e)})), 500
 
 
+@app.route('/users/me/push-token', methods=['POST', 'OPTIONS'])
+def user_push_token():
+    """Enregistre le jeton de notification push Expo de l'utilisateur
+    connecte, pour lui permettre de recevoir des notifications ciblees
+    (changement de statut de dossier) et groupees (nouveaux articles).
+    Un utilisateur peut avoir plusieurs jetons (plusieurs appareils) :
+    ArrayUnion evite les doublons si le meme jeton est renvoye."""
+    if request.method == 'OPTIONS':
+        return _cors(jsonify({})), 200
+    uid = verifier_token(request)
+    if not uid:
+        return _cors(jsonify({"error": "Non authentifie"})), 401
+    data = request.get_json(silent=True) or {}
+    jeton = data.get('token', '')
+    if not jeton or not jeton.startswith('ExponentPushToken'):
+        return _cors(jsonify({"error": "Jeton push invalide"})), 400
+    try:
+        user_ref = db.collection('users').document(uid)
+        user_ref.update({
+            'expo_push_tokens': firestore.ArrayUnion([jeton])
+        })
+        return _cors(jsonify({"status": "ok"})), 200
+    except Exception as e:
+        return _cors(jsonify({"error": str(e)})), 500
+
+
+BROADCAST_API_KEY = os.environ.get('BROADCAST_API_KEY', '')
+
+
+@app.route('/notifications/broadcast', methods=['POST'])
+def notifications_broadcast():
+    """Envoie une notification push groupee a tous les utilisateurs ayant
+    un jeton enregistre. Protege par une cle partagee (pas d'authentification
+    utilisateur classique : appele par le pipeline, pas par un utilisateur
+    connecte via l'app)."""
+    cle = request.headers.get('X-Broadcast-Key', '')
+    if not BROADCAST_API_KEY or cle != BROADCAST_API_KEY:
+        return _cors(jsonify({"error": "Non autorise"})), 401
+    data = request.get_json(silent=True) or {}
+    titre = data.get('title', 'Comprendre Mon Énergie')
+    corps = data.get('body', '')
+    payload_data = data.get('data', {})
+    if not corps:
+        return _cors(jsonify({"error": "body requis"})), 400
+    try:
+        destinataires = []
+        for doc in db.collection('users').stream():
+            jetons = doc.to_dict().get('expo_push_tokens', [])
+            if jetons:
+                destinataires.append((doc.id, jetons))
+        tous_jetons = []
+        for _, jetons in destinataires:
+            tous_jetons.extend(jetons)
+        tous_jetons = list(set(tous_jetons))
+        if not tous_jetons:
+            return _cors(jsonify({"status": "ok", "count": 0, "message": "Aucun jeton enregistre"})), 200
+        for i in range(0, len(tous_jetons), 100):
+            lot = tous_jetons[i:i + 100]
+            messages = [
+                {"to": jeton, "title": titre, "body": corps, "data": payload_data}
+                for jeton in lot
+            ]
+            requests.post(
+                "https://exp.host/--/api/v2/push/send",
+                json=messages,
+                headers={"Content-Type": "application/json", "Accept": "application/json"},
+                timeout=15
+            )
+        for uid, _ in destinataires:
+            try:
+                db.collection('users').document(uid).collection('notifications').document().set({
+                    'titre': titre,
+                    'corps': corps,
+                    'type': payload_data.get('type', 'info'),
+                    'data': payload_data,
+                    'lu': False,
+                    'date': firestore.SERVER_TIMESTAMP
+                })
+            except Exception:
+                pass
+        return _cors(jsonify({"status": "ok", "count": len(tous_jetons)})), 200
+    except Exception as e:
+        return _cors(jsonify({"error": str(e)})), 500
+
+
 @app.route('/leads', methods=['GET', 'POST', 'OPTIONS'])
 def leads():
     if request.method == 'OPTIONS':
@@ -250,6 +336,59 @@ def admin_users():
         return _cors(jsonify({"error": str(e)})), 500
 
 
+def envoyer_notification_utilisateur(uid, titre, corps, payload_data=None):
+    """Envoie une notification push ciblee a un utilisateur precis, ET
+    enregistre un historique consultable dans l'app (meme si le push
+    echoue/est absent, l'utilisateur pourra la voir plus tard). Appel
+    interne (pas besoin de cle partagee, contrairement au broadcast utilise
+    par le pipeline externe)."""
+    try:
+        doc = db.collection('users').document(uid).get()
+        if not doc.exists:
+            return
+        jetons = doc.to_dict().get('expo_push_tokens', [])
+        if jetons:
+            messages = [
+                {"to": jeton, "title": titre, "body": corps, "data": payload_data or {}}
+                for jeton in jetons
+            ]
+            requests.post(
+                "https://exp.host/--/api/v2/push/send",
+                json=messages,
+                headers={"Content-Type": "application/json", "Accept": "application/json"},
+                timeout=15
+            )
+        try:
+            db.collection('users').document(uid).collection('notifications').document().set({
+                'titre': titre,
+                'corps': corps,
+                'type': (payload_data or {}).get('type', 'info'),
+                'data': payload_data or {},
+                'lu': False,
+                'date': firestore.SERVER_TIMESTAMP
+            })
+        except Exception:
+            pass
+    except Exception:
+        pass
+
+
+STATUT_LABELS_NOTIF = {
+    'nouveau': "a ete remis en attente",
+    'en_cours': "est maintenant en cours de traitement",
+    'documents_manquants': "necessite des documents supplementaires",
+    'traite': "a ete traite",
+    'abandonne': "a ete cloture",
+}
+
+TOOL_LABELS_NOTIF = {
+    'solaire': "Solaire",
+    'comparateur-energie': "Comparateur Énergie",
+    'aides-renovation': "Aides Rénovation",
+    'rendez-vous-expert': "Rendez-vous expert",
+}
+
+
 @app.route('/admin/leads/<lead_owner_uid>/<lead_id>/status', methods=['PATCH', 'OPTIONS'])
 def admin_update_lead_status(lead_owner_uid, lead_id):
     if request.method == 'OPTIONS':
@@ -269,10 +408,63 @@ def admin_update_lead_status(lead_owner_uid, lead_id):
 
     try:
         lead_ref = db.collection('users').document(lead_owner_uid).collection('leads').document(lead_id)
+        lead_avant = lead_ref.get()
+        outil = lead_avant.to_dict().get('tool', '') if lead_avant.exists else ''
+        outil_libelle = TOOL_LABELS_NOTIF.get(outil, "")
         lead_ref.update({
             'statut': nouveau_statut,
             'derniere_maj': firestore.SERVER_TIMESTAMP
         })
+        libelle = STATUT_LABELS_NOTIF.get(nouveau_statut, "a ete mis a jour")
+        prefixe = f"Votre dossier {outil_libelle}" if outil_libelle else "Votre dossier"
+        envoyer_notification_utilisateur(
+            lead_owner_uid,
+            "Mise a jour de votre dossier",
+            f"{prefixe} {libelle}.",
+            {
+                "type": "statut_dossier",
+                "lead_id": lead_id,
+                "statut": nouveau_statut,
+                "tool": outil,
+                "tool_libelle": outil_libelle
+            }
+        )
+        return _cors(jsonify({"status": "ok"})), 200
+    except Exception as e:
+        return _cors(jsonify({"error": str(e)})), 500
+
+
+@app.route('/notifications', methods=['GET', 'OPTIONS'])
+def user_notifications():
+    """Historique des notifications de l'utilisateur connecte (les plus
+    recentes en premier), consultable dans l'app via l'icone cloche."""
+    if request.method == 'OPTIONS':
+        return _cors(jsonify({})), 200
+    uid = verifier_token(request)
+    if not uid:
+        return _cors(jsonify({"error": "Non authentifie"})), 401
+    try:
+        docs = (
+            db.collection('users').document(uid).collection('notifications')
+            .order_by('date', direction=firestore.Query.DESCENDING)
+            .limit(50)
+            .stream()
+        )
+        result = [{**d.to_dict(), 'id': d.id} for d in docs]
+        return _cors(jsonify({"notifications": result})), 200
+    except Exception as e:
+        return _cors(jsonify({"error": str(e)})), 500
+
+
+@app.route('/notifications/<notif_id>/read', methods=['PATCH', 'OPTIONS'])
+def marquer_notification_lue(notif_id):
+    if request.method == 'OPTIONS':
+        return _cors(jsonify({})), 200
+    uid = verifier_token(request)
+    if not uid:
+        return _cors(jsonify({"error": "Non authentifie"})), 401
+    try:
+        db.collection('users').document(uid).collection('notifications').document(notif_id).update({'lu': True})
         return _cors(jsonify({"status": "ok"})), 200
     except Exception as e:
         return _cors(jsonify({"error": str(e)})), 500

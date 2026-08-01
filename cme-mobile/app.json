@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Comprendre Mon \u00c9nergie",
+    "name": "Comprendre Mon Énergie",
     "slug": "cme-espace-client",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,6 +11,7 @@
     },
     "android": {
       "package": "fr.comprendremonenergie.espaceclient",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -22,7 +23,8 @@
       "icon": "./assets/icon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-notifications"
     ],
     "icon": "./assets/icon.png",
     "extra": {
@@ -31,6 +33,12 @@
         "projectId": "cc72b354-6613-49c1-accb-94cc75d4494a"
       }
     },
-    "owner": "comprendre-mon-energie"
+    "owner": "comprendre-mon-energie",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cc72b354-6613-49c1-accb-94cc75d4494a"
+    }
   }
 }

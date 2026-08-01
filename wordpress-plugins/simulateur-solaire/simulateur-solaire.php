@@ -3,7 +3,7 @@
  * Plugin Name: CME Simulateur Solaire
  * Plugin URI:  https://www.comprendre-mon-energie.fr
  * Description: Simulateur PV v2.4 — vert logo, carte France satellite, formulaire devis RGPD
- * Version:     3.8.0
+ * Version:     3.8.3
  * Author:      CME
  */
 if(!defined('ABSPATH'))exit;
@@ -167,7 +167,7 @@ ob_start();?>
   --g1:#052e16;--g2:#166534;--g3:#16a34a;--g4:#15803d;
   --gb:#f0fdf4;--gbl:#bbf7d0;--gbm:#86efac;
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-  width:100%;max-width:1400px;margin:0 auto;background:#f1f5f9;
+  width:100%;max-width:1400px;margin:0 auto;background:#f1f5f9;overflow-x:hidden;
 }
 #<?php echo $uid;?> *{box-sizing:border-box;-webkit-text-size-adjust:100%}
 /* ── Hero ─────────────────────────────────────────────────────── */
@@ -213,8 +213,8 @@ ob_start();?>
 #<?php echo $uid;?> input[type=number]::-webkit-inner-spin-button{-webkit-appearance:inner-spin-button;opacity:1;width:40px;height:52px;cursor:pointer;background:#f1f5f9;border-left:1px solid #e5e7eb}
 #<?php echo $uid;?> .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 /* ── Toggles verts ────────────────────────────────────────────── */
-#<?php echo $uid;?> .tog{display:flex;gap:8px}
-#<?php echo $uid;?> .tbtn{flex:1;height:52px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;color:#374151;font-size:14px;cursor:pointer;font-family:inherit;transition:all .15s;font-weight:500}
+#<?php echo $uid;?> .tog{display:flex;gap:8px;flex-wrap:wrap}
+#<?php echo $uid;?> .tbtn{flex:1;min-width:90px;min-height:52px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;color:#374151;font-size:14px;cursor:pointer;font-family:inherit;transition:all .15s;font-weight:500;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px}
 #<?php echo $uid;?> .tbtn.on{border-color:var(--g3);background:var(--g3);color:#fff;font-weight:600}
 /* ── Stepper ──────────────────────────────────────────────────── */
 #<?php echo $uid;?> .stepper{display:flex;align-items:center;border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#fff;height:52px}
@@ -1097,21 +1097,36 @@ async function genererPDF(S, R, aidesData, netBudget) {
     }
   });
 
-  // Telecharger le PDF directement via blob URL
+  // Telecharger le PDF : pont vers l'app mobile si on tourne dans sa
+  // WebView (le telechargement navigateur classique n'y fonctionne pas),
+  // sinon comportement navigateur standard inchange.
   var dateStr = new Date().toISOString().split('T')[0];
   try {
     var pdfBlob = doc.output('blob');
-    var blobUrl = URL.createObjectURL(pdfBlob);
-    var dlLink = document.createElement('a');
-    dlLink.href = blobUrl;
-    dlLink.download = 'Estimation-Solaire-CME-'+dateStr+'.pdf';
-    dlLink.style.display = 'none';
-    document.body.appendChild(dlLink);
-    dlLink.click();
-    setTimeout(function(){
-      document.body.removeChild(dlLink);
-      URL.revokeObjectURL(blobUrl);
-    }, 2000);
+    if (window.ReactNativeWebView) {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        var base64 = String(reader.result).split(',')[1];
+        window.ReactNativeWebView.postMessage(JSON.stringify({
+          type: 'pdf_ready',
+          base64: base64,
+          filename: 'Estimation-Solaire-CME-'+dateStr+'.pdf'
+        }));
+      };
+      reader.readAsDataURL(pdfBlob);
+    } else {
+      var blobUrl = URL.createObjectURL(pdfBlob);
+      var dlLink = document.createElement('a');
+      dlLink.href = blobUrl;
+      dlLink.download = 'Estimation-Solaire-CME-'+dateStr+'.pdf';
+      dlLink.style.display = 'none';
+      document.body.appendChild(dlLink);
+      dlLink.click();
+      setTimeout(function(){
+        document.body.removeChild(dlLink);
+        URL.revokeObjectURL(blobUrl);
+      }, 2000);
+    }
   } catch(saveErr) {
     // Fallback final : methode native jsPDF
     doc.save('Estimation-Solaire-CME-'+dateStr+'.pdf');
@@ -1679,12 +1694,21 @@ function showSuccess(){
       economie_estimee:R.eco,
       details:{kwc:R.kwc,nb_panneaux:R.nb,production:R.prod,roi:R.roi,co2:R.co2}
     };
-    var lienCompte='https://espace-client.comprendre-mon-energie.fr/register?prenom='
-      +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel)
-      +'&lead_data='+encodeURIComponent(JSON.stringify(leadData));
-    form.innerHTML='<div class="modal-ok"><div class="ok-ico">✓</div><h4>Demande envoyée !</h4><p>Nous vous contactons sous 48h à l\'adresse<br><strong>'+mail+'</strong><br><br>Vérifiez vos spams si vous ne recevez pas notre email.</p>'
-      +'<a href="'+lienCompte+'" target="_blank" style="display:inline-block;margin-top:16px;background:#16a34a;color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px">Créer mon espace client &rarr;</a>'
-      +'<p style="font-size:12px;color:#9ca3af;margin-top:8px">Suivez l\'avancement de votre dossier en ligne</p></div>';
+    if(window.CME_APP_TOKEN){
+      fetch('https://cme-client-api-217943559750.europe-west1.run.app/leads',{
+        method:'POST',
+        headers:{'Authorization':'Bearer '+window.CME_APP_TOKEN,'Content-Type':'application/json'},
+        body:JSON.stringify(leadData)
+      }).catch(function(){});
+      form.innerHTML='<div class="modal-ok"><div class="ok-ico">✓</div><h4>Demande envoyée !</h4><p>Ajoutée à vos dossiers dans l\'app.<br>Nous vous contactons sous 48h à l\'adresse<br><strong>'+mail+'</strong></p></div>';
+    }else{
+      var lienCompte='https://espace-client.comprendre-mon-energie.fr/register?prenom='
+        +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel)
+        +'&lead_data='+encodeURIComponent(JSON.stringify(leadData));
+      form.innerHTML='<div class="modal-ok"><div class="ok-ico">✓</div><h4>Demande envoyée !</h4><p>Nous vous contactons sous 48h à l\'adresse<br><strong>'+mail+'</strong><br><br>Vérifiez vos spams si vous ne recevez pas notre email.</p>'
+        +'<a href="'+lienCompte+'" target="_blank" style="display:inline-block;margin-top:16px;background:#16a34a;color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px">Créer mon espace client &rarr;</a>'
+        +'<p style="font-size:12px;color:#9ca3af;margin-top:8px">Suivez l\'avancement de votre dossier en ligne</p></div>';
+    }
   }
   setTimeout(closeModal,8000);
 }

@@ -1,115 +1,98 @@
 import { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet, RefreshControl, ActivityIndicator } from "react-native";
-import { useAuth } from "../../contexts/AuthContext";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
+import { router } from "expo-router";
 
-const API_URL = process.env.EXPO_PUBLIC_CLIENT_API_URL;
-
-const TOOL_LABELS: Record<string, string> = {
-  solaire: "☀️ Solaire",
-  "comparateur-energie": "⚡ Comparateur Énergie",
-  "aides-renovation": "🏠 Aides Rénovation",
-  "rendez-vous-expert": "📅 Rendez-vous expert",
-};
-
-const SUJET_LABELS: Record<string, string> = {
-  solaire: "Panneaux solaires",
-  renovation: "Rénovation énergétique",
-  aides: "Aides & subventions",
-  contrat: "Contrat gaz/électricité",
-  autre: "Autre",
-};
-
-const MONTANT_LABELS: Record<string, string> = {
-  solaire: "Investissement estimé",
-  "comparateur-energie": "Prix annuel estimé",
-  "aides-renovation": "Total aides estimées",
-};
-
-const STATUT_LABELS: Record<string, { label: string; color: string; bg: string }> = {
-  nouveau: { label: "Nouveau", color: "#1d4ed8", bg: "#dbeafe" },
-  en_cours: { label: "En cours", color: "#a16207", bg: "#fef3c7" },
-  documents_manquants: { label: "Documents manquants", color: "#b91c1c", bg: "#fee2e2" },
-  traite: { label: "Traité", color: "#15803d", bg: "#dcfce7" },
-  abandonne: { label: "Abandonné", color: "#6b7280", bg: "#f3f4f6" },
-};
-
-interface Lead {
-  id: string;
-  tool: string;
-  statut: string;
-  montant_estime?: number;
-  economie_estimee?: number;
-  details?: Record<string, string | number>;
-  derniere_maj?: string;
+interface Article {
+  id: number;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  link: string;
+  date: string;
+  _embedded?: {
+    "wp:featuredmedia"?: [{ source_url: string }];
+  };
 }
 
-interface Ligne {
-  label: string;
-  valeur: string;
+interface Outil {
+  key: string;
+  emoji: string;
+  titre: string;
+  description: string;
+  url: string;
+  couleur: string;
 }
 
-function lignesDetails(item: Lead): Ligne[] {
-  const d = item.details || {};
-  const lignes: Ligne[] = [];
+const OUTILS: Outil[] = [
+  {
+    key: "solaire",
+    emoji: "☀️",
+    titre: "Simulation solaire",
+    description: "Estimez votre installation et vos économies",
+    url: "https://www.comprendre-mon-energie.fr/devis-panneau-solaire/",
+    couleur: "#16a34a",
+  },
+  {
+    key: "comparateur",
+    emoji: "⚡",
+    titre: "Comparateur énergie",
+    description: "Trouvez l'offre la moins chère",
+    url: "https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/",
+    couleur: "#3b82f6",
+  },
+  {
+    key: "aides",
+    emoji: "🏠",
+    titre: "Aides à la rénovation",
+    description: "Calculez vos aides disponibles",
+    url: "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
+    couleur: "#f59e0b",
+  },
+];
 
-  switch (item.tool) {
-    case "solaire":
-      if (d.nb_panneaux) lignes.push({ label: "Installation", valeur: `${d.nb_panneaux} panneaux · ${d.kwc || "?"} kWc` });
-      if (d.production) lignes.push({ label: "Production estimée", valeur: `${Number(d.production).toLocaleString("fr-FR")} kWh/an` });
-      if (d.roi) lignes.push({ label: "Retour sur investissement", valeur: `${d.roi} ans` });
-      if (d.co2) lignes.push({ label: "CO2 évité", valeur: `${Number(d.co2).toLocaleString("fr-FR")} kg/an` });
-      break;
-    case "comparateur-energie":
-      if (d.fournisseur) lignes.push({ label: "Fournisseur", valeur: `${d.fournisseur}${d.offre ? " — " + d.offre : ""}` });
-      if (d.energie) lignes.push({ label: "Énergie", valeur: String(d.energie) });
-      if (d.kwh) lignes.push({ label: "Consommation", valeur: `${Number(d.kwh).toLocaleString("fr-FR")} kWh/an` });
-      if (d.option_tarifaire) lignes.push({ label: "Option tarifaire", valeur: String(d.option_tarifaire) });
-      break;
-    case "aides-renovation":
-      if (d.profil) lignes.push({ label: "Profil", valeur: String(d.profil) });
-      if (d.travaux) lignes.push({ label: "Travaux", valeur: String(d.travaux) });
-      if (d.montant_mpr) lignes.push({ label: "MaPrimeRénov'", valeur: `${Number(d.montant_mpr).toLocaleString("fr-FR")} €` });
-      if (d.montant_cee) lignes.push({ label: "Prime CEE", valeur: `${Number(d.montant_cee).toLocaleString("fr-FR")} €` });
-      if (d.reste_a_charge) lignes.push({ label: "Reste à charge", valeur: `${Number(d.reste_a_charge).toLocaleString("fr-FR")} €` });
-      if (d.budget) lignes.push({ label: "Budget travaux", valeur: `${Number(d.budget).toLocaleString("fr-FR")} €` });
-      break;
-    case "rendez-vous-expert":
-      if (d.sujet) lignes.push({ label: "Sujet", valeur: SUJET_LABELS[d.sujet as string] || String(d.sujet) });
-      if (d.disponibilites) lignes.push({ label: "Disponibilités", valeur: String(d.disponibilites) });
-      break;
-  }
-  return lignes;
+function nettoyerTexte(html: string, limite = 200): string {
+  let texte = html.replace(/<[^>]+>/g, "").trim();
+  texte = texte
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8216;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/\[&hellip;\]/g, "…")
+    .replace(/&hellip;/g, "…");
+  if (texte.length <= limite) return texte;
+  const coupe = texte.slice(0, limite);
+  const dernierEspace = coupe.lastIndexOf(" ");
+  return (dernierEspace > 0 ? coupe.slice(0, dernierEspace) : coupe) + "…";
 }
 
-function formaterDate(iso?: string): string | null {
-  if (!iso) return null;
-  try {
-    return new Date(iso).toLocaleDateString("fr-FR", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  } catch {
-    return null;
-  }
+function ouvrirDansApp(url: string, titre?: string) {
+  router.push({ pathname: "/webview", params: { url, title: titre || "" } });
 }
 
-export default function DossiersScreen() {
-  const { getToken } = useAuth();
-  const [leads, setLeads] = useState<Lead[]>([]);
+export default function AccueilScreen() {
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  async function fetchLeads() {
+  async function fetchArticles() {
     try {
-      const token = await getToken();
-      const res = await fetch(`${API_URL}/leads`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        "https://www.comprendre-mon-energie.fr/wp-json/wp/v2/posts?per_page=8&_embed"
+      );
       const data = await res.json();
-      setLeads(data.leads || []);
+      setArticles(Array.isArray(data) ? data : []);
     } catch {
-      // silencieux : liste vide affichee par defaut
+      // silencieux : section actualites simplement vide si echec reseau
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -117,134 +100,142 @@ export default function DossiersScreen() {
   }
 
   useEffect(() => {
-    fetchLeads();
+    fetchArticles();
   }, []);
 
   function onRefresh() {
     setRefreshing(true);
-    fetchLeads();
-  }
-
-  if (loading) {
-    return (
-      <View style={styles.centre}>
-        <ActivityIndicator size="large" color="#16a34a" />
-      </View>
-    );
+    fetchArticles();
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titre}>Mes simulations</Text>
-      <FlatList
-        data={leads}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 24 }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#16a34a"]} />
-        }
-        ListEmptyComponent={
-          <View style={styles.vide}>
-            <Text style={styles.videTexte}>Aucun dossier pour le moment</Text>
-            <Text style={styles.videSousTexte}>Tirez vers le bas pour actualiser</Text>
-          </View>
-        }
-        renderItem={({ item }) => {
-          const statut = STATUT_LABELS[item.statut] || STATUT_LABELS.nouveau;
-          const date = formaterDate(item.derniere_maj);
-          const lignes = lignesDetails(item);
-          const message = item.details?.message ? String(item.details.message) : null;
-          const montantLabel = MONTANT_LABELS[item.tool];
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 32 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#16a34a"]} />
+      }
+    >
+      <View style={styles.hero}>
+        <Text style={styles.heroTitre}>Comprendre Mon Énergie</Text>
+        <Text style={styles.heroSousTitre}>Vos économies d&apos;énergie, à portée de main</Text>
+      </View>
 
-          return (
-            <View style={styles.carte}>
-              <View style={styles.carteHeader}>
-                <Text style={styles.outil}>{TOOL_LABELS[item.tool] || item.tool}</Text>
-                <View style={[styles.badge, { backgroundColor: statut.bg }]}>
-                  <Text style={[styles.badgeTexte, { color: statut.color }]}>{statut.label}</Text>
-                </View>
-              </View>
-
-              {date ? <Text style={styles.date}>{date}</Text> : null}
-
-              {lignes.length > 0 && (
-                <View style={styles.lignesContainer}>
-                  {lignes.map((l, i) => (
-                    <View key={i} style={styles.ligne}>
-                      <Text style={styles.ligneLabel}>{l.label}</Text>
-                      <Text style={styles.ligneValeur}>{l.valeur}</Text>
-                    </View>
-                  ))}
-                </View>
-              )}
-
-              {message ? (
-                <Text style={styles.message} numberOfLines={3}>
-                  « {message} »
-                </Text>
-              ) : null}
-
-              {item.montant_estime ? (
-                <View style={styles.montantBloc}>
-                  <Text style={styles.montantLabel}>{montantLabel || "Montant estimé"}</Text>
-                  <Text style={styles.montant}>
-                    {item.montant_estime.toLocaleString("fr-FR")} €
-                  </Text>
-                  {item.economie_estimee ? (
-                    <Text style={styles.economie}>
-                      {item.economie_estimee.toLocaleString("fr-FR")} €/an d&apos;économie
-                    </Text>
-                  ) : null}
-                </View>
-              ) : null}
+      <Text style={styles.sectionTitre}>Nouvelle simulation</Text>
+      <View style={styles.outilsContainer}>
+        {OUTILS.map((outil) => (
+          <TouchableOpacity
+            key={outil.key}
+            style={[styles.outilCarte, { borderLeftColor: outil.couleur }]}
+            onPress={() => ouvrirDansApp(outil.url, outil.titre)}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.outilEmoji}>{outil.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.outilTitre}>{outil.titre}</Text>
+              <Text style={styles.outilDescription}>{outil.description}</Text>
             </View>
-          );
-        }}
-      />
-    </View>
+            <Text style={styles.outilFleche}>→</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <Text style={styles.sectionTitre}>Actualités</Text>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#16a34a" style={{ marginTop: 20 }} />
+      ) : articles.length === 0 ? (
+        <Text style={styles.videTexte}>Aucun article disponible pour le moment</Text>
+      ) : (
+        <View style={{ paddingHorizontal: 16 }}>
+          {articles.map((article) => {
+            const image = article._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
+            return (
+              <TouchableOpacity
+                key={article.id}
+                style={styles.articleCarte}
+                onPress={() => ouvrirDansApp(article.link, nettoyerTexte(article.title.rendered, 40))}
+                activeOpacity={0.7}
+              >
+                {image ? (
+                  <Image source={{ uri: image }} style={styles.articleImage} />
+                ) : (
+                  <View style={[styles.articleImage, styles.articleImagePlaceholder]}>
+                    <Text style={{ fontSize: 22 }}>📄</Text>
+                  </View>
+                )}
+                <View style={styles.articleContenu}>
+                  <Text style={styles.articleTitre} numberOfLines={2}>
+                    {nettoyerTexte(article.title.rendered, 90)}
+                  </Text>
+                  <Text style={styles.articleExtrait} numberOfLines={2}>
+                    {nettoyerTexte(article.excerpt.rendered, 110)}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      )}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  centre: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
-  container: { flex: 1, backgroundColor: "#f9fafb", paddingHorizontal: 16, paddingTop: 20 },
-  titre: { fontSize: 22, fontWeight: "700", color: "#111827", marginBottom: 16 },
-  vide: { paddingTop: 60, alignItems: "center" },
-  videTexte: { color: "#6b7280", fontSize: 14, fontWeight: "500" },
-  videSousTexte: { color: "#9ca3af", fontSize: 12, marginTop: 4 },
-  carte: {
+  container: { flex: 1, backgroundColor: "#f9fafb" },
+  hero: {
+    backgroundColor: "#16a34a",
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 28,
+  },
+  heroTitre: { fontSize: 22, fontWeight: "700", color: "#fff" },
+  heroSousTitre: { fontSize: 13, color: "#dcfce7", marginTop: 4 },
+  sectionTitre: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: "#111827",
+    marginHorizontal: 16,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  videTexte: { color: "#9ca3af", fontSize: 13, marginHorizontal: 16 },
+  outilsContainer: { paddingHorizontal: 16, gap: 10 },
+  outilCarte: {
     backgroundColor: "#fff",
     borderRadius: 14,
-    padding: 16,
-    marginBottom: 12,
+    padding: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    borderLeftWidth: 4,
     shadowColor: "#000",
     shadowOpacity: 0.04,
     shadowRadius: 6,
     elevation: 1,
   },
-  carteHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  outil: { fontSize: 15, fontWeight: "600", color: "#111827" },
-  badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999 },
-  badgeTexte: { fontSize: 11, fontWeight: "600" },
-  date: { fontSize: 11, color: "#9ca3af", marginTop: 6 },
-  lignesContainer: {
-    marginTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: "#f3f4f6",
-    paddingTop: 10,
-    gap: 4,
+  outilEmoji: { fontSize: 28 },
+  outilTitre: { fontSize: 15, fontWeight: "600", color: "#111827" },
+  outilDescription: { fontSize: 12, color: "#6b7280", marginTop: 2 },
+  outilFleche: { fontSize: 18, color: "#9ca3af" },
+  articleCarte: {
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    borderRadius: 14,
+    marginBottom: 12,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 1,
   },
-  ligne: { flexDirection: "row", justifyContent: "space-between" },
-  ligneLabel: { fontSize: 12, color: "#9ca3af" },
-  ligneValeur: { fontSize: 12, color: "#374151", fontWeight: "500", flexShrink: 1, textAlign: "right" },
-  message: { fontSize: 13, color: "#6b7280", marginTop: 10, fontStyle: "italic" },
-  montantBloc: {
-    marginTop: 12,
-    backgroundColor: "#f0fdf4",
-    borderRadius: 10,
-    padding: 10,
+  articleImage: { width: 90, height: 90 },
+  articleImagePlaceholder: {
+    backgroundColor: "#f3f4f6",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  montantLabel: { fontSize: 11, color: "#166534", fontWeight: "500" },
-  montant: { fontSize: 17, color: "#15803d", fontWeight: "700", marginTop: 2 },
-  economie: { fontSize: 12, color: "#16a34a", marginTop: 2 },
+  articleContenu: { flex: 1, padding: 12, justifyContent: "center" },
+  articleTitre: { fontSize: 14, fontWeight: "600", color: "#111827" },
+  articleExtrait: { fontSize: 12, color: "#6b7280", marginTop: 4 },
 });

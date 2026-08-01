@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "217943559750",
+    "project_id": "seo-data-hub-cme",
+    "storage_bucket": "seo-data-hub-cme.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217943559750:android:1c587f8bbc58aa0176c447",
+        "android_client_info": {
+          "package_name": "fr.comprendremonenergie.espaceclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217943559750-dfhop7lq3thbv17nleuvmgedljmk68bv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBB2bNEerBFkH6GQ9BAdCIM3sKYLaXatCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217943559750-dfhop7lq3thbv17nleuvmgedljmk68bv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

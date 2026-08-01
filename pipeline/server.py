@@ -141,6 +141,130 @@ def rattraper_images():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
+@app.route('/rattraper-schemas', methods=['POST'])
+def rattraper_schemas():
+    """
+    Regenere les schemas SVG manquants pour des articles precis, en
+    fournissant leurs post_id explicitement (contrairement a
+    /rattraper-images, pas de detection automatique possible ici : aucune
+    colonne BigQuery ne trace si les schemas ont ete injectes).
+    Body JSON requis : {"post_ids": [5093, 5094]}
+    """
+    from pipeline import (
+        nettoyer_et_generer_schemas, init_bigquery,
+        CONFIG, WP_CONFIG, PROJECT_ID, DATASET_ID
+    )
+    import pandas as pd
+    data = request.get_json(silent=True) or {}
+    post_ids = data.get('post_ids', [])
+    if not post_ids:
+        return jsonify({"status": "error", "message": "post_ids requis"}), 400
+    try:
+        client_bq = init_bigquery()
+        post_ids_str = ",".join(str(p) for p in post_ids)
+        query = f"""
+        SELECT post_id, silo, titre
+        FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+        WHERE post_id IN ({post_ids_str})
+        """
+        df = client_bq.query(query).to_dataframe()
+        if df.empty:
+            return jsonify({
+                "status": "ok",
+                "message": "Aucun article trouve pour ces post_id",
+                "count": 0
+            }), 200
+        df_publications = pd.DataFrame({
+            'Post_ID': df['post_id'],
+            'Silo': df['silo'],
+            'Titre': df['titre'],
+        })
+        def run_async():
+            try:
+                nettoyer_et_generer_schemas(df_publications, WP_CONFIG, CONFIG)
+                print(f"✅ Rattrapage schemas termine : {len(df_publications)} articles traites")
+            except Exception as e:
+                print(f"❌ Erreur rattrapage schemas : {e}")
+        thread = threading.Thread(target=run_async)
+        thread.daemon = True
+        thread.start()
+        return jsonify({
+            "status": "started",
+            "count": len(df_publications),
+            "post_ids": df['post_id'].tolist()
+        }), 202
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route('/rattraper-facebook', methods=['POST'])
+def rattraper_facebook():
+    """
+    Republie sur Facebook des articles precis (post_id explicites), en
+    reutilisant exactement la meme fonction que le pipeline quotidien
+    (publier_tous_facebook) : meme extraction d'introduction, meme emoji
+    par silo, meme filet de securite IA, meme logging BigQuery.
+    Body JSON requis : {"post_ids": [4964, 4966]}
+    """
+    from pipeline import (
+        publier_tous_facebook, init_bigquery,
+        CONFIG, FACEBOOK_CONFIG, WP_CONFIG, PROJECT_ID, DATASET_ID
+    )
+    import pandas as pd
+    import requests as req
+    data = request.get_json(silent=True) or {}
+    post_ids = data.get('post_ids', [])
+    if not post_ids:
+        return jsonify({"status": "error", "message": "post_ids requis"}), 400
+    try:
+        client_bq = init_bigquery()
+        post_ids_str = ",".join(str(p) for p in post_ids)
+        query = f"""
+        SELECT post_id, silo, titre
+        FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+        WHERE post_id IN ({post_ids_str})
+        """
+        df = client_bq.query(query).to_dataframe()
+        if df.empty:
+            return jsonify({
+                "status": "ok",
+                "message": "Aucun article trouve pour ces post_id",
+                "count": 0
+            }), 200
+        contenus = []
+        for post_id in df['post_id']:
+            try:
+                r = req.get(
+                    f"{WP_CONFIG['url']}/wp-json/wp/v2/posts/{post_id}",
+                    timeout=15
+                )
+                contenus.append(r.json()['content']['rendered'] if r.status_code == 200 else '')
+            except Exception:
+                contenus.append('')
+        df_publications = pd.DataFrame({
+            'Post_ID': df['post_id'],
+            'Silo': df['silo'],
+            'Titre': df['titre'],
+            'Contenu_HTML': contenus,
+        })
+        def run_async():
+            try:
+                publier_tous_facebook(df_publications, client_bq, CONFIG, FACEBOOK_CONFIG)
+                print(f"✅ Rattrapage Facebook termine : {len(df_publications)} articles traites")
+            except Exception as e:
+                print(f"❌ Erreur rattrapage Facebook : {e}")
+        thread = threading.Thread(target=run_async)
+        thread.daemon = True
+        thread.start()
+        return jsonify({
+            "status": "started",
+            "count": len(df_publications),
+            "post_ids": df['post_id'].tolist()
+        }), 202
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
 @app.route('/api/log-clic', methods=['POST', 'OPTIONS'])
 def log_clic():
     if request.method == 'OPTIONS':
