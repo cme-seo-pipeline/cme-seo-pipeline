@@ -7,12 +7,38 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  Image,
+  Linking,
 } from "react-native";
 import { router } from "expo-router";
 import { useAuth } from "../../contexts/AuthContext";
 import PasswordInput from "../../components/PasswordInput";
 
 const API_URL = process.env.EXPO_PUBLIC_CLIENT_API_URL;
+const LOGO_URL =
+  "https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/03/cropped-logo-officiel-comprendre-mon-energie-observatoire.png";
+const RESEAUX = [
+  {
+    nom: "Facebook",
+    image: "https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/07/Facebook_logo_comprendre-mon-energie.png",
+    lien: "https://www.facebook.com/people/Comprendre-Mon-%C3%89nergie/61592180973793/",
+  },
+  {
+    nom: "Instagram",
+    image: "https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/08/image_instagram.png",
+    lien: "https://www.instagram.com/cme262026/",
+  },
+  {
+    nom: "LinkedIn",
+    image: "https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/05/icone-linkedin-comprendre-mon-energie.jpg",
+    lien: "https://www.linkedin.com/company/comprendre-mon-energie/",
+  },
+  {
+    nom: "Notre site web",
+    image: LOGO_URL,
+    lien: "https://www.comprendre-mon-energie.fr/",
+  },
+];
 
 interface Profil {
   prenom?: string;
@@ -202,6 +228,27 @@ export default function ProfilScreen() {
       </View>
 
       <View style={styles.carte}>
+        <Text style={styles.sectionTitre}>Suivez-nous</Text>
+        <Text style={styles.sectionSousTitre}>
+          Restez informé de nos actualités sur tous nos canaux
+        </Text>
+        {RESEAUX.map((reseau, index) => (
+          <TouchableOpacity
+            key={reseau.nom}
+            style={[
+              styles.ligneReseau,
+              index === RESEAUX.length - 1 && { borderBottomWidth: 0 },
+            ]}
+            onPress={() => Linking.openURL(reseau.lien)}
+          >
+            <Image source={{ uri: reseau.image }} style={styles.iconeReseau} />
+            <Text style={styles.texteReseau}>{reseau.nom}</Text>
+            <Text style={styles.chevronReseau}>›</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <View style={styles.carte}>
         <Text style={styles.sectionTitre}>Sécurité</Text>
         <Text style={styles.sectionSousTitre}>
           Par sécurité, indiquez votre mot de passe actuel avant de le modifier.
@@ -335,6 +382,16 @@ const styles = StyleSheet.create({
   sectionTitre: { fontSize: 15, fontWeight: "700", color: "#111827" },
   sectionSousTitre: { fontSize: 12, color: "#6b7280", marginTop: 2, marginBottom: 12 },
   label: { fontSize: 12, color: "#6b7280", fontWeight: "600", marginBottom: 6, marginTop: 12 },
+  ligneReseau: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f3f4f6",
+  },
+  iconeReseau: { width: 32, height: 32, borderRadius: 8, marginRight: 12 },
+  texteReseau: { flex: 1, fontSize: 15, color: "#111827", fontWeight: "500" },
+  chevronReseau: { fontSize: 20, color: "#d1d5db" },
   input: {
     height: 46,
     borderWidth: 1,
