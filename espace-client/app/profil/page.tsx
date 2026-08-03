@@ -2,10 +2,28 @@
 
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import PasswordInput from "@/components/PasswordInput";
 
 const API_URL = process.env.NEXT_PUBLIC_CLIENT_API_URL;
+const RESEAUX = [
+  {
+    nom: "Facebook",
+    image: "https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/07/Facebook_logo_comprendre-mon-energie.png",
+    lien: "https://www.facebook.com/people/Comprendre-Mon-%C3%89nergie/61592180973793/",
+  },
+  {
+    nom: "Instagram",
+    image: "https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/08/image_instagram.png",
+    lien: "https://www.instagram.com/cme262026/",
+  },
+  {
+    nom: "LinkedIn",
+    image: "https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/05/icone-linkedin-comprendre-mon-energie.jpg",
+    lien: "https://www.linkedin.com/company/comprendre-mon-energie/",
+  },
+];
 
 interface Profil {
   nom?: string;
@@ -241,6 +259,7 @@ function ProfilContent() {
       )}
 
       {onglet === "infos" && (
+        <>
         <div className="bg-white rounded-2xl border border-gray-200 p-6 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -305,6 +324,34 @@ function ProfilContent() {
             {sauvegarde ? "Enregistrement..." : "Enregistrer"}
           </button>
         </div>
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mt-6">
+          <h2 className="text-sm font-semibold text-gray-900 mb-1">Suivez-nous</h2>
+          <p className="text-xs text-gray-500 mb-4">
+            Restez informé de nos actualités sur tous nos canaux
+          </p>
+          <div className="divide-y divide-gray-100">
+            {RESEAUX.map((reseau) => (
+              <a
+                key={reseau.nom}
+                href={reseau.lien}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 py-3 hover:bg-gray-50 -mx-2 px-2 rounded-lg transition-colors"
+              >
+                <Image
+                  src={reseau.image}
+                  alt={reseau.nom}
+                  width={32}
+                  height={32}
+                  className="rounded-lg object-cover"
+                />
+                <span className="flex-1 text-sm font-medium text-gray-900">{reseau.nom}</span>
+                <span className="text-gray-300">›</span>
+              </a>
+            ))}
+          </div>
+        </div>
+        </>
       )}
 
       {onglet === "fournisseur" && (

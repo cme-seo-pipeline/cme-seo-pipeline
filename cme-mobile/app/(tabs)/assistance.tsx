@@ -1,9 +1,13 @@
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Linking, ScrollView } from "react-native";
 import { router } from "expo-router";
 
 export default function AssistanceScreen() {
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contenuScroll}
+      showsVerticalScrollIndicator={false}
+    >
       <Text style={styles.titre}>Assistance</Text>
       <Text style={styles.soustitre}>Une question ? Notre équipe vous répond.</Text>
 
@@ -46,12 +50,13 @@ export default function AssistanceScreen() {
         </Text>
         <Text style={styles.carteGuidesLien}>Consulter les guides →</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f9fafb", paddingHorizontal: 16, paddingTop: 20 },
+  container: { flex: 1, backgroundColor: "#f9fafb" },
+  contenuScroll: { paddingHorizontal: 16, paddingTop: 20, paddingBottom: 32 },
   titre: { fontSize: 22, fontWeight: "700", color: "#111827" },
   soustitre: { fontSize: 13, color: "#6b7280", marginTop: 4, marginBottom: 20 },
   carte: {

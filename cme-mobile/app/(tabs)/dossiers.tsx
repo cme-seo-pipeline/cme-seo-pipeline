@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, RefreshControl, ActivityIndicator } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
+import { sauvegarderCache, lireCache, formaterDateCache } from "../../lib/cache";
 
 const API_URL = process.env.EXPO_PUBLIC_CLIENT_API_URL;
 
@@ -99,6 +100,9 @@ export default function DossiersScreen() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [horsLigne, setHorsLigne] = useState(false);
+  const [dateCache, setDateCache] = useState<number | null>(null);
+  const CLE_CACHE = "cache_leads";
 
   async function fetchLeads() {
     try {
@@ -107,9 +111,17 @@ export default function DossiersScreen() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setLeads(data.leads || []);
+      const liste = data.leads || [];
+      setLeads(liste);
+      setHorsLigne(false);
+      sauvegarderCache(CLE_CACHE, liste);
     } catch {
-      // silencieux : liste vide affichee par defaut
+      const cache = await lireCache<Lead[]>(CLE_CACHE);
+      if (cache) {
+        setLeads(cache.donnees);
+        setDateCache(cache.date);
+        setHorsLigne(true);
+      }
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -136,6 +148,13 @@ export default function DossiersScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>Mes simulations</Text>
+      {horsLigne && (
+        <View style={styles.banniereHorsLigne}>
+          <Text style={styles.banniereTexte}>
+            📡 Hors ligne — dernières données du {dateCache ? formaterDateCache(dateCache) : "..."}
+          </Text>
+        </View>
+      )}
       <FlatList
         data={leads}
         keyExtractor={(item) => item.id}
@@ -209,6 +228,13 @@ const styles = StyleSheet.create({
   centre: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
   container: { flex: 1, backgroundColor: "#f9fafb", paddingHorizontal: 16, paddingTop: 20 },
   titre: { fontSize: 22, fontWeight: "700", color: "#111827", marginBottom: 16 },
+  banniereHorsLigne: {
+    backgroundColor: "#fef3c7",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 12,
+  },
+  banniereTexte: { fontSize: 12, color: "#92400e", fontWeight: "500" },
   vide: { paddingTop: 60, alignItems: "center" },
   videTexte: { color: "#6b7280", fontSize: 14, fontWeight: "500" },
   videSousTexte: { color: "#9ca3af", fontSize: 12, marginTop: 4 },

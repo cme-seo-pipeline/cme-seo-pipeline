@@ -10,6 +10,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { router } from "expo-router";
+import { sauvegarderCache, lireCache, formaterDateCache } from "../../lib/cache";
 
 interface Article {
   id: number;
@@ -83,6 +84,9 @@ export default function AccueilScreen() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [horsLigne, setHorsLigne] = useState(false);
+  const [dateCache, setDateCache] = useState<number | null>(null);
+  const CLE_CACHE = "cache_articles";
 
   async function fetchArticles() {
     try {
@@ -90,9 +94,17 @@ export default function AccueilScreen() {
         "https://www.comprendre-mon-energie.fr/wp-json/wp/v2/posts?per_page=8&_embed"
       );
       const data = await res.json();
-      setArticles(Array.isArray(data) ? data : []);
+      const liste = Array.isArray(data) ? data : [];
+      setArticles(liste);
+      setHorsLigne(false);
+      sauvegarderCache(CLE_CACHE, liste);
     } catch {
-      // silencieux : section actualites simplement vide si echec reseau
+      const cache = await lireCache<Article[]>(CLE_CACHE);
+      if (cache) {
+        setArticles(cache.donnees);
+        setDateCache(cache.date);
+        setHorsLigne(true);
+      }
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -200,6 +212,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   videTexte: { color: "#9ca3af", fontSize: 13, marginHorizontal: 16 },
+  banniereHorsLigne: {
+    backgroundColor: "#fef3c7",
+    borderRadius: 10,
+    padding: 10,
+    marginHorizontal: 16,
+    marginBottom: 10,
+  },
+  banniereTexte: { fontSize: 12, color: "#92400e", fontWeight: "500" },
   outilsContainer: { paddingHorizontal: 16, gap: 10 },
   outilCarte: {
     backgroundColor: "#fff",
