@@ -3,7 +3,6 @@
     "name": "Comprendre Mon Énergie",
     "slug": "cme-espace-client",
     "version": "1.0.0",
-    "orientation": "portrait",
     "userInterfaceStyle": "light",
     "scheme": "cme-espace-client",
     "splash": {
