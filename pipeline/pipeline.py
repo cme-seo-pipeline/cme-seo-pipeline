@@ -861,12 +861,31 @@ def recuperer_titres_existants(silo_name, client_bq):
         return []
 
 
+def nettoyer_texte_ia(texte, annee_courante=None):
+    """Filet de securite applique en plus des instructions de prompt (qui
+    seules ne suffisent pas toujours) :
+    - Corrige les entites HTML d'apostrophe mal rendues (&rsquo; etc.) en
+      apostrophe droite simple.
+    - Remplace toute annee obsolete (2020 a annee_courante-1, frequemment
+      recopiee du contexte concurrent scrape) par l'annee en cours.
+    """
+    if not texte:
+        return texte
+    texte = re.sub(r'&[lr]squo;?', "'", texte)
+    texte = re.sub(r'&#821[67];?', "'", texte)
+    if annee_courante:
+        for annee in range(2020, annee_courante):
+            texte = re.sub(rf'\b{annee}\b', str(annee_courante), texte)
+    return texte
+
+
 def generer_brief_silo(contexte, config, titres_existants=None):
     silo = contexte.get('silo', '')
     sous_silo = contexte.get('sous_silo', '')
     silo_propre = silo.split('. ')[-1] if '. ' in silo else silo
     slug_silo = to_slug(silo_propre)
     slug_sous_silo = to_slug(sous_silo)
+    annee_courante = datetime.now().year
 
     titres_str = ""
     if titres_existants:
@@ -889,7 +908,7 @@ Génère un brief en JSON STRICT :
   "sous_silo": "{sous_silo}",
   "angle_choisi": "prix | installation | comparatif | aides | fonctionnement | guide",
   "titre_seo": "titre SEO percutant, ENTRE 50 ET 60 CARACTERES pile (jamais plus, jamais moins de 50), phrase ou expression complete, ne JAMAIS couper un mot en cours de generation",
-  "meta_description": "meta description incitant au clic, ENTRE 150 ET 160 CARACTERES pile (jamais plus, jamais moins de 150), phrase complete se terminant par un point, ne JAMAIS couper un mot en cours de generation",
+  "meta_description": "Meta description ORIENTEE ACTION pour maximiser le taux de clic. Commence par un verbe d'action a l'imperatif (Decouvrez, Calculez, Comparez, Economisez, Profitez de, Obtenez...) ou une accroche chiffree concrete (montant, pourcentage, delai). Inclut un benefice clair et tangible pour le lecteur, pas une simple description du contenu. ENTRE 150 ET 160 CARACTERES pile (jamais plus, jamais moins de 150), phrase complete se terminant par un point, ne JAMAIS couper un mot en cours de generation. Exemples de structure (a adapter, ne jamais copier tel quel) : 'Decouvrez [benefice concret] en [nombre] etapes simples.' ou 'Economisez jusqu'a [X] sur [sujet] : [benefice].'",
   "slug_article": "slug-article-uniquement",
   "slug_complet": "/{slug_silo}/{slug_sous_silo}/[slug-article]/",
   "mot_cle_principal": "mot-clé principal",
@@ -919,6 +938,9 @@ Génère un brief en JSON STRICT :
   ],
   "conseil_redacteur": "conseil en 1 phrase"
 }}
+RÈGLES SUPPLÉMENTAIRES :
+- Dates : n'utilise JAMAIS d'année dans titre_seo ou meta_description sauf {annee_courante} ou {annee_courante + 1}. INTERDIT toute année antérieure, même si le contexte concurrent scrapé en mentionne une.
+- Apostrophes : utilise uniquement l'apostrophe droite simple (') — jamais d'entité HTML (&rsquo; interdit).
 JSON uniquement."""
 
     headers = {
@@ -965,6 +987,9 @@ def generer_tous_briefs(df_final, client_bq, config):
         if erreur:
             print(f"  ❌ {silo_name} : {erreur}")
         else:
+            annee_courante = datetime.now().year
+            brief['titre_seo'] = nettoyer_texte_ia(brief.get('titre_seo', ''), annee_courante)
+            brief['meta_description'] = nettoyer_texte_ia(brief.get('meta_description', ''), annee_courante)
             # 3e segment (mot-cle) ajoute pour garantir l'unicite de la
             # cle meme quand plusieurs sujets partagent le meme sous-silo.
             all_briefs_finaux[f"{silo_name}||{sous_silo_name}"] = brief
@@ -1084,9 +1109,10 @@ FAQ :
 RÈGLES :
 1. HTML propre (h1, h2, h3, p, ul, li, strong)
 2. NE PAS ajouter de CTA commercial
-3. Dates : {annee_courante} ou {annee_suivante} uniquement — INTERDIT {annee_interdite}
-4. Commence DIRECTEMENT par <h1>...</h1>
-5. INTERDIT : ```html, <!DOCTYPE>, <html>, <head>, <body>"""
+3. Dates : {annee_courante} ou {annee_suivante} UNIQUEMENT — INTERDIT TOUTE année antérieure ({annee_interdite}, {annee_interdite - 1}, etc.), même si le contexte concurrent scrapé en mentionne une
+4. Apostrophes : uniquement l'apostrophe droite simple (') — jamais d'entité HTML (&rsquo; interdit)
+5. Commence DIRECTEMENT par <h1>...</h1>
+6. INTERDIT : ```html, <!DOCTYPE>, <html>, <head>, <body>"""
 
     headers = {
         "x-api-key": config['ANTHROPIC_API_KEY'],
@@ -1114,6 +1140,7 @@ RÈGLES :
         match = re.search(r'(<h[1-6]|<p|<article|<section)', contenu, re.IGNORECASE)
         if match:
             contenu = contenu[match.start():]
+        contenu = nettoyer_texte_ia(contenu, annee_courante)
         return contenu.strip(), None
     except Exception as e:
         return None, f"❌ Erreur rédaction : {e}"
