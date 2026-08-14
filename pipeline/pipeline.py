@@ -32,16 +32,13 @@ CONFIG = {
     "MAX_CHARS_PAR_URL": 3000,
     "JOURS_PUBLICATION": [0, 1, 2, 3, 4, 5, 6],  # 7j/7
     "heure_publication": 8,
-    "nb_articles_par_run": 5,  # 1 par silo, 5 silos, 7j/7
+    "nb_articles_par_run": 9,  # 3 silos industrialises x 3 articles, 7j/7
     "fenetre_anti_doublon_jours": 90,
-    # Planning hebdomadaire : 0=Lun, 1=Mar, 2=Mer, 3=Jeu, 4=Ven
-    "PLANNING_SILOS": {
-        0: "5. Électricité",
-        1: "1. Gaz",
-        2: "4. Solaire",
-        3: "3. Aide Énergétique",
-        4: "2. Rénovation Énergétique"
-    },
+    # Desactive temporairement le temps que la verification du compte
+    # developpeur Meta aboutisse (app bloquee cote Meta depuis debut aout).
+    # Allege aussi la duree du run, qui compte desormais reellement vu que
+    # /run-sync est plafonne a 30 min cote Cloud Scheduler.
+    "FACEBOOK_INSTAGRAM_ACTIF": False,
 }
 
 WP_CONFIG = {
@@ -291,20 +288,22 @@ def creer_table_historique(client_bq):
 
 def selectionner_silos_a_traiter(client_bq, config):
     """
-    NOUVELLE LOGIQUE 7j/7 : les 5 silos sont traites a CHAQUE run,
-    1 article par silo (au lieu d'1 seul silo par jour).
-    Utilise seo_opportunities (GSC+GA4) en priorite, fallback anciennete.
+    LOGIQUE INDUSTRIALISEE (post-analyse performance BigQuery/GSC/GA4) :
+    seuls les 3 silos les plus performants sont traites (Electricite, Gaz,
+    Aide Energetique — Solaire et Renovation Energetique abandonnes faute
+    de resultats), avec 3 articles chacun par run au lieu d'1 seul.
+    Utilise seo_opportunities (GSC+GA4) en priorite, fallback anciennete
+    pour completer les slots restants si besoin.
     """
-    tous_silos = [
-        "5. Électricité", "1. Gaz", "4. Solaire",
-        "3. Aide Énergétique", "2. Rénovation Énergétique"
-    ]
-    print(f"📅 Run 7j/7 → {len(tous_silos)} silos a traiter : {', '.join(tous_silos)}")
+    tous_silos = ["5. Électricité", "1. Gaz", "3. Aide Énergétique"]
+    ARTICLES_PAR_SILO = 3
+    print(f"📅 Run industrialise → {len(tous_silos)} silos x {ARTICLES_PAR_SILO} articles : {', '.join(tous_silos)}")
     resultats = []
 
     for silo_du_jour in tous_silos:
         silo_safe = silo_du_jour.replace("'", "''")
-        trouve = False
+        nb_trouves = 0
+        sous_silos_deja_vus = []
 
         try:
             df_opp = client_bq.query(f"""
@@ -321,12 +320,13 @@ def selectionner_silos_a_traiter(client_bq, config):
               AND jours_depuis_pub >= 30
               AND sous_silo IS NOT NULL
             ORDER BY score_opportunite DESC
-            LIMIT 1
+            LIMIT {ARTICLES_PAR_SILO}
             """).to_dataframe()
 
-            if not df_opp.empty:
-                df_opp['priorite'] = 1
-                row = df_opp.iloc[0]
+            for idx in range(len(df_opp)):
+                df_ligne = df_opp.iloc[[idx]].copy()
+                df_ligne['priorite'] = 1
+                row = df_ligne.iloc[0]
 
                 # 'general' est un placeholder technique — jamais un vrai sous-silo
                 # WordPress. On le remplace par le sous-silo strategique le moins
@@ -346,25 +346,44 @@ def selectionner_silos_a_traiter(client_bq, config):
                         if not df_strat_fix.empty:
                             vrai_sous_silo = df_strat_fix.iloc[0]['sous_silo']
                             print(f"   🔀 'general' remplace par sous-silo reel : {vrai_sous_silo}")
-                            df_opp.loc[df_opp.index[0], 'sous_silo'] = vrai_sous_silo
-                            row = df_opp.iloc[0]
+                            df_ligne.loc[df_ligne.index[0], 'sous_silo'] = vrai_sous_silo
+                            row = df_ligne.iloc[0]
                     except Exception as e_gen:
                         print(f"   ⚠️ Impossible de remplacer 'general' : {e_gen}")
+
+                # Anti-collision : si ce sous-silo a deja ete pris pour un
+                # AUTRE sujet de ce meme silo dans ce run, on le rend unique
+                # avec un suffixe ' (2)', ' (3)'... Sans ca, generer_tous_briefs
+                # (qui groupe par Silo+Sous-Silo) fusionnerait ces sujets
+                # pourtant distincts en un seul brief. Le suffixe est retire
+                # juste avant la vraie categorisation WordPress/BigQuery,
+                # dans rediger_et_publier.
+                sous_silo_base = row['sous_silo']
+                if sous_silo_base in sous_silos_deja_vus:
+                    occurrence = sous_silos_deja_vus.count(sous_silo_base) + 1
+                    sous_silo_unique = f"{sous_silo_base} ({occurrence})"
+                    df_ligne.loc[df_ligne.index[0], 'sous_silo'] = sous_silo_unique
+                    row = df_ligne.iloc[0]
+                sous_silos_deja_vus.append(sous_silo_base)
 
                 print(f"   ✅ {row['silo']} | {row['sous_silo']} — "
                       f"'{row['mot_cle']}' (pos {row['position']}, "
                       f"score {row['score_opportunite']:.0f})")
-                resultats.append(df_opp[['silo', 'sous_silo', 'priorite', 'mot_cle']])
-                trouve = True
-            else:
-                print(f"   ⚠️ {silo_du_jour} : seo_opportunities vide — fallback anciennete")
+                resultats.append(df_ligne[['silo', 'sous_silo', 'priorite', 'mot_cle']])
+                nb_trouves += 1
         except Exception as e_opp:
             print(f"   ⚠️ {silo_du_jour} : seo_opportunities indisponible ({e_opp}) — fallback")
 
-        if trouve:
+        nb_manquants = ARTICLES_PAR_SILO - nb_trouves
+        if nb_manquants <= 0:
             continue
 
-        # ── FALLBACK par silo : ancienneté ──────────────────────
+        if nb_trouves == 0:
+            print(f"   ⚠️ {silo_du_jour} : seo_opportunities vide — fallback anciennete")
+        else:
+            print(f"   ℹ️ {silo_du_jour} : {nb_trouves}/{ARTICLES_PAR_SILO} trouves via SEO, {nb_manquants} en fallback anciennete")
+
+        # ── FALLBACK par silo : ancienneté (pour les slots restants) ────
         try:
             df_strategie = client_bq.query(f"""
             SELECT silo, sous_silo, priorite
@@ -395,13 +414,19 @@ def selectionner_silos_a_traiter(client_bq, config):
                 pd.Timestamp('2000-01-01', tz='UTC')
             )
             df_merge['nb_articles'] = df_merge['nb_articles'].fillna(0)
+            # Exclut les sous-silos deja pris via SEO opportunities pour ce
+            # meme silo dans ce run : sans ca, le repli anciennete pouvait
+            # re-choisir le meme sous-silo qu'un sujet SEO deja selectionne,
+            # recreant la collision que le suffixe d'unicite est cense eviter.
+            df_merge = df_merge[~df_merge['sous_silo'].isin(sous_silos_deja_vus)]
             df_merge = df_merge.sort_values(
                 by=['nb_articles', 'derniere_pub'],
                 ascending=[True, True]
             )
-            df_final = df_merge.head(1)[['silo', 'sous_silo', 'priorite']].copy()
+            df_final = df_merge.head(nb_manquants)[['silo', 'sous_silo', 'priorite']].copy()
             df_final['mot_cle'] = ''
-            print(f"   ✅ {silo_du_jour} | {df_final.iloc[0]['sous_silo']} (fallback anciennete)")
+            for _, r in df_final.iterrows():
+                print(f"   ✅ {silo_du_jour} | {r['sous_silo']} (fallback anciennete)")
             resultats.append(df_final)
         except Exception as e_fb:
             print(f"   ❌ {silo_du_jour} : fallback echoue aussi ({e_fb})")
@@ -924,6 +949,12 @@ JSON uniquement."""
 def generer_tous_briefs(df_final, client_bq, config):
     all_briefs_finaux = {}
     print("✍️ GÉNÉRATION DES BRIEFS...")
+    # Groupby standard par (Silo, Sous-Silo). L'unicite entre plusieurs
+    # articles industrialises partageant le meme sous-silo est desormais
+    # garantie EN AMONT, a la selection (suffixe ' (2)', ' (3)' ajoute
+    # dans selectionner_silos_a_traiter) — pas ici via mot_cle_principal,
+    # qui est extrait independamment par concurrent scrape et n'est pas
+    # stable pour un meme sujet (cause d'une sur-fragmentation constatee).
     for (silo_name, sous_silo_name), df_silo in df_final.groupby(['Silo', 'Sous-Silo']):
         df_silo_clean = df_silo[df_silo['volume_mots'] > 0]
         if df_silo_clean.empty:
@@ -934,6 +965,8 @@ def generer_tous_briefs(df_final, client_bq, config):
         if erreur:
             print(f"  ❌ {silo_name} : {erreur}")
         else:
+            # 3e segment (mot-cle) ajoute pour garantir l'unicite de la
+            # cle meme quand plusieurs sujets partagent le meme sous-silo.
             all_briefs_finaux[f"{silo_name}||{sous_silo_name}"] = brief
             print(f"  ✅ {silo_name} | {brief.get('sous_silo')} — {brief.get('titre_seo')}")
     return all_briefs_finaux
@@ -972,7 +1005,10 @@ def exporter_bigquery(df_final, all_briefs_finaux, client_bq):
     # Export briefs_editoriaux
     rows = []
     for _cle, brief in all_briefs_finaux.items():
-        parts = _cle.split('||', 1)
+        # split('||') sans limite : la cle contient maintenant 3 segments
+        # (silo||sous_silo||mot_cle) depuis le correctif anti-collision.
+        # parts[2:] (le mot-cle) est ignore ici, seul silo/sous_silo compte.
+        parts = _cle.split('||')
         silo_name = parts[0]
         sous_silo_override = parts[1] if len(parts) > 1 else ''
 
@@ -1732,7 +1768,8 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
     silos_df = pd.DataFrame(silos_a_traiter)
 
     for _cle, brief in all_briefs_finaux.items():
-        parts = _cle.split('||', 1)
+        # split('||') sans limite : voir PATCH 1/2, meme raison.
+        parts = _cle.split('||')
         silo_name = parts[0]
         sous_silo_override = parts[1] if len(parts) > 1 else ''
         print(f"\n{'='*55}")
@@ -1758,6 +1795,11 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
                 if pd.isna(sous_silo_val): sous_silo_val = ''
         except:
             sous_silo_val = sous_silo_override or ''
+        # Retire le suffixe technique ' (2)', ' (3)'... ajoute a la selection
+        # pour distinguer plusieurs sujets industrialises partageant le meme
+        # sous-silo. La vraie categorisation WordPress/BigQuery doit garder
+        # le nom de sous-silo original.
+        sous_silo_val = re.sub(r' \(\d+\)$', '', sous_silo_val)
 
         resultat = publier_article(
             brief, silo_name, sous_silo_val, contenu_html,
@@ -2367,8 +2409,11 @@ def run_pipeline(force=False):
     print("\n🖼️ FEATURED IMAGES DALL-E...")
     generer_featured_images(df_publications, client_bq, CONFIG, OPENAI_CONFIG, WP_CONFIG)
     # ── PUBLICATION FACEBOOK ────────────────────────────────
-    publier_tous_facebook(df_publications, client_bq, CONFIG, FACEBOOK_CONFIG)
-    publier_tous_instagram(df_publications, client_bq, CONFIG, INSTAGRAM_CONFIG)
+    if CONFIG.get("FACEBOOK_INSTAGRAM_ACTIF", True):
+        publier_tous_facebook(df_publications, client_bq, CONFIG, FACEBOOK_CONFIG)
+        publier_tous_instagram(df_publications, client_bq, CONFIG, INSTAGRAM_CONFIG)
+    else:
+        print("⏭️  Facebook/Instagram desactives temporairement (FACEBOOK_INSTAGRAM_ACTIF=False)")
     notifier_nouveaux_articles(df_publications, CONFIG)
 
     print(f"\n{'='*60}")
