@@ -62,10 +62,10 @@ const OUTILS: Outil[] = [
 function nettoyerTexte(html: string, limite = 200): string {
   let texte = html.replace(/<[^>]+>/g, "").trim();
   texte = texte
-    .replace(/&#8217;/g, "'")
-    .replace(/&#8216;/g, "'")
-    .replace(/&#8220;/g, '"')
-    .replace(/&#8221;/g, '"')
+    .replace(/&#8217;|&rsquo;/g, "'")
+    .replace(/&#8216;|&lsquo;/g, "'")
+    .replace(/&#8220;|&ldquo;/g, '"')
+    .replace(/&#8221;|&rdquo;/g, '"')
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
     .replace(/\[&hellip;\]/g, "…")

@@ -1065,7 +1065,282 @@ def exporter_bigquery(df_final, all_briefs_finaux, client_bq):
 # ============================================================
 # CELLULE 11 — RÉDACTION + PUBLICATION WORDPRESS
 # ============================================================
-def rediger_article(brief, config, articles_silo=None):
+def rafraichir_indicateurs_reglementaires(client_bq):
+    """Recupere les dernieres valeurs officielles connues (CRE Gaz/Elec,
+    ANAH Aides) depuis les sources officielles et les insere dans
+    indicateurs_reglementaires. Concu pour tourner periodiquement
+    (hebdomadaire via Cloud Scheduler), independamment du run de redaction —
+    sans ce rafraichissement, les donnees injectees dans les articles
+    deviendraient obsoletes avec le temps."""
+    import io
+    from datetime import datetime as dt
+    headers_cre = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    run_id = dt.now().strftime("%Y%m%d_%H%M")
+    lignes = []
+
+    # --- Electricite (TRVE) ---
+    try:
+        r = requests.get(
+            "https://www.cre.fr/fileadmin/Documents/Open_data/Marches_de_detail/Option_Base.csv",
+            headers=headers_cre, timeout=30
+        )
+        df_elec = pd.read_csv(io.StringIO(r.content.decode("latin-1")), sep=None, engine="python")
+        df_elec['DATE_DEBUT_dt'] = pd.to_datetime(df_elec['DATE_DEBUT'], dayfirst=True)
+        derniere_date = df_elec['DATE_DEBUT_dt'].max()
+        df_derniere = df_elec[df_elec['DATE_DEBUT_dt'] == derniere_date]
+        for _, row in df_derniere.iterrows():
+            puissance = f"{row['P_SOUSCRITE']} kVA"
+            for indicateur, col, unite in [
+                ("TRVE_part_variable_TTC", "PART_VARIABLE_TTC", "€/kWh"),
+                ("TRVE_part_fixe_TTC", "PART_FIXE_TTC", "€/an"),
+            ]:
+                val = str(row[col]).replace(",", ".")
+                lignes.append({
+                    "domaine": "Électricité", "indicateur": indicateur,
+                    "sous_categorie": puissance, "valeur": float(val), "unite": unite,
+                    "date_debut_validite": derniere_date.date().isoformat(),
+                    "date_verification": dt.now().isoformat(), "run_id": run_id,
+                    "source_url": "https://www.cre.fr/fileadmin/Documents/Open_data/Marches_de_detail/Option_Base.csv",
+                })
+        print(f"  ✅ Electricite : {len(df_derniere) * 2} valeurs ({derniere_date.date()})")
+    except Exception as e:
+        print(f"  ⚠️ Erreur refresh Electricite : {e}")
+
+    # --- Gaz (PRVG) ---
+    try:
+        r = requests.get(
+            "https://www.cre.fr/fileadmin/Documents/Open_data/Marches_de_detail/OPEN_DATA_GRDF.xlsx",
+            headers=headers_cre, timeout=30
+        )
+        df_gaz = pd.read_excel(io.BytesIO(r.content), sheet_name="Historique PRVG moyen")
+        derniere_ligne = df_gaz.iloc[-1]
+        lignes.append({
+            "domaine": "Gaz", "indicateur": "PRVG_moyen_TTC", "sous_categorie": None,
+            "valeur": float(derniere_ligne['Prix repère moyen TTC (€/MWh)']), "unite": "€/MWh",
+            "date_debut_validite": pd.to_datetime(derniere_ligne['Date']).date().isoformat(),
+            "date_verification": dt.now().isoformat(), "run_id": run_id,
+            "source_url": "https://www.cre.fr/fileadmin/Documents/Open_data/Marches_de_detail/OPEN_DATA_GRDF.xlsx",
+        })
+        print(f"  ✅ Gaz : PRVG {lignes[-1]['valeur']} €/MWh ({lignes[-1]['date_debut_validite']})")
+    except Exception as e:
+        print(f"  ⚠️ Erreur refresh Gaz : {e}")
+
+    # --- Aides (ANAH — situation-temoin fixe, validee) ---
+    try:
+        situation = {
+            "vous.propriétaire.statut": '"propriétaire occupant"',
+            "logement.propriétaire occupant": "oui",
+            "ménage.personnes": 3,
+            "ménage.revenu": '"modeste"',
+            "ménage.commune": '"75056"',
+            "parcours d'aide": '"accompagné"',
+            "fields": "ampleur.pourcent d'écrêtement",
+        }
+        r = requests.get("https://mesaides.france-renov.gouv.fr/api/v1/", params=situation, timeout=20)
+        data_aide = r.json()["ampleur.pourcent d'écrêtement"]
+        lignes.append({
+            "domaine": "Aides", "indicateur": "ampleur_pourcent_ecretement",
+            "sous_categorie": "propriétaire occupant modeste, 3 pers., parcours accompagné",
+            "valeur": float(data_aide["rawValue"]), "unite": "%",
+            "date_debut_validite": dt.now().date().isoformat(),
+            "date_verification": dt.now().isoformat(), "run_id": run_id,
+            "source_url": "https://mesaides.france-renov.gouv.fr/api/v1/",
+        })
+        print(f"  ✅ Aides : écrêtement {lignes[-1]['valeur']} %")
+    except Exception as e:
+        print(f"  ⚠️ Erreur refresh Aides : {e}")
+
+    if lignes:
+        client_bq.insert_rows_json(
+            f"{PROJECT_ID}.{DATASET_ID}.indicateurs_reglementaires", lignes
+        )
+        print(f"✅ RAFRAICHISSEMENT INDICATEURS : {len(lignes)} lignes inserees")
+    return len(lignes)
+
+
+MOIS_FR = {
+    1: "janvier", 2: "février", 3: "mars", 4: "avril", 5: "mai", 6: "juin",
+    7: "juillet", 8: "août", 9: "septembre", 10: "octobre", 11: "novembre", 12: "décembre",
+}
+
+
+def construire_brief_actualite(changement, client_bq):
+    """MODE ACTUALITE : construit un brief directement depuis un changement
+    d'indicateur reglementaire detecte (vue_changements_indicateurs), SANS
+    scraping concurrent ni appel IA supplementaire — pour publier le plus
+    vite possible et etre premier sur le sujet. Retourne None si aucun
+    silo/sous-silo n'est mappe pour cet indicateur."""
+    indicateur = changement['indicateur']
+    indicateur_safe = indicateur.replace("'", "''")
+    try:
+        df_cible = client_bq.query(f"""
+        SELECT silo, sous_silo_strategique, pertinence
+        FROM `{PROJECT_ID}.{DATASET_ID}.mapping_indicateur_sous_silo`
+        WHERE indicateur = '{indicateur_safe}'
+        ORDER BY pertinence = 'directe' DESC
+        LIMIT 1
+        """).to_dataframe()
+    except Exception as e:
+        print(f"  ⚠️ Erreur recherche silo cible pour {indicateur} : {e}")
+        return None
+    if df_cible.empty:
+        return None
+    silo = df_cible.iloc[0]['silo']
+    sous_silo = df_cible.iloc[0]['sous_silo_strategique']
+    maintenant = datetime.now()
+    mois_annee = f"{MOIS_FR[maintenant.month]} {maintenant.year}"
+    variation = changement['variation_pct']
+    sens = "hausse" if variation > 0 else "baisse"
+    source_officielle = "ANAH" if changement['domaine'] == 'Aides' else "CRE"
+    valeur_actuelle_r = round(float(changement['valeur_actuelle']), 2)
+    valeur_precedente_r = round(float(changement['valeur_precedente']), 2)
+    titre = f"{sous_silo} : {sens} de {abs(variation):.1f}% en {mois_annee}"[:60]
+    meta_description = (
+        f"Découvrez la {sens} de {abs(variation):.1f}% sur {sous_silo.lower()} : "
+        f"nouveau tarif de {valeur_actuelle_r} {changement['unite']} en {mois_annee}. "
+        f"Ce que ça change concrètement pour votre facture."
+    )[:160]
+    return {
+        "silo": silo,
+        "sous_silo": sous_silo,
+        "titre_seo": titre,
+        "meta_description": meta_description,
+        "mot_cle_principal": f"{sous_silo.lower()} {mois_annee.lower()}",
+        "mots_cles_secondaires": [indicateur, "prix", mois_annee.lower(), sens],
+        "volume_recommande": 800,
+        "ton_recommande": "actualité, factuel, direct",
+        "angle_differentiant": (
+            f"Article d'actualité annonçant un changement officiel recemment "
+            f"constate : {indicateur} passe de {valeur_precedente_r} "
+            f"a {valeur_actuelle_r} {changement['unite']} "
+            f"({sens} de {abs(variation):.1f}%), effectif depuis le "
+            f"{changement['date_debut_validite']}. Source officielle : {source_officielle} "
+            f"uniquement — ne pas attribuer ce chiffre a un autre organisme. "
+            f"IMPORTANT : arrondir systematiquement tous les chiffres a 2 decimales "
+            f"maximum dans l'article, ne jamais afficher un nombre avec plus de "
+            f"decimales (ex: 172.05, jamais 172.0495426360616)."
+        ),
+        "structure": [
+            {"niveau": "H1", "texte": titre, "conseil": "titre factuel avec le chiffre exact"},
+            {"niveau": "H2", "texte": "Ce qui change", "conseil": "annonce claire avec les deux valeurs (avant/apres)"},
+            {"niveau": "H2", "texte": "Pourquoi ce changement", "conseil": "contexte reglementaire general, rester factuel, ne rien inventer au-dela des donnees fournies"},
+            {"niveau": "H2", "texte": "Impact concret pour vous", "conseil": "exemple chiffre base sur la nouvelle valeur uniquement"},
+            {"niveau": "H2", "texte": "Ce qu'il faut retenir", "conseil": "resume actionnable en quelques lignes"},
+        ],
+        "champ_semantique": {
+            "indispensables": [sous_silo, mois_annee],
+            "enrichissement": [],
+            "a_eviter": [],
+        },
+        "faq_recommandee": [],
+    }
+
+
+def publier_actualites_reglementaires(client_bq, config, wp_config, run_id):
+    """MODE ACTUALITE : detecte les changements d'indicateurs reglementaires
+    (vue_changements_indicateurs) et publie immediatement un article dedie
+    pour chacun, en contournant le scraping concurrent — la vitesse de
+    publication prime sur la profondeur, l'objectif etant d'etre premier
+    sur le sujet plutot que de suivre la concurrence. Inclut schemas SVG,
+    image mise en avant et notification push, comme le run principal."""
+    print("📰 MODE ACTUALITE — detection des changements reglementaires...")
+    try:
+        df_changements = client_bq.query(f"""
+        SELECT * FROM `{PROJECT_ID}.{DATASET_ID}.vue_changements_indicateurs`
+        """).to_dataframe()
+    except Exception as e:
+        print(f"  ⚠️ Erreur detection changements : {e}")
+        return []
+    if df_changements.empty:
+        print("  ℹ️ Aucun changement detecte, rien a publier")
+        return []
+    print(f"  🔎 {len(df_changements)} changement(s) detecte(s)")
+    lignes_publications = []
+    for _, changement in df_changements.iterrows():
+        brief = construire_brief_actualite(changement, client_bq)
+        if not brief:
+            print(f"  ⚠️ Pas de silo mappe pour {changement['indicateur']}, ignore")
+            continue
+        print(f"  ✍️ Redaction : {brief['titre_seo']}")
+        contenu_html, erreur = rediger_article(brief, config, None, client_bq)
+        if erreur:
+            print(f"  ❌ {brief['titre_seo']} : {erreur}")
+            continue
+        resultat = publier_article(
+            brief, brief['silo'], brief['sous_silo'], contenu_html,
+            wp_config, client_bq, run_id, config
+        )
+        if resultat['success']:
+            print(f"  ✅ ACTUALITE PUBLIEE : {resultat['url']}")
+            try:
+                client_bq.query(f"""
+                UPDATE `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+                SET type_publication = 'actualite'
+                WHERE post_id = {resultat['post_id']}
+                """).result()
+            except Exception as e:
+                print(f"  ⚠️ Erreur marquage type_publication : {e}")
+            nb_mots = len(re.sub(r'<[^>]+>', '', contenu_html).split())
+            lignes_publications.append({
+                "Silo": brief['silo'],
+                "Titre": brief['titre_seo'],
+                "Mot_cle": brief['mot_cle_principal'],
+                "Nb_mots": nb_mots,
+                "Post_ID": resultat['post_id'],
+                "URL_WP": resultat['url'],
+                "Statut": "publish",
+                "Contenu_HTML": contenu_html,
+                "sous_silo": brief['sous_silo'],
+            })
+        else:
+            print(f"  ❌ {resultat.get('erreur')}")
+    if lignes_publications:
+        df_publications = pd.DataFrame(lignes_publications)
+        try:
+            nettoyer_et_generer_schemas(df_publications, wp_config, config)
+        except Exception as e:
+            print(f"  ⚠️ Erreur schemas Mode Actualite : {e}")
+        try:
+            generer_featured_images(df_publications, client_bq, config, OPENAI_CONFIG, wp_config)
+        except Exception as e:
+            print(f"  ⚠️ Erreur images Mode Actualite : {e}")
+        try:
+            notifier_nouveaux_articles(df_publications, config)
+        except Exception as e:
+            print(f"  ⚠️ Erreur notification Mode Actualite : {e}")
+    print(f"📰 MODE ACTUALITE termine : {len(lignes_publications)} article(s) publie(s)")
+    return lignes_publications
+
+
+def recuperer_donnees_officielles(silo, sous_silo, client_bq):
+    """Recupere les dernieres valeurs officielles connues (PRVG, TRVE,
+    aides...) pour ce silo/sous-silo via la table de mapping du chantier
+    veille reglementaire, pour eviter que l'IA n'invente des chiffres.
+    Retourne une chaine prete a injecter dans le prompt, vide si rien
+    ne correspond (fonctionne meme si les tables n'existent pas encore)."""
+    try:
+        silo_safe = silo.replace("'", "''")
+        sous_silo_safe = (sous_silo or "").replace("'", "''")
+        df = client_bq.query(f"""
+        SELECT DISTINCT i.indicateur, i.valeur, i.unite, i.date_debut_validite
+        FROM `{PROJECT_ID}.{DATASET_ID}.mapping_indicateur_sous_silo` m
+        JOIN `{PROJECT_ID}.{DATASET_ID}.indicateurs_reglementaires` i
+            ON i.indicateur = m.indicateur
+        WHERE m.silo = '{silo_safe}'
+          AND m.sous_silo_strategique = '{sous_silo_safe}'
+        QUALIFY ROW_NUMBER() OVER (PARTITION BY i.indicateur ORDER BY i.date_verification DESC) = 1
+        """).to_dataframe()
+        if df.empty:
+            return ""
+        return "\n".join([
+            f"- {row['indicateur']} : {row['valeur']} {row['unite']} (en vigueur depuis le {row['date_debut_validite']})"
+            for _, row in df.iterrows()
+        ])
+    except Exception:
+        return ""
+
+
+def rediger_article(brief, config, articles_silo=None, client_bq=None):
     annee_courante = datetime.now().year
     annee_suivante = annee_courante + 1
     annee_interdite = annee_courante - 1
@@ -1081,8 +1356,14 @@ def rediger_article(brief, config, articles_silo=None):
     if articles_silo:
         liens = "\n".join([f"- {a.get('titre')} → {a.get('url')}" for a in articles_silo])
         maillage_str = f"\nMAILLAGE INTERNE :\n{liens}\n"
+    donnees_officielles_str = ""
+    if client_bq is not None:
+        donnees = recuperer_donnees_officielles(brief.get('silo', ''), brief.get('sous_silo', ''), client_bq)
+        print(f"  🔎 Donnees officielles pour {brief.get('silo')} | {brief.get('sous_silo')} : {'TROUVEES' if donnees else 'aucune'}")
+        if donnees:
+            donnees_officielles_str = f"\nDONNÉES OFFICIELLES ACTUELLES (source : CRE/ANAH, vérifiées — utilise IMPÉRATIVEMENT ces valeurs exactes dans au moins un exemple chiffré concret) :\n{donnees}\n"
 
-    prompt = f"""Tu es un rédacteur SEO expert spécialisé dans l'énergie en France.
+    prompt = f"""Tu es un rédacteur SEO expert et conseiller commercial, spécialisé exclusivement dans 3 secteurs : l'électricité, le gaz et les aides à la rénovation énergétique en France.
 Rédige un article complet basé sur ce brief :
 
 BRIEF :
@@ -1105,14 +1386,16 @@ FAQ :
 {faq_str}
 
 {maillage_str}
+{donnees_officielles_str}
 
 RÈGLES :
 1. HTML propre (h1, h2, h3, p, ul, li, strong)
 2. NE PAS ajouter de CTA commercial
 3. Dates : {annee_courante} ou {annee_suivante} UNIQUEMENT — INTERDIT TOUTE année antérieure ({annee_interdite}, {annee_interdite - 1}, etc.), même si le contexte concurrent scrapé en mentionne une
 4. Apostrophes : uniquement l'apostrophe droite simple (') — jamais d'entité HTML (&rsquo; interdit)
-5. Commence DIRECTEMENT par <h1>...</h1>
-6. INTERDIT : ```html, <!DOCTYPE>, <html>, <head>, <body>"""
+5. Chiffres précis (prix, taux, tarifs) : SI la section DONNÉES OFFICIELLES ACTUELLES est présente ci-dessus, tu DOIS OBLIGATOIREMENT reprendre ces valeurs exactes dans au moins un exemple chiffré concret de l'article — ne construis JAMAIS un exemple "simplifié" ou fictif avec un prix inventé si une donnée officielle existe pour ce sujet. INTERDIT d'inventer un prix, un taux ou une offre commerciale attribuée à une marque réelle (EDF, Engie, TotalEnergies...). Si aucune donnée officielle n'est fournie pour un point précis, reste général (ex: "les tarifs varient selon les fournisseurs") plutôt que d'inventer un chiffre.
+6. Commence DIRECTEMENT par <h1>...</h1>
+7. INTERDIT : ```html, <!DOCTYPE>, <html>, <head>, <body>"""
 
     headers = {
         "x-api-key": config['ANTHROPIC_API_KEY'],
@@ -1803,7 +2086,7 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
         print(f"📂 {silo_name} — {brief.get('titre_seo')}")
 
         articles_silo = recuperer_articles_meme_silo(silo_name, wp_config)
-        contenu_html, erreur = rediger_article(brief, config, articles_silo)
+        contenu_html, erreur = rediger_article(brief, config, articles_silo, client_bq)
         if erreur:
             print(f"  {erreur}")
             continue
