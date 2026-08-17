@@ -372,6 +372,32 @@ def rafraichir_indicateurs():
         return jsonify({"status": "error", "erreur": str(e)}), 500
 
 
+@app.route('/auditer-articles', methods=['POST'])
+def auditer_articles():
+    """
+    CHANTIER MISE A JOUR DES ARTICLES PUBLIES : audite tous les candidats
+    en pertinence directe et corrige automatiquement, sans validation
+    humaine, toute citation reelle devenue obsolete. Tourne en
+    arriere-plan (audit de dizaines d'articles = plusieurs minutes).
+    Concu pour tourner periodiquement via Cloud Scheduler (mensuel).
+    """
+    from pipeline import auditer_et_corriger_articles, init_bigquery, CONFIG, WP_CONFIG
+
+    def audit_async():
+        try:
+            client_bq = init_bigquery()
+            resultat = auditer_et_corriger_articles(client_bq, CONFIG, WP_CONFIG)
+            print(f"✅ Audit articles termine : {resultat}")
+        except Exception as e:
+            print(f"❌ Erreur audit articles : {e}")
+
+    thread = threading.Thread(target=audit_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "audit": "declenche en arriere-plan"}), 200
+
+
 @app.route('/api/log-clic', methods=['POST', 'OPTIONS'])
 def log_clic():
     if request.method == 'OPTIONS':
