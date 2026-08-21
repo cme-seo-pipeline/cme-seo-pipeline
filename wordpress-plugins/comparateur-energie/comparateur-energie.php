@@ -3,7 +3,7 @@
  * Plugin Name: CME Comparateur Énergie
  * Plugin URI:  https://www.comprendre-mon-energie.fr
  * Description: Comparateur gaz & électricité — v3.0 vanilla JS, design complet, zéro conflit WordPress
- * Version:     3.4.4
+ * Version:     3.4.5
  * Author:      CME
  * License:     GPL-2.0+
  */
@@ -157,6 +157,14 @@ ob_start();?>
 #<?php echo $uid;?> .tog{display:flex;gap:6px;flex-wrap:wrap}
 #<?php echo $uid;?> .tbtn{flex:1;min-width:80px;min-height:44px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;color:#374151;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;padding:8px 6px;line-height:1.2;display:flex;align-items:center;justify-content:center;text-align:center}
 #<?php echo $uid;?> .tbtn.on{border:1.5px solid #3b82f6;background:#eff6ff;color:#1d4ed8;font-weight:500}
+#<?php echo $uid;?> .tog .tbtn:nth-child(1){background:#eff6ff}
+#<?php echo $uid;?> .tog .tbtn:nth-child(2){background:#fff7ed}
+#<?php echo $uid;?> .tog .tbtn:nth-child(3){background:#faf5ff}
+#<?php echo $uid;?> .tog .tbtn:nth-child(1).on{background:#dbeafe;border-color:#3b82f6;color:#1d4ed8}
+#<?php echo $uid;?> .tog .tbtn:nth-child(2).on{background:#fed7aa;border-color:#f97316;color:#9a3412}
+#<?php echo $uid;?> .tog .tbtn:nth-child(3).on{background:#e9d5ff;border-color:#a855f7;color:#6b21a8}
+#<?php echo $uid;?> .summ-elec{border-left:4px solid #3b82f6;background:#eff6ff}
+#<?php echo $uid;?> .summ-gaz{border-left:4px solid #f97316;background:#fff7ed}
 #<?php echo $uid;?> .sbar{display:flex;align-items:center;gap:6px;margin-bottom:20px}
 #<?php echo $uid;?> .sdot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;border:1.5px solid #d1d5db;background:#f3f4f6;color:#9ca3af;transition:all .2s}
 #<?php echo $uid;?> .sdot.done{border-color:#10b981;background:#d1fae5;color:#065f46}
@@ -402,7 +410,7 @@ function mkOfferCard(o,rang,kwh,opt,energie,refPrix){
   var eco=Math.max(0,refPrix-prix);
   var d=mk('div','offer-card'+(best?' best':''));
 
-  if(best){ap(d,mk('div','best-badge','⭐ Meilleure offre'));}
+  if(best){ap(d,mk('div','best-badge','Meilleure offre'));}
 
   var top=mk('div','offer-top');
   ap(top,mkLogo(o));
@@ -422,7 +430,7 @@ function mkOfferCard(o,rang,kwh,opt,energie,refPrix){
   ap(d,top);
 
   var tags=mk('div','tags-row');
-  if(o.vert){var tg=mk('span','tag tag-green','♻ Énergie verte');ap(tags,tg);}
+  if(o.vert){var tg=mk('span','tag tag-green','Énergie verte');ap(tags,tg);}
   o.tags.forEach(function(t){ap(tags,mk('span','tag',t));});
   ap(d,tags);
 
@@ -447,12 +455,12 @@ function step1(root){
 
   // Profil
   var c1=mk('div','cc');
-  ap(c1,mk('div','stitle','🏠 Type de logement'));
-  ap(c1,mkTog([{v:'maison',l:'🏠 Maison'},{v:'appartement',l:'🏢 Appartement'}],S.logement,function(v){S.logement=v;}));
+  ap(c1,mk('div','stitle','Type de logement'));
+  ap(c1,mkTog([{v:'maison',l:'Maison'},{v:'appartement',l:'Appartement'}],S.logement,function(v){S.logement=v;}));
   var g2=mk('div','g2');g2.style.marginTop='14px';
   ap(g2,mkField('Surface (m²)','number',S.surface,function(v){S.surface=parseInt(v)||75;estim();},'',10,500));
   ap(g2,mkSel('Nombre de personnes',['1 personne','2 personnes','3 personnes','4 personnes','5+ personnes'],Math.min(4,(parseInt(S.personnes)||2)-1),function(v){S.personnes=v+1;estim();}));
-  ap(g2,mkSel('Mode de chauffage',['⚡ Électrique','🔥 Gaz naturel','♻ Pompe à chaleur','🛢 Fioul / autre'],['elec','gaz','pac','fioul'].indexOf(S.chauffage),function(v){S.chauffage=['elec','gaz','pac','fioul'][v];estim();}));
+  ap(g2,mkSel('Mode de chauffage',['Électrique','Gaz naturel','Pompe à chaleur','Fioul / autre'],['elec','gaz','pac','fioul'].indexOf(S.chauffage),function(v){S.chauffage=['elec','gaz','pac','fioul'][v];estim();}));
   ap(g2,mkField('Code postal','text',S.codepostal,function(v){S.codepostal=v;},'ex: 75001'));
   ap(c1,g2);
   ap(root,c1);
@@ -460,14 +468,14 @@ function step1(root){
   // PDL/PCE conditionnel
   if(showE||showG){
     var cp=mk('div','cc');
-    ap(cp,mk('div','stitle','📋 Numéros de compteur (optionnel)'));
+    ap(cp,mk('div','stitle','Numéros de compteur (optionnel)'));
     var gp=mk('div','g2');
     if(showE){
       var dp=mk('div');
       ap(dp,mk('label',null,'N° PDL / PRM — Électricité'));
       var ip=mkInput('text',S.pdl,function(v){S.pdl=v;},'14 chiffres');
       ap(dp,ip);
-      ap(dp,mk('div','hint','📄 Sur votre facture EDF ou relevé Linky'));
+      ap(dp,mk('div','hint','Sur votre facture EDF ou relevé Linky'));
       ap(gp,dp);
     }
     if(showG){
@@ -475,7 +483,7 @@ function step1(root){
       ap(dc,mk('label',null,'N° PCE — Gaz'));
       var ic=mkInput('text',S.pce,function(v){S.pce=v;},'14 chiffres');
       ap(dc,ic);
-      ap(dc,mk('div','hint','📄 Sur votre facture gaz GRDF'));
+      ap(dc,mk('div','hint','Sur votre facture gaz GRDF'));
       ap(gp,dc);
     }
     ap(cp,gp);
@@ -485,9 +493,9 @@ function step1(root){
   // Énergie (dual uniquement)
   if(EDEF==='dual'){
     var ce=mk('div','cc');
-    ap(ce,mk('div','stitle','⚡ Énergie à comparer'));
+    ap(ce,mk('div','stitle','Énergie à comparer'));
     ap(ce,mkTog(
-      [{v:'elec',l:'⚡ Électricité'},{v:'gaz',l:'🔥 Gaz'},{v:'dual',l:'⚡🔥 Électricité & Gaz'}],
+      [{v:'elec',l:'Électricité'},{v:'gaz',l:'Gaz'},{v:'dual',l:'Électricité & Gaz'}],
       S.enrg,
       function(v){S.enrg=v;S.tab=v==='gaz'?'gaz':'elec';render();}
     ));
@@ -526,25 +534,25 @@ function step2(root){
   var ct=mk('div','cc');
   ap(ct,mk('div','stitle','🕐 Option tarifaire'));
   ap(ct,mkTog(
-    [{v:'base',l:'⚡ Tarif de base'},{v:'hphc',l:'🌙 Heures pleines / creuses'}],
+    [{v:'base',l:'Tarif de base'},{v:'hphc',l:'Heures pleines / creuses'}],
     S.option,
     function(v){S.option=v;render();}
   ));
   if(S.option==='hphc'){
-    var ib=mk('div','ibox-info','🌙 Heures creuses (~22h–6h) : tarif réduit. ☀️ Heures pleines : tarif normal. Avantageux si vous programmez lave-linge ou chargez un VE la nuit.');
+    var ib=mk('div','ibox-info','Heures creuses (~22h–6h) : tarif réduit. ️ Heures pleines : tarif normal. Avantageux si vous programmez lave-linge ou chargez un VE la nuit.');
     ap(ct,ib);
   } else {
-    ap(ct,mk('div','ibox-hint','✅ Prix unique 24h/24 — idéal si votre consommation est régulière.'));
+    ap(ct,mk('div','ibox-hint','Prix unique 24h/24 — idéal si votre consommation est régulière.'));
   }
   ap(root,ct);
 
   // Consommation
   var cc=mk('div','cc');
-  ap(cc,mk('div','stitle','📊 Consommation annuelle estimée'));
+  ap(cc,mk('div','stitle','Consommation annuelle estimée'));
   var gc=mk('div','g2');
   if(showE){
     var de=mk('div');
-    ap(de,mk('label',null,'⚡ Électricité (kWh/an)'));
+    ap(de,mk('label',null,'Électricité (kWh/an)'));
     var ie=mkNumStepper(S.elec,500,30000,100,function(v){S.elec=v;updateSumm();});
     ap(de,ie);
     ap(de,mk('div','hint','Estimé selon votre profil — modifiable'));
@@ -552,7 +560,7 @@ function step2(root){
   }
   if(showG){
     var dg=mk('div');
-    ap(dg,mk('label',null,'🔥 Gaz (kWh/an)'));
+    ap(dg,mk('label',null,'Gaz (kWh/an)'));
     var ig=mkNumStepper(S.gaz,500,50000,1000,function(v){S.gaz=v;updateSumm();});
     ap(dg,ig);
     ap(dg,mk('div','hint','Estimé selon votre chauffage — modifiable'));
@@ -563,7 +571,7 @@ function step2(root){
   // Facture estimée interactive (élec ET gaz)
   var smWrap=mk('div');smWrap.style.cssText='display:grid;grid-template-columns:'+(showE&&showG?'1fr 1fr':'1fr')+';gap:12px;margin-top:14px';
   if(showE){
-    var sm=mk('div','summ-box');sm.style.flex='1';
+    var sm=mk('div','summ-box summ-elec');sm.style.flex='1';
     var sd=mk('div');
     var sl=mk('div');sl.style.cssText='font-size:12px;color:#9ca3af;margin-bottom:6px';sl.id=UID+'-summ-lbl';ap(sd,sl);
     var sv=mk('div');sv.style.cssText='display:flex;align-items:baseline;gap:6px;flex-wrap:wrap';
@@ -571,10 +579,10 @@ function step2(root){
     var sva=mk('span');sva.style.cssText='font-size:13px;color:#6b7280';sva.textContent='/an';
     var svm=mk('span');svm.style.cssText='font-size:12px;color:#9ca3af';svm.id=UID+'-summ-mo';
     ap(sv,svv);ap(sv,sva);ap(sv,svm);ap(sd,sv);ap(sm,sd);
-    ap(sm,mk('div',null,'⚡'));ap(smWrap,sm);
+    ap(sm,mk('div',null,''));ap(smWrap,sm);
   }
   if(showG){
-    var smg=mk('div','summ-box');smg.style.flex='1';
+    var smg=mk('div','summ-box summ-gaz');smg.style.flex='1';
     var sdg=mk('div');
     var slg=mk('div');slg.style.cssText='font-size:12px;color:#9ca3af;margin-bottom:6px';slg.id=UID+'-summ-gaz-lbl';ap(sdg,slg);
     var svg2=mk('div');svg2.style.cssText='display:flex;align-items:baseline;gap:6px;flex-wrap:wrap';
@@ -582,7 +590,7 @@ function step2(root){
     var svga=mk('span');svga.style.cssText='font-size:13px;color:#6b7280';svga.textContent='/an';
     var svgm=mk('span');svgm.style.cssText='font-size:12px;color:#9ca3af';svgm.id=UID+'-summ-gaz-mo';
     ap(svg2,svgv);ap(svg2,svga);ap(svg2,svgm);ap(sdg,svg2);ap(smg,sdg);
-    ap(smg,mk('div',null,'🔥'));ap(smWrap,smg);
+    ap(smg,mk('div',null,''));ap(smWrap,smg);
   }
   ap(cc,smWrap);
   ap(root,cc);
@@ -608,7 +616,7 @@ function updateSumm(){
   if(lbl&&val&&mo){
     var trvK=S.option==='hphc'?pMoy(S.edfPrix,'hphc'):S.edfPrix;
     var trv=Math.round(trvK*(parseInt(S.elec)||3500)+S.edfAbo*12)||0;
-    lbl.textContent='💡 Facture EDF actuelle — option '+(S.option==='hphc'?'HP/HC':'Base');
+    lbl.textContent='Facture EDF actuelle — option '+(S.option==='hphc'?'HP/HC':'Base');
     val.textContent=trv.toLocaleString('fr-FR')+' €';
     mo.textContent='soit '+Math.round(trv/12)+' €/mois';
   }
@@ -618,7 +626,7 @@ function updateSumm(){
   var gmo=document.getElementById(UID+'-summ-gaz-mo');
   if(glbl&&gval&&gmo){
     var trvGaz=Math.round(S.gazRef*(parseInt(S.gaz)||8000)+S.gazAbo*12)||0;
-    glbl.textContent='💡 Facture gaz actuelle (Prix Repère CRE)';
+    glbl.textContent='Facture gaz actuelle (Prix Repère CRE)';
     gval.textContent=trvGaz.toLocaleString('fr-FR')+' €';
     gmo.textContent='soit '+Math.round(trvGaz/12)+' €/mois';
   }
@@ -639,7 +647,7 @@ function step3(root){
     var tabs=mk('div','tabs-row');
     ['elec','gaz'].forEach(function(t){
       var cnt=t==='elec'?ELEC.length:GAZ.length;
-      var tb=mk('button','tab-btn'+(S.tab===t?' on':''),(t==='elec'?'⚡ Électricité':'🔥 Gaz')+' ('+cnt+')');
+      var tb=mk('button','tab-btn'+(S.tab===t?' on':''),(t==='elec'?'Électricité':'Gaz')+' ('+cnt+')');
       tb.onclick=function(){S.tab=t;render();};
       ap(tabs,tb);
     });
@@ -684,7 +692,7 @@ function step3(root){
   var bm=mk('button','bo','← Modifier');
   bm.onclick=function(){S.step=2;render();};
   ap(acts,bm);
-  var bn=mk('button','bo','🔄 Nouvelle recherche');
+  var bn=mk('button','bo','Nouvelle recherche');
   bn.onclick=function(){S.step=1;render();};
   ap(acts,bn);
   ap(root,acts);
@@ -862,7 +870,7 @@ function render(){
 
   // Header
   var hd=mk('div');hd.style.marginBottom='16px';
-  ap(hd,mk('h2','page-title','⚡ Comparateur des offres Électricité & Gaz'));
+  ap(hd,mk('h2','page-title','Comparateur des offres Électricité & Gaz'));
   ap(hd,mk('p','page-sub',"Trouvez l'offre la moins chère selon votre profil en 2 minutes"));
   ap(root,hd);
 

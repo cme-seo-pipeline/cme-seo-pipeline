@@ -518,6 +518,9 @@ def scraper_concurrents(silos_a_traiter, search_api_key):
                 count += 1
 
     df_market = pd.DataFrame(all_market_data)
+    if df_market.empty:
+        print("⚠️ Aucun resultat de scraping retenu (filtrage liste noire trop restrictif ou requetes sans resultats) — DataFrame vide retournee, le run continue sans donnees concurrentes pour ce lot")
+        return pd.DataFrame(columns=['Requête_Niche', 'Silo', 'Sous-Silo', 'Position', 'Concurrent', 'URL'])
     df_market = df_market.groupby(['Silo', 'Sous-Silo']).head(5)
     return df_market
 
