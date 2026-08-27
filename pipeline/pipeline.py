@@ -1221,6 +1221,128 @@ def auditer_et_corriger_articles(client_bq, config, wp_config):
     return {"audites": nb_audites, "corriges": nb_corriges}
 
 
+def normaliser_url(url):
+    """Normalise une URL pour comparaison stable : protocole et www retires,
+    slash final retire, minuscules. Doit rester identique a la logique
+    utilisee cote SQL dans la vue seo_opportunities."""
+    import re as re_mod
+    if not url:
+        return ""
+    u = re_mod.sub(r'^https?://(www\.)?', '', url.strip().lower())
+    u = re_mod.sub(r'/$', '', u)
+    return u
+
+
+def rafraichir_wp_url_mapping(client_bq):
+    """CHANTIER GROWTH ENGINEERING : reconstruit la table de correspondance
+    URL -> post_id WordPress, source de verite pour toute jointure future
+    (au lieu de comparer des URLs brutes, fragiles face aux restructurations
+    de site). Interroge directement l'API WordPress (etat reel actuel),
+    pagine sur tous les articles publies, puis remplace entierement la
+    table (WRITE_TRUNCATE — cette table reflete l'etat actuel, pas un
+    historique)."""
+    print("🔗 RAFRAICHISSEMENT MAPPING URL → POST_ID...")
+    lignes = []
+    page = 1
+    try:
+        while True:
+            r = requests.get(
+                "https://www.comprendre-mon-energie.fr/wp-json/wp/v2/posts",
+                params={"per_page": 100, "page": page, "status": "publish", "_fields": "id,link"},
+                timeout=30
+            )
+            if r.status_code != 200:
+                break
+            data = r.json()
+            if not data:
+                break
+            for post in data:
+                url = post.get('link', '')
+                lignes.append({
+                    "post_id": post.get('id'),
+                    "url": url,
+                    "url_normalized": normaliser_url(url),
+                    "date_maj": datetime.now().isoformat(),
+                })
+            page += 1
+    except Exception as e:
+        print(f"  ⚠️ Erreur recuperation posts WordPress : {e}")
+        if not lignes:
+            return 0
+
+    if not lignes:
+        print("  ⚠️ Aucun post recupere, mapping non mis a jour")
+        return 0
+
+    # CHANTIER GROWTH ENGINEERING (suite) : resolution des anciennes URLs.
+    # Google Search Console peut encore rapporter des URLs d'avant une
+    # restructuration du site (l'index Google met du temps a se mettre a
+    # jour). WordPress redirige proprement (301) ces anciennes URLs vers
+    # les nouvelles, mais notre mapping ne le savait pas jusqu'ici. On
+    # suit ces redirections pour ajouter ces anciennes URLs comme alias
+    # du meme post_id, dans le meme lot que celui charge plus bas.
+    try:
+        urls_connues = {l['url_normalized'] for l in lignes}
+        df_gsc_urls = client_bq.query(f"""
+        SELECT DISTINCT page AS url
+        FROM `{PROJECT_ID}.01_raw.gsc_queries`
+        WHERE date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
+        """).to_dataframe()
+
+        nb_redirects_resolus = 0
+        for _, row_gsc in df_gsc_urls.iterrows():
+            url_gsc = row_gsc['url']
+            url_gsc_norm = normaliser_url(url_gsc)
+            if not url_gsc_norm or url_gsc_norm in urls_connues:
+                continue
+            try:
+                r_head = requests.head(url_gsc, allow_redirects=True, timeout=10)
+                url_finale_norm = normaliser_url(r_head.url)
+                if url_finale_norm == url_gsc_norm:
+                    continue
+                match = next((l for l in lignes if l['url_normalized'] == url_finale_norm), None)
+                if match:
+                    lignes.append({
+                        "post_id": match['post_id'],
+                        "url": url_gsc,
+                        "url_normalized": url_gsc_norm,
+                        "date_maj": datetime.now().isoformat(),
+                    })
+                    urls_connues.add(url_gsc_norm)
+                    nb_redirects_resolus += 1
+            except Exception:
+                continue
+        if nb_redirects_resolus:
+            print(f"  🔀 {nb_redirects_resolus} ancienne(s) URL(s) reliee(s) a un post_id via redirection")
+    except Exception as e:
+        print(f"  ⚠️ Erreur resolution redirections : {e}")
+
+    try:
+        from google.cloud import bigquery as bq_module
+        table_ref = f"{PROJECT_ID}.02_cleaned.wp_url_mapping"
+        job_config = bq_module.LoadJobConfig(
+            write_disposition="WRITE_TRUNCATE",
+            schema=[
+                bq_module.SchemaField("post_id", "INTEGER"),
+                bq_module.SchemaField("url", "STRING"),
+                bq_module.SchemaField("url_normalized", "STRING"),
+                bq_module.SchemaField("date_maj", "TIMESTAMP"),
+            ],
+        )
+        # Job de chargement (remplacement atomique complet) plutot que
+        # DELETE + insertion en streaming : evite le blocage "streaming
+        # buffer" de BigQuery quand la table vient d'etre rafraichie
+        # recemment (le DELETE echoue silencieusement dans ce cas).
+        load_job = client_bq.load_table_from_json(lignes, table_ref, job_config=job_config)
+        load_job.result()
+        print(f"  ✅ {len(lignes)} correspondances URL → post_id mises a jour (remplacement complet)")
+    except Exception as e:
+        print(f"  ⚠️ Erreur ecriture BigQuery : {e}")
+        return 0
+
+    return len(lignes)
+
+
 def rafraichir_indicateurs_reglementaires(client_bq):
     """Recupere les dernieres valeurs officielles connues (CRE Gaz/Elec,
     ANAH Aides) depuis les sources officielles et les insere dans
