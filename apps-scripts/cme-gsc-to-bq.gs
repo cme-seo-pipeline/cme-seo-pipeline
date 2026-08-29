@@ -8,8 +8,10 @@
  * 4. Exécuter syncLast30Days() pour le backfill initial
  * 5. Déclencheurs → Ajouter → syncQuotidien → Quotidien 03h00
  * ═══════════════════════════════════════════════════════════════
+ * AUTHENTIFICATION : compte de service (cme-auth.gs), plus de
+ * renouvellement hebdomadaire de consentement necessaire.
+ * ═══════════════════════════════════════════════════════════════
  */
-
 // ── Configuration ──────────────────────────────────────────────
 var CFG = {
   SITE_URL:   'https://www.comprendre-mon-energie.fr/',
@@ -19,16 +21,33 @@ var CFG = {
   GSC_LAG:    3,    // jours de délai GSC
   BATCH_SIZE: 500   // lignes par batch BQ
 };
-
 // Mapping slug URL → nom silo (clé = 1er segment après le domaine)
 var SILO_MAP = {
-  'gaz':                    '1. Gaz',
-  'renovation-energetique': '2. Renovation Energetique',
-  'aide-energetique':       '3. Aide Energetique',
-  'solaire':                '4. Solaire',
-  'electricite':            '5. Electricite'
+  // Slugs principaux
+  'gaz':                                '1. Gaz',
+  'renovation-energetique':             '2. Renovation Energetique',
+  'aide-energetique':                   '3. Aide Energetique',
+  'solaire':                            '4. Solaire',
+  'electricite':                        '5. Electricite',
+  // Pages racine sans silo dans l URL
+  'attestation-de-contrat-delectricite':'5. Electricite',
+  'comprendre-sa-facture-delectricite': '5. Electricite',
+  'comparateur-doffres-electricite':    '5. Electricite',
+  'chauffage-gaz':                      '1. Gaz',
+  'cheque-energie-2026':                '3. Aide Energetique',
+  'aide-etat-thermostat-connecte':      '3. Aide Energetique'
 };
-
+// Fallback : détection par mot-clé dans le slug
+function detectSilo(slug) {
+  if (!slug) return '';
+  var s = slug.toLowerCase();
+  if (s.includes('electr'))  return '5. Electricite';
+  if (s.includes('gaz'))     return '1. Gaz';
+  if (s.includes('solaire') || s.includes('photov')) return '4. Solaire';
+  if (s.includes('aide') || s.includes('prime') || s.includes('cheque')) return '3. Aide Energetique';
+  if (s.includes('renov') || s.includes('isol') || s.includes('chauf')) return '2. Renovation Energetique';
+  return slug; // inconnu → garder le slug brut
+}
 // ── Point d'entrée quotidien ──────────────────────────────────
 function syncQuotidien() {
   // Hier uniquement (évite les doublons avec backfill)
@@ -37,7 +56,6 @@ function syncQuotidien() {
   var dateStr = formatDate(d);
   syncPeriode(dateStr, dateStr);
 }
-
 // ── Backfill 30 jours (lancer une fois manuellement) ─────────
 function syncLast30Days() {
   var end = new Date();
@@ -46,7 +64,6 @@ function syncLast30Days() {
   start.setDate(start.getDate() - 29);
   syncPeriode(formatDate(start), formatDate(end));
 }
-
 // ── Backfill 90 jours (historique complet) ────────────────────
 function syncLast90Days() {
   var end = new Date();
@@ -55,19 +72,15 @@ function syncLast90Days() {
   start.setDate(start.getDate() - 89);
   syncPeriode(formatDate(start), formatDate(end));
 }
-
 // ── Moteur de synchronisation ─────────────────────────────────
 function syncPeriode(startDate, endDate) {
   Logger.log('=== CME GSC Sync : ' + startDate + ' → ' + endDate + ' ===');
-
   var rows = fetchGSC(startDate, endDate);
   Logger.log('Lignes GSC brutes : ' + rows.length);
-
   if (!rows.length) {
     Logger.log('Aucune donnée pour cette période.');
     return;
   }
-
   // Transformer + enrichir
   var bqRows = rows.map(function(r) {
     var query   = r.keys[0];
@@ -93,7 +106,6 @@ function syncPeriode(startDate, endDate) {
       }
     };
   });
-
   // Insérer dans BQ par batches
   var total = 0, errors = 0;
   for (var i = 0; i < bqRows.length; i += CFG.BATCH_SIZE) {
@@ -102,20 +114,17 @@ function syncPeriode(startDate, endDate) {
     if (ok) total += batch.length;
     else errors += batch.length;
   }
-
   Logger.log('✅ Insertées : ' + total + ' | ❌ Erreurs : ' + errors);
 }
-
 // ── Appel API Google Search Console ──────────────────────────
 function fetchGSC(startDate, endDate) {
-  var token = ScriptApp.getOAuthToken();
+  var token = getServiceAccountToken_();
   var url   = 'https://www.googleapis.com/webmasters/v3/sites/'
               + encodeURIComponent(CFG.SITE_URL)
               + '/searchAnalytics/query';
   var all   = [];
   var start = 0;
   var limit = 5000;
-
   // Pagination : GSC retourne max 25000 lignes par appel
   do {
     var payload = {
@@ -143,31 +152,26 @@ function fetchGSC(startDate, endDate) {
     start += rows.length;
     if (rows.length < limit) break; // Dernière page
   } while (rows.length === limit);
-
   return all;
 }
-
 // ── Extraction silo / sous-silo depuis l'URL ─────────────────
 function parseUrl(url) {
   var path = url
     .replace('https://www.comprendre-mon-energie.fr/', '')
     .replace('https://comprendre-mon-energie.fr/', '')
     .replace(/\/$/, '');
-  var parts = path.split('/').filter(function(p) { return p.length > 0; });
-  var siloSlug   = parts[0] || '';
-  var sousSilo   = parts[1] || '';
-  return {
-    silo:     SILO_MAP[siloSlug] || siloSlug,
-    sousSilo: sousSilo
-  };
+  var parts = path.split('/').filter(function(p){ return p.length > 0; });
+  var siloSlug  = parts[0] || '';
+  var sousSilo  = parts[1] || '';
+  var siloName  = SILO_MAP[siloSlug] || detectSilo(siloSlug);
+  return { silo: siloName, sousSilo: sousSilo };
 }
-
 // ── Insertion BigQuery (streaming insert) ─────────────────────
 function insertBQ(rows) {
   var url   = 'https://bigquery.googleapis.com/bigquery/v2/projects/'
               + CFG.PROJECT_ID + '/datasets/' + CFG.DATASET_ID
               + '/tables/' + CFG.TABLE_ID + '/insertAll';
-  var token = ScriptApp.getOAuthToken();
+  var token = getServiceAccountToken_();
   var resp  = UrlFetchApp.fetch(url, {
     method:             'post',
     contentType:        'application/json',
@@ -190,12 +194,11 @@ function insertBQ(rows) {
   }
   return true;
 }
-
 // ── Créer la table BQ (lancer une fois via setup()) ──────────
 function setup() {
   var url   = 'https://bigquery.googleapis.com/bigquery/v2/projects/'
               + CFG.PROJECT_ID + '/datasets/' + CFG.DATASET_ID + '/tables';
-  var token = ScriptApp.getOAuthToken();
+  var token = getServiceAccountToken_();
   var resp  = UrlFetchApp.fetch(url, {
     method:      'post',
     contentType: 'application/json',
@@ -227,15 +230,13 @@ function setup() {
   else if (code === 409) Logger.log('ℹ️  Table déjà existante');
   else Logger.log('❌ Erreur : ' + code + ' — ' + resp.getContentText().substring(0, 200));
 }
-
 // ── Utilitaire date ───────────────────────────────────────────
 function formatDate(d) {
   return Utilities.formatDate(d, 'UTC', 'yyyy-MM-dd');
 }
-
 // ── Vérification santé (test rapide) ─────────────────────────
 function healthCheck() {
-  Logger.log('Token OK : ' + (ScriptApp.getOAuthToken() ? 'oui' : 'non'));
+  Logger.log('Token OK : ' + (getServiceAccountToken_() ? 'oui' : 'non'));
   Logger.log('Site : ' + CFG.SITE_URL);
   var yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 4);
