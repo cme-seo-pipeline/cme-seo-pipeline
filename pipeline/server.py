@@ -4,6 +4,7 @@
 # ============================================================
 import os
 import threading
+import requests
 from datetime import datetime
 from flask import Flask, jsonify, request
 from pipeline import run_pipeline
@@ -396,6 +397,54 @@ def auditer_articles():
     thread.start()
 
     return jsonify({"status": "ok", "audit": "declenche en arriere-plan"}), 200
+
+
+@app.route('/test-ssh-o2switch', methods=['GET'])
+def test_ssh_o2switch():
+    """
+    VALIDATION CHANTIER RESEAU : confirme qu'une connexion SSH reelle vers
+    o2switch fonctionne DEPUIS Cloud Run (pas seulement depuis Cloud Shell),
+    via le connecteur VPC + Cloud NAT + IP fixe. Endpoint temporaire de
+    diagnostic (pas destine a rester en production).
+    """
+    import io
+    import paramiko
+
+    try:
+        cle = os.environ.get("O2SWITCH_SSH_PRIVATE_KEY", "")
+        passphrase = os.environ.get("O2SWITCH_SSH_PASSPHRASE", "")
+        if not cle or not passphrase:
+            raise Exception("O2SWITCH_SSH_PRIVATE_KEY ou O2SWITCH_SSH_PASSPHRASE absent des variables d'environnement")
+        pkey = paramiko.RSAKey.from_private_key(io.StringIO(cle), password=passphrase)
+
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(hostname="109.234.167.170", port=22, username="jolu5920",
+                        pkey=pkey, timeout=15)
+
+        wp_path = "/home/jolu5920/public_html/comprendre-mon-energie.com"
+        stdin, stdout, stderr = client.exec_command(f'wp --path="{wp_path}" core version')
+        resultat = stdout.read().decode().strip()
+        erreur = stderr.read().decode().strip()
+        client.close()
+
+        return jsonify({"status": "ok", "wp_version": resultat, "erreur": erreur or None}), 200
+    except Exception as e:
+        return jsonify({"status": "erreur", "detail": str(e)}), 500
+
+
+@app.route('/test-ip-sortante', methods=['GET'])
+def test_ip_sortante():
+    """
+    VERIFICATION CHANTIER RESEAU : confirme l'IP sortante reelle utilisee
+    par Cloud Run, pour valider le connecteur VPC + Cloud NAT. Endpoint
+    temporaire de diagnostic (pas destine a rester en production).
+    """
+    try:
+        r = requests.get("https://ifconfig.me", timeout=10)
+        return jsonify({"ip_sortante": r.text.strip()}), 200
+    except Exception as e:
+        return jsonify({"erreur": str(e)}), 500
 
 
 @app.route('/synchroniser-clarity', methods=['POST'])
