@@ -55,6 +55,7 @@ OPENAI_CONFIG = {
 }
 
 SEARCH_API_KEY = os.environ.get("SEARCH_API_KEY", "")
+CLARITY_API_TOKEN = os.environ.get("CLARITY_API_TOKEN", "")
 FACEBOOK_CONFIG = {
     "page_id": os.environ.get("FACEBOOK_PAGE_ID", ""),
     "access_token": os.environ.get("FACEBOOK_PAGE_ACCESS_TOKEN", ""),
@@ -1399,6 +1400,59 @@ def rafraichir_leads_app_authentifies(client_bq):
         load_job = client_bq.load_table_from_json(lignes, table_ref, job_config=job_config)
         load_job.result()
         print(f"  ✅ {len(lignes)} leads app synchronises (remplacement complet)")
+    except Exception as e:
+        print(f"  ⚠️ Erreur ecriture BigQuery : {e}")
+        return 0
+
+    return len(lignes)
+
+
+def rafraichir_clarity_insights(client_bq):
+    """CHANTIER SOUVERAINETE SHELL : synchronise les insights Microsoft
+    Clarity (Data Export API) vers BigQuery. Limite API : 10 requetes/jour
+    par projet, max 3 jours de donnees par appel — on utilise numOfDays=1,
+    en phase avec un rafraichissement quotidien unique."""
+    print("🔗 SYNCHRONISATION CLARITY INSIGHTS...")
+    if not CLARITY_API_TOKEN:
+        print("  ⚠️ CLARITY_API_TOKEN absent, synchronisation ignoree")
+        return 0
+    try:
+        resp = requests.get(
+            "https://www.clarity.ms/export-data/api/v1/project-live-insights",
+            headers={"Authorization": f"Bearer {CLARITY_API_TOKEN}"},
+            params={"numOfDays": 1},
+            timeout=30
+        )
+        if resp.status_code != 200:
+            print(f"  ⚠️ Erreur API Clarity {resp.status_code} : {resp.text[:200]}")
+            return 0
+        metrics = resp.json()
+    except Exception as e:
+        print(f"  ⚠️ Erreur appel API Clarity : {e}")
+        return 0
+
+    if not metrics:
+        print("  ℹ️ Aucune metrique retournee")
+        return 0
+
+    date_sync = datetime.now().date().isoformat()
+    lignes = []
+    for m in metrics:
+        lignes.append({
+            "date_sync": date_sync,
+            "metric_name": m.get("metricName", ""),
+            "information": json.dumps(m.get("information", []), ensure_ascii=False),
+            "synced_at": datetime.now().isoformat(),
+        })
+
+    try:
+        errors = client_bq.insert_rows_json(
+            f"{PROJECT_ID}.04_pipeline_seo.clarity_insights_quotidien", lignes
+        )
+        if errors:
+            print(f"  ⚠️ Erreurs insertion BQ : {errors}")
+            return 0
+        print(f"  ✅ {len(lignes)} metriques Clarity synchronisees")
     except Exception as e:
         print(f"  ⚠️ Erreur ecriture BigQuery : {e}")
         return 0
