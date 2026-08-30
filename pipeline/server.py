@@ -398,6 +398,29 @@ def auditer_articles():
     return jsonify({"status": "ok", "audit": "declenche en arriere-plan"}), 200
 
 
+@app.route('/synchroniser-leads-app', methods=['POST'])
+def synchroniser_leads_app():
+    """
+    CHANTIER SOUVERAINETE SHELL : synchronise les leads des utilisateurs
+    connectes a l'app (Firestore) vers BigQuery (leads_app_authentifies).
+    """
+    from pipeline import rafraichir_leads_app_authentifies, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            nb = rafraichir_leads_app_authentifies(client_bq)
+            print(f"✅ Sync leads app terminee : {nb} leads")
+        except Exception as e:
+            print(f"❌ Erreur sync leads app : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "sync": "declenche en arriere-plan"}), 200
+
+
 @app.route('/rafraichir-mapping-urls', methods=['POST'])
 def rafraichir_mapping_urls():
     """
