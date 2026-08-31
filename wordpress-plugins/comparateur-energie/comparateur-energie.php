@@ -793,6 +793,16 @@ function showLeadSuccess(){
       economie_estimee:ctx.economie||0,
       details:{energie:ctx.energie||'',fournisseur:ctx.fournisseur||'',offre:ctx.offre||'',kwh:ctx.kwh||0,option_tarifaire:ctx.option_tarifaire||''}
     };
+    // CHANTIER G.1 : evenement de conversion fiable, envoye au moment reel
+    // du succes — independant de QUEL bouton/CTA a amene le visiteur ici
+    // (article, footer, menu flottant...), et independant du statut app.
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({
+      'event':'generate_lead',
+      'tool':'comparateur-energie',
+      'value':ctx.economie||0,
+      'source_post_id':srcPost
+    });
     if(window.CME_APP_TOKEN){
       fetch('https://cme-client-api-217943559750.europe-west1.run.app/leads',{
         method:'POST',

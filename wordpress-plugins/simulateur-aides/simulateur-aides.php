@@ -877,6 +877,14 @@ function showLeadSuccess(){
       economie_estimee:0,
       details:{profil:ctx.profil||'',travaux:ctx.travaux||'',montant_mpr:ctx.montant_mpr||0,montant_cee:ctx.montant_cee||0,reste_a_charge:ctx.reste_a_charge||0,budget:ctx.budget||0}
     };
+    // CHANTIER G.1 : evenement de conversion fiable, independant du CTA source
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({
+      'event':'generate_lead',
+      'tool':'aides-renovation',
+      'value':ctx.total_aides||0,
+      'source_post_id':srcPost
+    });
     if(window.CME_APP_TOKEN){
       fetch('https://cme-client-api-217943559750.europe-west1.run.app/leads',{
         method:'POST',

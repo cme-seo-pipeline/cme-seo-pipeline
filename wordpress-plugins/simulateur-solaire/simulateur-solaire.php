@@ -1694,6 +1694,14 @@ function showSuccess(){
       economie_estimee:R.eco,
       details:{kwc:R.kwc,nb_panneaux:R.nb,production:R.prod,roi:R.roi,co2:R.co2}
     };
+    // CHANTIER G.1 : evenement de conversion fiable, independant du CTA source
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({
+      'event':'generate_lead',
+      'tool':'solaire',
+      'value':R.eco||0,
+      'source_post_id':srcPost
+    });
     if(window.CME_APP_TOKEN){
       fetch('https://cme-client-api-217943559750.europe-west1.run.app/leads',{
         method:'POST',
