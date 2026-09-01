@@ -582,6 +582,26 @@ def agent_orcaas_seo_technique_endpoint():
     return jsonify({"status": "ok", "agent": "declenche en arriere-plan"}), 200
 
 
+@app.route('/agent-orcaas-evaluer', methods=['POST'])
+def agent_orcaas_evaluer_endpoint():
+    """AGENT ORCAAS : evalue l'impact reel des corrections passees (GSC avant/apres)."""
+    from pipeline import agent_orcaas_evaluer_impact, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            nb = agent_orcaas_evaluer_impact(client_bq)
+            print(f"✅ Evaluation ORCAAS terminee : {nb} evaluations")
+        except Exception as e:
+            print(f"❌ Erreur evaluation ORCAAS : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "evaluation": "declenchee en arriere-plan"}), 200
+
+
 @app.route('/auditer-site-technique', methods=['POST'])
 def auditer_site_technique_endpoint():
     """CHANTIER G.3 : lance l'audit technique complet du site (robot maison)."""
