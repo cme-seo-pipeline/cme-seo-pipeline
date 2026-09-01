@@ -541,6 +541,46 @@ def synchroniser_clarity_par_page():
     return jsonify({"status": "ok", "sync": "declenche en arriere-plan"}), 200
 
 
+@app.route('/synchroniser-rankmath', methods=['POST'])
+def synchroniser_rankmath_endpoint():
+    """CHANTIER G.3 : synchronise les donnees SEO RankMath vers BigQuery."""
+    from pipeline import synchroniser_rankmath, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            nb = synchroniser_rankmath(client_bq)
+            print(f"✅ Sync RankMath terminee : {nb} lignes")
+        except Exception as e:
+            print(f"❌ Erreur sync RankMath : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "sync": "declenche en arriere-plan"}), 200
+
+
+@app.route('/auditer-site-technique', methods=['POST'])
+def auditer_site_technique_endpoint():
+    """CHANTIER G.3 : lance l'audit technique complet du site (robot maison)."""
+    from pipeline import auditer_site_technique, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            nb = auditer_site_technique(client_bq)
+            print(f"✅ Audit technique termine : {nb} pages")
+        except Exception as e:
+            print(f"❌ Erreur audit technique : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "audit": "declenche en arriere-plan"}), 200
+
+
 @app.route('/synchroniser-clarity', methods=['POST'])
 def synchroniser_clarity():
     """

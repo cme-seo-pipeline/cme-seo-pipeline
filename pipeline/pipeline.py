@@ -1244,32 +1244,39 @@ def rafraichir_wp_url_mapping(client_bq):
     historique)."""
     print("🔗 RAFRAICHISSEMENT MAPPING URL → POST_ID...")
     lignes = []
-    page = 1
-    try:
-        while True:
-            r = requests.get(
-                "https://www.comprendre-mon-energie.fr/wp-json/wp/v2/posts",
-                params={"per_page": 100, "page": page, "status": "publish", "_fields": "id,link"},
-                timeout=30
-            )
-            if r.status_code != 200:
-                break
-            data = r.json()
-            if not data:
-                break
-            for post in data:
-                url = post.get('link', '')
-                lignes.append({
-                    "post_id": post.get('id'),
-                    "url": url,
-                    "url_normalized": normaliser_url(url),
-                    "date_maj": datetime.now().isoformat(),
-                })
-            page += 1
-    except Exception as e:
-        print(f"  ⚠️ Erreur recuperation posts WordPress : {e}")
-        if not lignes:
-            return 0
+    # CHANTIER G.3 (correctif decouvert lors de l'audit technique) : les
+    # pages WordPress statiques (accueil, outils comparateur/aides/solaire,
+    # demande-confirmee...) sont un TYPE DE CONTENU DIFFERENT des articles
+    # de blog dans l'API REST WordPress (endpoint /pages, pas /posts).
+    # Elles etaient absentes du mapping, cassant silencieusement la
+    # resolution des leads generes directement depuis les pages outils.
+    for type_contenu in ("posts", "pages"):
+        page_num = 1
+        try:
+            while True:
+                r = requests.get(
+                    f"https://www.comprendre-mon-energie.fr/wp-json/wp/v2/{type_contenu}",
+                    params={"per_page": 100, "page": page_num, "status": "publish", "_fields": "id,link"},
+                    timeout=30
+                )
+                if r.status_code != 200:
+                    break
+                data = r.json()
+                if not data:
+                    break
+                for post in data:
+                    url = post.get('link', '')
+                    lignes.append({
+                        "post_id": post.get('id'),
+                        "url": url,
+                        "url_normalized": normaliser_url(url),
+                        "date_maj": datetime.now().isoformat(),
+                    })
+                page_num += 1
+        except Exception as e:
+            print(f"  ⚠️ Erreur recuperation {type_contenu} WordPress : {e}")
+    if not lignes:
+        return 0
 
     if not lignes:
         print("  ⚠️ Aucun post recupere, mapping non mis a jour")
@@ -1516,6 +1523,173 @@ def rafraichir_clarity_par_page(client_bq):
             print(f"  ⚠️ Erreurs insertion BQ : {errors}")
             return 0
         print(f"  ✅ {len(lignes)} lignes Clarity par page synchronisees")
+    except Exception as e:
+        print(f"  ⚠️ Erreur ecriture BigQuery : {e}")
+        return 0
+
+    return len(lignes)
+
+
+def auditer_site_technique(client_bq):
+    """CHANTIER G.3 : robot d'audit technique maison. Verifie chaque page
+    connue (wp_url_mapping) : code de reponse, chaine de redirection,
+    titre/meta/H1. Remplace Screaming Frog (licence + VM ecartees, decision
+    du 31/08) — s'appuie sur les 437 URLs deja connues, pas de decouverte
+    par crawl necessaire."""
+    print("🔗 AUDIT TECHNIQUE DU SITE...")
+    try:
+        query = f"SELECT post_id, url FROM `{PROJECT_ID}.02_cleaned.wp_url_mapping`"
+        df = client_bq.query(query).to_dataframe()
+    except Exception as e:
+        print(f"  ⚠️ Erreur lecture wp_url_mapping : {e}")
+        return 0
+
+    lignes = []
+    for _, row in df.iterrows():
+        post_id = int(row['post_id'])
+        url = row['url']
+        entree = {
+            "post_id": post_id, "url": url, "status_code": None,
+            "url_finale": None, "nb_redirections": 0,
+            "titre": None, "titre_longueur": None,
+            "meta_description": None, "meta_description_longueur": None,
+            "h1_liste": None, "nb_h1": None,
+            "erreur": None, "audite_le": datetime.now().isoformat(),
+        }
+        try:
+            resp = requests.get(url, timeout=15, allow_redirects=True)
+            entree["status_code"] = resp.status_code
+            entree["url_finale"] = resp.url
+            entree["nb_redirections"] = len(resp.history)
+            if resp.status_code == 200:
+                soup = BeautifulSoup(resp.text, 'html.parser')
+                titre_tag = soup.find('title')
+                titre = titre_tag.get_text().strip() if titre_tag else None
+                entree["titre"] = titre
+                entree["titre_longueur"] = len(titre) if titre else 0
+                meta_tag = soup.find('meta', attrs={'name': 'description'})
+                meta = meta_tag.get('content', '').strip() if meta_tag else None
+                entree["meta_description"] = meta
+                entree["meta_description_longueur"] = len(meta) if meta else 0
+                h1_tags = soup.find_all('h1')
+                h1_textes = [h.get_text().strip() for h in h1_tags]
+                entree["h1_liste"] = json.dumps(h1_textes, ensure_ascii=False)
+                entree["nb_h1"] = len(h1_textes)
+        except Exception as e:
+            entree["erreur"] = str(e)[:200]
+        lignes.append(entree)
+
+    if not lignes:
+        print("  ℹ️ Aucune page a auditer")
+        return 0
+
+    try:
+        table_ref = f"{PROJECT_ID}.04_pipeline_seo.audit_technique_site"
+        job_config = bigquery.LoadJobConfig(
+            write_disposition="WRITE_TRUNCATE",
+            schema=[
+                bigquery.SchemaField("post_id", "INTEGER"),
+                bigquery.SchemaField("url", "STRING"),
+                bigquery.SchemaField("status_code", "INTEGER"),
+                bigquery.SchemaField("url_finale", "STRING"),
+                bigquery.SchemaField("nb_redirections", "INTEGER"),
+                bigquery.SchemaField("titre", "STRING"),
+                bigquery.SchemaField("titre_longueur", "INTEGER"),
+                bigquery.SchemaField("meta_description", "STRING"),
+                bigquery.SchemaField("meta_description_longueur", "INTEGER"),
+                bigquery.SchemaField("h1_liste", "STRING"),
+                bigquery.SchemaField("nb_h1", "INTEGER"),
+                bigquery.SchemaField("erreur", "STRING"),
+                bigquery.SchemaField("audite_le", "TIMESTAMP"),
+            ],
+        )
+        load_job = client_bq.load_table_from_json(lignes, table_ref, job_config=job_config)
+        load_job.result()
+        print(f"  ✅ {len(lignes)} pages auditees (remplacement complet)")
+    except Exception as e:
+        print(f"  ⚠️ Erreur ecriture BigQuery : {e}")
+        return 0
+
+    return len(lignes)
+
+
+def synchroniser_rankmath(client_bq):
+    """CHANTIER G.3 : recupere les donnees SEO RankMath (titre, description,
+    mot-cle cible) directement depuis la base WordPress via WP-CLI (SSH,
+    IP fixe) — plus rapide et plus fiable que des appels HTTP individuels."""
+    print("🔗 SYNCHRONISATION RANKMATH...")
+    import io
+    import paramiko
+
+    try:
+        cle = os.environ.get("O2SWITCH_SSH_PRIVATE_KEY", "")
+        passphrase = os.environ.get("O2SWITCH_SSH_PASSPHRASE", "")
+        pkey = paramiko.RSAKey.from_private_key(io.StringIO(cle), password=passphrase)
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(hostname="109.234.167.170", port=22, username="jolu5920", pkey=pkey, timeout=15)
+
+        wp_path = "/home/jolu5920/public_html/comprendre-mon-energie.com"
+        sql = ("SELECT p.ID, "
+               "MAX(CASE WHEN pm.meta_key='rank_math_title' THEN pm.meta_value END), "
+               "MAX(CASE WHEN pm.meta_key='rank_math_description' THEN pm.meta_value END), "
+               "MAX(CASE WHEN pm.meta_key='rank_math_focus_keyword' THEN pm.meta_value END) "
+               "FROM wpwn_posts p LEFT JOIN wpwn_postmeta pm ON p.ID=pm.post_id "
+               "AND pm.meta_key IN ('rank_math_title','rank_math_description','rank_math_focus_keyword') "
+               "WHERE p.post_status='publish' AND p.post_type IN ('post','page') GROUP BY p.ID")
+        cmd = f'wp --path="{wp_path}" db query "{sql}" --skip-column-names'
+        stdin, stdout, stderr = client.exec_command(cmd)
+        resultat = stdout.read().decode()
+        erreur_ssh = stderr.read().decode()
+        client.close()
+
+        if erreur_ssh:
+            print(f"  ⚠️ Erreur WP-CLI : {erreur_ssh[:300]}")
+            return 0
+    except Exception as e:
+        print(f"  ⚠️ Erreur connexion SSH : {e}")
+        return 0
+
+    lignes = []
+    for ligne in resultat.strip().split("\n"):
+        if not ligne.strip():
+            continue
+        parts = ligne.split("\t")
+        if not parts or not parts[0]:
+            continue
+        try:
+            post_id = int(parts[0])
+        except ValueError:
+            continue
+        def _val(i):
+            return parts[i] if len(parts) > i and parts[i] != "NULL" else None
+        lignes.append({
+            "post_id": post_id,
+            "rank_math_title": _val(1),
+            "rank_math_description": _val(2),
+            "rank_math_focus_keyword": _val(3),
+            "synced_at": datetime.now().isoformat(),
+        })
+
+    if not lignes:
+        print("  ℹ️ Aucune donnee RankMath recuperee")
+        return 0
+
+    try:
+        table_ref = f"{PROJECT_ID}.04_pipeline_seo.rankmath_seo_data"
+        job_config = bigquery.LoadJobConfig(
+            write_disposition="WRITE_TRUNCATE",
+            schema=[
+                bigquery.SchemaField("post_id", "INTEGER"),
+                bigquery.SchemaField("rank_math_title", "STRING"),
+                bigquery.SchemaField("rank_math_description", "STRING"),
+                bigquery.SchemaField("rank_math_focus_keyword", "STRING"),
+                bigquery.SchemaField("synced_at", "TIMESTAMP"),
+            ],
+        )
+        load_job = client_bq.load_table_from_json(lignes, table_ref, job_config=job_config)
+        load_job.result()
+        print(f"  ✅ {len(lignes)} lignes RankMath synchronisees")
     except Exception as e:
         print(f"  ⚠️ Erreur ecriture BigQuery : {e}")
         return 0
