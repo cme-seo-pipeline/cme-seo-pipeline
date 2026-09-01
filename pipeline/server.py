@@ -561,6 +561,27 @@ def synchroniser_rankmath_endpoint():
     return jsonify({"status": "ok", "sync": "declenche en arriere-plan"}), 200
 
 
+@app.route('/agent-orcaas-seo-technique', methods=['POST'])
+def agent_orcaas_seo_technique_endpoint():
+    """AGENT ORCAAS V1 : corrige titres/meta manquants ou dupliques,
+    controle total, genere un brief par intervention."""
+    from pipeline import agent_orcaas_seo_technique, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            nb = agent_orcaas_seo_technique(client_bq)
+            print(f"✅ Agent ORCAAS termine : {nb} corrections")
+        except Exception as e:
+            print(f"❌ Erreur agent ORCAAS : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "agent": "declenche en arriere-plan"}), 200
+
+
 @app.route('/auditer-site-technique', methods=['POST'])
 def auditer_site_technique_endpoint():
     """CHANTIER G.3 : lance l'audit technique complet du site (robot maison)."""
