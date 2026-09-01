@@ -12,6 +12,27 @@ from pipeline import run_pipeline
 app = Flask(__name__)
 
 
+CHEMINS_PUBLICS = {'/', '/orcaas', '/orcaas-dashboard-data', '/orcaas-chat'}
+ORCAAS_ACTION_SECRET = os.environ.get("ORCAAS_ACTION_SECRET", "")
+
+
+@app.before_request
+def verifier_secret_action():
+    """Protege tous les endpoints d'action (sync, audit, deploiement WP,
+    agent ORCAAS ecriture) par un secret partage -- necessaire car le
+    service est desormais public (plus de proxy Cloud Shell requis pour
+    les pages /orcaas). Les pages publiques (chat, dashboard, healthcheck)
+    restent librement accessibles."""
+    if request.path in CHEMINS_PUBLICS:
+        return None
+    if request.method == 'OPTIONS':
+        return None
+    secret_recu = request.headers.get('X-Orcaas-Secret', '')
+    if not ORCAAS_ACTION_SECRET or secret_recu != ORCAAS_ACTION_SECRET:
+        return jsonify({"erreur": "Non autorise -- en-tete X-Orcaas-Secret requis"}), 401
+    return None
+
+
 @app.route('/', methods=['GET'])
 def health_check():
     return jsonify({
@@ -620,17 +641,24 @@ def orcaas_chat_endpoint():
         return jsonify({"erreur": str(e)}), 500
 
 
-ORCAAS_CHAT_HTML = """<!DOCTYPE html>
+ORCAAS_APP_HTML = """<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ORCAAS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
+  * { box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; }
   header { background: #1e3a5f; padding: 16px 24px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
   header h1 { margin: 0; font-size: 20px; }
   header .badge { background: #2563eb; padding: 4px 10px; border-radius: 12px; font-size: 12px; }
+  nav { display: flex; gap: 4px; margin-left: 24px; }
+  nav button { background: transparent; border: none; color: #94a3b8; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
+  nav button.actif { background: #2563eb; color: white; }
+
+  #vue-chat { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
   #chat { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
   .msg { max-width: 70%; padding: 12px 16px; border-radius: 12px; line-height: 1.5; white-space: pre-wrap; }
   .msg.user { align-self: flex-end; background: #2563eb; color: white; }
@@ -642,21 +670,80 @@ ORCAAS_CHAT_HTML = """<!DOCTYPE html>
   #send { padding: 12px 24px; border-radius: 8px; border: none; background: #2563eb; color: white; font-weight: 600; cursor: pointer; }
   #send:hover { background: #1d4ed8; }
   #send:disabled { opacity: .5; cursor: not-allowed; }
+
+  #vue-dashboard { flex: 1; overflow-y: auto; padding: 24px; display: none; }
+  #vue-dashboard.actif { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; max-width: 1400px; margin: 0 auto; }
+  .carte { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; }
+  .carte h2 { margin: 0 0 16px 0; font-size: 15px; color: #93c5fd; font-weight: 600; }
+  .vide { color: #64748b; font-size: 14px; text-align: center; padding: 40px 0; }
 </style>
 </head>
 <body>
 <header>
   <h1>ORCAAS</h1>
   <span class="badge">SEO Specialiste IA</span>
+  <nav>
+    <button id="onglet-chat" class="actif" onclick="afficherOnglet('chat')">Chat</button>
+    <button id="onglet-dashboard" onclick="afficherOnglet('dashboard')">Dashboard</button>
+  </nav>
 </header>
-<div id="chat">
-  <div class="msg orcaas">Bonjour, je suis ORCAAS. Posez-moi une question sur l'etat du site, mes dernieres actions, ou les resultats obtenus.</div>
+
+<div id="vue-chat">
+  <div id="chat">
+    <div class="msg orcaas">Bonjour, je suis ORCAAS. Posez-moi une question sur l'etat du site, mes dernieres actions, ou les resultats obtenus.</div>
+  </div>
+  <div id="input-zone">
+    <input type="text" id="question" placeholder="Posez votre question..." autocomplete="off" />
+    <button id="send">Envoyer</button>
+  </div>
 </div>
-<div id="input-zone">
-  <input type="text" id="question" placeholder="Posez votre question..." autocomplete="off" />
-  <button id="send">Envoyer</button>
+
+<div id="vue-dashboard">
+  <div class="carte">
+    <h2>Top pages par impressions (GSC, 30 derniers jours)</h2>
+    <canvas id="chartPages"></canvas>
+  </div>
+  <div class="carte">
+    <h2>Corrections ORCAAS par type de probleme</h2>
+    <canvas id="chartBriefs"></canvas>
+  </div>
+  <div class="carte">
+    <h2>Evaluations d'impact par verdict</h2>
+    <canvas id="chartEvals"></canvas>
+  </div>
+  <div class="carte">
+    <h2>Top 10 opportunites SEO (score)</h2>
+    <canvas id="chartOpportunites"></canvas>
+  </div>
+  <div class="carte">
+    <h2>Couverture RankMath (mot-cle cible)</h2>
+    <canvas id="chartRankmath"></canvas>
+  </div>
+  <div class="carte">
+    <h2>Sante technique du site (495 pages)</h2>
+    <canvas id="chartAudit"></canvas>
+  </div>
+  <div class="carte">
+    <h2>Leads par outil (tous canaux)</h2>
+    <canvas id="chartLeads"></canvas>
+  </div>
+  <div class="carte">
+    <h2>Publications par silo</h2>
+    <canvas id="chartPublications"></canvas>
+  </div>
 </div>
+
 <script>
+function afficherOnglet(nom) {
+  document.getElementById('onglet-chat').classList.toggle('actif', nom === 'chat');
+  document.getElementById('onglet-dashboard').classList.toggle('actif', nom === 'dashboard');
+  document.getElementById('vue-chat').style.display = nom === 'chat' ? 'flex' : 'none';
+  document.getElementById('vue-dashboard').classList.toggle('actif', nom === 'dashboard');
+  if (nom === 'dashboard' && !window.dashboardCharge) {
+    chargerDashboard();
+  }
+}
+
 const chat = document.getElementById('chat');
 const question = document.getElementById('question');
 const send = document.getElementById('send');
@@ -698,15 +785,153 @@ send.addEventListener('click', envoyer);
 question.addEventListener('keypress', function(e) {
   if (e.key === 'Enter') envoyer();
 });
+
+async function chargerDashboard() {
+  window.dashboardCharge = true;
+  try {
+    const res = await fetch('/orcaas-dashboard-data');
+    const donnees = await res.json();
+    dessinerGraphiques(donnees);
+  } catch (e) {
+    document.getElementById('vue-dashboard').innerHTML = '<div class="vide">Erreur de chargement : ' + e.message + '</div>';
+  }
+}
+
+function dessinerGraphiques(DONNEES) {
+  Chart.defaults.color = '#94a3b8';
+  Chart.defaults.borderColor = '#334155';
+
+  if (DONNEES.top_pages && DONNEES.top_pages.length > 0) {
+    new Chart(document.getElementById('chartPages'), {
+      type: 'bar',
+      data: {
+        labels: DONNEES.top_pages.map(p => p.url.length > 30 ? p.url.slice(0,30)+'...' : p.url),
+        datasets: [
+          { label: 'Impressions', data: DONNEES.top_pages.map(p => p.impressions), backgroundColor: '#2563eb' },
+          { label: 'Clics', data: DONNEES.top_pages.map(p => p.clics), backgroundColor: '#f59e0b' }
+        ]
+      },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { position: 'top' } } }
+    });
+  } else {
+    document.getElementById('chartPages').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+  }
+
+  if (DONNEES.briefs_par_probleme && DONNEES.briefs_par_probleme.length > 0) {
+    new Chart(document.getElementById('chartBriefs'), {
+      type: 'doughnut',
+      data: {
+        labels: DONNEES.briefs_par_probleme.map(b => b.probleme),
+        datasets: [{ data: DONNEES.briefs_par_probleme.map(b => b.nb), backgroundColor: ['#2563eb','#f59e0b','#16a34a','#dc2626','#7e22ce'] }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+  } else {
+    document.getElementById('chartBriefs').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+  }
+
+  if (DONNEES.evaluations_par_verdict && DONNEES.evaluations_par_verdict.length > 0) {
+    new Chart(document.getElementById('chartEvals'), {
+      type: 'doughnut',
+      data: {
+        labels: DONNEES.evaluations_par_verdict.map(v => v.verdict),
+        datasets: [{ data: DONNEES.evaluations_par_verdict.map(v => v.nb), backgroundColor: ['#64748b','#16a34a','#dc2626','#2563eb'] }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+  } else {
+    document.getElementById('chartEvals').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+  }
+
+  if (DONNEES.opportunites && DONNEES.opportunites.length > 0) {
+    new Chart(document.getElementById('chartOpportunites'), {
+      type: 'bar',
+      data: {
+        labels: DONNEES.opportunites.map(o => o.url.length > 25 ? o.url.slice(0,25)+'...' : o.url),
+        datasets: [{ label: 'Score opportunite', data: DONNEES.opportunites.map(o => o.score), backgroundColor: '#7e22ce' }]
+      },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } } }
+    });
+  } else {
+    document.getElementById('chartOpportunites').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+  }
+
+  if (DONNEES.rankmath_couverture) {
+    const rm = DONNEES.rankmath_couverture;
+    if ((rm.avec_mot_cle + rm.sans_mot_cle) > 0) {
+      new Chart(document.getElementById('chartRankmath'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Avec mot-cle cible', 'Sans mot-cle cible'],
+          datasets: [{ data: [rm.avec_mot_cle, rm.sans_mot_cle], backgroundColor: ['#16a34a', '#dc2626'] }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      });
+    } else {
+      document.getElementById('chartRankmath').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+    }
+  }
+
+  if (DONNEES.audit_technique && DONNEES.audit_technique.length > 0) {
+    new Chart(document.getElementById('chartAudit'), {
+      type: 'doughnut',
+      data: {
+        labels: DONNEES.audit_technique.map(a => a.categorie),
+        datasets: [{ data: DONNEES.audit_technique.map(a => a.nb), backgroundColor: ['#16a34a','#f59e0b','#dc2626','#64748b'] }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+  } else {
+    document.getElementById('chartAudit').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+  }
+
+  if (DONNEES.leads_par_outil && DONNEES.leads_par_outil.length > 0) {
+    new Chart(document.getElementById('chartLeads'), {
+      type: 'bar',
+      data: {
+        labels: DONNEES.leads_par_outil.map(l => l.outil),
+        datasets: [{ label: 'Leads', data: DONNEES.leads_par_outil.map(l => l.nb), backgroundColor: '#2563eb' }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+  } else {
+    document.getElementById('chartLeads').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+  }
+
+  if (DONNEES.publications_par_silo && DONNEES.publications_par_silo.length > 0) {
+    new Chart(document.getElementById('chartPublications'), {
+      type: 'bar',
+      data: {
+        labels: DONNEES.publications_par_silo.map(p => p.silo),
+        datasets: [{ label: 'Articles publies', data: DONNEES.publications_par_silo.map(p => p.nb), backgroundColor: '#f59e0b' }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+  } else {
+    document.getElementById('chartPublications').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+  }
+}
 </script>
 </body>
 </html>"""
 
 
+@app.route('/orcaas-dashboard-data', methods=['GET'])
+def orcaas_dashboard_data_endpoint():
+    """Donnees JSON du dashboard (page publique, appelee en arriere-plan par /orcaas)."""
+    from pipeline import agent_orcaas_donnees_dashboard, init_bigquery
+    try:
+        client_bq = init_bigquery()
+        donnees = agent_orcaas_donnees_dashboard(client_bq)
+        return jsonify(donnees), 200
+    except Exception as e:
+        return jsonify({"top_pages": [], "briefs_par_probleme": [], "evaluations_par_verdict": [], "erreur": str(e)}), 500
+
+
 @app.route('/orcaas', methods=['GET'])
 def orcaas_chat_page():
-    """Page visuelle de conversation avec ORCAAS."""
-    return ORCAAS_CHAT_HTML
+    """Application unique ORCAAS : onglets Chat + Dashboard."""
+    return ORCAAS_APP_HTML
 
 
 @app.route('/auditer-site-technique', methods=['POST'])
