@@ -2107,9 +2107,18 @@ def agent_orcaas_donnees_dashboard(client_bq):
 
     resultat["opportunites"] = []
     try:
+        # CORRECTIF : seo_opportunities a une ligne par requete de recherche,
+        # pas par page -- une meme page ciblee par plusieurs requetes
+        # apparaissait donc plusieurs fois dans le dashboard. On agrege
+        # desormais par URL (meilleur score, meilleure position, impressions
+        # cumulees) pour une vraie vue par page.
         df_opp = client_bq.query(f"""
-            SELECT url, silo, score_opportunite, position, impressions
+            SELECT url, ANY_VALUE(silo) AS silo,
+                   MAX(score_opportunite) AS score_opportunite,
+                   MIN(position) AS position,
+                   SUM(impressions) AS impressions
             FROM `{PROJECT_ID}.03_final.seo_opportunities`
+            GROUP BY url
             ORDER BY score_opportunite DESC LIMIT 10
         """).to_dataframe()
         for _, r in df_opp.iterrows():
