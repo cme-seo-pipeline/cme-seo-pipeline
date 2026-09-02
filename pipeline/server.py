@@ -676,6 +676,12 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   .carte { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; }
   .carte h2 { margin: 0 0 16px 0; font-size: 15px; color: #93c5fd; font-weight: 600; }
   .vide { color: #64748b; font-size: 14px; text-align: center; padding: 40px 0; }
+  #barre-filtre { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px 20px; }
+  #barre-filtre label { font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 6px; }
+  #barre-filtre input[type=date] { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+  #barre-filtre button { background: #2563eb; border: none; color: white; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; }
+  #barre-filtre button:hover { background: #1d4ed8; }
+  #periode-affichee { font-size: 13px; color: #64748b; margin-left: auto; }
 </style>
 </head>
 <body>
@@ -699,8 +705,14 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
 </div>
 
 <div id="vue-dashboard">
+  <div id="barre-filtre">
+    <label>Du <input type="date" id="date-debut"></label>
+    <label>au <input type="date" id="date-fin"></label>
+    <button id="appliquer-filtre" onclick="rechargerAvecFiltre()">Appliquer</button>
+    <span id="periode-affichee"></span>
+  </div>
   <div class="carte">
-    <h2>Top pages par impressions (GSC, 30 derniers jours)</h2>
+    <h2>Top pages par impressions (GSC, periode selectionnee)</h2>
     <canvas id="chartPages"></canvas>
   </div>
   <div class="carte">
@@ -786,15 +798,47 @@ question.addEventListener('keypress', function(e) {
   if (e.key === 'Enter') envoyer();
 });
 
-async function chargerDashboard() {
+function datesParDefaut() {
+  const auj = new Date();
+  const il30j = new Date(auj);
+  il30j.setDate(il30j.getDate() - 30);
+  return { debut: il30j.toISOString().slice(0,10), fin: auj.toISOString().slice(0,10) };
+}
+
+async function chargerDashboard(dateDebut, dateFin) {
   window.dashboardCharge = true;
+  const defaut = datesParDefaut();
+  const db = dateDebut || defaut.debut;
+  const df = dateFin || defaut.fin;
+  document.getElementById('date-debut').value = db;
+  document.getElementById('date-fin').value = df;
   try {
-    const res = await fetch('/orcaas-dashboard-data');
+    const res = await fetch('/orcaas-dashboard-data?date_debut=' + db + '&date_fin=' + df);
     const donnees = await res.json();
+    document.getElementById('periode-affichee').textContent = 'Periode : ' + (donnees.date_debut || db) + ' au ' + (donnees.date_fin || df);
     dessinerGraphiques(donnees);
   } catch (e) {
     document.getElementById('vue-dashboard').innerHTML = '<div class="vide">Erreur de chargement : ' + e.message + '</div>';
   }
+}
+
+function rechargerAvecFiltre() {
+  const db = document.getElementById('date-debut').value;
+  const df = document.getElementById('date-fin').value;
+  chargerDashboard(db, df);
+}
+
+function assurerCanvas(id) {
+  var el = document.getElementById(id);
+  var chartExistant = Chart.getChart(id);
+  if (chartExistant) { chartExistant.destroy(); }
+  if (!el || el.tagName !== 'CANVAS') {
+    var c = document.createElement('canvas');
+    c.id = id;
+    if (el) { el.replaceWith(c); } 
+    el = c;
+  }
+  return el;
 }
 
 function dessinerGraphiques(DONNEES) {
@@ -802,7 +846,7 @@ function dessinerGraphiques(DONNEES) {
   Chart.defaults.borderColor = '#334155';
 
   if (DONNEES.top_pages && DONNEES.top_pages.length > 0) {
-    new Chart(document.getElementById('chartPages'), {
+    new Chart(assurerCanvas('chartPages'), {
       type: 'bar',
       data: {
         labels: DONNEES.top_pages.map(p => p.url.length > 30 ? p.url.slice(0,30)+'...' : p.url),
@@ -814,11 +858,11 @@ function dessinerGraphiques(DONNEES) {
       options: { indexAxis: 'y', responsive: true, plugins: { legend: { position: 'top' } } }
     });
   } else {
-    document.getElementById('chartPages').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+    document.getElementById('chartPages').outerHTML = '<div class=\"vide\" id=\"chartPages\">Aucune donnee disponible</div>';
   }
 
   if (DONNEES.briefs_par_probleme && DONNEES.briefs_par_probleme.length > 0) {
-    new Chart(document.getElementById('chartBriefs'), {
+    new Chart(assurerCanvas('chartBriefs'), {
       type: 'doughnut',
       data: {
         labels: DONNEES.briefs_par_probleme.map(b => b.probleme),
@@ -827,11 +871,11 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
   } else {
-    document.getElementById('chartBriefs').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+    document.getElementById('chartBriefs').outerHTML = '<div class=\"vide\" id=\"chartBriefs\">Aucune donnee disponible</div>';
   }
 
   if (DONNEES.evaluations_par_verdict && DONNEES.evaluations_par_verdict.length > 0) {
-    new Chart(document.getElementById('chartEvals'), {
+    new Chart(assurerCanvas('chartEvals'), {
       type: 'doughnut',
       data: {
         labels: DONNEES.evaluations_par_verdict.map(v => v.verdict),
@@ -840,11 +884,11 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
   } else {
-    document.getElementById('chartEvals').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+    document.getElementById('chartEvals').outerHTML = '<div class=\"vide\" id=\"chartEvals\">Aucune donnee disponible</div>';
   }
 
   if (DONNEES.opportunites && DONNEES.opportunites.length > 0) {
-    new Chart(document.getElementById('chartOpportunites'), {
+    new Chart(assurerCanvas('chartOpportunites'), {
       type: 'bar',
       data: {
         labels: DONNEES.opportunites.map(o => o.url.length > 25 ? o.url.slice(0,25)+'...' : o.url),
@@ -853,13 +897,13 @@ function dessinerGraphiques(DONNEES) {
       options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } } }
     });
   } else {
-    document.getElementById('chartOpportunites').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+    document.getElementById('chartOpportunites').outerHTML = '<div class=\"vide\" id=\"chartOpportunites\">Aucune donnee disponible</div>';
   }
 
   if (DONNEES.rankmath_couverture) {
     const rm = DONNEES.rankmath_couverture;
     if ((rm.avec_mot_cle + rm.sans_mot_cle) > 0) {
-      new Chart(document.getElementById('chartRankmath'), {
+      new Chart(assurerCanvas('chartRankmath'), {
         type: 'doughnut',
         data: {
           labels: ['Avec mot-cle cible', 'Sans mot-cle cible'],
@@ -868,12 +912,12 @@ function dessinerGraphiques(DONNEES) {
         options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
       });
     } else {
-      document.getElementById('chartRankmath').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+      document.getElementById('chartRankmath').outerHTML = '<div class=\"vide\" id=\"chartRankmath\">Aucune donnee disponible</div>';
     }
   }
 
   if (DONNEES.audit_technique && DONNEES.audit_technique.length > 0) {
-    new Chart(document.getElementById('chartAudit'), {
+    new Chart(assurerCanvas('chartAudit'), {
       type: 'doughnut',
       data: {
         labels: DONNEES.audit_technique.map(a => a.categorie),
@@ -882,11 +926,11 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
   } else {
-    document.getElementById('chartAudit').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+    document.getElementById('chartAudit').outerHTML = '<div class=\"vide\" id=\"chartAudit\">Aucune donnee disponible</div>';
   }
 
   if (DONNEES.leads_par_outil && DONNEES.leads_par_outil.length > 0) {
-    new Chart(document.getElementById('chartLeads'), {
+    new Chart(assurerCanvas('chartLeads'), {
       type: 'bar',
       data: {
         labels: DONNEES.leads_par_outil.map(l => l.outil),
@@ -895,11 +939,11 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { display: false } } }
     });
   } else {
-    document.getElementById('chartLeads').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+    document.getElementById('chartLeads').outerHTML = '<div class=\"vide\" id=\"chartLeads\">Aucune donnee disponible</div>';
   }
 
   if (DONNEES.publications_par_silo && DONNEES.publications_par_silo.length > 0) {
-    new Chart(document.getElementById('chartPublications'), {
+    new Chart(assurerCanvas('chartPublications'), {
       type: 'bar',
       data: {
         labels: DONNEES.publications_par_silo.map(p => p.silo),
@@ -908,7 +952,7 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { display: false } } }
     });
   } else {
-    document.getElementById('chartPublications').outerHTML = '<div class="vide">Aucune donnee disponible</div>';
+    document.getElementById('chartPublications').outerHTML = '<div class=\"vide\" id=\"chartPublications\">Aucune donnee disponible</div>';
   }
 }
 </script>
@@ -918,11 +962,15 @@ function dessinerGraphiques(DONNEES) {
 
 @app.route('/orcaas-dashboard-data', methods=['GET'])
 def orcaas_dashboard_data_endpoint():
-    """Donnees JSON du dashboard (page publique, appelee en arriere-plan par /orcaas)."""
+    """Donnees JSON du dashboard (page publique, appelee en arriere-plan par
+    /orcaas). Parametres optionnels : ?date_debut=AAAA-MM-JJ&date_fin=AAAA-MM-JJ
+    (par defaut : 30 derniers jours)."""
     from pipeline import agent_orcaas_donnees_dashboard, init_bigquery
+    date_debut = request.args.get('date_debut')
+    date_fin = request.args.get('date_fin')
     try:
         client_bq = init_bigquery()
-        donnees = agent_orcaas_donnees_dashboard(client_bq)
+        donnees = agent_orcaas_donnees_dashboard(client_bq, date_debut, date_fin)
         return jsonify(donnees), 200
     except Exception as e:
         return jsonify({"top_pages": [], "briefs_par_probleme": [], "evaluations_par_verdict": [], "erreur": str(e)}), 500
