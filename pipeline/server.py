@@ -677,12 +677,33 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   .carte { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; }
   .carte h2 { margin: 0 0 16px 0; font-size: 15px; color: #93c5fd; font-weight: 600; }
   .vide { color: #64748b; font-size: 14px; text-align: center; padding: 40px 0; }
+
+  @media (max-width: 640px) {
+    header { padding: 10px 14px; flex-wrap: wrap; row-gap: 8px; }
+    header h1 { font-size: 16px; }
+    header .badge { font-size: 10px; padding: 3px 8px; }
+    nav { margin-left: 0; width: 100%; order: 3; }
+    nav button { flex: 1; padding: 10px 8px; font-size: 13px; }
+    #chat { padding: 14px; gap: 12px; }
+    .msg { max-width: 88%; font-size: 15px; padding: 10px 14px; }
+    #input-zone { padding: 12px 14px; gap: 8px; }
+    #question { font-size: 16px; padding: 10px 12px; }
+    #send { padding: 10px 16px; font-size: 14px; }
+    #vue-dashboard.actif { grid-template-columns: 1fr; padding: 14px; gap: 14px; }
+    .carte { padding: 14px; }
+    #barre-filtre { flex-wrap: wrap; padding: 12px 14px; gap: 10px; }
+    #barre-filtre label { flex: 1 1 45%; min-width: 130px; }
+    #barre-filtre button { flex: 1 1 100%; }
+    #periode-affichee { width: 100%; margin-left: 0; text-align: center; order: 10; }
+  }
   #barre-filtre { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px 20px; }
   #barre-filtre label { font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 6px; }
   #barre-filtre input[type=date] { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
   #barre-filtre button { background: #2563eb; border: none; color: white; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; }
   #barre-filtre button:hover { background: #1d4ed8; }
   #periode-affichee { font-size: 13px; color: #64748b; margin-left: auto; }
+  #bouton-langue { background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin-left: auto; }
+  #bouton-langue:hover { background: #1e293b; color: #e2e8f0; }
 </style>
 </head>
 <body>
@@ -705,65 +726,131 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
     <path d="M 160 260 C 140 258 122 260 108 268 C 122 274 138 278 155 277 Z" fill="#0a1120"/>
   </svg>
   <h1>ORCAAS</h1>
-  <span class="badge">SEO Specialiste IA</span>
+  <span class="badge" data-i18n="badge">SEO Specialiste IA</span>
   <nav>
-    <button id="onglet-chat" class="actif" onclick="afficherOnglet('chat')">Chat</button>
-    <button id="onglet-dashboard" onclick="afficherOnglet('dashboard')">Dashboard</button>
+    <button id="onglet-chat" class="actif" onclick="afficherOnglet('chat')" data-i18n="onglet_chat">Chat</button>
+    <button id="onglet-dashboard" onclick="afficherOnglet('dashboard')" data-i18n="onglet_dashboard">Dashboard</button>
   </nav>
+  <button id="bouton-langue" onclick="changerLangue()">EN</button>
 </header>
 
 <div id="vue-chat">
   <div id="chat">
-    <div class="msg orcaas">Bonjour, je suis ORCAAS. Posez-moi une question sur l'etat du site, mes dernieres actions, ou les resultats obtenus.</div>
+    <div class="msg orcaas" data-i18n="bienvenue">Bonjour, je suis ORCAAS. Posez-moi une question sur l'etat du site, mes dernieres actions, ou les resultats obtenus.</div>
   </div>
   <div id="input-zone">
-    <input type="text" id="question" placeholder="Posez votre question..." autocomplete="off" />
-    <button id="send">Envoyer</button>
+    <input type="text" id="question" placeholder="Posez votre question..." autocomplete="off" data-i18n-placeholder="placeholder_question" />
+    <button id="send" data-i18n="bouton_envoyer">Envoyer</button>
   </div>
 </div>
 
 <div id="vue-dashboard">
   <div id="barre-filtre">
-    <label>Du <input type="date" id="date-debut"></label>
-    <label>au <input type="date" id="date-fin"></label>
-    <button id="appliquer-filtre" onclick="rechargerAvecFiltre()">Appliquer</button>
+    <label><span data-i18n="label_du">Du</span> <input type="date" id="date-debut"></label>
+    <label><span data-i18n="label_au">au</span> <input type="date" id="date-fin"></label>
+    <button id="appliquer-filtre" onclick="rechargerAvecFiltre()" data-i18n="bouton_appliquer">Appliquer</button>
     <span id="periode-affichee"></span>
   </div>
   <div class="carte">
-    <h2>Top pages par impressions (GSC, periode selectionnee)</h2>
+    <h2 data-i18n="titre_pages">Top pages par impressions (GSC, periode selectionnee)</h2>
     <canvas id="chartPages"></canvas>
   </div>
   <div class="carte">
-    <h2>Corrections ORCAAS par type de probleme</h2>
+    <h2 data-i18n="titre_briefs">Corrections ORCAAS par type de probleme</h2>
     <canvas id="chartBriefs"></canvas>
   </div>
   <div class="carte">
-    <h2>Evaluations d'impact par verdict</h2>
+    <h2 data-i18n="titre_evals">Evaluations d'impact par verdict</h2>
     <canvas id="chartEvals"></canvas>
   </div>
   <div class="carte">
-    <h2>Top 10 opportunites SEO (score)</h2>
+    <h2 data-i18n="titre_opportunites">Top 10 opportunites SEO (score)</h2>
     <canvas id="chartOpportunites"></canvas>
   </div>
   <div class="carte">
-    <h2>Couverture RankMath (mot-cle cible)</h2>
+    <h2 data-i18n="titre_rankmath">Couverture RankMath (mot-cle cible)</h2>
     <canvas id="chartRankmath"></canvas>
   </div>
   <div class="carte">
-    <h2>Sante technique du site (495 pages)</h2>
+    <h2 data-i18n="titre_audit">Sante technique du site (495 pages)</h2>
     <canvas id="chartAudit"></canvas>
   </div>
   <div class="carte">
-    <h2>Leads par outil (tous canaux)</h2>
+    <h2 data-i18n="titre_leads">Leads par outil (tous canaux)</h2>
     <canvas id="chartLeads"></canvas>
   </div>
   <div class="carte">
-    <h2>Publications par silo</h2>
+    <h2 data-i18n="titre_publications">Publications par silo</h2>
     <canvas id="chartPublications"></canvas>
   </div>
 </div>
 
 <script>
+const TRADUCTIONS = {
+  fr: {
+    badge: "SEO Specialiste IA", onglet_chat: "Chat", onglet_dashboard: "Dashboard",
+    bienvenue: "Bonjour, je suis ORCAAS. Posez-moi une question sur l'etat du site, mes dernieres actions, ou les resultats obtenus.",
+    placeholder_question: "Posez votre question...", bouton_envoyer: "Envoyer",
+    reflexion: "ORCAAS reflechit...", erreur_inconnue: "Erreur inconnue",
+    erreur_connexion: "Erreur de connexion : ", erreur_chargement: "Erreur de chargement : ",
+    aucune_donnee: "Aucune donnee disponible",
+    label_du: "Du", label_au: "au", bouton_appliquer: "Appliquer", periode_prefixe: "Periode : ",
+    titre_pages: "Top pages par impressions (GSC, periode selectionnee)",
+    titre_briefs: "Corrections ORCAAS par type de probleme",
+    titre_evals: "Evaluations d'impact par verdict",
+    titre_opportunites: "Top 10 opportunites SEO (score)",
+    titre_rankmath: "Couverture RankMath (mot-cle cible)",
+    titre_audit: "Sante technique du site (495 pages)",
+    titre_leads: "Leads par outil (tous canaux)",
+    titre_publications: "Publications par silo",
+  },
+  en: {
+    badge: "AI SEO Specialist", onglet_chat: "Chat", onglet_dashboard: "Dashboard",
+    bienvenue: "Hello, I'm ORCAAS. Ask me about the site's status, my latest actions, or the results obtained.",
+    placeholder_question: "Ask your question...", bouton_envoyer: "Send",
+    reflexion: "ORCAAS is thinking...", erreur_inconnue: "Unknown error",
+    erreur_connexion: "Connection error: ", erreur_chargement: "Loading error: ",
+    aucune_donnee: "No data available",
+    label_du: "From", label_au: "to", bouton_appliquer: "Apply", periode_prefixe: "Period: ",
+    titre_pages: "Top pages by impressions (GSC, selected period)",
+    titre_briefs: "ORCAAS corrections by problem type",
+    titre_evals: "Impact evaluations by verdict",
+    titre_opportunites: "Top 10 SEO opportunities (score)",
+    titre_rankmath: "RankMath coverage (target keyword)",
+    titre_audit: "Site technical health (495 pages)",
+    titre_leads: "Leads by tool (all channels)",
+    titre_publications: "Publications by silo",
+  }
+};
+
+function langueActuelle() {
+  return localStorage.getItem('orcaas_langue') || 'fr';
+}
+
+function appliquerLangue(lang) {
+  const dict = TRADUCTIONS[lang] || TRADUCTIONS.fr;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const cle = el.getAttribute('data-i18n');
+    if (dict[cle]) el.textContent = dict[cle];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const cle = el.getAttribute('data-i18n-placeholder');
+    if (dict[cle]) el.placeholder = dict[cle];
+  });
+  document.getElementById('bouton-langue').textContent = lang === 'fr' ? 'EN' : 'FR';
+  document.documentElement.lang = lang;
+}
+
+function changerLangue() {
+  const actuelle = langueActuelle();
+  const nouvelle = actuelle === 'fr' ? 'en' : 'fr';
+  localStorage.setItem('orcaas_langue', nouvelle);
+  appliquerLangue(nouvelle);
+  if (window.dashboardCharge) { window.dashboardCharge = false; chargerDashboard(); }
+}
+
+appliquerLangue(langueActuelle());
+
 function afficherOnglet(nom) {
   document.getElementById('onglet-chat').classList.toggle('actif', nom === 'chat');
   document.getElementById('onglet-dashboard').classList.toggle('actif', nom === 'dashboard');
@@ -793,7 +880,7 @@ async function envoyer() {
   ajouterMessage(q, 'user');
   question.value = '';
   send.disabled = true;
-  const loading = ajouterMessage('ORCAAS reflechit...', 'loading');
+  const loading = ajouterMessage(TRADUCTIONS[langueActuelle()].reflexion, 'loading');
   try {
     const res = await fetch('/orcaas-chat', {
       method: 'POST',
@@ -802,10 +889,10 @@ async function envoyer() {
     });
     const data = await res.json();
     loading.remove();
-    ajouterMessage(data.reponse || data.erreur || 'Erreur inconnue', 'orcaas');
+    ajouterMessage(data.reponse || data.erreur || TRADUCTIONS[langueActuelle()].erreur_inconnue, 'orcaas');
   } catch (e) {
     loading.remove();
-    ajouterMessage('Erreur de connexion : ' + e.message, 'orcaas');
+    ajouterMessage(TRADUCTIONS[langueActuelle()].erreur_connexion + e.message, 'orcaas');
   }
   send.disabled = false;
   question.focus();
@@ -833,10 +920,10 @@ async function chargerDashboard(dateDebut, dateFin) {
   try {
     const res = await fetch('/orcaas-dashboard-data?date_debut=' + db + '&date_fin=' + df);
     const donnees = await res.json();
-    document.getElementById('periode-affichee').textContent = 'Periode : ' + (donnees.date_debut || db) + ' au ' + (donnees.date_fin || df);
+    document.getElementById('periode-affichee').textContent = TRADUCTIONS[langueActuelle()].periode_prefixe + (donnees.date_debut || db) + ' - ' + (donnees.date_fin || df);
     dessinerGraphiques(donnees);
   } catch (e) {
-    document.getElementById('vue-dashboard').innerHTML = '<div class="vide">Erreur de chargement : ' + e.message + '</div>';
+    document.getElementById('vue-dashboard').innerHTML = '<div class="vide">' + TRADUCTIONS[langueActuelle()].erreur_chargement + e.message + '</div>';
   }
 }
 
@@ -876,7 +963,7 @@ function dessinerGraphiques(DONNEES) {
       options: { indexAxis: 'y', responsive: true, plugins: { legend: { position: 'top' } } }
     });
   } else {
-    document.getElementById('chartPages').outerHTML = '<div class=\"vide\" id=\"chartPages\">Aucune donnee disponible</div>';
+    document.getElementById('chartPages').outerHTML = '<div class=\"vide\" id=\"chartPages\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
   }
 
   if (DONNEES.briefs_par_probleme && DONNEES.briefs_par_probleme.length > 0) {
@@ -889,7 +976,7 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
   } else {
-    document.getElementById('chartBriefs').outerHTML = '<div class=\"vide\" id=\"chartBriefs\">Aucune donnee disponible</div>';
+    document.getElementById('chartBriefs').outerHTML = '<div class=\"vide\" id=\"chartBriefs\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
   }
 
   if (DONNEES.evaluations_par_verdict && DONNEES.evaluations_par_verdict.length > 0) {
@@ -902,7 +989,7 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
   } else {
-    document.getElementById('chartEvals').outerHTML = '<div class=\"vide\" id=\"chartEvals\">Aucune donnee disponible</div>';
+    document.getElementById('chartEvals').outerHTML = '<div class=\"vide\" id=\"chartEvals\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
   }
 
   if (DONNEES.opportunites && DONNEES.opportunites.length > 0) {
@@ -915,7 +1002,7 @@ function dessinerGraphiques(DONNEES) {
       options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } } }
     });
   } else {
-    document.getElementById('chartOpportunites').outerHTML = '<div class=\"vide\" id=\"chartOpportunites\">Aucune donnee disponible</div>';
+    document.getElementById('chartOpportunites').outerHTML = '<div class=\"vide\" id=\"chartOpportunites\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
   }
 
   if (DONNEES.rankmath_couverture) {
@@ -930,7 +1017,7 @@ function dessinerGraphiques(DONNEES) {
         options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
       });
     } else {
-      document.getElementById('chartRankmath').outerHTML = '<div class=\"vide\" id=\"chartRankmath\">Aucune donnee disponible</div>';
+      document.getElementById('chartRankmath').outerHTML = '<div class=\"vide\" id=\"chartRankmath\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
     }
   }
 
@@ -944,7 +1031,7 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
   } else {
-    document.getElementById('chartAudit').outerHTML = '<div class=\"vide\" id=\"chartAudit\">Aucune donnee disponible</div>';
+    document.getElementById('chartAudit').outerHTML = '<div class=\"vide\" id=\"chartAudit\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
   }
 
   if (DONNEES.leads_par_outil && DONNEES.leads_par_outil.length > 0) {
@@ -957,7 +1044,7 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { display: false } } }
     });
   } else {
-    document.getElementById('chartLeads').outerHTML = '<div class=\"vide\" id=\"chartLeads\">Aucune donnee disponible</div>';
+    document.getElementById('chartLeads').outerHTML = '<div class=\"vide\" id=\"chartLeads\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
   }
 
   if (DONNEES.publications_par_silo && DONNEES.publications_par_silo.length > 0) {
@@ -970,7 +1057,7 @@ function dessinerGraphiques(DONNEES) {
       options: { responsive: true, plugins: { legend: { display: false } } }
     });
   } else {
-    document.getElementById('chartPublications').outerHTML = '<div class=\"vide\" id=\"chartPublications\">Aucune donnee disponible</div>';
+    document.getElementById('chartPublications').outerHTML = '<div class=\"vide\" id=\"chartPublications\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
   }
 }
 </script>
@@ -998,6 +1085,27 @@ def orcaas_dashboard_data_endpoint():
 def orcaas_chat_page():
     """Application unique ORCAAS : onglets Chat + Dashboard."""
     return ORCAAS_APP_HTML
+
+
+@app.route('/agent-orcaas-monitoring', methods=['POST'])
+def agent_orcaas_monitoring_endpoint():
+    """AGENT ORCAAS -- Stack Monitoring du pipeline : detecte et supprime
+    automatiquement les doublons de sujet publies le meme jour."""
+    from pipeline import agent_orcaas_monitoring_pipeline, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            resultat = agent_orcaas_monitoring_pipeline(client_bq)
+            print(f"✅ Monitoring ORCAAS termine : {resultat}")
+        except Exception as e:
+            print(f"❌ Erreur monitoring ORCAAS : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "monitoring": "declenche en arriere-plan"}), 200
 
 
 @app.route('/auditer-site-technique', methods=['POST'])
