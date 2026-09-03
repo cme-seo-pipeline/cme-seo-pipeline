@@ -2489,6 +2489,94 @@ def synchroniser_indexation(client_bq, limite=None):
     return len(lignes)
 
 
+def agent_orcaas_detail_categorie(client_bq, graphique, categorie):
+    """AGENT ORCAAS -- Detail cliquable du dashboard. Retourne la liste des
+    elements individuels derriere une categorie agregee d'un graphique
+    (ex: les 18 URLs derriere 'URL is unknown to Google'). Transparence
+    uniquement -- la correction reste du ressort d'ORCAAS lui-meme."""
+    try:
+        if graphique == "indexation":
+            job_config = bigquery.QueryJobConfig(query_parameters=[
+                bigquery.ScalarQueryParameter("categorie", "STRING", categorie)])
+            df = client_bq.query(f"""
+                SELECT url, verdict FROM `{PROJECT_ID}.04_pipeline_seo.indexation_google`
+                WHERE coverage_state = @categorie ORDER BY url
+            """, job_config=job_config).to_dataframe()
+            items = [{"url": r['url'], "detail": r['verdict'] or ''} for _, r in df.iterrows()]
+
+        elif graphique == "audit_technique":
+            if categorie == "200 OK":
+                condition = "status_code = 200"
+            elif categorie == "Redirection":
+                condition = "status_code >= 300 AND status_code < 400"
+            elif categorie == "Erreur":
+                condition = "status_code >= 400"
+            else:
+                condition = "status_code IS NULL"
+            df = client_bq.query(f"""
+                SELECT url, status_code FROM `{PROJECT_ID}.04_pipeline_seo.audit_technique_site`
+                WHERE {condition} ORDER BY url
+            """).to_dataframe()
+            items = [{"url": r['url'], "detail": f"Code {int(r['status_code'])}" if pd.notna(r['status_code']) else "N/A"} for _, r in df.iterrows()]
+
+        elif graphique == "briefs":
+            job_config = bigquery.QueryJobConfig(query_parameters=[
+                bigquery.ScalarQueryParameter("categorie", "STRING", categorie)])
+            df = client_bq.query(f"""
+                SELECT url, post_id, date_execution, statut FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs`
+                WHERE probleme_detecte = @categorie ORDER BY date_execution DESC LIMIT 200
+            """, job_config=job_config).to_dataframe()
+            items = [{"url": r['url'] or f"post {r['post_id']}", "detail": r['statut'] or ''} for _, r in df.iterrows()]
+
+        elif graphique == "evaluations":
+            job_config = bigquery.QueryJobConfig(query_parameters=[
+                bigquery.ScalarQueryParameter("categorie", "STRING", categorie)])
+            df = client_bq.query(f"""
+                SELECT post_id, commentaire FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_evaluations`
+                WHERE verdict = @categorie ORDER BY date_evaluation DESC LIMIT 200
+            """, job_config=job_config).to_dataframe()
+            items = [{"url": f"post {int(r['post_id'])}", "detail": r['commentaire'] or ''} for _, r in df.iterrows()]
+
+        elif graphique == "leads":
+            job_config = bigquery.QueryJobConfig(query_parameters=[
+                bigquery.ScalarQueryParameter("categorie", "STRING", categorie)])
+            df = client_bq.query(f"""
+                SELECT CAST(source_post_id AS STRING) AS post_id, CAST(timestamp AS STRING) AS quand
+                FROM `{PROJECT_ID}.04_pipeline_seo.leads_convertis` WHERE tool = @categorie
+                UNION ALL
+                SELECT CAST(source_post_id AS STRING) AS post_id, CAST(derniere_maj AS STRING) AS quand
+                FROM `{PROJECT_ID}.04_pipeline_seo.leads_app_authentifies` WHERE tool = @categorie
+                ORDER BY quand DESC LIMIT 200
+            """, job_config=job_config).to_dataframe()
+            items = [{"url": f"post {r['post_id']}", "detail": r['quand'] or ''} for _, r in df.iterrows()]
+
+        elif graphique == "publications":
+            job_config = bigquery.QueryJobConfig(query_parameters=[
+                bigquery.ScalarQueryParameter("categorie", "STRING", categorie)])
+            df = client_bq.query(f"""
+                SELECT titre, CAST(date_publication AS STRING) AS quand
+                FROM `{PROJECT_ID}.04_pipeline_seo.historique_publications`
+                WHERE silo = @categorie ORDER BY date_publication DESC LIMIT 200
+            """, job_config=job_config).to_dataframe()
+            items = [{"url": r['titre'], "detail": r['quand'] or ''} for _, r in df.iterrows()]
+
+        elif graphique == "rankmath":
+            condition = "rank_math_focus_keyword IS NOT NULL" if "avec" in categorie.lower() else "rank_math_focus_keyword IS NULL"
+            df = client_bq.query(f"""
+                SELECT r.post_id, m.url FROM `{PROJECT_ID}.04_pipeline_seo.rankmath_seo_data` r
+                JOIN `{PROJECT_ID}.02_cleaned.wp_url_mapping` m ON m.post_id = r.post_id
+                WHERE {condition} ORDER BY m.url LIMIT 200
+            """).to_dataframe()
+            items = [{"url": r['url'], "detail": ""} for _, r in df.iterrows()]
+
+        else:
+            return {"items": [], "erreur": f"Graphique inconnu : {graphique}"}
+
+        return {"items": items, "erreur": None}
+    except Exception as e:
+        return {"items": [], "erreur": str(e)}
+
+
 def rafraichir_indicateurs_reglementaires(client_bq):
     """Recupere les dernieres valeurs officielles connues (CRE Gaz/Elec,
     ANAH Aides) depuis les sources officielles et les insere dans

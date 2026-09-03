@@ -12,7 +12,7 @@ from pipeline import run_pipeline
 app = Flask(__name__)
 
 
-CHEMINS_PUBLICS = {'/', '/orcaas', '/orcaas-dashboard-data', '/orcaas-chat'}
+CHEMINS_PUBLICS = {'/', '/orcaas', '/orcaas-dashboard-data', '/orcaas-dashboard-detail', '/orcaas-chat'}
 ORCAAS_ACTION_SECRET = os.environ.get("ORCAAS_ACTION_SECRET", "")
 
 
@@ -702,6 +702,18 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   #barre-filtre button { background: #2563eb; border: none; color: white; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; }
   #barre-filtre button:hover { background: #1d4ed8; }
   #periode-affichee { font-size: 13px; color: #64748b; margin-left: auto; }
+  .carte canvas { cursor: pointer; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .modal-contenu { background: #1e293b; border: 1px solid #334155; border-radius: 12px; max-width: 600px; width: 100%; max-height: 80vh; display: flex; flex-direction: column; }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #334155; }
+  .modal-header h3 { margin: 0; font-size: 15px; color: #e2e8f0; }
+  .modal-header button { background: transparent; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; line-height: 1; padding: 0 4px; }
+  .modal-header button:hover { color: #e2e8f0; }
+  .modal-liste { overflow-y: auto; padding: 8px 12px; }
+  .modal-item { padding: 10px 8px; border-bottom: 1px solid #29344a; font-size: 13px; display: flex; flex-direction: column; gap: 3px; }
+  .modal-item:last-child { border-bottom: none; }
+  .modal-item-url { color: #e2e8f0; word-break: break-all; }
+  .modal-item-detail { color: #64748b; font-size: 12px; }
   #bouton-langue { background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin-left: auto; }
   #bouton-langue:hover { background: #1e293b; color: #e2e8f0; }
 </style>
@@ -741,6 +753,16 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   <div id="input-zone">
     <input type="text" id="question" placeholder="Posez votre question..." autocomplete="off" data-i18n-placeholder="placeholder_question" />
     <button id="send" data-i18n="bouton_envoyer">Envoyer</button>
+  </div>
+</div>
+
+<div id="modal-detail" class="modal-overlay">
+  <div class="modal-contenu">
+    <div class="modal-header">
+      <h3 id="modal-titre"></h3>
+      <button onclick="fermerModal()">&times;</button>
+    </div>
+    <div id="modal-liste" class="modal-liste"></div>
   </div>
 </div>
 
@@ -939,6 +961,34 @@ function rechargerAvecFiltre() {
   chargerDashboard(db, df);
 }
 
+async function afficherDetail(graphique, categorie) {
+  document.getElementById('modal-titre').textContent = categorie;
+  document.getElementById('modal-liste').innerHTML = '<div class=\"vide\">...</div>';
+  document.getElementById('modal-detail').style.display = 'flex';
+  try {
+    const res = await fetch('/orcaas-dashboard-detail?graphique=' + encodeURIComponent(graphique) + '&categorie=' + encodeURIComponent(categorie));
+    const data = await res.json();
+    const liste = document.getElementById('modal-liste');
+    if (data.erreur) {
+      liste.innerHTML = '<div class=\"vide\">' + data.erreur + '</div>';
+      return;
+    }
+    if (!data.items || data.items.length === 0) {
+      liste.innerHTML = '<div class=\"vide\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
+      return;
+    }
+    liste.innerHTML = data.items.map(function(it) {
+      return '<div class=\"modal-item\"><span class=\"modal-item-url\">' + it.url + '</span><span class=\"modal-item-detail\">' + (it.detail || '') + '</span></div>';
+    }).join('');
+  } catch (e) {
+    document.getElementById('modal-liste').innerHTML = '<div class=\"vide\">' + e.message + '</div>';
+  }
+}
+
+function fermerModal() {
+  document.getElementById('modal-detail').style.display = 'none';
+}
+
 function assurerCanvas(id) {
   var el = document.getElementById(id);
   var chartExistant = Chart.getChart(id);
@@ -979,7 +1029,7 @@ function dessinerGraphiques(DONNEES) {
         labels: DONNEES.briefs_par_probleme.map(b => b.probleme),
         datasets: [{ data: DONNEES.briefs_par_probleme.map(b => b.nb), backgroundColor: ['#2563eb','#f59e0b','#16a34a','#dc2626','#7e22ce'] }]
       },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } }, onClick: function(evt, els) { if (els.length > 0) afficherDetail('briefs', this.data.labels[els[0].index]); } }
     });
   } else {
     document.getElementById('chartBriefs').outerHTML = '<div class=\"vide\" id=\"chartBriefs\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
@@ -992,7 +1042,7 @@ function dessinerGraphiques(DONNEES) {
         labels: DONNEES.evaluations_par_verdict.map(v => v.verdict),
         datasets: [{ data: DONNEES.evaluations_par_verdict.map(v => v.nb), backgroundColor: ['#64748b','#16a34a','#dc2626','#2563eb'] }]
       },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } }, onClick: function(evt, els) { if (els.length > 0) afficherDetail('evaluations', this.data.labels[els[0].index]); } }
     });
   } else {
     document.getElementById('chartEvals').outerHTML = '<div class=\"vide\" id=\"chartEvals\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
@@ -1020,7 +1070,7 @@ function dessinerGraphiques(DONNEES) {
           labels: ['Avec mot-cle cible', 'Sans mot-cle cible'],
           datasets: [{ data: [rm.avec_mot_cle, rm.sans_mot_cle], backgroundColor: ['#16a34a', '#dc2626'] }]
         },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } }, onClick: function(evt, els) { if (els.length > 0) afficherDetail('rankmath', this.data.labels[els[0].index]); } }
       });
     } else {
       document.getElementById('chartRankmath').outerHTML = '<div class=\"vide\" id=\"chartRankmath\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
@@ -1034,7 +1084,7 @@ function dessinerGraphiques(DONNEES) {
         labels: DONNEES.audit_technique.map(a => a.categorie),
         datasets: [{ data: DONNEES.audit_technique.map(a => a.nb), backgroundColor: ['#16a34a','#f59e0b','#dc2626','#64748b'] }]
       },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } }, onClick: function(evt, els) { if (els.length > 0) afficherDetail('audit_technique', this.data.labels[els[0].index]); } }
     });
   } else {
     document.getElementById('chartAudit').outerHTML = '<div class=\"vide\" id=\"chartAudit\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
@@ -1047,7 +1097,7 @@ function dessinerGraphiques(DONNEES) {
         labels: DONNEES.leads_par_outil.map(l => l.outil),
         datasets: [{ label: 'Leads', data: DONNEES.leads_par_outil.map(l => l.nb), backgroundColor: '#2563eb' }]
       },
-      options: { responsive: true, plugins: { legend: { display: false } } }
+      options: { responsive: true, plugins: { legend: { display: false } }, onClick: function(evt, els) { if (els.length > 0) afficherDetail('leads', this.data.labels[els[0].index]); } }
     });
   } else {
     document.getElementById('chartLeads').outerHTML = '<div class=\"vide\" id=\"chartLeads\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
@@ -1060,7 +1110,7 @@ function dessinerGraphiques(DONNEES) {
         labels: DONNEES.publications_par_silo.map(p => p.silo),
         datasets: [{ label: 'Articles publies', data: DONNEES.publications_par_silo.map(p => p.nb), backgroundColor: '#f59e0b' }]
       },
-      options: { responsive: true, plugins: { legend: { display: false } } }
+      options: { responsive: true, plugins: { legend: { display: false } }, onClick: function(evt, els) { if (els.length > 0) afficherDetail('publications', this.data.labels[els[0].index]); } }
     });
   } else {
     document.getElementById('chartPublications').outerHTML = '<div class=\"vide\" id=\"chartPublications\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
@@ -1074,7 +1124,7 @@ function dessinerGraphiques(DONNEES) {
         labels: DONNEES.indexation.map(i => i.etat),
         datasets: [{ data: DONNEES.indexation.map(i => i.nb), backgroundColor: DONNEES.indexation.map(i => couleursIndex[i.etat] || '#2563eb') }]
       },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } }, onClick: function(evt, els) { if (els.length > 0) afficherDetail('indexation', this.data.labels[els[0].index]); } }
     });
   } else {
     document.getElementById('chartIndexation').outerHTML = '<div class=\"vide\" id=\"chartIndexation\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
@@ -1083,6 +1133,26 @@ function dessinerGraphiques(DONNEES) {
 </script>
 </body>
 </html>"""
+
+
+@app.route('/orcaas-dashboard-detail', methods=['GET'])
+def orcaas_dashboard_detail_endpoint():
+    """Detail cliquable du dashboard : liste des elements derriere une
+    categorie agregee. Page publique en lecture seule -- transparence
+    uniquement, aucune action possible depuis cette liste."""
+    from pipeline import agent_orcaas_detail_categorie, init_bigquery
+
+    graphique = request.args.get('graphique', '')
+    categorie = request.args.get('categorie', '')
+    if not graphique or not categorie:
+        return jsonify({"items": [], "erreur": "parametres graphique et categorie requis"}), 400
+
+    try:
+        client_bq = init_bigquery()
+        resultat = agent_orcaas_detail_categorie(client_bq, graphique, categorie)
+        return jsonify(resultat), 200
+    except Exception as e:
+        return jsonify({"items": [], "erreur": str(e)}), 500
 
 
 @app.route('/orcaas-dashboard-data', methods=['GET'])
