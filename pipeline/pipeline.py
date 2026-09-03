@@ -2198,6 +2198,19 @@ def _dash_publications(client_bq, date_debut, date_fin):
         return ("publications_par_silo", [], f"publications: {e}")
 
 
+def _dash_indexation(client_bq, date_debut, date_fin):
+    try:
+        df = client_bq.query(f"""
+            SELECT coverage_state, COUNT(*) AS nb
+            FROM `{PROJECT_ID}.04_pipeline_seo.indexation_google`
+            GROUP BY coverage_state ORDER BY nb DESC
+        """).to_dataframe()
+        liste = [{"etat": r['coverage_state'] or 'Non verifie', "nb": int(r['nb'])} for _, r in df.iterrows()]
+        return ("indexation", liste, None)
+    except Exception as e:
+        return ("indexation", [], f"indexation: {e}")
+
+
 def agent_orcaas_donnees_dashboard(client_bq, date_debut=None, date_fin=None):
     """AGENT ORCAAS -- Prepare les donnees reelles du dashboard (couche
     Dashboard/Data Analytics). Filtrable par date (date_debut/date_fin,
@@ -2218,11 +2231,13 @@ def agent_orcaas_donnees_dashboard(client_bq, date_debut=None, date_fin=None):
         "top_pages": [], "briefs_par_probleme": [], "evaluations_par_verdict": [],
         "opportunites": [], "rankmath_couverture": {"avec_mot_cle": 0, "sans_mot_cle": 0},
         "audit_technique": [], "leads_par_outil": [], "publications_par_silo": [],
+        "indexation": [],
         "erreur": None,
     }
 
     taches = [_dash_top_pages, _dash_briefs, _dash_evals, _dash_opportunites,
-              _dash_rankmath, _dash_audit, _dash_leads, _dash_publications]
+              _dash_rankmath, _dash_audit, _dash_leads, _dash_publications,
+              _dash_indexation]
 
     erreurs = []
     with ThreadPoolExecutor(max_workers=8) as executor:

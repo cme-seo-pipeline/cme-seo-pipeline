@@ -783,6 +783,10 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
     <h2 data-i18n="titre_publications">Publications par silo</h2>
     <canvas id="chartPublications"></canvas>
   </div>
+  <div class="carte">
+    <h2 data-i18n="titre_indexation">Indexation Google (statut reel par page)</h2>
+    <canvas id="chartIndexation"></canvas>
+  </div>
 </div>
 
 <script>
@@ -803,6 +807,7 @@ const TRADUCTIONS = {
     titre_audit: "Sante technique du site (495 pages)",
     titre_leads: "Leads par outil (tous canaux)",
     titre_publications: "Publications par silo",
+    titre_indexation: "Indexation Google (statut reel par page)",
   },
   en: {
     badge: "AI SEO Specialist", onglet_chat: "Chat", onglet_dashboard: "Dashboard",
@@ -820,6 +825,7 @@ const TRADUCTIONS = {
     titre_audit: "Site technical health (495 pages)",
     titre_leads: "Leads by tool (all channels)",
     titre_publications: "Publications by silo",
+    titre_indexation: "Google indexing (real per-page status)",
   }
 };
 
@@ -1058,6 +1064,20 @@ function dessinerGraphiques(DONNEES) {
     });
   } else {
     document.getElementById('chartPublications').outerHTML = '<div class=\"vide\" id=\"chartPublications\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
+  }
+
+  if (DONNEES.indexation && DONNEES.indexation.length > 0) {
+    const couleursIndex = { 'Submitted and indexed': '#16a34a', 'Crawled - currently not indexed': '#f59e0b', 'URL is unknown to Google': '#dc2626' };
+    new Chart(assurerCanvas('chartIndexation'), {
+      type: 'doughnut',
+      data: {
+        labels: DONNEES.indexation.map(i => i.etat),
+        datasets: [{ data: DONNEES.indexation.map(i => i.nb), backgroundColor: DONNEES.indexation.map(i => couleursIndex[i.etat] || '#2563eb') }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+  } else {
+    document.getElementById('chartIndexation').outerHTML = '<div class=\"vide\" id=\"chartIndexation\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
   }
 }
 </script>
