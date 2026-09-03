@@ -2371,6 +2371,109 @@ def agent_orcaas_monitoring_pipeline(client_bq, date_cible=None):
     return {"paires_analysees": len(briefs), "doublons_supprimes": supprimes}
 
 
+def synchroniser_indexation(client_bq, limite=None):
+    """CHANTIER INDEXATION : verifie pour chaque page connue si Google l'a
+    reellement indexee (URL Inspection API de Search Console). limite
+    (optionnel) : ne traite que les N premieres pages, utile pour tester
+    le comportement/la vitesse reelle de l'API avant de lancer sur
+    l'ensemble du site."""
+    print(f"SYNCHRONISATION INDEXATION GOOGLE (limite={limite})...")
+
+    from google.oauth2 import service_account
+    import google.auth.transport.requests
+
+    try:
+        cle = os.environ.get("SA_GTM_PRIVATE_KEY", "")
+        creds = service_account.Credentials.from_service_account_info(
+            json.loads(cle),
+            scopes=['https://www.googleapis.com/auth/webmasters.readonly']
+        )
+        creds.refresh(google.auth.transport.requests.Request())
+    except Exception as e:
+        print(f"  Erreur authentification : {e}")
+        return 0
+
+    try:
+        query = f"SELECT post_id, url FROM `{PROJECT_ID}.02_cleaned.wp_url_mapping`"
+        df = client_bq.query(query).to_dataframe()
+    except Exception as e:
+        print(f"  Erreur lecture wp_url_mapping : {e}")
+        return 0
+
+    if limite:
+        df = df.head(int(limite))
+
+    debut_chrono = datetime.now()
+    lignes = []
+    for i, (_, row) in enumerate(df.iterrows()):
+        post_id = int(row['post_id'])
+        url = row['url']
+        entree = {
+            "post_id": post_id, "url": url,
+            "coverage_state": None, "verdict": None, "robots_txt_state": None,
+            "indexing_state": None, "page_fetch_state": None,
+            "last_crawl_time": None, "crawled_as": None,
+            "erreur": None, "checked_at": datetime.now().isoformat(),
+        }
+        try:
+            body = {"inspectionUrl": url, "siteUrl": "https://www.comprendre-mon-energie.fr/"}
+            r = requests.post(
+                "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect",
+                headers={"Authorization": f"Bearer {creds.token}", "Content-Type": "application/json"},
+                json=body, timeout=10
+            )
+            if r.status_code == 200:
+                result = r.json().get("inspectionResult", {}).get("indexStatusResult", {})
+                entree["coverage_state"] = result.get("coverageState")
+                entree["verdict"] = result.get("verdict")
+                entree["robots_txt_state"] = result.get("robotsTxtState")
+                entree["indexing_state"] = result.get("indexingState")
+                entree["page_fetch_state"] = result.get("pageFetchState")
+                entree["last_crawl_time"] = result.get("lastCrawlTime")
+                entree["crawled_as"] = result.get("crawledAs")
+            else:
+                entree["erreur"] = f"HTTP {r.status_code}: {r.text[:150]}"
+        except Exception as e:
+            entree["erreur"] = str(e)[:200]
+
+        lignes.append(entree)
+
+        if (i + 1) % 20 == 0:
+            ecoule = (datetime.now() - debut_chrono).total_seconds()
+            print(f"  Progression : {i + 1}/{len(df)} pages traitees ({ecoule:.0f}s ecoulees)")
+
+    if not lignes:
+        print("  Aucune page a verifier")
+        return 0
+
+    try:
+        table_ref = f"{PROJECT_ID}.04_pipeline_seo.indexation_google"
+        job_config = bigquery.LoadJobConfig(
+            write_disposition="WRITE_TRUNCATE",
+            schema=[
+                bigquery.SchemaField("post_id", "INTEGER"),
+                bigquery.SchemaField("url", "STRING"),
+                bigquery.SchemaField("coverage_state", "STRING"),
+                bigquery.SchemaField("verdict", "STRING"),
+                bigquery.SchemaField("robots_txt_state", "STRING"),
+                bigquery.SchemaField("indexing_state", "STRING"),
+                bigquery.SchemaField("page_fetch_state", "STRING"),
+                bigquery.SchemaField("last_crawl_time", "TIMESTAMP"),
+                bigquery.SchemaField("crawled_as", "STRING"),
+                bigquery.SchemaField("erreur", "STRING"),
+                bigquery.SchemaField("checked_at", "TIMESTAMP"),
+            ],
+        )
+        load_job = client_bq.load_table_from_json(lignes, table_ref, job_config=job_config)
+        load_job.result()
+        print(f"  {len(lignes)} pages verifiees")
+    except Exception as e:
+        print(f"  Erreur ecriture BigQuery : {e}")
+        return 0
+
+    return len(lignes)
+
+
 def rafraichir_indicateurs_reglementaires(client_bq):
     """Recupere les dernieres valeurs officielles connues (CRE Gaz/Elec,
     ANAH Aides) depuis les sources officielles et les insere dans

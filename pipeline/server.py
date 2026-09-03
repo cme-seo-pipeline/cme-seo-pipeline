@@ -1108,6 +1108,30 @@ def agent_orcaas_monitoring_endpoint():
     return jsonify({"status": "ok", "monitoring": "declenche en arriere-plan"}), 200
 
 
+@app.route('/synchroniser-indexation', methods=['POST'])
+def synchroniser_indexation_endpoint():
+    """CHANTIER INDEXATION : verifie l'indexation Google reelle de chaque
+    page. Parametre optionnel ?limite=N pour tester sur un petit lot."""
+    from pipeline import synchroniser_indexation, init_bigquery
+
+    limite = request.args.get('limite')
+    limite = int(limite) if limite else None
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            nb = synchroniser_indexation(client_bq, limite=limite)
+            print(f"✅ Sync indexation terminee : {nb} pages")
+        except Exception as e:
+            print(f"❌ Erreur sync indexation : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "sync": "declenche en arriere-plan"}), 200
+
+
 @app.route('/auditer-site-technique', methods=['POST'])
 def auditer_site_technique_endpoint():
     """CHANTIER G.3 : lance l'audit technique complet du site (robot maison)."""
