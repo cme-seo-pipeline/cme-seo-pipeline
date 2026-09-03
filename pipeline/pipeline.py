@@ -2577,6 +2577,269 @@ def agent_orcaas_detail_categorie(client_bq, graphique, categorie):
         return {"items": [], "erreur": str(e)}
 
 
+def agent_orcaas_analyser_chevauchement(client_bq):
+    """AGENT ORCAAS -- Stack Contenu editorial, etape 1 (detection).
+    Pour chaque page 'Crawled - currently not indexed', identifie les pages
+    soeurs du meme sous-silo (meme prefixe d'URL) deja indexees, et utilise
+    Claude pour juger s'il y a un chevauchement thematique reel. Lecture
+    seule, aucune ecriture."""
+    print("AGENT ORCAAS -- Analyse chevauchement editorial...")
+
+    try:
+        df_probleme = client_bq.query(f"""
+            SELECT ig.url, wm.post_id, r.rank_math_title
+            FROM `{PROJECT_ID}.04_pipeline_seo.indexation_google` ig
+            JOIN `{PROJECT_ID}.02_cleaned.wp_url_mapping` wm ON wm.url = ig.url
+            LEFT JOIN `{PROJECT_ID}.04_pipeline_seo.rankmath_seo_data` r ON r.post_id = wm.post_id
+            WHERE ig.coverage_state = 'Crawled - currently not indexed'
+        """).to_dataframe()
+    except Exception as e:
+        print(f"  Erreur lecture pages problematiques : {e}")
+        return []
+
+    if df_probleme.empty:
+        print("  Aucune page a analyser")
+        return []
+
+    resultats = []
+    for _, row in df_probleme.iterrows():
+        url = row['url']
+        post_id = int(row['post_id'])
+        titre_actuel = row['rank_math_title'] or url
+
+        parts = url.rstrip('/').rsplit('/', 1)
+        prefixe_sous_silo = parts[0] + '/' if len(parts) > 1 else url
+
+        try:
+            df_soeurs = client_bq.query(f"""
+                SELECT ig.url, r.rank_math_title
+                FROM `{PROJECT_ID}.04_pipeline_seo.indexation_google` ig
+                JOIN `{PROJECT_ID}.02_cleaned.wp_url_mapping` wm ON wm.url = ig.url
+                LEFT JOIN `{PROJECT_ID}.04_pipeline_seo.rankmath_seo_data` r ON r.post_id = wm.post_id
+                WHERE STARTS_WITH(ig.url, '{prefixe_sous_silo}') AND ig.url != '{url}'
+                  AND ig.coverage_state = 'Submitted and indexed'
+                LIMIT 8
+            """).to_dataframe()
+        except Exception as e:
+            resultats.append({"post_id": post_id, "url": url, "classification": "erreur", "raison": str(e)[:150]})
+            continue
+
+        if df_soeurs.empty:
+            resultats.append({"post_id": post_id, "url": url, "titre": titre_actuel,
+                               "classification": "isole", "raison": "aucune page soeur indexee dans le sous-silo"})
+            continue
+
+        titres_soeurs = [r['rank_math_title'] or r['url'] for _, r in df_soeurs.iterrows()]
+        prompt = (
+            "Un article n'est pas pleinement indexe par Google alors que des articles "
+            "TRES PROCHES du meme sous-theme le sont deja. Y a-t-il un chevauchement "
+            "thematique reel qui expliquerait ca (sujets quasi-identiques), ou ces "
+            "articles couvrent-ils des angles genuinement distincts ?\n"
+            f"Article non indexe : {titre_actuel}\n"
+            f"Articles voisins deja indexes : {', '.join(titres_soeurs)}\n"
+            'Reponds UNIQUEMENT en JSON strict : {"chevauchement": true, "raison": "..."} '
+            'ou {"chevauchement": false, "raison": "..."}'
+        )
+        try:
+            resp = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
+                json={"model": CONFIG['MODEL'], "max_tokens": 200, "messages": [{"role": "user", "content": prompt}]},
+                timeout=20
+            )
+            resp.raise_for_status()
+            texte = resp.json()['content'][0]['text']
+            texte_json = texte[texte.find('{'):texte.rfind('}') + 1]
+            jugement = json.loads(texte_json)
+            chevauchement = bool(jugement.get('chevauchement', False))
+            raison = jugement.get('raison', '')
+        except Exception as e:
+            resultats.append({"post_id": post_id, "url": url, "titre": titre_actuel,
+                               "classification": "erreur", "raison": f"IA: {str(e)[:150]}"})
+            continue
+
+        resultats.append({
+            "post_id": post_id, "url": url, "titre": titre_actuel,
+            "classification": "chevauchement" if chevauchement else "isole",
+            "raison": raison, "pages_soeurs": titres_soeurs[:3],
+        })
+
+    print(f"  {len(resultats)} page(s) analysee(s)")
+    return resultats
+
+
+def agent_orcaas_differencier_contenu(client_bq):
+    """AGENT ORCAAS -- Stack Contenu editorial, etape 2 (differenciation).
+    Pour chaque page classee 'chevauchement' par l'etape 1, recupere le
+    contenu actuel et demande a Claude de resserrer l'angle pour le rendre
+    genuinement distinct des pages soeurs deja indexees. Reecrit titre,
+    meta ET corps de l'article. Garde-fous : contenu genere pas trop court
+    (>= 50% de l'original), aucune annee perimee introduite."""
+    print("AGENT ORCAAS -- Differenciation contenu editorial...")
+
+    analyses = agent_orcaas_analyser_chevauchement(client_bq)
+    a_traiter = [a for a in analyses if a.get('classification') == 'chevauchement']
+
+    if not a_traiter:
+        print("  Aucune page en chevauchement a traiter")
+        return {"traitees": 0, "reussies": 0}
+
+    import io
+    import paramiko
+    try:
+        cle = os.environ.get("O2SWITCH_SSH_PRIVATE_KEY", "")
+        passphrase = os.environ.get("O2SWITCH_SSH_PASSPHRASE", "")
+        pkey = paramiko.RSAKey.from_private_key(io.StringIO(cle), password=passphrase)
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname="109.234.167.170", port=22, username="jolu5920", pkey=pkey, timeout=15)
+    except Exception as e:
+        print(f"  Erreur connexion SSH : {e}")
+        return {"traitees": 0, "reussies": 0}
+
+    wp_path = "/home/jolu5920/public_html/comprendre-mon-energie.com"
+    annee_actuelle = datetime.now().year
+    annees_perimees = [str(y) for y in range(2020, annee_actuelle)]
+    briefs = []
+    reussies = 0
+
+    for item in a_traiter:
+        post_id = item['post_id']
+        url = item['url']
+        titre_actuel = item['titre']
+        raison = item.get('raison', '')
+        soeurs = item.get('pages_soeurs', [])
+        erreur_finale = None
+        statut = "echec"
+        nouveau_titre = titre_actuel
+
+        try:
+            stdin, stdout, stderr = ssh.exec_command(
+                f'wp --path="{wp_path}" post get {int(post_id)} --field=content'
+            )
+            contenu_actuel = stdout.read().decode()
+            if not contenu_actuel:
+                raise Exception((stderr.read().decode() or "contenu vide")[:150])
+        except Exception as e:
+            briefs.append({
+                "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+                "date_execution": datetime.now().isoformat(),
+                "stack": "contenu_editorial", "post_id": post_id, "url": url,
+                "probleme_detecte": f"chevauchement_thematique: {raison[:100]}",
+                "valeur_avant": titre_actuel, "valeur_apres": "",
+                "statut": "echec", "erreur": f"lecture: {str(e)[:150]}",
+            })
+            continue
+
+        prompt = (
+            "Tu es un redacteur SEO expert. Cet article n'est pas pleinement indexe "
+            "par Google car il chevauche trop avec des articles voisins deja indexes "
+            "du meme site.\n"
+            f"PROBLEME IDENTIFIE : {raison}\n"
+            f"ARTICLES VOISINS DEJA INDEXES (evite de refaire leur travail) : {', '.join(soeurs)}\n\n"
+            f"TITRE ACTUEL : {titre_actuel}\n"
+            f"CONTENU ACTUEL (HTML) :\n{contenu_actuel[:12000]}\n\n"
+            "Reecris ce contenu pour lui donner un ANGLE GENUINEMENT DISTINCT des "
+            "articles voisins -- pas une reformulation generique, un vrai angle "
+            "different (cas pratique specifique, public cible different, aspect "
+            "technique non couvert ailleurs). Garde le format HTML, garde les "
+            "informations factuelles exactes (ne change aucun chiffre, montant ou "
+            "condition legale), garde une longueur similaire a l'original. Genere "
+            "aussi un nouveau titre SEO (50-60 caracteres) et une nouvelle meta "
+            "description (140-160 caracteres) refletant ce nouvel angle. N'utilise "
+            "JAMAIS une annee anterieure a " + str(annee_actuelle) + ".\n\n"
+            'Reponds UNIQUEMENT en JSON strict : {"titre": "...", "meta": "...", "contenu": "..."}'
+        )
+
+        try:
+            resp = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
+                json={"model": CONFIG['MODEL'], "max_tokens": 8000, "messages": [{"role": "user", "content": prompt}]},
+                timeout=90
+            )
+            resp.raise_for_status()
+            texte = resp.json()['content'][0]['text']
+            texte_json = texte[texte.find('{'):texte.rfind('}') + 1]
+            resultat = json.loads(texte_json)
+            nouveau_titre = resultat.get('titre', titre_actuel)
+            nouvelle_meta = resultat.get('meta', '')
+            nouveau_contenu = resultat.get('contenu', '')
+        except Exception as e:
+            briefs.append({
+                "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+                "date_execution": datetime.now().isoformat(),
+                "stack": "contenu_editorial", "post_id": post_id, "url": url,
+                "probleme_detecte": f"chevauchement_thematique: {raison[:100]}",
+                "valeur_avant": titre_actuel, "valeur_apres": "",
+                "statut": "echec", "erreur": f"IA: {str(e)[:150]}",
+            })
+            continue
+
+        if len(nouveau_contenu) < len(contenu_actuel) * 0.5:
+            erreur_finale = "garde-fou: contenu genere trop court (< 50% de l'original)"
+        elif any(a in nouveau_titre or a in nouvelle_meta for a in annees_perimees):
+            erreur_finale = "garde-fou: annee perimee detectee dans titre/meta"
+
+        if erreur_finale:
+            briefs.append({
+                "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+                "date_execution": datetime.now().isoformat(),
+                "stack": "contenu_editorial", "post_id": post_id, "url": url,
+                "probleme_detecte": f"chevauchement_thematique: {raison[:100]}",
+                "valeur_avant": titre_actuel, "valeur_apres": "",
+                "statut": "echec", "erreur": erreur_finale,
+            })
+            continue
+
+        try:
+            sftp = ssh.open_sftp()
+            chemin_temp = f"/tmp/orcaas_contenu_{post_id}.html"
+            with sftp.open(chemin_temp, 'w') as f:
+                f.write(nouveau_contenu)
+            sftp.close()
+
+            titre_echap = nouveau_titre.replace('"', '\\"')
+            meta_echap = nouvelle_meta.replace('"', '\\"')
+            cmd = (
+                f'wp --path="{wp_path}" post update {post_id} --post_content="$(cat {chemin_temp})" && '
+                f'wp --path="{wp_path}" post meta update {post_id} rank_math_title "{titre_echap}" && '
+                f'wp --path="{wp_path}" post meta update {post_id} rank_math_description "{meta_echap}" && '
+                f'rm {chemin_temp}'
+            )
+            stdin, stdout, stderr = ssh.exec_command(cmd)
+            sortie = stdout.read().decode()
+            erreur_ecriture = stderr.read().decode()
+            if "Success" in sortie:
+                statut = "corrige"
+                reussies += 1
+            else:
+                erreur_finale = (erreur_ecriture[:200] or "ecriture non confirmee")
+        except Exception as e:
+            erreur_finale = str(e)[:200]
+
+        briefs.append({
+            "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+            "date_execution": datetime.now().isoformat(),
+            "stack": "contenu_editorial", "post_id": post_id, "url": url,
+            "probleme_detecte": f"chevauchement_thematique: {raison[:100]}",
+            "valeur_avant": titre_actuel,
+            "valeur_apres": nouveau_titre if statut == "corrige" else "",
+            "statut": statut, "erreur": erreur_finale,
+        })
+
+    ssh.close()
+
+    if briefs:
+        try:
+            client_bq.insert_rows_json(f"{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs", briefs)
+        except Exception as e:
+            print(f"  Erreur ecriture briefs : {e}")
+
+    print(f"  {len(briefs)} page(s) traitee(s), {reussies} reussie(s)")
+    return {"traitees": len(briefs), "reussies": reussies}
+
+
 def rafraichir_indicateurs_reglementaires(client_bq):
     """Recupere les dernieres valeurs officielles connues (CRE Gaz/Elec,
     ANAH Aides) depuis les sources officielles et les insere dans

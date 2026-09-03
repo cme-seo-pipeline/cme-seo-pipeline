@@ -1222,6 +1222,41 @@ def synchroniser_indexation_endpoint():
     return jsonify({"status": "ok", "sync": "declenche en arriere-plan"}), 200
 
 
+@app.route('/agent-orcaas-analyser-chevauchement', methods=['POST'])
+def agent_orcaas_analyser_chevauchement_endpoint():
+    """AGENT ORCAAS -- Stack Contenu editorial, etape 1 : detecte le
+    chevauchement thematique. Lecture seule, retourne le resultat directement."""
+    from pipeline import agent_orcaas_analyser_chevauchement, init_bigquery
+
+    try:
+        client_bq = init_bigquery()
+        resultats = agent_orcaas_analyser_chevauchement(client_bq)
+        return jsonify({"status": "ok", "resultats": resultats}), 200
+    except Exception as e:
+        return jsonify({"status": "erreur", "detail": str(e)}), 500
+
+
+@app.route('/agent-orcaas-differencier', methods=['POST'])
+def agent_orcaas_differencier_endpoint():
+    """AGENT ORCAAS -- Stack Contenu editorial, etape 2 : reecrit les pages
+    en chevauchement thematique pour leur donner un angle distinct."""
+    from pipeline import agent_orcaas_differencier_contenu, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            resultat = agent_orcaas_differencier_contenu(client_bq)
+            print(f"✅ Differenciation ORCAAS terminee : {resultat}")
+        except Exception as e:
+            print(f"❌ Erreur differenciation ORCAAS : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "differenciation": "declenchee en arriere-plan"}), 200
+
+
 @app.route('/auditer-site-technique', methods=['POST'])
 def auditer_site_technique_endpoint():
     """CHANTIER G.3 : lance l'audit technique complet du site (robot maison)."""
