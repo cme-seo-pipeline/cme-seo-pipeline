@@ -2748,7 +2748,16 @@ def agent_orcaas_differencier_contenu(client_bq):
             "aussi un nouveau titre SEO (50-60 caracteres) et une nouvelle meta "
             "description (140-160 caracteres) refletant ce nouvel angle. N'utilise "
             "JAMAIS une annee anterieure a " + str(annee_actuelle) + ".\n\n"
-            'Reponds UNIQUEMENT en JSON strict : {"titre": "...", "meta": "...", "contenu": "..."}'
+            "IMPORTANT : reponds EXACTEMENT dans ce format, avec ces delimiteurs "
+            "exacts sur leur propre ligne (PAS de JSON, le contenu HTML casse "
+            "souvent la syntaxe JSON a cause des guillemets) :\n"
+            "===TITRE===\n"
+            "(le nouveau titre, une seule ligne)\n"
+            "===META===\n"
+            "(la nouvelle meta description, une seule ligne)\n"
+            "===CONTENU===\n"
+            "(le nouveau contenu HTML complet)\n"
+            "===FIN==="
         )
 
         try:
@@ -2760,11 +2769,17 @@ def agent_orcaas_differencier_contenu(client_bq):
             )
             resp.raise_for_status()
             texte = resp.json()['content'][0]['text']
-            texte_json = texte[texte.find('{'):texte.rfind('}') + 1]
-            resultat = json.loads(texte_json)
-            nouveau_titre = resultat.get('titre', titre_actuel)
-            nouvelle_meta = resultat.get('meta', '')
-            nouveau_contenu = resultat.get('contenu', '')
+
+            match_titre = re.search(r'===TITRE===\s*\n(.*?)\n===META===', texte, re.DOTALL)
+            match_meta = re.search(r'===META===\s*\n(.*?)\n===CONTENU===', texte, re.DOTALL)
+            match_contenu = re.search(r'===CONTENU===\s*\n(.*?)\n===FIN===', texte, re.DOTALL)
+
+            if not (match_titre and match_meta and match_contenu):
+                raise Exception("delimiteurs manquants dans la reponse")
+
+            nouveau_titre = match_titre.group(1).strip()
+            nouvelle_meta = match_meta.group(1).strip()
+            nouveau_contenu = match_contenu.group(1).strip()
         except Exception as e:
             briefs.append({
                 "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
