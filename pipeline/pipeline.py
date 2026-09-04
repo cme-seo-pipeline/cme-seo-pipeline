@@ -2025,11 +2025,24 @@ def agent_orcaas_chat(question, client_bq):
             objectifs_actifs = df_objectifs.to_string(index=False) if not df_objectifs.empty else "Aucun objectif actif defini pour le moment"
         except Exception:
             objectifs_actifs = "Aucun objectif actif defini pour le moment"
+
+        try:
+            df_dernier_rapport = client_bq.query(f"""
+                SELECT date_rapport, rapport_complet FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_rapports_quotidiens`
+                ORDER BY date_generation DESC LIMIT 1
+            """).to_dataframe()
+            if not df_dernier_rapport.empty:
+                dernier_rapport = f"Rapport du {df_dernier_rapport.iloc[0]['date_rapport']} :\n{df_dernier_rapport.iloc[0]['rapport_complet']}"
+            else:
+                dernier_rapport = "Aucun compte-rendu quotidien genere pour le moment"
+        except Exception:
+            dernier_rapport = "Aucun compte-rendu quotidien genere pour le moment"
     except Exception as e:
         return f"Erreur lors de la recuperation du contexte reel : {e}"
 
     contexte = (
         f"OBJECTIFS STRATEGIQUES ACTIFS (definis par le chef de projet) :\n{objectifs_actifs}\n\n"
+        f"DERNIER COMPTE-RENDU QUOTIDIEN D'ORCAAS :\n{dernier_rapport}\n\n"
         f"TOTAL REEL DE CORRECTIONS EFFECTUEES DEPUIS LE DEBUT : {int(total_briefs['total'])} "
         f"({int(total_briefs['corriges'])} reussies, {int(total_briefs['echecs'])} echouees) -- "
         "IMPORTANT : le detail ci-dessous ne montre QUE les 20 plus recentes, pas la totalite. "
@@ -2906,6 +2919,97 @@ def agent_orcaas_differencier_contenu(client_bq):
 
     print(f"  {len(briefs)} page(s) traitee(s), {reussies} reussie(s)")
     return {"traitees": len(briefs), "reussies": reussies}
+
+
+def agent_orcaas_orchestration_quotidienne(client_bq):
+    """AGENT ORCAAS -- Orchestration quotidienne autonome. Enchaine les
+    stacks autonomes (monitoring du pipeline, contenu editorial) et genere
+    un compte-rendu synthetique redige par Claude. Le chef de projet peut
+    consulter ce rapport a la frequence de son choix -- ORCAAS continue de
+    fonctionner de facon autonome et coherente entre deux passages."""
+    print("AGENT ORCAAS -- Orchestration quotidienne...")
+
+    resultats = {}
+
+    try:
+        resultats['monitoring'] = agent_orcaas_monitoring_pipeline(client_bq)
+    except Exception as e:
+        resultats['monitoring'] = {"erreur": str(e)}
+
+    try:
+        resultats['contenu_editorial'] = agent_orcaas_differencier_contenu(client_bq)
+    except Exception as e:
+        resultats['contenu_editorial'] = {"erreur": str(e)}
+
+    try:
+        df_briefs_jour = client_bq.query(f"""
+            SELECT stack, url, probleme_detecte, statut, valeur_avant, valeur_apres
+            FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs`
+            WHERE DATE(date_execution) = CURRENT_DATE('Europe/Paris')
+            ORDER BY date_execution DESC
+        """).to_dataframe()
+    except Exception:
+        df_briefs_jour = None
+
+    try:
+        df_objectifs = client_bq.query(f"""
+            SELECT objectif, date_creation FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_objectifs`
+            WHERE actif = TRUE ORDER BY date_creation DESC LIMIT 5
+        """).to_dataframe()
+        objectifs_actifs = df_objectifs.to_string(index=False) if not df_objectifs.empty else "Aucun objectif actif"
+    except Exception:
+        objectifs_actifs = "Aucun objectif actif"
+
+    prompt = (
+        "Tu es ORCAAS, agent SEO strategique senior. Redige un compte-rendu "
+        "quotidien clair et concis pour le chef de projet, en francais, base "
+        "EXCLUSIVEMENT sur les donnees reelles ci-dessous. Le chef de projet "
+        "peut te consulter a une frequence variable (quotidienne, hebdomadaire, "
+        "ou irreguliere) -- ecris ce rapport pour qu'il reste utile meme lu "
+        "plusieurs jours plus tard.\n\n"
+        f"OBJECTIFS STRATEGIQUES ACTIFS :\n{objectifs_actifs}\n\n"
+        f"RESULTAT MONITORING DU PIPELINE : {resultats['monitoring']}\n\n"
+        f"RESULTAT CONTENU EDITORIAL (differenciation) : {resultats['contenu_editorial']}\n\n"
+        "TOUTES LES ACTIONS DU JOUR (detail) :\n"
+        f"{df_briefs_jour.to_string(index=False) if df_briefs_jour is not None and not df_briefs_jour.empty else 'Aucune action aujourd hui'}\n\n"
+        "Structure le rapport ainsi : 1) Ce qui a ete fait aujourd'hui (actions "
+        "concretes, chiffres reels). 2) Ce qui a ete decouvert (problemes ou "
+        "opportunites identifies). 3) Ce qu'ORCAAS propose comme prochaine "
+        "etape, en lien avec les objectifs actifs si pertinent. Sois honnete "
+        "si peu ou rien de notable ne s'est passe -- ne gonfle jamais "
+        "artificiellement le rapport."
+    )
+
+    try:
+        resp = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
+            json={"model": CONFIG['MODEL'], "max_tokens": 1500, "messages": [{"role": "user", "content": prompt}]},
+            timeout=60
+        )
+        resp.raise_for_status()
+        rapport_complet = resp.json()['content'][0]['text']
+    except Exception as e:
+        rapport_complet = f"Erreur lors de la generation du rapport : {e}"
+
+    resume = rapport_complet[:300] + "..." if len(rapport_complet) > 300 else rapport_complet
+
+    try:
+        client_bq.insert_rows_json(
+            f"{PROJECT_ID}.04_pipeline_seo.agent_orcaas_rapports_quotidiens",
+            [{
+                "rapport_id": f"rapport_{int(datetime.now().timestamp())}",
+                "date_rapport": datetime.now().date().isoformat(),
+                "resume": resume,
+                "rapport_complet": rapport_complet,
+                "date_generation": datetime.now().isoformat(),
+            }]
+        )
+    except Exception as e:
+        print(f"  Erreur ecriture rapport : {e}")
+
+    print("  Rapport quotidien genere et sauvegarde")
+    return {"resultats": resultats, "rapport": rapport_complet}
 
 
 def rafraichir_indicateurs_reglementaires(client_bq):

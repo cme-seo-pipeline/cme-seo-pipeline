@@ -1257,6 +1257,27 @@ def agent_orcaas_differencier_endpoint():
     return jsonify({"status": "ok", "differenciation": "declenchee en arriere-plan"}), 200
 
 
+@app.route('/agent-orcaas-orchestration', methods=['POST'])
+def agent_orcaas_orchestration_endpoint():
+    """AGENT ORCAAS -- Orchestration quotidienne : enchaine les stacks
+    autonomes et genere le compte-rendu du jour."""
+    from pipeline import agent_orcaas_orchestration_quotidienne, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            resultat = agent_orcaas_orchestration_quotidienne(client_bq)
+            print(f"✅ Orchestration quotidienne terminee")
+        except Exception as e:
+            print(f"❌ Erreur orchestration quotidienne : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "orchestration": "declenchee en arriere-plan"}), 200
+
+
 @app.route('/auditer-site-technique', methods=['POST'])
 def auditer_site_technique_endpoint():
     """CHANTIER G.3 : lance l'audit technique complet du site (robot maison)."""
