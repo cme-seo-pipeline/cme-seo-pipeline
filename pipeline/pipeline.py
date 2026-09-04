@@ -1984,24 +1984,14 @@ def agent_orcaas_evaluer_impact(client_bq):
 
 def agent_orcaas_chat(question, client_bq):
     """AGENT ORCAAS -- Interface de conversation (couche 3). Repond a une
-    question en langage libre, en s'appuyant EXCLUSIVEMENT sur le contexte
-    reel du projet (briefs passes, evaluations d'impact, etat actuel du
-    tunnel de conversion) -- jamais en inventant une donnee absente."""
+    question en s'appuyant EXCLUSIVEMENT sur le contexte reel du projet.
+    NOUVEAU : dispose d'un outil (definir_objectif) pour enregistrer une
+    directive strategique donnee par le chef de projet."""
     try:
-        total_briefs = client_bq.query(f"""
-            SELECT COUNT(*) AS total, COUNTIF(statut='corrige') AS corriges, COUNTIF(statut='echec') AS echecs
-            FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs`
-        """).to_dataframe().iloc[0]
-
         df_briefs = client_bq.query(f"""
             SELECT date_execution, stack, url, probleme_detecte, statut
             FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs`
             ORDER BY date_execution DESC LIMIT 20
-        """).to_dataframe()
-
-        total_evals = client_bq.query(f"""
-            SELECT COUNT(*) AS total, verdict FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_evaluations`
-            GROUP BY verdict
         """).to_dataframe()
 
         df_evals = client_bq.query(f"""
@@ -2016,10 +2006,30 @@ def agent_orcaas_chat(question, client_bq):
             WHERE impressions > 0
             ORDER BY impressions DESC LIMIT 15
         """).to_dataframe()
+
+        total_briefs = client_bq.query(f"""
+            SELECT COUNT(*) AS total, COUNTIF(statut='corrige') AS corriges, COUNTIF(statut='echec') AS echecs
+            FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs`
+        """).to_dataframe().iloc[0]
+
+        total_evals = client_bq.query(f"""
+            SELECT COUNT(*) AS total, verdict FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_evaluations`
+            GROUP BY verdict
+        """).to_dataframe()
+
+        try:
+            df_objectifs = client_bq.query(f"""
+                SELECT objectif, date_creation FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_objectifs`
+                WHERE actif = TRUE ORDER BY date_creation DESC LIMIT 5
+            """).to_dataframe()
+            objectifs_actifs = df_objectifs.to_string(index=False) if not df_objectifs.empty else "Aucun objectif actif defini pour le moment"
+        except Exception:
+            objectifs_actifs = "Aucun objectif actif defini pour le moment"
     except Exception as e:
         return f"Erreur lors de la recuperation du contexte reel : {e}"
 
     contexte = (
+        f"OBJECTIFS STRATEGIQUES ACTIFS (definis par le chef de projet) :\n{objectifs_actifs}\n\n"
         f"TOTAL REEL DE CORRECTIONS EFFECTUEES DEPUIS LE DEBUT : {int(total_briefs['total'])} "
         f"({int(total_briefs['corriges'])} reussies, {int(total_briefs['echecs'])} echouees) -- "
         "IMPORTANT : le detail ci-dessous ne montre QUE les 20 plus recentes, pas la totalite. "
@@ -2034,13 +2044,26 @@ def agent_orcaas_chat(question, client_bq):
         f"{df_tunnel.to_string(index=False) if not df_tunnel.empty else 'Aucune'}"
     )
 
+    outils = [{
+        "name": "definir_objectif",
+        "description": "Enregistre un nouvel objectif ou une nouvelle priorite strategique donnee par le chef de projet, pour orienter le travail autonome d'ORCAAS. A utiliser UNIQUEMENT quand le message exprime clairement une directive/priorite/objectif -- PAS pour une simple question d'information.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "objectif": {"type": "string", "description": "Le texte de l'objectif, reformule clairement et de facon actionnable"}
+            },
+            "required": ["objectif"]
+        }
+    }]
+
     prompt = (
         "Tu es ORCAAS, l'agent IA SEO qui gere le site comprendre-mon-energie.fr, "
         "avec 3 competences : technique, analytique, commercial. Tu es rigoureux, "
         "honnete (tu ne fabriques jamais de donnee ni de chiffre), et tu t'appuies "
-        "UNIQUEMENT sur le contexte reel fourni ci-dessous. IMPORTANT : reponds "
-        "TOUJOURS dans la meme langue que la question posee, quelle que soit la "
-        "langue de ce contexte ou de ces instructions.\n\n"
+        "UNIQUEMENT sur le contexte reel fourni ci-dessous. Si le chef de projet te "
+        "donne une directive ou une priorite strategique claire, utilise l'outil "
+        "definir_objectif pour l'enregistrer. Si c'est juste une question, reponds "
+        "normalement sans utiliser l'outil.\n\n"
         f"CONTEXTE REEL DU PROJET :\n{contexte}\n\n"
         f"QUESTION DU PORTEUR DE PROJET (reponds dans la meme langue que cette "
         f"question precise, meme si tout ce qui precede est en francais) :\n{question}\n\n"
@@ -2053,11 +2076,41 @@ def agent_orcaas_chat(question, client_bq):
         resp = requests.post(
             "https://api.anthropic.com/v1/messages",
             headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
-            json={"model": CONFIG['MODEL'], "max_tokens": 800, "messages": [{"role": "user", "content": prompt}]},
+            json={"model": CONFIG['MODEL'], "max_tokens": 800, "tools": outils, "messages": [{"role": "user", "content": prompt}]},
             timeout=30
         )
         resp.raise_for_status()
-        return resp.json()['content'][0]['text']
+        data = resp.json()
+
+        texte_reponse = ""
+        objectif_enregistre = None
+        for bloc in data.get('content', []):
+            if bloc.get('type') == 'text':
+                texte_reponse += bloc.get('text', '')
+            elif bloc.get('type') == 'tool_use' and bloc.get('name') == 'definir_objectif':
+                objectif_texte = bloc.get('input', {}).get('objectif', '')
+                if objectif_texte:
+                    try:
+                        client_bq.insert_rows_json(
+                            f"{PROJECT_ID}.04_pipeline_seo.agent_orcaas_objectifs",
+                            [{
+                                "objectif_id": f"obj_{int(datetime.now().timestamp())}",
+                                "objectif": objectif_texte,
+                                "date_creation": datetime.now().isoformat(),
+                                "actif": True,
+                            }]
+                        )
+                        objectif_enregistre = objectif_texte
+                    except Exception:
+                        pass
+
+        if objectif_enregistre:
+            if texte_reponse.strip():
+                texte_reponse += f"\n\n(Objectif enregistre : {objectif_enregistre})"
+            else:
+                texte_reponse = f"Objectif enregistre : {objectif_enregistre}"
+
+        return texte_reponse or "Je n'ai pas pu generer de reponse."
     except Exception as e:
         return f"Erreur lors de la generation de la reponse : {e}"
 
