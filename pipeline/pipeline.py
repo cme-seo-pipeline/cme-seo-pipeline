@@ -2923,10 +2923,9 @@ def agent_orcaas_differencier_contenu(client_bq):
 
 def agent_orcaas_orchestration_quotidienne(client_bq):
     """AGENT ORCAAS -- Orchestration quotidienne autonome. Enchaine les
-    stacks autonomes (monitoring du pipeline, contenu editorial) et genere
-    un compte-rendu synthetique redige par Claude. Le chef de projet peut
-    consulter ce rapport a la frequence de son choix -- ORCAAS continue de
-    fonctionner de facon autonome et coherente entre deux passages."""
+    stacks autonomes (monitoring, contenu editorial) puis genere TOUJOURS
+    un compte-rendu quotidien, et EN PLUS un hebdomadaire chaque lundi et
+    un mensuel chaque 1er du mois -- les 3 granularites coexistent."""
     print("AGENT ORCAAS -- Orchestration quotidienne...")
 
     resultats = {}
@@ -2942,14 +2941,15 @@ def agent_orcaas_orchestration_quotidienne(client_bq):
         resultats['contenu_editorial'] = {"erreur": str(e)}
 
     try:
-        df_briefs_jour = client_bq.query(f"""
-            SELECT stack, url, probleme_detecte, statut, valeur_avant, valeur_apres
-            FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs`
-            WHERE DATE(date_execution) = CURRENT_DATE('Europe/Paris')
-            ORDER BY date_execution DESC
+        df_changements_reglementaires = client_bq.query(f"""
+            SELECT * FROM `{PROJECT_ID}.04_pipeline_seo.vue_changements_indicateurs`
         """).to_dataframe()
-    except Exception:
-        df_briefs_jour = None
+        if not df_changements_reglementaires.empty:
+            resultats['changements_reglementaires'] = df_changements_reglementaires.to_string(index=False)
+        else:
+            resultats['changements_reglementaires'] = "Aucun changement reglementaire detecte"
+    except Exception as e:
+        resultats['changements_reglementaires'] = f"Erreur verification : {e}"
 
     try:
         df_objectifs = client_bq.query(f"""
@@ -2960,58 +2960,79 @@ def agent_orcaas_orchestration_quotidienne(client_bq):
     except Exception:
         objectifs_actifs = "Aucun objectif actif"
 
-    prompt = (
-        "Tu es ORCAAS, agent SEO strategique senior. Redige un compte-rendu "
-        "quotidien clair et concis pour le chef de projet, en francais, base "
-        "EXCLUSIVEMENT sur les donnees reelles ci-dessous. Le chef de projet "
-        "peut te consulter a une frequence variable (quotidienne, hebdomadaire, "
-        "ou irreguliere) -- ecris ce rapport pour qu'il reste utile meme lu "
-        "plusieurs jours plus tard.\n\n"
-        f"OBJECTIFS STRATEGIQUES ACTIFS :\n{objectifs_actifs}\n\n"
-        f"RESULTAT MONITORING DU PIPELINE : {resultats['monitoring']}\n\n"
-        f"RESULTAT CONTENU EDITORIAL (differenciation) : {resultats['contenu_editorial']}\n\n"
-        "TOUTES LES ACTIONS DU JOUR (detail) :\n"
-        f"{df_briefs_jour.to_string(index=False) if df_briefs_jour is not None and not df_briefs_jour.empty else 'Aucune action aujourd hui'}\n\n"
-        "Structure le rapport ainsi : 1) Ce qui a ete fait aujourd'hui (actions "
-        "concretes, chiffres reels). 2) Ce qui a ete decouvert (problemes ou "
-        "opportunites identifies). 3) Ce qu'ORCAAS propose comme prochaine "
-        "etape, en lien avec les objectifs actifs si pertinent. Sois honnete "
-        "si peu ou rien de notable ne s'est passe -- ne gonfle jamais "
-        "artificiellement le rapport."
-    )
+    aujourdhui = datetime.now()
+    types_a_generer = [("quotidien", 1)]
+    if aujourdhui.weekday() == 0:
+        types_a_generer.append(("hebdomadaire", 7))
+    if aujourdhui.day == 1:
+        types_a_generer.append(("mensuel", 30))
 
-    try:
-        resp = requests.post(
-            "https://api.anthropic.com/v1/messages",
-            headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
-            json={"model": CONFIG['MODEL'], "max_tokens": 1500, "messages": [{"role": "user", "content": prompt}]},
-            timeout=60
+    rapports_generes = {}
+
+    for type_rapport, nb_jours in types_a_generer:
+        try:
+            df_briefs_periode = client_bq.query(f"""
+                SELECT stack, url, probleme_detecte, statut, valeur_avant, valeur_apres
+                FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs`
+                WHERE DATE(date_execution) >= DATE_SUB(CURRENT_DATE('Europe/Paris'), INTERVAL {nb_jours} DAY)
+                ORDER BY date_execution DESC
+            """).to_dataframe()
+        except Exception:
+            df_briefs_periode = None
+
+        libelles = {"quotidien": "aujourd'hui", "hebdomadaire": "cette semaine (7 derniers jours)", "mensuel": "ce mois-ci (30 derniers jours)"}
+        libelle_periode = libelles[type_rapport]
+
+        prompt = (
+            "Tu es ORCAAS, agent SEO strategique senior. Redige un compte-rendu "
+            f"{type_rapport} clair et concis pour le chef de projet, en francais, "
+            "base EXCLUSIVEMENT sur les donnees reelles ci-dessous. Le rapport "
+            f"couvre la periode : {libelle_periode}.\n\n"
+            f"OBJECTIFS STRATEGIQUES ACTIFS :\n{objectifs_actifs}\n\n"
+            f"RESULTAT MONITORING DU PIPELINE (aujourd'hui) : {resultats['monitoring']}\n\n"
+            f"RESULTAT CONTENU EDITORIAL (aujourd'hui) : {resultats['contenu_editorial']}\n\n"
+            f"CHANGEMENTS REGLEMENTAIRES DETECTES (CRE, ANAH -- tarifs et aides officiels) : {resultats['changements_reglementaires']}\n\n"
+            f"TOUTES LES ACTIONS SUR LA PERIODE ({libelle_periode}) :\n"
+            f"{df_briefs_periode.to_string(index=False) if df_briefs_periode is not None and not df_briefs_periode.empty else 'Aucune action sur cette periode'}\n\n"
+            "Structure le rapport ainsi : 1) Ce qui a ete fait (actions concretes, "
+            "chiffres reels). 2) Ce qui a ete decouvert (problemes ou opportunites). "
+            "3) Ce qu'ORCAAS propose comme prochaine etape, en lien avec les objectifs "
+            "actifs si pertinent. Sois honnete si peu ou rien de notable ne s'est passe."
         )
-        resp.raise_for_status()
-        rapport_complet = resp.json()['content'][0]['text']
-    except Exception as e:
-        rapport_complet = f"Erreur lors de la generation du rapport : {e}"
 
-    resume = rapport_complet[:300] + "..." if len(rapport_complet) > 300 else rapport_complet
+        try:
+            resp = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
+                json={"model": CONFIG['MODEL'], "max_tokens": 1500, "messages": [{"role": "user", "content": prompt}]},
+                timeout=60
+            )
+            resp.raise_for_status()
+            rapport_complet = resp.json()['content'][0]['text']
+        except Exception as e:
+            rapport_complet = f"Erreur lors de la generation du rapport {type_rapport} : {e}"
 
-    try:
-        client_bq.insert_rows_json(
-            f"{PROJECT_ID}.04_pipeline_seo.agent_orcaas_rapports_quotidiens",
-            [{
-                "rapport_id": f"rapport_{int(datetime.now().timestamp())}",
-                "date_rapport": datetime.now().date().isoformat(),
-                "resume": resume,
-                "rapport_complet": rapport_complet,
-                "date_generation": datetime.now().isoformat(),
-            }]
-        )
-    except Exception as e:
-        print(f"  Erreur ecriture rapport : {e}")
+        resume = rapport_complet[:300] + "..." if len(rapport_complet) > 300 else rapport_complet
 
-    print("  Rapport quotidien genere et sauvegarde")
-    return {"resultats": resultats, "rapport": rapport_complet}
+        try:
+            client_bq.insert_rows_json(
+                f"{PROJECT_ID}.04_pipeline_seo.agent_orcaas_rapports_quotidiens",
+                [{
+                    "rapport_id": f"rapport_{type_rapport}_{int(datetime.now().timestamp())}",
+                    "date_rapport": datetime.now().date().isoformat(),
+                    "resume": resume,
+                    "rapport_complet": rapport_complet,
+                    "date_generation": datetime.now().isoformat(),
+                    "type_rapport": type_rapport,
+                }]
+            )
+        except Exception as e:
+            print(f"  Erreur ecriture rapport {type_rapport} : {e}")
 
+        rapports_generes[type_rapport] = rapport_complet
+        print(f"  Rapport {type_rapport} genere et sauvegarde")
 
+    return {"resultats": resultats, "rapports": rapports_generes}
 def rafraichir_indicateurs_reglementaires(client_bq):
     """Recupere les dernieres valeurs officielles connues (CRE Gaz/Elec,
     ANAH Aides) depuis les sources officielles et les insere dans

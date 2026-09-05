@@ -12,7 +12,7 @@ from pipeline import run_pipeline
 app = Flask(__name__)
 
 
-CHEMINS_PUBLICS = {'/', '/orcaas', '/orcaas-dashboard-data', '/orcaas-dashboard-detail', '/orcaas-chat'}
+CHEMINS_PUBLICS = {'/', '/orcaas', '/orcaas-dashboard-data', '/orcaas-dashboard-detail', '/orcaas-chat', '/orcaas-definir-frequence', '/orcaas-rapports'}
 ORCAAS_ACTION_SECRET = os.environ.get("ORCAAS_ACTION_SECRET", "")
 
 
@@ -714,6 +714,21 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   .modal-item:last-child { border-bottom: none; }
   .modal-item-url { color: #e2e8f0; word-break: break-all; }
   .modal-item-detail { color: #64748b; font-size: 12px; }
+  #barre-frequence { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 12px 20px; font-size: 13px; color: #94a3b8; }
+  #barre-frequence select { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+  #barre-frequence span#frequence-statut { color: #64748b; font-size: 12px; margin-left: 8px; }
+  #vue-rapports { display: none; padding: 20px; max-width: 900px; margin: 0 auto; width: 100%; }
+  .barre-type-rapport { display: flex; gap: 8px; margin-bottom: 16px; }
+  .type-rapport-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
+  .type-rapport-btn.actif { background: #2563eb; border-color: #2563eb; color: #fff; }
+  .rapport-item { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; cursor: pointer; }
+  .rapport-item:hover { border-color: #2563eb; }
+  .rapport-item strong { color: #e2e8f0; font-size: 14px; }
+  .rapport-item p { color: #94a3b8; font-size: 13px; margin: 6px 0 0; }
+  #detail-rapport { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px; margin-top: 16px; }
+  #detail-rapport button { background: #334155; border: none; color: #e2e8f0; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-bottom: 12px; }
+  #detail-rapport h3 { color: #e2e8f0; margin: 0 0 12px; }
+  .rapport-texte { color: #cbd5e1; font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
   #bouton-langue { background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin-left: auto; }
   #bouton-langue:hover { background: #1e293b; color: #e2e8f0; }
 </style>
@@ -742,6 +757,7 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   <nav>
     <button id="onglet-chat" class="actif" onclick="afficherOnglet('chat')" data-i18n="onglet_chat">Chat</button>
     <button id="onglet-dashboard" onclick="afficherOnglet('dashboard')" data-i18n="onglet_dashboard">Dashboard</button>
+    <button id="onglet-rapports" onclick="afficherOnglet('rapports')">Rapports</button>
   </nav>
   <button id="bouton-langue" onclick="changerLangue()">EN</button>
 </header>
@@ -772,6 +788,16 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
     <label><span data-i18n="label_au">au</span> <input type="date" id="date-fin"></label>
     <button id="appliquer-filtre" onclick="rechargerAvecFiltre()" data-i18n="bouton_appliquer">Appliquer</button>
     <span id="periode-affichee"></span>
+  </div>
+  <div id="barre-frequence">
+    <label for="select-frequence">Frequence du compte-rendu ORCAAS :</label>
+    <select id="select-frequence">
+      <option value="quotidien">Quotidien</option>
+      <option value="hebdomadaire">Hebdomadaire</option>
+      <option value="mensuel">Mensuel</option>
+    </select>
+    <button onclick="enregistrerFrequence()">Enregistrer</button>
+    <span id="frequence-statut"></span>
   </div>
   <div class="carte">
     <h2 data-i18n="titre_pages">Top pages par impressions (GSC, periode selectionnee)</h2>
@@ -809,6 +835,16 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
     <h2 data-i18n="titre_indexation">Indexation Google (statut reel par page)</h2>
     <canvas id="chartIndexation"></canvas>
   </div>
+</div>
+
+<div id="vue-rapports">
+  <div class="barre-type-rapport">
+    <button class="type-rapport-btn actif" data-type="quotidien" id="btn-type-quotidien">Quotidien</button>
+    <button class="type-rapport-btn" data-type="hebdomadaire" id="btn-type-hebdomadaire">Hebdomadaire</button>
+    <button class="type-rapport-btn" data-type="mensuel" id="btn-type-mensuel">Mensuel</button>
+  </div>
+  <div id="liste-rapports"></div>
+  <div id="detail-rapport" style="display:none;"></div>
 </div>
 
 <script>
@@ -882,10 +918,16 @@ appliquerLangue(langueActuelle());
 function afficherOnglet(nom) {
   document.getElementById('onglet-chat').classList.toggle('actif', nom === 'chat');
   document.getElementById('onglet-dashboard').classList.toggle('actif', nom === 'dashboard');
+  document.getElementById('onglet-rapports').classList.toggle('actif', nom === 'rapports');
   document.getElementById('vue-chat').style.display = nom === 'chat' ? 'flex' : 'none';
   document.getElementById('vue-dashboard').classList.toggle('actif', nom === 'dashboard');
+  document.getElementById('vue-rapports').style.display = nom === 'rapports' ? 'block' : 'none';
   if (nom === 'dashboard' && !window.dashboardCharge) {
     chargerDashboard();
+  }
+  if (nom === 'rapports' && !window.rapportsCharges) {
+    window.rapportsCharges = true;
+    chargerRapports('quotidien');
   }
 }
 
@@ -955,6 +997,23 @@ async function chargerDashboard(dateDebut, dateFin) {
   }
 }
 
+async function enregistrerFrequence() {
+  const frequence = document.getElementById('select-frequence').value;
+  const statut = document.getElementById('frequence-statut');
+  statut.textContent = '...';
+  try {
+    const res = await fetch('/orcaas-definir-frequence', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ frequence: frequence })
+    });
+    const data = await res.json();
+    statut.textContent = data.status === 'ok' ? 'Enregistre' : 'Erreur';
+  } catch (e) {
+    statut.textContent = 'Erreur : ' + e.message;
+  }
+}
+
 function rechargerAvecFiltre() {
   const db = document.getElementById('date-debut').value;
   const df = document.getElementById('date-fin').value;
@@ -987,6 +1046,61 @@ async function afficherDetail(graphique, categorie) {
 
 function fermerModal() {
   document.getElementById('modal-detail').style.display = 'none';
+}
+
+document.getElementById('btn-type-quotidien').addEventListener('click', function() { chargerRapports('quotidien'); });
+document.getElementById('btn-type-hebdomadaire').addEventListener('click', function() { chargerRapports('hebdomadaire'); });
+document.getElementById('btn-type-mensuel').addEventListener('click', function() { chargerRapports('mensuel'); });
+
+async function chargerRapports(type) {
+  document.querySelectorAll('.type-rapport-btn').forEach(function(b) { b.classList.toggle('actif', b.dataset.type === type); });
+  document.getElementById('detail-rapport').style.display = 'none';
+  const liste = document.getElementById('liste-rapports');
+  liste.innerHTML = '<div class=\"vide\">...</div>';
+  try {
+    const res = await fetch('/orcaas-rapports?type=' + type);
+    const data = await res.json();
+    if (data.erreur) {
+      liste.innerHTML = '<div class=\"vide\">' + data.erreur + '</div>';
+      return;
+    }
+    if (!data.rapports || data.rapports.length === 0) {
+      liste.innerHTML = '<div class=\"vide\">Aucun rapport disponible pour le moment</div>';
+      return;
+    }
+    liste.innerHTML = '';
+    data.rapports.forEach(function(r) {
+      const item = document.createElement('div');
+      item.className = 'rapport-item';
+      const titre = document.createElement('strong');
+      titre.textContent = r.date_rapport;
+      const resume = document.createElement('p');
+      resume.textContent = r.resume;
+      item.appendChild(titre);
+      item.appendChild(resume);
+      item.addEventListener('click', function() { afficherRapportDetail(r); });
+      liste.appendChild(item);
+    });
+  } catch (e) {
+    liste.innerHTML = '<div class=\"vide\">' + e.message + '</div>';
+  }
+}
+
+function afficherRapportDetail(rapport) {
+  const detail = document.getElementById('detail-rapport');
+  detail.innerHTML = '';
+  const fermer = document.createElement('button');
+  fermer.textContent = 'Fermer';
+  fermer.addEventListener('click', function() { detail.style.display = 'none'; });
+  const titre = document.createElement('h3');
+  titre.textContent = rapport.date_rapport;
+  const texte = document.createElement('div');
+  texte.className = 'rapport-texte';
+  texte.textContent = rapport.rapport_complet;
+  detail.appendChild(fermer);
+  detail.appendChild(titre);
+  detail.appendChild(texte);
+  detail.style.display = 'block';
 }
 
 function assurerCanvas(id) {
@@ -1276,6 +1390,65 @@ def agent_orcaas_orchestration_endpoint():
     thread.start()
 
     return jsonify({"status": "ok", "orchestration": "declenchee en arriere-plan"}), 200
+
+
+@app.route('/orcaas-rapports', methods=['GET'])
+def orcaas_rapports_endpoint():
+    """Retourne la liste des comptes-rendus ORCAAS d'un type donne
+    (quotidien, hebdomadaire, mensuel). Endpoint public, lecture seule."""
+    from pipeline import init_bigquery, PROJECT_ID
+    from google.cloud import bigquery
+
+    type_rapport = request.args.get('type', 'quotidien')
+    if type_rapport not in ('quotidien', 'hebdomadaire', 'mensuel'):
+        return jsonify({"rapports": [], "erreur": "type invalide"}), 400
+
+    try:
+        client_bq = init_bigquery()
+        job_config = bigquery.QueryJobConfig(query_parameters=[
+            bigquery.ScalarQueryParameter("type_rapport", "STRING", type_rapport)
+        ])
+        df = client_bq.query(f"""
+            SELECT rapport_id, date_rapport, resume, rapport_complet, date_generation
+            FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_rapports_quotidiens`
+            WHERE type_rapport = @type_rapport
+            ORDER BY date_generation DESC LIMIT 30
+        """, job_config=job_config).to_dataframe()
+
+        rapports = []
+        for _, r in df.iterrows():
+            rapports.append({
+                "rapport_id": r['rapport_id'],
+                "date_rapport": str(r['date_rapport']),
+                "resume": r['resume'],
+                "rapport_complet": r['rapport_complet'],
+            })
+        return jsonify({"rapports": rapports, "erreur": None}), 200
+    except Exception as e:
+        return jsonify({"rapports": [], "erreur": str(e)}), 500
+
+
+@app.route('/orcaas-definir-frequence', methods=['POST'])
+def orcaas_definir_frequence_endpoint():
+    """Definit la frequence de generation du compte-rendu ORCAAS
+    (quotidien, hebdomadaire, mensuel). Endpoint public -- simple
+    preference d'affichage, pas une action sensible."""
+    from pipeline import init_bigquery, PROJECT_ID
+
+    data = request.get_json(silent=True) or {}
+    frequence = data.get('frequence', '')
+    if frequence not in ('quotidien', 'hebdomadaire', 'mensuel'):
+        return jsonify({"status": "erreur", "detail": "frequence invalide"}), 400
+
+    try:
+        client_bq = init_bigquery()
+        client_bq.insert_rows_json(
+            f"{PROJECT_ID}.04_pipeline_seo.agent_orcaas_parametres",
+            [{"cle": "frequence_rapport", "valeur": frequence, "date_modification": datetime.now().isoformat()}]
+        )
+        return jsonify({"status": "ok", "frequence": frequence}), 200
+    except Exception as e:
+        return jsonify({"status": "erreur", "detail": str(e)}), 500
 
 
 @app.route('/auditer-site-technique', methods=['POST'])
