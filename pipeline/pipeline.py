@@ -2076,7 +2076,10 @@ def agent_orcaas_chat(question, client_bq):
         "UNIQUEMENT sur le contexte reel fourni ci-dessous. Si le chef de projet te "
         "donne une directive ou une priorite strategique claire, utilise l'outil "
         "definir_objectif pour l'enregistrer. Si c'est juste une question, reponds "
-        "normalement sans utiliser l'outil.\n\n"
+        "normalement sans utiliser l'outil. IMPORTANT : chaque fois que tu cites une "
+        "page, un article ou une URL precise, formate-la TOUJOURS en lien markdown "
+        "cliquable, par exemple [Comparatif contrats gaz](https://www.comprendre-mon-energie.fr/...) "
+        "plutot que de simplement mentionner son titre ou son URL en texte brut.\n\n"
         f"CONTEXTE REEL DU PROJET :\n{contexte}\n\n"
         f"QUESTION DU PORTEUR DE PROJET (reponds dans la meme langue que cette "
         f"question precise, meme si tout ce qui precede est en francais) :\n{question}\n\n"
@@ -2702,9 +2705,14 @@ def agent_orcaas_analyser_chevauchement(client_bq):
             "thematique reel qui expliquerait ca (sujets quasi-identiques), ou ces "
             "articles couvrent-ils des angles genuinement distincts ?\n"
             f"Article non indexe : {titre_actuel}\n"
-            f"Articles voisins deja indexes : {', '.join(titres_soeurs)}\n"
-            'Reponds UNIQUEMENT en JSON strict : {"chevauchement": true, "raison": "..."} '
-            'ou {"chevauchement": false, "raison": "..."}'
+            f"Articles voisins deja indexes : {', '.join(titres_soeurs)}\n\n"
+            "Reponds EXACTEMENT dans ce format, avec ces delimiteurs exacts sur leur "
+            "propre ligne (PAS de JSON) :\n"
+            "===CHEVAUCHEMENT===\n"
+            "(oui ou non)\n"
+            "===RAISON===\n"
+            "(la raison en une ou deux phrases)\n"
+            "===FIN==="
         )
         try:
             resp = requests.post(
@@ -2715,10 +2723,12 @@ def agent_orcaas_analyser_chevauchement(client_bq):
             )
             resp.raise_for_status()
             texte = resp.json()['content'][0]['text']
-            texte_json = texte[texte.find('{'):texte.rfind('}') + 1]
-            jugement = json.loads(texte_json)
-            chevauchement = bool(jugement.get('chevauchement', False))
-            raison = jugement.get('raison', '')
+            match_chevauchement = re.search(r'===CHEVAUCHEMENT===\s*\n(.*?)\n===RAISON===', texte, re.DOTALL)
+            match_raison = re.search(r'===RAISON===\s*\n(.*?)\n===FIN===', texte, re.DOTALL)
+            if not (match_chevauchement and match_raison):
+                raise Exception("delimiteurs manquants dans la reponse")
+            chevauchement = 'oui' in match_chevauchement.group(1).strip().lower()
+            raison = match_raison.group(1).strip()
         except Exception as e:
             resultats.append({"post_id": post_id, "url": url, "titre": titre_actuel,
                                "classification": "erreur", "raison": f"IA: {str(e)[:150]}"})
@@ -2997,7 +3007,9 @@ def agent_orcaas_orchestration_quotidienne(client_bq):
             "Structure le rapport ainsi : 1) Ce qui a ete fait (actions concretes, "
             "chiffres reels). 2) Ce qui a ete decouvert (problemes ou opportunites). "
             "3) Ce qu'ORCAAS propose comme prochaine etape, en lien avec les objectifs "
-            "actifs si pertinent. Sois honnete si peu ou rien de notable ne s'est passe."
+            "actifs si pertinent. Sois honnete si peu ou rien de notable ne s'est passe. "
+            "IMPORTANT : chaque fois que tu cites une page ou une URL precise, formate-la "
+            "TOUJOURS en lien markdown cliquable."
         )
 
         try:
