@@ -2222,8 +2222,8 @@ def _dash_audit(client_bq, date_debut, date_fin):
     try:
         df = client_bq.query(f"""
             SELECT
-              CASE WHEN status_code = 200 THEN '200 OK'
-                   WHEN status_code >= 300 AND status_code < 400 THEN 'Redirection'
+              CASE WHEN nb_redirections > 0 THEN 'Redirection'
+                   WHEN status_code = 200 THEN '200 OK'
                    WHEN status_code >= 400 THEN 'Erreur'
                    ELSE 'Autre' END AS categorie,
               COUNT(*) AS nb
@@ -2574,19 +2574,26 @@ def agent_orcaas_detail_categorie(client_bq, graphique, categorie):
             items = [{"url": r['url'], "detail": r['verdict'] or ''} for _, r in df.iterrows()]
 
         elif graphique == "audit_technique":
-            if categorie == "200 OK":
-                condition = "status_code = 200"
-            elif categorie == "Redirection":
-                condition = "status_code >= 300 AND status_code < 400"
+            if categorie == "Redirection":
+                condition = "nb_redirections > 0"
+            elif categorie == "200 OK":
+                condition = "nb_redirections = 0 AND status_code = 200"
             elif categorie == "Erreur":
-                condition = "status_code >= 400"
+                condition = "nb_redirections = 0 AND status_code >= 400"
             else:
-                condition = "status_code IS NULL"
+                condition = "nb_redirections = 0 AND status_code IS NULL"
             df = client_bq.query(f"""
-                SELECT url, status_code FROM `{PROJECT_ID}.04_pipeline_seo.audit_technique_site`
+                SELECT url, status_code, nb_redirections, url_finale
+                FROM `{PROJECT_ID}.04_pipeline_seo.audit_technique_site`
                 WHERE {condition} ORDER BY url
             """).to_dataframe()
-            items = [{"url": r['url'], "detail": f"Code {int(r['status_code'])}" if pd.notna(r['status_code']) else "N/A"} for _, r in df.iterrows()]
+            items = []
+            for _, r in df.iterrows():
+                if r['nb_redirections'] and r['nb_redirections'] > 0:
+                    detail = f"{int(r['nb_redirections'])} redirection(s) -> {r['url_finale']}"
+                else:
+                    detail = f"Code {int(r['status_code'])}" if pd.notna(r['status_code']) else "N/A"
+                items.append({"url": r['url'], "detail": detail})
 
         elif graphique == "briefs":
             job_config = bigquery.QueryJobConfig(query_parameters=[

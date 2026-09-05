@@ -714,6 +714,8 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   .modal-item { padding: 10px 8px; border-bottom: 1px solid #29344a; font-size: 13px; display: flex; flex-direction: column; gap: 3px; }
   .modal-item:last-child { border-bottom: none; }
   .modal-item-url { color: #e2e8f0; word-break: break-all; }
+  a.modal-item-url { color: #60a5fa; text-decoration: underline; cursor: pointer; }
+  a.modal-item-url:hover { color: #93c5fd; }
   .modal-item-detail { color: #64748b; font-size: 12px; }
   #vue-rapports { display: none; padding: 20px; max-width: 900px; margin: 0 auto; width: 100%; }
   .barre-type-rapport { display: flex; gap: 8px; margin-bottom: 16px; }
@@ -800,7 +802,7 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
     <h2 data-i18n="titre_pages">Top pages par impressions (GSC, periode selectionnee)</h2>
     <canvas id="chartPages"></canvas>
   </div>
-  <div class="carte">
+  <div class="carte" style="display:none;">
     <h2 data-i18n="titre_briefs">Corrections ORCAAS par type de probleme</h2>
     <canvas id="chartBriefs"></canvas>
   </div>
@@ -1021,7 +1023,11 @@ async function afficherDetail(graphique, categorie) {
       return;
     }
     liste.innerHTML = data.items.map(function(it) {
-      return '<div class=\"modal-item\"><span class=\"modal-item-url\">' + it.url + '</span><span class=\"modal-item-detail\">' + (it.detail || '') + '</span></div>';
+      const estUrl = /^https?:\/\//.test(it.url);
+      const urlHtml = estUrl
+        ? '<a class=\"modal-item-url\" href=\"' + it.url + '\" target=\"_blank\" rel=\"noopener\">' + it.url + '</a>'
+        : '<span class=\"modal-item-url\">' + it.url + '</span>';
+      return '<div class=\"modal-item\">' + urlHtml + '<span class=\"modal-item-detail\">' + (it.detail || '') + '</span></div>';
     }).join('');
   } catch (e) {
     document.getElementById('modal-liste').innerHTML = '<div class=\"vide\">' + e.message + '</div>';
@@ -1233,7 +1239,15 @@ function dessinerGraphiques(DONNEES) {
   }
 
   if (DONNEES.indexation && DONNEES.indexation.length > 0) {
-    const couleursIndex = { 'Submitted and indexed': '#16a34a', 'Crawled - currently not indexed': '#f59e0b', 'URL is unknown to Google': '#dc2626' };
+    const couleursIndex = {
+      'Submitted and indexed': '#16a34a',
+      'Crawled - currently not indexed': '#f59e0b',
+      'URL is unknown to Google': '#dc2626',
+      'Discovered - currently not indexed': '#eab308',
+      'Alternate page with proper canonical tag': '#0891b2',
+      "Excluded by 'noindex' tag": '#64748b',
+      'Page with redirect': '#7e22ce',
+    };
     new Chart(assurerCanvas('chartIndexation'), {
       type: 'doughnut',
       data: {
