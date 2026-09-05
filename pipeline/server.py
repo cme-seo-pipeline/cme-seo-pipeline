@@ -704,6 +704,7 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   #barre-filtre button:hover { background: #1d4ed8; }
   #periode-affichee { font-size: 13px; color: #64748b; margin-left: auto; }
   .carte canvas { cursor: pointer; }
+  #chartPages, #chartOpportunites { height: 420px !important; }
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
   .modal-contenu { background: #1e293b; border: 1px solid #334155; border-radius: 12px; max-width: 600px; width: 100%; max-height: 80vh; display: flex; flex-direction: column; }
   .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #334155; }
@@ -1077,6 +1078,20 @@ async function chargerRapports(type) {
   }
 }
 
+function afficherListeItems(titre, items) {
+  document.getElementById('modal-titre').textContent = titre;
+  const liste = document.getElementById('modal-liste');
+  if (!items || items.length === 0) {
+    liste.innerHTML = '<div class=\"vide\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
+  } else {
+    liste.innerHTML = items.map(function(it) {
+      const urlComplete = 'https://www.comprendre-mon-energie.fr' + it.url;
+      return '<div class=\"modal-item\"><a class=\"modal-item-url\" href=\"' + urlComplete + '\" target=\"_blank\" rel=\"noopener\">' + it.url + '</a><span class=\"modal-item-detail\">' + (it.detail || '') + '</span></div>';
+    }).join('');
+  }
+  document.getElementById('modal-detail').style.display = 'flex';
+}
+
 function afficherRapportDetail(rapport) {
   const detail = document.getElementById('detail-rapport');
   detail.innerHTML = '';
@@ -1138,7 +1153,7 @@ function dessinerGraphiques(DONNEES) {
           { label: 'Clics', data: DONNEES.top_pages.map(p => p.clics), backgroundColor: '#f59e0b' }
         ]
       },
-      options: { indexAxis: 'y', responsive: true, plugins: { legend: { position: 'top' } } }
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, onClick: function() { afficherListeItems(TRADUCTIONS[langueActuelle()].titre_pages, DONNEES.top_pages.map(function(p) { return { url: p.url, detail: p.impressions + ' impr. / ' + p.clics + ' clics' }; })); } }
     });
   } else {
     document.getElementById('chartPages').outerHTML = '<div class=\"vide\" id=\"chartPages\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
@@ -1177,7 +1192,7 @@ function dessinerGraphiques(DONNEES) {
         labels: DONNEES.opportunites.map(o => o.url.length > 25 ? o.url.slice(0,25)+'...' : o.url),
         datasets: [{ label: 'Score opportunite', data: DONNEES.opportunites.map(o => o.score), backgroundColor: '#7e22ce' }]
       },
-      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } } }
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, onClick: function() { afficherListeItems(TRADUCTIONS[langueActuelle()].titre_opportunites, DONNEES.opportunites.map(function(o) { return { url: o.url, detail: 'score ' + o.score }; })); } }
     });
   } else {
     document.getElementById('chartOpportunites').outerHTML = '<div class=\"vide\" id=\"chartOpportunites\">' + TRADUCTIONS[langueActuelle()].aucune_donnee + '</div>';
