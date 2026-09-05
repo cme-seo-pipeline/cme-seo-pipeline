@@ -648,6 +648,7 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ORCAAS</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
 <style>
   * { box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; }
@@ -714,9 +715,6 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   .modal-item:last-child { border-bottom: none; }
   .modal-item-url { color: #e2e8f0; word-break: break-all; }
   .modal-item-detail { color: #64748b; font-size: 12px; }
-  #barre-frequence { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 12px 20px; font-size: 13px; color: #94a3b8; }
-  #barre-frequence select { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
-  #barre-frequence span#frequence-statut { color: #64748b; font-size: 12px; margin-left: 8px; }
   #vue-rapports { display: none; padding: 20px; max-width: 900px; margin: 0 auto; width: 100%; }
   .barre-type-rapport { display: flex; gap: 8px; margin-bottom: 16px; }
   .type-rapport-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
@@ -728,7 +726,16 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
   #detail-rapport { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px; margin-top: 16px; }
   #detail-rapport button { background: #334155; border: none; color: #e2e8f0; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-bottom: 12px; }
   #detail-rapport h3 { color: #e2e8f0; margin: 0 0 12px; }
-  .rapport-texte { color: #cbd5e1; font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+  .rapport-texte { color: #cbd5e1; font-size: 14px; line-height: 1.6; }
+  .msg.orcaas h1, .msg.orcaas h2, .msg.orcaas h3, .rapport-texte h1, .rapport-texte h2, .rapport-texte h3 { color: #e2e8f0; margin: 14px 0 8px; }
+  .msg.orcaas table, .rapport-texte table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 13px; }
+  .msg.orcaas th, .msg.orcaas td, .rapport-texte th, .rapport-texte td { border: 1px solid #334155; padding: 6px 10px; text-align: left; }
+  .msg.orcaas th, .rapport-texte th { background: #1e293b; color: #e2e8f0; }
+  .msg.orcaas a, .rapport-texte a { color: #60a5fa; text-decoration: underline; }
+  .msg.orcaas a:hover, .rapport-texte a:hover { color: #93c5fd; }
+  .msg.orcaas ul, .msg.orcaas ol, .rapport-texte ul, .rapport-texte ol { padding-left: 20px; margin: 8px 0; }
+  .msg.orcaas code, .rapport-texte code { background: #0f172a; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  .msg.orcaas p, .rapport-texte p { margin: 8px 0; }
   #bouton-langue { background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin-left: auto; }
   #bouton-langue:hover { background: #1e293b; color: #e2e8f0; }
 </style>
@@ -788,16 +795,6 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
     <label><span data-i18n="label_au">au</span> <input type="date" id="date-fin"></label>
     <button id="appliquer-filtre" onclick="rechargerAvecFiltre()" data-i18n="bouton_appliquer">Appliquer</button>
     <span id="periode-affichee"></span>
-  </div>
-  <div id="barre-frequence">
-    <label for="select-frequence">Frequence du compte-rendu ORCAAS :</label>
-    <select id="select-frequence">
-      <option value="quotidien">Quotidien</option>
-      <option value="hebdomadaire">Hebdomadaire</option>
-      <option value="mensuel">Mensuel</option>
-    </select>
-    <button onclick="enregistrerFrequence()">Enregistrer</button>
-    <span id="frequence-statut"></span>
   </div>
   <div class="carte">
     <h2 data-i18n="titre_pages">Top pages par impressions (GSC, periode selectionnee)</h2>
@@ -938,7 +935,11 @@ const send = document.getElementById('send');
 function ajouterMessage(texte, classe) {
   const div = document.createElement('div');
   div.className = 'msg ' + classe;
-  div.textContent = texte;
+  if (classe === 'orcaas' && typeof marked !== 'undefined') {
+    div.innerHTML = marked.parse(texte);
+  } else {
+    div.textContent = texte;
+  }
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
   return div;
@@ -994,23 +995,6 @@ async function chargerDashboard(dateDebut, dateFin) {
     dessinerGraphiques(donnees);
   } catch (e) {
     document.getElementById('vue-dashboard').innerHTML = '<div class="vide">' + TRADUCTIONS[langueActuelle()].erreur_chargement + e.message + '</div>';
-  }
-}
-
-async function enregistrerFrequence() {
-  const frequence = document.getElementById('select-frequence').value;
-  const statut = document.getElementById('frequence-statut');
-  statut.textContent = '...';
-  try {
-    const res = await fetch('/orcaas-definir-frequence', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ frequence: frequence })
-    });
-    const data = await res.json();
-    statut.textContent = data.status === 'ok' ? 'Enregistre' : 'Erreur';
-  } catch (e) {
-    statut.textContent = 'Erreur : ' + e.message;
   }
 }
 
@@ -1075,7 +1059,8 @@ async function chargerRapports(type) {
       const titre = document.createElement('strong');
       titre.textContent = r.date_rapport;
       const resume = document.createElement('p');
-      resume.textContent = r.resume;
+      const resumeNettoye = r.resume.replace(/#+\s?/g, '').replace(/\*\*/g, '').replace(/\*/g, '').replace(/-{3,}/g, '').replace(/`/g, '').trim();
+      resume.textContent = resumeNettoye;
       item.appendChild(titre);
       item.appendChild(resume);
       item.addEventListener('click', function() { afficherRapportDetail(r); });
@@ -1092,15 +1077,32 @@ function afficherRapportDetail(rapport) {
   const fermer = document.createElement('button');
   fermer.textContent = 'Fermer';
   fermer.addEventListener('click', function() { detail.style.display = 'none'; });
+  const discuter = document.createElement('button');
+  discuter.textContent = 'Discuter de ce rapport';
+  discuter.style.marginLeft = '8px';
+  discuter.style.background = '#2563eb';
+  discuter.addEventListener('click', function() { discuterDuRapport(rapport); });
   const titre = document.createElement('h3');
   titre.textContent = rapport.date_rapport;
   const texte = document.createElement('div');
   texte.className = 'rapport-texte';
-  texte.textContent = rapport.rapport_complet;
+  if (typeof marked !== 'undefined') {
+    texte.innerHTML = marked.parse(rapport.rapport_complet);
+  } else {
+    texte.textContent = rapport.rapport_complet;
+  }
   detail.appendChild(fermer);
+  detail.appendChild(discuter);
   detail.appendChild(titre);
   detail.appendChild(texte);
   detail.style.display = 'block';
+}
+
+function discuterDuRapport(rapport) {
+  afficherOnglet('chat');
+  const question = document.getElementById('question');
+  question.value = "Peux-tu m'expliquer et approfondir les points cles du compte-rendu du " + rapport.date_rapport + " ?";
+  question.focus();
 }
 
 function assurerCanvas(id) {
@@ -1449,6 +1451,27 @@ def orcaas_definir_frequence_endpoint():
         return jsonify({"status": "ok", "frequence": frequence}), 200
     except Exception as e:
         return jsonify({"status": "erreur", "detail": str(e)}), 500
+
+
+@app.route('/agent-orcaas-fusionner', methods=['POST'])
+def agent_orcaas_fusionner_endpoint():
+    """AGENT ORCAAS -- Stack Contenu editorial, etape 3 : fusionne les
+    pages en echec recent de differenciation, avec redirection 301."""
+    from pipeline import agent_orcaas_fusionner_contenu, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            resultat = agent_orcaas_fusionner_contenu(client_bq)
+            print(f"✅ Fusion ORCAAS terminee : {resultat}")
+        except Exception as e:
+            print(f"❌ Erreur fusion ORCAAS : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "fusion": "declenchee en arriere-plan"}), 200
 
 
 @app.route('/auditer-site-technique', methods=['POST'])

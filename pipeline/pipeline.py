@@ -3045,6 +3045,240 @@ def agent_orcaas_orchestration_quotidienne(client_bq):
         print(f"  Rapport {type_rapport} genere et sauvegarde")
 
     return {"resultats": resultats, "rapports": rapports_generes}
+def _construire_source_redirect_rankmath(pattern):
+    """Construit le format serialise PHP attendu par la table
+    wpwn_rank_math_redirections pour une redirection de type 'exact'.
+    Format verifie directement en base avant construction (pas suppose)."""
+    ignore = ""
+    comparison = "exact"
+    inner = (
+        f's:6:"ignore";s:{len(ignore)}:"{ignore}";'
+        f's:7:"pattern";s:{len(pattern)}:"{pattern}";'
+        f's:10:"comparison";s:{len(comparison)}:"{comparison}";'
+    )
+    return f'a:1:{{i:0;a:3:{{{inner}}}}}'
+
+
+def agent_orcaas_fusionner_contenu(client_bq):
+    """AGENT ORCAAS -- Stack Contenu editorial, etape 3 (fusion). Pour les
+    pages qui ont ECHOUE recemment a la differenciation, fusionne leur
+    contenu unique dans la page soeur la plus proche deja indexee, met en
+    place une redirection 301 (table RankMath native), et supprime la page
+    fusionnee (WordPress + BigQuery)."""
+    print("AGENT ORCAAS -- Fusion contenu editorial...")
+
+    analyses = agent_orcaas_analyser_chevauchement(client_bq)
+    chevauchements = {a['post_id']: a for a in analyses if a.get('classification') == 'chevauchement'}
+
+    try:
+        df_echecs = client_bq.query(f"""
+            SELECT DISTINCT post_id FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs`
+            WHERE stack = 'contenu_editorial' AND statut = 'echec'
+              AND DATE(date_execution) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+        """).to_dataframe()
+        post_ids_echecs = set(int(x) for x in df_echecs['post_id'].tolist()) if not df_echecs.empty else set()
+    except Exception as e:
+        print(f"  Erreur lecture echecs recents : {e}")
+        return {"traitees": 0, "reussies": 0}
+
+    a_fusionner = [chevauchements[pid] for pid in post_ids_echecs if pid in chevauchements]
+
+    if not a_fusionner:
+        print("  Aucune page a fusionner (aucun echec recent en differenciation)")
+        return {"traitees": 0, "reussies": 0}
+
+    import io
+    import paramiko
+    try:
+        cle = os.environ.get("O2SWITCH_SSH_PRIVATE_KEY", "")
+        passphrase = os.environ.get("O2SWITCH_SSH_PASSPHRASE", "")
+        pkey = paramiko.RSAKey.from_private_key(io.StringIO(cle), password=passphrase)
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname="109.234.167.170", port=22, username="jolu5920", pkey=pkey, timeout=15)
+    except Exception as e:
+        print(f"  Erreur connexion SSH : {e}")
+        return {"traitees": 0, "reussies": 0}
+
+    wp_path = "/home/jolu5920/public_html/comprendre-mon-energie.com"
+    briefs = []
+    reussies = 0
+
+    for item in a_fusionner:
+        post_id = item['post_id']
+        url = item['url']
+        titre_actuel = item['titre']
+        soeurs = item.get('pages_soeurs', [])
+        erreur_finale = None
+        statut = "echec"
+
+        if not soeurs:
+            continue
+        titre_soeur = soeurs[0]
+
+        try:
+            job_config = bigquery.QueryJobConfig(query_parameters=[
+                bigquery.ScalarQueryParameter("titre", "STRING", titre_soeur)])
+            df_soeur = client_bq.query(f"""
+                SELECT wm.post_id, wm.url FROM `{PROJECT_ID}.04_pipeline_seo.rankmath_seo_data` r
+                JOIN `{PROJECT_ID}.02_cleaned.wp_url_mapping` wm ON wm.post_id = r.post_id
+                WHERE r.rank_math_title = @titre LIMIT 1
+            """, job_config=job_config).to_dataframe()
+            if df_soeur.empty:
+                briefs.append({
+                    "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+                    "date_execution": datetime.now().isoformat(), "stack": "contenu_editorial",
+                    "post_id": post_id, "url": url, "probleme_detecte": "fusion: page soeur introuvable",
+                    "valeur_avant": titre_actuel, "valeur_apres": "", "statut": "echec",
+                    "erreur": f"soeur '{titre_soeur}' introuvable en base",
+                })
+                continue
+            post_id_soeur = int(df_soeur.iloc[0]['post_id'])
+            url_soeur = df_soeur.iloc[0]['url']
+        except Exception as e:
+            briefs.append({
+                "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+                "date_execution": datetime.now().isoformat(), "stack": "contenu_editorial",
+                "post_id": post_id, "url": url, "probleme_detecte": "fusion: erreur recherche soeur",
+                "valeur_avant": titre_actuel, "valeur_apres": "", "statut": "echec",
+                "erreur": str(e)[:150],
+            })
+            continue
+
+        try:
+            stdin, stdout, stderr = ssh.exec_command(f'wp --path="{wp_path}" post get {post_id} --field=content')
+            contenu_a_fusionner = stdout.read().decode()
+            stdin2, stdout2, stderr2 = ssh.exec_command(f'wp --path="{wp_path}" post get {post_id_soeur} --field=content')
+            contenu_soeur = stdout2.read().decode()
+            if not contenu_a_fusionner or not contenu_soeur:
+                raise Exception("contenu vide (source ou destination)")
+        except Exception as e:
+            briefs.append({
+                "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+                "date_execution": datetime.now().isoformat(), "stack": "contenu_editorial",
+                "post_id": post_id, "url": url, "probleme_detecte": "fusion: lecture contenu",
+                "valeur_avant": titre_actuel, "valeur_apres": "", "statut": "echec",
+                "erreur": str(e)[:150],
+            })
+            continue
+
+        prompt = (
+            "Tu es un redacteur SEO expert. Ces deux articles chevauchent trop pour "
+            "coexister (Google n'indexe que le second). Le PREMIER va etre supprime, "
+            "le SECOND va etre garde et enrichi.\n"
+            "Ta seule tache : identifier les informations factuelles du PREMIER "
+            "article qui sont VRAIMENT ABSENTES du second, et rediger UNIQUEMENT le "
+            "nouveau contenu HTML a ajouter (nouveaux paragraphes/sections). Ne "
+            "reproduis PAS le contenu du second article -- ecris seulement l'AJOUT. "
+            "Si tout ce que contient le premier article est deja couvert par le "
+            "second, reponds avec un contenu d'ajout vide.\n\n"
+            f"ARTICLE A FUSIONNER (sera supprime) :\n{contenu_a_fusionner[:6000]}\n\n"
+            f"ARTICLE DE DESTINATION (deja publie, NE PAS reproduire) :\n{contenu_soeur[:6000]}\n\n"
+            "Reponds EXACTEMENT dans ce format, avec ces delimiteurs exacts (PAS de JSON) :\n"
+            "===AJOUT===\n"
+            "(uniquement le nouveau contenu HTML a ajouter, ou vide si rien a ajouter)\n"
+            "===FIN==="
+        )
+
+        try:
+            resp = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
+                json={"model": CONFIG['MODEL'], "max_tokens": 4000, "messages": [{"role": "user", "content": prompt}]},
+                timeout=90
+            )
+            resp.raise_for_status()
+            texte = resp.json()['content'][0]['text']
+            match_ajout = re.search(r'===AJOUT===\s*\n(.*?)\n===FIN===', texte, re.DOTALL)
+            if not match_ajout:
+                raise Exception("delimiteurs manquants dans la reponse")
+            nouveau_contenu_ajoute = match_ajout.group(1).strip()
+        except Exception as e:
+            briefs.append({
+                "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+                "date_execution": datetime.now().isoformat(), "stack": "contenu_editorial",
+                "post_id": post_id, "url": url, "probleme_detecte": "fusion: generation IA",
+                "valeur_avant": titre_actuel, "valeur_apres": "", "statut": "echec",
+                "erreur": f"IA: {str(e)[:150]}",
+            })
+            continue
+
+        if nouveau_contenu_ajoute:
+            contenu_fusionne = contenu_soeur.rstrip() + "\n\n" + nouveau_contenu_ajoute
+        else:
+            contenu_fusionne = contenu_soeur
+
+        try:
+            sftp = ssh.open_sftp()
+
+            chemin_temp_html = f"/tmp/orcaas_fusion_{post_id_soeur}.html"
+            with sftp.open(chemin_temp_html, 'w') as f:
+                f.write(contenu_fusionne)
+
+            chemin_relatif = url.replace("https://www.comprendre-mon-energie.fr/", "").rstrip('/')
+            source_serialisee = _construire_source_redirect_rankmath(chemin_relatif)
+            url_soeur_echappee = url_soeur.replace("'", "''")
+            sql_insert = (
+                "INSERT INTO wpwn_rank_math_redirections "
+                "(sources, url_to, header_code, hits, status, created, updated, last_accessed) "
+                f"VALUES ('{source_serialisee}', '{url_soeur_echappee}', 301, 0, 'active', NOW(), NOW(), NOW());"
+            )
+            chemin_temp_sql = f"/tmp/orcaas_redirect_{post_id}.sql"
+            with sftp.open(chemin_temp_sql, 'w') as f:
+                f.write(sql_insert)
+            sftp.close()
+
+            cmd_update = f'wp --path="{wp_path}" post update {post_id_soeur} --post_content="$(cat {chemin_temp_html})" && rm {chemin_temp_html}'
+            stdin3, stdout3, stderr3 = ssh.exec_command(cmd_update)
+            sortie_update = stdout3.read().decode()
+            if "Success" not in sortie_update:
+                raise Exception((stderr3.read().decode() or "mise a jour non confirmee")[:150])
+
+            cmd_redirect = f'wp --path="{wp_path}" db query < {chemin_temp_sql} && rm {chemin_temp_sql}'
+            stdin4, stdout4, stderr4 = ssh.exec_command(cmd_redirect)
+            erreur_redirect = stderr4.read().decode()
+
+            cmd_delete = f'wp --path="{wp_path}" post delete {post_id} --force'
+            stdin5, stdout5, stderr5 = ssh.exec_command(cmd_delete)
+            sortie_delete = stdout5.read().decode()
+            erreur_delete = stderr5.read().decode()
+
+            if "Success" in sortie_delete:
+                client_bq.query(
+                    f"DELETE FROM `{PROJECT_ID}.04_pipeline_seo.historique_publications` WHERE post_id = {post_id}"
+                ).result()
+                statut = "corrige"
+                reussies += 1
+                erreur_finale = f"note redirect: {erreur_redirect[:100]}" if erreur_redirect else None
+            else:
+                statut = "echec"
+                erreur_finale = (erreur_delete or "suppression non confirmee")[:150]
+        except Exception as e:
+            statut = "echec"
+            erreur_finale = str(e)[:200]
+
+        briefs.append({
+            "brief_id": f"{post_id}_{int(datetime.now().timestamp())}",
+            "date_execution": datetime.now().isoformat(), "stack": "contenu_editorial",
+            "post_id": post_id, "url": url,
+            "probleme_detecte": f"fusion vers post {post_id_soeur} ({titre_soeur[:60]})",
+            "valeur_apres": f"Fusionne dans '{titre_soeur[:60]}', redirection 301 -> {url_soeur}" if statut == "corrige" else "",
+            "valeur_avant": titre_actuel,
+            "statut": statut, "erreur": erreur_finale,
+        })
+
+    ssh.close()
+
+    if briefs:
+        try:
+            client_bq.insert_rows_json(f"{PROJECT_ID}.04_pipeline_seo.agent_orcaas_briefs", briefs)
+        except Exception as e:
+            print(f"  Erreur ecriture briefs : {e}")
+
+    print(f"  {len(briefs)} page(s) traitee(s), {reussies} reussie(s)")
+    return {"traitees": len(briefs), "reussies": reussies}
+
+
 def rafraichir_indicateurs_reglementaires(client_bq):
     """Recupere les dernieres valeurs officielles connues (CRE Gaz/Elec,
     ANAH Aides) depuis les sources officielles et les insere dans
