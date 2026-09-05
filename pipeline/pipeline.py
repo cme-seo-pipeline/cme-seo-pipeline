@@ -2336,6 +2336,10 @@ def agent_orcaas_monitoring_pipeline(client_bq, date_cible=None):
     Controle total : supprime automatiquement le plus recent de chaque
     paire confirmee (WordPress + BigQuery), genere un brief par
     intervention."""
+    autorise, message = _execution_autonome_autorisee(client_bq)
+    if not autorise:
+        print(f"  {message}")
+        return {"erreur": message, "bloque": True}
     print("AGENT ORCAAS -- Monitoring du pipeline...")
 
     if not date_cible:
@@ -2653,6 +2657,24 @@ def agent_orcaas_detail_categorie(client_bq, graphique, categorie):
         return {"items": [], "erreur": str(e)}
 
 
+def _execution_autonome_autorisee(client_bq):
+    """Interrupteur de securite global. Par defaut (aucun reglage en
+    base), l'execution est BLOQUEE -- choix volontairement le plus sur.
+    Retourne (autorise: bool, message: str)."""
+    try:
+        df = client_bq.query(f"""
+            SELECT valeur FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_parametres`
+            WHERE cle = 'execution_autonome' ORDER BY date_modification DESC LIMIT 1
+        """).to_dataframe()
+        valeur = df.iloc[0]['valeur'] if not df.empty else 'pause'
+    except Exception:
+        valeur = 'pause'
+
+    if valeur != 'active':
+        return False, "Execution suspendue : toutes les decisions d'ORCAAS necessitent une validation explicite."
+    return True, ""
+
+
 def agent_orcaas_analyser_chevauchement(client_bq):
     """AGENT ORCAAS -- Stack Contenu editorial, etape 1 (detection).
     Pour chaque page 'Crawled - currently not indexed', identifie les pages
@@ -2758,6 +2780,10 @@ def agent_orcaas_differencier_contenu(client_bq):
     genuinement distinct des pages soeurs deja indexees. Reecrit titre,
     meta ET corps de l'article. Garde-fous : contenu genere pas trop court
     (>= 50% de l'original), aucune annee perimee introduite."""
+    autorise, message = _execution_autonome_autorisee(client_bq)
+    if not autorise:
+        print(f"  {message}")
+        return []
     print("AGENT ORCAAS -- Differenciation contenu editorial...")
 
     analyses = agent_orcaas_analyser_chevauchement(client_bq)
@@ -3072,6 +3098,10 @@ def agent_orcaas_fusionner_contenu(client_bq):
     contenu unique dans la page soeur la plus proche deja indexee, met en
     place une redirection 301 (table RankMath native), et supprime la page
     fusionnee (WordPress + BigQuery)."""
+    autorise, message = _execution_autonome_autorisee(client_bq)
+    if not autorise:
+        print(f"  {message}")
+        return {"traitees": 0, "reussies": 0, "bloque": True}
     print("AGENT ORCAAS -- Fusion contenu editorial...")
 
     analyses = agent_orcaas_analyser_chevauchement(client_bq)
