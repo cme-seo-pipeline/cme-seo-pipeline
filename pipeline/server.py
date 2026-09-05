@@ -1530,6 +1530,26 @@ def agent_orcaas_fusionner_endpoint():
     return jsonify({"status": "ok", "fusion": "declenchee en arriere-plan"}), 200
 
 
+@app.route('/agent-orcaas-cartographie', methods=['POST'])
+def agent_orcaas_cartographie_endpoint():
+    """AGENT ORCAAS -- Genere la cartographie thematique parent/enfant."""
+    from pipeline import agent_orcaas_generer_cartographie, init_bigquery
+
+    def sync_async():
+        try:
+            client_bq = init_bigquery()
+            resultat = agent_orcaas_generer_cartographie(client_bq)
+            print(f"✅ Cartographie ORCAAS terminee : {resultat}")
+        except Exception as e:
+            print(f"❌ Erreur cartographie ORCAAS : {e}")
+
+    thread = threading.Thread(target=sync_async)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({"status": "ok", "cartographie": "declenchee en arriere-plan"}), 200
+
+
 @app.route('/auditer-site-technique', methods=['POST'])
 def auditer_site_technique_endpoint():
     """CHANTIER G.3 : lance l'audit technique complet du site (robot maison)."""

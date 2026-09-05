@@ -3286,6 +3286,120 @@ def agent_orcaas_fusionner_contenu(client_bq):
     return {"traitees": len(briefs), "reussies": reussies}
 
 
+def agent_orcaas_generer_cartographie(client_bq):
+    """AGENT ORCAAS -- Cartographie thematique. Pour chaque sous-silo (2+
+    pages partageant le meme prefixe d'URL), etablit une hierarchie
+    parent/enfant. Reference pour prevenir les futurs chevauchements --
+    integration au pipeline de redaction prevue dans une session dediee."""
+    print("AGENT ORCAAS -- Generation cartographie thematique...")
+
+    try:
+        df_toutes = client_bq.query(f"""
+            SELECT wm.post_id, wm.url, r.rank_math_title
+            FROM `{PROJECT_ID}.02_cleaned.wp_url_mapping` wm
+            LEFT JOIN `{PROJECT_ID}.04_pipeline_seo.rankmath_seo_data` r ON r.post_id = wm.post_id
+        """).to_dataframe()
+    except Exception as e:
+        print(f"  Erreur lecture pages : {e}")
+        return {"sous_silos_traites": 0, "pages_cartographiees": 0}
+
+    if df_toutes.empty:
+        print("  Aucune page a cartographier")
+        return {"sous_silos_traites": 0, "pages_cartographiees": 0}
+
+    def _sous_silo(u):
+        parts = u.rstrip('/').rsplit('/', 1)
+        return parts[0] + '/' if len(parts) > 1 else u
+
+    df_toutes['sous_silo'] = df_toutes['url'].apply(_sous_silo)
+
+    entrees = []
+    sous_silos_traites = 0
+
+    for sous_silo, groupe in df_toutes.groupby('sous_silo'):
+        if len(groupe) < 2:
+            continue
+
+        pages_info = []
+        for _, row in groupe.iterrows():
+            titre = row['rank_math_title'] or row['url']
+            pages_info.append(f"- post_id {int(row['post_id'])} : {titre}")
+
+        prompt = (
+            "Voici toutes les pages d'un meme sous-silo thematique d'un site sur "
+            "l'energie. Identifie laquelle devrait etre la page PARENT (la plus "
+            "generale/complete sur le sujet global du sous-silo), et pour CHAQUE "
+            "AUTRE page, precise son angle distinctif propre (pourquoi elle merite "
+            "d'exister separement, en une phrase courte).\n\n"
+            "Pages du sous-silo :\n" + "\n".join(pages_info) + "\n\n"
+            "Reponds EXACTEMENT dans ce format, avec ces delimiteurs (PAS de JSON) :\n"
+            "===PARENT===\n"
+            "(post_id de la page parent, un seul nombre)\n"
+            "===ENFANTS===\n"
+            "post_id: angle distinctif en une phrase\n"
+            "(une ligne par enfant, autant que necessaire)\n"
+            "===FIN==="
+        )
+
+        try:
+            resp = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
+                json={"model": CONFIG['MODEL'], "max_tokens": 1500, "messages": [{"role": "user", "content": prompt}]},
+                timeout=45
+            )
+            resp.raise_for_status()
+            texte = resp.json()['content'][0]['text']
+            match_parent = re.search(r'===PARENT===\s*\n(.*?)\n===ENFANTS===', texte, re.DOTALL)
+            match_enfants = re.search(r'===ENFANTS===\s*\n(.*?)\n===FIN===', texte, re.DOTALL)
+            if not (match_parent and match_enfants):
+                continue
+            match_id = re.search(r'\d+', match_parent.group(1))
+            if not match_id:
+                continue
+            id_parent = int(match_id.group())
+        except Exception as e:
+            print(f"  Erreur sous-silo {sous_silo} : {e}")
+            continue
+
+        maintenant = datetime.now().isoformat()
+        for _, row in groupe.iterrows():
+            post_id = int(row['post_id'])
+            titre = row['rank_math_title'] or row['url']
+            if post_id == id_parent:
+                entrees.append({
+                    "sous_silo": sous_silo, "post_id": post_id, "url": row['url'],
+                    "titre": titre, "role": "parent",
+                    "angle_distinctif": "Page de reference du sous-silo",
+                    "date_generation": maintenant,
+                })
+            else:
+                angle = "Non precise"
+                for ligne in match_enfants.group(1).split("\n"):
+                    if ligne.strip().startswith(str(post_id) + ":"):
+                        angle = ligne.split(":", 1)[1].strip()
+                        break
+                entrees.append({
+                    "sous_silo": sous_silo, "post_id": post_id, "url": row['url'],
+                    "titre": titre, "role": "enfant", "angle_distinctif": angle,
+                    "date_generation": maintenant,
+                })
+
+        sous_silos_traites += 1
+
+    if entrees:
+        try:
+            client_bq.query(
+                f"DELETE FROM `{PROJECT_ID}.04_pipeline_seo.cartographie_thematique` WHERE TRUE"
+            ).result()
+            client_bq.insert_rows_json(f"{PROJECT_ID}.04_pipeline_seo.cartographie_thematique", entrees)
+        except Exception as e:
+            print(f"  Erreur ecriture cartographie : {e}")
+
+    print(f"  {sous_silos_traites} sous-silo(s) traite(s), {len(entrees)} page(s) cartographiee(s)")
+    return {"sous_silos_traites": sous_silos_traites, "pages_cartographiees": len(entrees)}
+
+
 def rafraichir_indicateurs_reglementaires(client_bq):
     """Recupere les dernieres valeurs officielles connues (CRE Gaz/Elec,
     ANAH Aides) depuis les sources officielles et les insere dans
