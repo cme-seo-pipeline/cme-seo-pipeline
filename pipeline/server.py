@@ -842,6 +842,10 @@ ORCAAS_APP_HTML = """<!DOCTYPE html>
     <button class="type-rapport-btn actif" data-type="quotidien" id="btn-type-quotidien">Quotidien</button>
     <button class="type-rapport-btn" data-type="hebdomadaire" id="btn-type-hebdomadaire">Hebdomadaire</button>
     <button class="type-rapport-btn" data-type="mensuel" id="btn-type-mensuel">Mensuel</button>
+    <label style="margin-left:16px; color:#94a3b8; font-size:13px; display:flex; align-items:center; gap:6px;">Du <input type="date" id="rapports-date-debut"></label>
+    <label style="color:#94a3b8; font-size:13px; display:flex; align-items:center; gap:6px;">au <input type="date" id="rapports-date-fin"></label>
+    <button id="rapports-appliquer-filtre">Filtrer</button>
+    <button id="rapports-reinitialiser-filtre" style="background:#334155;">Reinitialiser</button>
   </div>
   <div id="liste-rapports"></div>
   <div id="detail-rapport" style="display:none;"></div>
@@ -1039,17 +1043,32 @@ function fermerModal() {
   document.getElementById('modal-detail').style.display = 'none';
 }
 
+let typeRapportActuel = 'quotidien';
+
 document.getElementById('btn-type-quotidien').addEventListener('click', function() { chargerRapports('quotidien'); });
 document.getElementById('btn-type-hebdomadaire').addEventListener('click', function() { chargerRapports('hebdomadaire'); });
 document.getElementById('btn-type-mensuel').addEventListener('click', function() { chargerRapports('mensuel'); });
+document.getElementById('rapports-appliquer-filtre').addEventListener('click', function() { chargerRapports(typeRapportActuel); });
+document.getElementById('rapports-reinitialiser-filtre').addEventListener('click', function() {
+  document.getElementById('rapports-date-debut').value = '';
+  document.getElementById('rapports-date-fin').value = '';
+  chargerRapports(typeRapportActuel);
+});
 
 async function chargerRapports(type) {
+  typeRapportActuel = type;
   document.querySelectorAll('.type-rapport-btn').forEach(function(b) { b.classList.toggle('actif', b.dataset.type === type); });
   document.getElementById('detail-rapport').style.display = 'none';
   const liste = document.getElementById('liste-rapports');
   liste.innerHTML = '<div class=\"vide\">...</div>';
+  const dateDebut = document.getElementById('rapports-date-debut').value;
+  const dateFin = document.getElementById('rapports-date-fin').value;
+  let urlRequete = '/orcaas-rapports?type=' + type;
+  if (dateDebut && dateFin) {
+    urlRequete += '&date_debut=' + dateDebut + '&date_fin=' + dateFin;
+  }
   try {
-    const res = await fetch('/orcaas-rapports?type=' + type);
+    const res = await fetch(urlRequete);
     const data = await res.json();
     if (data.erreur) {
       liste.innerHTML = '<div class=\"vide\">' + data.erreur + '</div>';
@@ -1434,15 +1453,23 @@ def orcaas_rapports_endpoint():
     if type_rapport not in ('quotidien', 'hebdomadaire', 'mensuel'):
         return jsonify({"rapports": [], "erreur": "type invalide"}), 400
 
+    date_debut = request.args.get('date_debut')
+    date_fin = request.args.get('date_fin')
+
     try:
         client_bq = init_bigquery()
-        job_config = bigquery.QueryJobConfig(query_parameters=[
-            bigquery.ScalarQueryParameter("type_rapport", "STRING", type_rapport)
-        ])
+        parametres = [bigquery.ScalarQueryParameter("type_rapport", "STRING", type_rapport)]
+        condition_date = ""
+        if date_debut and date_fin:
+            condition_date = "AND date_rapport BETWEEN @date_debut AND @date_fin"
+            parametres.append(bigquery.ScalarQueryParameter("date_debut", "DATE", date_debut))
+            parametres.append(bigquery.ScalarQueryParameter("date_fin", "DATE", date_fin))
+        job_config = bigquery.QueryJobConfig(query_parameters=parametres)
         df = client_bq.query(f"""
             SELECT rapport_id, date_rapport, resume, rapport_complet, date_generation
             FROM `{PROJECT_ID}.04_pipeline_seo.agent_orcaas_rapports_quotidiens`
             WHERE type_rapport = @type_rapport
+            {condition_date}
             ORDER BY date_generation DESC LIMIT 30
         """, job_config=job_config).to_dataframe()
 
