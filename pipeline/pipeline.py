@@ -4449,6 +4449,82 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
         return {"success": False, "erreur": str(e)}
 
 
+def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, config):
+    """Verifie AVANT toute generation si le titre propose chevauche un
+    article DEJA PUBLIE dans le meme silo/sous-silo. Si chevauchement
+    detecte, demande a Claude un TITRE ALTERNATIF avec un angle
+    genuinement distinct sur le meme theme (jamais une fusion -- le
+    porteur de projet a choisi explicitement la creation d'un nouvel
+    angle plutot qu'une fusion avec l'existant). FAIL-OPEN : toute
+    erreur dans cette verification laisse le brief original intact --
+    ne doit jamais bloquer silencieusement la publication comme les
+    bugs deja rencontres ce jour."""
+    titre_propose = brief.get('titre_seo', '')
+    if not titre_propose:
+        return brief
+
+    silo_safe = str(silo_name).replace("'", "''")
+    sous_silo_safe = str(sous_silo).replace("'", "''")
+
+    try:
+        df_existants = client_bq.query(f"""
+            SELECT DISTINCT titre FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+            WHERE silo = '{silo_safe}' AND sous_silo_strategique = '{sous_silo_safe}'
+            ORDER BY date_publication DESC LIMIT 15
+        """).to_dataframe()
+        titres_existants = df_existants['titre'].tolist() if not df_existants.empty else []
+    except Exception as e:
+        print(f"  ⚠️ Verification chevauchement impossible ({e}) -- sujet conserve tel quel")
+        return brief
+
+    if not titres_existants:
+        return brief
+
+    prompt = (
+        f"Voici un titre d'article PROPOSE : \"{titre_propose}\"\n\n"
+        "Voici les titres DEJA PUBLIES dans le meme sous-silo :\n"
+        + "\n".join(f"- {t}" for t in titres_existants) + "\n\n"
+        "Le titre propose couvre-t-il un sujet QUASI-IDENTIQUE a l'un de ceux "
+        "deja publies (meme angle, meme intention de recherche) ? Si OUI, "
+        "propose un TITRE ALTERNATIF avec un angle genuinement distinct sur "
+        "le meme theme general -- jamais une simple reformulation, un vrai "
+        "angle different (public different, aspect different du sujet, "
+        "format different). Si NON, renvoie le titre propose tel quel.\n"
+        "Reponds EXACTEMENT dans ce format, avec ces delimiteurs exacts "
+        "(PAS de JSON) :\n"
+        "===CHEVAUCHEMENT===\n"
+        "(oui ou non)\n"
+        "===TITRE===\n"
+        "(le titre original si pas de chevauchement, sinon le nouveau titre differencie)\n"
+        "===FIN==="
+    )
+
+    try:
+        resp = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={"x-api-key": CONFIG['ANTHROPIC_API_KEY'], "anthropic-version": "2023-06-01", "content-type": "application/json"},
+            json={"model": CONFIG['MODEL'], "max_tokens": 300, "messages": [{"role": "user", "content": prompt}]},
+            timeout=30
+        )
+        resp.raise_for_status()
+        texte = resp.json()['content'][0]['text']
+        match_chev = re.search(r'===CHEVAUCHEMENT===\s*\n(.*?)\n===TITRE===', texte, re.DOTALL)
+        match_titre = re.search(r'===TITRE===\s*\n(.*?)\n===FIN===', texte, re.DOTALL)
+        if not (match_chev and match_titre):
+            print("  ⚠️ Reponse de verification malformee -- sujet conserve tel quel")
+            return brief
+        chevauchement = 'oui' in match_chev.group(1).strip().lower()
+        nouveau_titre = match_titre.group(1).strip()
+        if chevauchement and nouveau_titre:
+            print(f"  🔀 Chevauchement detecte avec un article existant -- angle differencie : '{nouveau_titre}' (au lieu de '{titre_propose}')")
+            brief = dict(brief)
+            brief['titre_seo'] = nouveau_titre
+        return brief
+    except Exception as e:
+        print(f"  ⚠️ Verification chevauchement echouee ({e}) -- sujet conserve tel quel")
+        return brief
+
+
 def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq, config, run_id):
     df_publications = []
     print("✍️ RÉDACTION + PUBLICATION...")
@@ -4459,6 +4535,8 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
         parts = _cle.split('||')
         silo_name = parts[0]
         sous_silo_override = parts[1] if len(parts) > 1 else ''
+        sous_silo_verif = sous_silo_override or brief.get('sous_silo', brief.get('Sous-Silo', ''))
+        brief = verifier_et_differencier_sujet(brief, silo_name, sous_silo_verif, client_bq, config)
         print(f"\n{'='*55}")
         print(f"📂 {silo_name} — {brief.get('titre_seo')}")
 
