@@ -68,7 +68,7 @@ INSTAGRAM_CONFIG = {
 }
 
 BLACKLIST_DOMAINS = [
-    'gouv.fr', 'energie-info', 'grdf', 'service-public.fr',
+    'gouv.fr', 'energie-info', 'service-public.fr',
     'instagram', 'ademe.fr', 'wikipedia.org', 'lemonde.fr',
     'lefigaro.fr', 'youtube', 'facebook'
 ]
