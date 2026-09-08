@@ -1160,7 +1160,7 @@ def appliquer_correction_article(verdict, wp_config, client_bq):
     try:
         r = requests.post(
             f"https://www.comprendre-mon-energie.fr/wp-json/wp/v2/posts/{post_id}",
-            auth=(wp_config['USER'], wp_config['APP_PASSWORD']),
+            auth=(wp_config['username'], wp_config['app_password']),
             json={"content": nouveau_contenu},
             timeout=30
         )
