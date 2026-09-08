@@ -289,23 +289,29 @@ def creer_table_historique(client_bq):
 
 def selectionner_silos_a_traiter(client_bq, config):
     """
-    LOGIQUE INDUSTRIALISEE (post-analyse performance BigQuery/GSC/GA4) :
-    seuls les 3 silos les plus performants sont traites (Electricite, Gaz,
-    Aide Energetique — Solaire et Renovation Energetique abandonnes faute
-    de resultats), avec 3 articles chacun par run au lieu d'1 seul.
+    LOGIQUE PAR PERTINENCE (evolution du 8 septembre 2026) : remplace le
+    quota fixe par silo (3 silos x 3 articles) par un classement GLOBAL
+    des opportunites, tous silos confondus. Le silo le plus porteur peut
+    recevoir plus d'articles qu'un silo faible -- la donnee decide de la
+    repartition, pas un quota arbitraire fixe a l'avance. Volume total
+    porte a 10 articles/jour (etait 9). Les 5 silos sont maintenant tous
+    consideres (Solaire et Renovation Energetique reintegres) : s'ils
+    n'ont reellement pas d'opportunite, le classement les exclura de
+    lui-meme -- plus besoin de les exclure a la main en amont.
     Utilise seo_opportunities (GSC+GA4) en priorite, fallback anciennete
-    pour completer les slots restants si besoin.
+    (desormais lui aussi global) pour completer les slots restants.
     """
-    tous_silos = ["5. Électricité", "1. Gaz", "3. Aide Énergétique"]
-    ARTICLES_PAR_SILO = 3
-    print(f"📅 Run industrialise → {len(tous_silos)} silos x {ARTICLES_PAR_SILO} articles : {', '.join(tous_silos)}")
-    resultats = []
+    tous_silos = ["5. Électricité", "1. Gaz", "3. Aide Énergétique", "4. Solaire", "2. Rénovation Énergétique"]
+    TOTAL_ARTICLES = 10
+    print(f"📅 Run par pertinence → {TOTAL_ARTICLES} articles, classement global sur {len(tous_silos)} silos")
 
+    resultats = []
+    sous_silos_deja_vus_par_silo = {}
+
+    # ── ETAPE 1 : rassembler les opportunites de TOUS les silos ─────────
+    candidats = []
     for silo_du_jour in tous_silos:
         silo_safe = silo_du_jour.replace("'", "''")
-        nb_trouves = 0
-        sous_silos_deja_vus = []
-
         try:
             df_opp = client_bq.query(f"""
             SELECT
@@ -321,125 +327,131 @@ def selectionner_silos_a_traiter(client_bq, config):
               AND jours_depuis_pub >= 30
               AND sous_silo IS NOT NULL
             ORDER BY score_opportunite DESC
-            LIMIT {ARTICLES_PAR_SILO}
+            LIMIT 20
             """).to_dataframe()
-
-            for idx in range(len(df_opp)):
-                df_ligne = df_opp.iloc[[idx]].copy()
-                df_ligne['priorite'] = 1
-                row = df_ligne.iloc[0]
-
-                # 'general' est un placeholder technique — jamais un vrai sous-silo
-                # WordPress. On le remplace par le sous-silo strategique le moins
-                # recemment publie, en gardant le mot-cle GSC reel pour le contenu.
-                if row['sous_silo'] == 'general':
-                    try:
-                        df_strat_fix = client_bq.query(f"""
-                        SELECT s.sous_silo, MAX(h.date_publication) AS derniere_pub
-                        FROM `{PROJECT_ID}.{DATASET_ID}.sous_silos_strategiques` s
-                        LEFT JOIN `{PROJECT_ID}.{DATASET_ID}.historique_publications` h
-                          ON h.silo = '{silo_safe}' AND h.sous_silo_strategique = s.sous_silo
-                        WHERE s.silo = '{silo_safe}'
-                        GROUP BY s.sous_silo
-                        ORDER BY derniere_pub ASC NULLS FIRST
-                        LIMIT 1
-                        """).to_dataframe()
-                        if not df_strat_fix.empty:
-                            vrai_sous_silo = df_strat_fix.iloc[0]['sous_silo']
-                            print(f"   🔀 'general' remplace par sous-silo reel : {vrai_sous_silo}")
-                            df_ligne.loc[df_ligne.index[0], 'sous_silo'] = vrai_sous_silo
-                            row = df_ligne.iloc[0]
-                    except Exception as e_gen:
-                        print(f"   ⚠️ Impossible de remplacer 'general' : {e_gen}")
-
-                # Anti-collision : si ce sous-silo a deja ete pris pour un
-                # AUTRE sujet de ce meme silo dans ce run, on le rend unique
-                # avec un suffixe ' (2)', ' (3)'... Sans ca, generer_tous_briefs
-                # (qui groupe par Silo+Sous-Silo) fusionnerait ces sujets
-                # pourtant distincts en un seul brief. Le suffixe est retire
-                # juste avant la vraie categorisation WordPress/BigQuery,
-                # dans rediger_et_publier.
-                sous_silo_base = row['sous_silo']
-                if sous_silo_base in sous_silos_deja_vus:
-                    occurrence = sous_silos_deja_vus.count(sous_silo_base) + 1
-                    sous_silo_unique = f"{sous_silo_base} ({occurrence})"
-                    df_ligne.loc[df_ligne.index[0], 'sous_silo'] = sous_silo_unique
-                    row = df_ligne.iloc[0]
-                sous_silos_deja_vus.append(sous_silo_base)
-
-                print(f"   ✅ {row['silo']} | {row['sous_silo']} — "
-                      f"'{row['mot_cle']}' (pos {row['position']}, "
-                      f"score {row['score_opportunite']:.0f})")
-                resultats.append(df_ligne[['silo', 'sous_silo', 'priorite', 'mot_cle']])
-                nb_trouves += 1
+            if not df_opp.empty:
+                candidats.append(df_opp)
+            else:
+                print(f"   ⚠️ {silo_du_jour} : aucune opportunite disponible")
         except Exception as e_opp:
-            print(f"   ⚠️ {silo_du_jour} : seo_opportunities indisponible ({e_opp}) — fallback")
+            print(f"   ⚠️ {silo_du_jour} : seo_opportunities indisponible ({e_opp})")
 
-        nb_manquants = ARTICLES_PAR_SILO - nb_trouves
-        if nb_manquants <= 0:
-            continue
+    df_tous_candidats = pd.concat(candidats, ignore_index=True) if candidats else pd.DataFrame()
+    if not df_tous_candidats.empty:
+        df_tous_candidats = df_tous_candidats.sort_values(by='score_opportunite', ascending=False).reset_index(drop=True)
 
-        if nb_trouves == 0:
-            print(f"   ⚠️ {silo_du_jour} : seo_opportunities vide — fallback anciennete")
-        else:
-            print(f"   ℹ️ {silo_du_jour} : {nb_trouves}/{ARTICLES_PAR_SILO} trouves via SEO, {nb_manquants} en fallback anciennete")
+    # ── ETAPE 2 : prendre le TOP au classement global, meme logique      ──
+    # ── de remplacement 'general' et d'anti-collision qu'auparavant     ──
+    nb_pris = 0
+    for idx in range(len(df_tous_candidats)):
+        if nb_pris >= TOTAL_ARTICLES:
+            break
+        df_ligne = df_tous_candidats.iloc[[idx]].copy()
+        df_ligne['priorite'] = 1
+        row = df_ligne.iloc[0]
+        silo_du_jour = row['silo']
+        silo_safe = silo_du_jour.replace("'", "''")
+        sous_silos_deja_vus = sous_silos_deja_vus_par_silo.setdefault(silo_du_jour, [])
 
-        # ── FALLBACK par silo : ancienneté (pour les slots restants) ────
+        # 'general' est un placeholder technique — jamais un vrai sous-silo
+        # WordPress. On le remplace par le sous-silo strategique le moins
+        # recemment publie, en gardant le mot-cle GSC reel pour le contenu.
+        if row['sous_silo'] == 'general':
+            try:
+                df_strat_fix = client_bq.query(f"""
+                SELECT s.sous_silo, MAX(h.date_publication) AS derniere_pub
+                FROM `{PROJECT_ID}.{DATASET_ID}.sous_silos_strategiques` s
+                LEFT JOIN `{PROJECT_ID}.{DATASET_ID}.historique_publications` h
+                  ON h.silo = '{silo_safe}' AND h.sous_silo_strategique = s.sous_silo
+                WHERE s.silo = '{silo_safe}'
+                GROUP BY s.sous_silo
+                ORDER BY derniere_pub ASC NULLS FIRST
+                LIMIT 1
+                """).to_dataframe()
+                if not df_strat_fix.empty:
+                    vrai_sous_silo = df_strat_fix.iloc[0]['sous_silo']
+                    print(f"   🔀 'general' remplace par sous-silo reel : {vrai_sous_silo}")
+                    df_ligne.loc[df_ligne.index[0], 'sous_silo'] = vrai_sous_silo
+                    row = df_ligne.iloc[0]
+            except Exception as e_gen:
+                print(f"   ⚠️ Impossible de remplacer 'general' : {e_gen}")
+
+        # Anti-collision : si ce sous-silo a deja ete pris pour un AUTRE
+        # sujet de ce meme silo dans ce run, on le rend unique avec un
+        # suffixe ' (2)', ' (3)'... Sans ca, generer_tous_briefs (qui
+        # groupe par Silo+Sous-Silo) fusionnerait ces sujets pourtant
+        # distincts en un seul brief. Le suffixe est retire juste avant
+        # la vraie categorisation WordPress/BigQuery, dans rediger_et_publier.
+        sous_silo_base = row['sous_silo']
+        if sous_silo_base in sous_silos_deja_vus:
+            occurrence = sous_silos_deja_vus.count(sous_silo_base) + 1
+            sous_silo_unique = f"{sous_silo_base} ({occurrence})"
+            df_ligne.loc[df_ligne.index[0], 'sous_silo'] = sous_silo_unique
+            row = df_ligne.iloc[0]
+        sous_silos_deja_vus.append(sous_silo_base)
+
+        print(f"   ✅ {row['silo']} | {row['sous_silo']} — "
+              f"'{row['mot_cle']}' (pos {row['position']}, "
+              f"score {row['score_opportunite']:.0f})")
+        resultats.append(df_ligne[['silo', 'sous_silo', 'priorite', 'mot_cle']])
+        nb_pris += 1
+
+    nb_manquants = TOTAL_ARTICLES - nb_pris
+    print(f"\nℹ️ {nb_pris}/{TOTAL_ARTICLES} trouves via opportunites (classement global), {nb_manquants} en fallback anciennete")
+
+    # ── ETAPE 3 : fallback ancienneté GLOBAL (plus par silo) ────────────
+    if nb_manquants > 0:
         try:
+            tous_silos_safe = "', '".join([s.replace("'", "''") for s in tous_silos])
             df_strategie = client_bq.query(f"""
             SELECT silo, sous_silo, priorite
             FROM `{PROJECT_ID}.{DATASET_ID}.sous_silos_strategiques`
-            WHERE silo = '{silo_safe}'
+            WHERE silo IN ('{tous_silos_safe}')
             ORDER BY priorite ASC
             """).to_dataframe()
-
-            if df_strategie.empty:
-                print(f"   ❌ Aucun sous-silo trouve pour {silo_du_jour}")
-                continue
-
             df_hist = client_bq.query(f"""
-            SELECT sous_silo_strategique,
+            SELECT silo, sous_silo_strategique,
                    MAX(date_publication) AS derniere_pub,
                    COUNT(*) AS nb_articles
             FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
-            WHERE silo = '{silo_safe}'
+            WHERE silo IN ('{tous_silos_safe}')
               AND sous_silo_strategique IS NOT NULL
-            GROUP BY sous_silo_strategique
+            GROUP BY silo, sous_silo_strategique
             """).to_dataframe()
-
-            df_merge = df_strategie.merge(
-                df_hist, left_on='sous_silo',
-                right_on='sous_silo_strategique', how='left'
-            )
-            df_merge['derniere_pub'] = df_merge['derniere_pub'].fillna(
-                pd.Timestamp('2000-01-01', tz='UTC')
-            )
-            df_merge['nb_articles'] = df_merge['nb_articles'].fillna(0)
-            # Exclut les sous-silos deja pris via SEO opportunities pour ce
-            # meme silo dans ce run : sans ca, le repli anciennete pouvait
-            # re-choisir le meme sous-silo qu'un sujet SEO deja selectionne,
-            # recreant la collision que le suffixe d'unicite est cense eviter.
-            df_merge = df_merge[~df_merge['sous_silo'].isin(sous_silos_deja_vus)]
-            df_merge = df_merge.sort_values(
-                by=['nb_articles', 'derniere_pub'],
-                ascending=[True, True]
-            )
-            df_final = df_merge.head(nb_manquants)[['silo', 'sous_silo', 'priorite']].copy()
-            df_final['mot_cle'] = ''
-            for _, r in df_final.iterrows():
-                print(f"   ✅ {silo_du_jour} | {r['sous_silo']} (fallback anciennete)")
-            resultats.append(df_final)
+            if df_strategie.empty:
+                print("   ❌ Aucun sous-silo strategique trouve")
+            else:
+                df_merge = df_strategie.merge(
+                    df_hist, left_on=['silo', 'sous_silo'],
+                    right_on=['silo', 'sous_silo_strategique'], how='left'
+                )
+                df_merge['derniere_pub'] = df_merge['derniere_pub'].fillna(
+                    pd.Timestamp('2000-01-01', tz='UTC')
+                )
+                df_merge['nb_articles'] = df_merge['nb_articles'].fillna(0)
+                # Exclut les sous-silos deja pris via opportunites, PAR silo
+                # (meme sous-silo dans un AUTRE silo reste eligible).
+                def _deja_pris(r):
+                    return r['sous_silo'] in sous_silos_deja_vus_par_silo.get(r['silo'], [])
+                df_merge = df_merge[~df_merge.apply(_deja_pris, axis=1)]
+                df_merge = df_merge.sort_values(
+                    by=['nb_articles', 'derniere_pub'],
+                    ascending=[True, True]
+                )
+                df_final = df_merge.head(nb_manquants)[['silo', 'sous_silo', 'priorite']].copy()
+                df_final['mot_cle'] = ''
+                for _, r in df_final.iterrows():
+                    print(f"   ✅ {r['silo']} | {r['sous_silo']} (fallback anciennete global)")
+                resultats.append(df_final)
         except Exception as e_fb:
-            print(f"   ❌ {silo_du_jour} : fallback echoue aussi ({e_fb})")
+            print(f"   ❌ Fallback global echoue ({e_fb})")
 
     if not resultats:
-        print("❌ Aucun silo n'a pu etre traite")
+        print("❌ Aucun sujet n'a pu etre selectionne")
         return None
-
     df_tous = pd.concat(resultats, ignore_index=True)
-    print(f"\n✅ TOTAL : {len(df_tous)} sujets selectionnes sur {len(tous_silos)} silos")
+    print(f"\n✅ TOTAL : {len(df_tous)} sujets selectionnes par pertinence sur {len(tous_silos)} silos")
     return df_tous
-
 
 def generate_niche_query(silo, subcat):
     clean_silo = silo.split('. ')[-1] if '. ' in silo else silo
