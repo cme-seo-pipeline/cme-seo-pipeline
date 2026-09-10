@@ -892,6 +892,10 @@ def nettoyer_texte_ia(texte, annee_courante=None):
     if annee_courante:
         for annee in range(2020, annee_courante):
             texte = re.sub(rf'\b{annee}\b', str(annee_courante), texte)
+    # --- Patch B : sanitisation des liens HTML malformes ---
+    texte = re.sub(r'<a\s[^>]*href="[^"]*<[^"]*"[^>]*>.*?</a>', '', texte)
+    texte = re.sub(r'<a\s[^>]*href="https?://[^"]*https?://[^"]*"[^>]*>(.*?)</a>', r'\1', texte)
+    texte = re.sub(r'\?src_post=\d+', '', texte)
     return texte
 
 
@@ -3766,7 +3770,12 @@ FAQ :
 {donnees_officielles_str}
 
 RÈGLES :
-1. HTML propre (h1, h2, h3, p, ul, li, strong)
+1. HTML propre : h1, h2, h3, p, ul, li, strong, a
+   Pour les liens internes du MAILLAGE INTERNE, utilise EXACTEMENT ce format :
+   <a href="URL_EXACTE">ancre naturelle</a>
+   — NE JAMAIS ajouter de style, class, div ou attribut au lien
+   — NE JAMAIS modifier l'URL fournie
+   — NE JAMAIS concatener deux URLs ensemble
 2. NE PAS ajouter de CTA commercial
 3. Dates : {annee_courante} ou {annee_suivante} UNIQUEMENT — INTERDIT TOUTE année antérieure ({annee_interdite}, {annee_interdite - 1}, etc.), même si le contexte concurrent scrapé en mentionne une
 4. Apostrophes : uniquement l'apostrophe droite simple (') — jamais d'entité HTML (&rsquo; interdit)
@@ -3958,40 +3967,39 @@ CTA_TOOLS = {
     "1. Gaz": {
         "url": "https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/",
         "titre": "Comparez les offres Gaz au meilleur prix",
-        "texte": "Trouvez l'offre la moins chere selon votre profil en 2 minutes, gratuitement.",
+        "texte": "Trouvez l'offre la moins chère selon votre profil en 2 minutes, gratuitement.",
         "bouton": "Comparer les offres gaz",
         "couleur1": "#1e3a8a", "couleur2": "#3b82f6"
     },
     "5. Électricité": {
         "url": "https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/",
-        "titre": "Comparez les offres Electricite au meilleur prix",
-        "texte": "Trouvez l'offre la moins chere selon votre profil en 2 minutes, gratuitement.",
-        "bouton": "Comparer les offres electricite",
+        "titre": "Comparez les offres Électricité au meilleur prix",
+        "texte": "Trouvez l'offre la moins chère selon votre profil en 2 minutes, gratuitement.",
+        "bouton": "Comparer les offres électricité",
         "couleur1": "#1e3a8a", "couleur2": "#3b82f6"
     },
     "4. Solaire": {
         "url": "https://www.comprendre-mon-energie.fr/devis-panneau-solaire/",
         "titre": "Estimez votre installation solaire",
-        "texte": "Rentabilite, nombre de panneaux et puissance kWc en 2 minutes, gratuitement.",
+        "texte": "Rentabilité, nombre de panneaux et puissance kWc en 2 minutes, gratuitement.",
         "bouton": "Simuler mon projet solaire",
         "couleur1": "#052e16", "couleur2": "#16a34a"
     },
     "2. Rénovation Énergétique": {
         "url": "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
-        "titre": "Calculez vos aides a la renovation",
-        "texte": "MaPrimeRenov', CEE, Eco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
+        "titre": "Calculez vos aides à la rénovation",
+        "texte": "MaPrimeRénov', CEE, Éco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
         "bouton": "Simuler mes aides",
         "couleur1": "#78350f", "couleur2": "#f59e0b"
     },
     "3. Aide Énergétique": {
         "url": "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
-        "titre": "Calculez vos aides a la renovation",
-        "texte": "MaPrimeRenov', CEE, Eco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
+        "titre": "Calculez vos aides à la rénovation",
+        "texte": "MaPrimeRénov', CEE, Éco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
         "bouton": "Simuler mes aides",
         "couleur1": "#78350f", "couleur2": "#f59e0b"
     },
 }
-
 def tronquer_proprement(texte, limite):
     """Tronque un texte a la limite de caracteres donnee sans jamais
     couper un mot en deux. Filet de securite si l'IA depasse malgre
@@ -4328,7 +4336,7 @@ def generer_cta_html(silo_name, post_id=None):
 <div style="background:linear-gradient(135deg,{cfg["couleur1"]},{cfg["couleur2"]});border-radius:16px;padding:1.75rem;text-align:center;margin:32px 0;max-width:100%;box-sizing:border-box;">
   <h3 style="color:#fff;font-size:20px;font-weight:700;margin:0 0 8px">{cfg["titre"]}</h3>
   <p style="color:rgba(255,255,255,.9);font-size:14px;margin:0 0 18px;line-height:1.5">{cfg["texte"]}</p>
-  <a href="{url_finale}" style="display:inline-block;background:#fff;color:{cfg["couleur2"]};font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">{cfg["bouton"]} &rarr;</a>
+  <a href="{url_finale}" rel="nofollow sponsored" style="display:inline-block;background:#fff;color:{cfg["couleur2"]};font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">{cfg["bouton"]} &rarr;</a>
 </div>
 '''
 
