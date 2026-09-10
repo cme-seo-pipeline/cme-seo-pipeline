@@ -4340,6 +4340,36 @@ def generer_cta_html(silo_name, post_id=None):
 </div>
 '''
 
+def inserer_ctas_repartis(contenu_html, silo_name, post_id=None):
+    """Insere jusqu'a 3 CTA repartis dans l'article (a environ 1/3, 2/3 et
+    en fin de contenu) au lieu d'un seul en fin d'article -- objectif :
+    capter l'attention a plusieurs moments de la lecture, pas seulement
+    pour les lecteurs qui vont jusqu'au bout. Se limite STRICTEMENT aux
+    positions de debut de balise <h2> pour ne jamais couper le HTML au
+    milieu d'une balise ou d'un mot (cause du bug de liens casses deja
+    rencontre sur ce pipeline). Si l'article a moins de 3 sections H2,
+    se replie sur le comportement original (CTA unique en fin) --
+    mieux vaut un seul CTA bien place qu'un decoupage force et fragile."""
+    cta_html = generer_cta_html(silo_name, post_id)
+    if not cta_html:
+        return contenu_html
+
+    positions_h2 = [m.start() for m in re.finditer(r'<h2[ >]', contenu_html, re.IGNORECASE)]
+    if len(positions_h2) < 3:
+        return contenu_html + cta_html
+
+    tiers = len(positions_h2) // 3
+    idx_1 = positions_h2[tiers]
+    idx_2 = positions_h2[tiers * 2]
+
+    # Insertion en partant de la fin du texte pour ne pas decaler les
+    # index deja calcules sur le contenu original.
+    resultat = contenu_html[:idx_2] + cta_html + contenu_html[idx_2:]
+    resultat = resultat[:idx_1] + cta_html + resultat[idx_1:]
+    resultat = resultat + cta_html
+    return resultat
+
+
 def publier_article(brief, silo_name, sous_silo_val, contenu_html,
                     wp_config, client_bq, run_id, config):
     # Slug
@@ -4431,19 +4461,20 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
             # PATCH : injecter le CTA avec l'attribution ?src_post={post_id}
             # (impossible de le faire avant, le post_id n'existait pas encore)
             try:
-                cta_final = generer_cta_html(silo_name, post_id)
+                contenu_avec_ctas = inserer_ctas_repartis(contenu_html, silo_name, post_id)
                 r_patch = requests.post(
                     f"{wp_config['url']}/wp-json/wp/v2/posts/{post_id}",
-                    json={"content": contenu_html + cta_final},
+                    json={"content": contenu_avec_ctas},
                     auth=(wp_config['username'], wp_config['app_password']),
                     timeout=30
                 )
                 if r_patch.status_code == 200:
-                    print(f"  🎯 CTA avec attribution injecté (src_post={post_id})")
+                    print(f"  🎯 CTA repartis avec attribution injectes (src_post={post_id})")
                 else:
                     print(f"  ⚠️ PATCH CTA échoué : HTTP {r_patch.status_code}")
             except Exception as e_cta:
                 print(f"  ⚠️ Erreur injection CTA : {e_cta}")
+
 
             logger_publication_bq(
                 client_bq, post_id, silo_name, titre_seo,
