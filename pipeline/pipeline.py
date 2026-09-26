@@ -3703,7 +3703,7 @@ FAQ :
 {donnees_officielles_str}
 
 RÈGLES :
-1. HTML propre : h1, h2, h3, p, ul, li, strong, a
+1. HTML propre : h1, h2, h3, p, ul, li, strong, a, table, thead, tbody, tr, th, td
    Pour les liens internes du MAILLAGE INTERNE, utilise EXACTEMENT ce format :
    <a href="URL_EXACTE">ancre naturelle</a>
    — NE JAMAIS ajouter de style, class, div ou attribut au lien
@@ -3714,7 +3714,14 @@ RÈGLES :
 4. Apostrophes : uniquement l'apostrophe droite simple (') — jamais d'entité HTML (&rsquo; interdit)
 5. Chiffres précis (prix, taux, tarifs) : SI la section DONNÉES OFFICIELLES ACTUELLES est présente ci-dessus, tu DOIS OBLIGATOIREMENT reprendre ces valeurs exactes dans au moins un exemple chiffré concret de l'article — ne construis JAMAIS un exemple "simplifié" ou fictif avec un prix inventé si une donnée officielle existe pour ce sujet. INTERDIT d'inventer un prix, un taux ou une offre commerciale attribuée à une marque réelle (EDF, Engie, TotalEnergies...). Si aucune donnée officielle n'est fournie pour un point précis, reste général (ex: "les tarifs varient selon les fournisseurs") plutôt que d'inventer un chiffre.
 6. Commence DIRECTEMENT par <h1>...</h1>
-7. INTERDIT : ```html, <!DOCTYPE>, <html>, <head>, <body>"""
+7. INTERDIT : ```html, <!DOCTYPE>, <html>, <head>, <body>
+8. Profondeur et style (calqués sur nos pages de référence les plus performantes) :
+   — Au moins un exemple concret et chiffré par section majeure (jamais un "cela dépend" seul sans illustration chiffrée)
+   — Un tableau HTML comparatif (table/thead/tbody/tr/th/td) si le sujet s'y prête (comparaison de prix, délais, fournisseurs, situations) — sans jamais inventer de valeur attribuée à une marque réelle, uniquement avec des données déjà fournies ou des fourchettes générales
+   — Cite les références légales exactes quand elles existent et sont fournies dans le brief (article de loi, date précise) — jamais inventées si absentes du brief
+   — Nomme les acteurs et marques réels pertinents (fournisseurs, organismes officiels) plutôt que des généralités vagues, sans jamais inventer de prix ou d'offre qui leur soit attribué
+   — Termine par une section "Points clés à retenir" (résumé synthétique de 3 à 5 points) juste avant la FAQ
+   — Ton : rassurant sans minimiser le problème du lecteur, toujours orienté action concrète (ce qu'il faut FAIRE, pas seulement ce qu'il faut savoir)"""
 
     headers = {
         "x-api-key": config['ANTHROPIC_API_KEY'],
@@ -3723,7 +3730,7 @@ RÈGLES :
     }
     body = {
         "model": config['MODEL'],
-        "max_tokens": 8000,
+        "max_tokens": 16000,
         "messages": [{"role": "user", "content": prompt}]
     }
     try:
