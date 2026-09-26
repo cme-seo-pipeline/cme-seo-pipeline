@@ -3839,6 +3839,58 @@ def logger_publication_bq(client_bq, post_id, silo, titre,
     return False
 
 
+LIENS_PILIERS_SOUS_SILO = {
+    ("1. Gaz", "Bouteilles"): ("/gaz/bouteilles/prix-bouteille-gaz-2024/", "notre guide complet sur les bouteilles de gaz"),
+    ("1. Gaz", "Facture Gaz"): ("/gaz/facture-gaz/delai-paiement-facture-gaz/", "notre guide sur la facture de gaz"),
+    ("5. Électricité", "Contrat Électricité"): ("/electricite/contrat-electricite/attestation-de-contrat-delectricite/", "notre guide sur le contrat d'électricité"),
+    ("5. Électricité", "Facture Électricité"): ("/electricite/facture-electricite/tarif-social-electricite-conditions-demande/", "notre guide sur la facture d'électricité"),
+    ("3. Aide Énergétique", "MaPrimeRénov'"): ("/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/", "notre guide complet sur MaPrimeRénov'"),
+    ("3. Aide Énergétique", "Chèque énergie"): ("/aide-energetique/cheque-energie/cheque-energie-refuse-causes-solutions/", "notre guide sur le chèque énergie"),
+    ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique"): ("/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-gaz/", "notre guide sur le chauffe-eau thermodynamique"),
+}
+
+
+def recuperer_articles_meme_sous_silo(silo_name, sous_silo, client_bq):
+    """Recupere jusqu'a 5 articles DEJA PUBLIES du MEME sous-silo precis
+    (pas seulement le meme silo), pour un maillage 'effet de flotte' entre
+    articles ciblant le meme sujet. Le suffixe d'anti-collision '(2)',
+    '(3)' est retire avant la recherche. Retourne une liste vide (jamais
+    une exception) si indisponible -- l'appelant se replie alors sur
+    recuperer_articles_meme_silo, plus large mais toujours disponible."""
+    import re as re_local
+    sous_silo_base = re_local.sub(r' \(\d+\)$', '', str(sous_silo))
+    silo_safe = str(silo_name).replace("'", "''")
+    sous_silo_safe = sous_silo_base.replace("'", "''")
+    try:
+        df = client_bq.query(f"""
+            SELECT DISTINCT titre, url FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+            WHERE silo = '{silo_safe}' AND sous_silo_strategique = '{sous_silo_safe}'
+            ORDER BY date_publication DESC LIMIT 5
+        """).to_dataframe()
+        return [{"titre": r['titre'], "url": r['url']} for _, r in df.iterrows()]
+    except Exception as e:
+        print(f"  ⚠️ Recuperation articles meme sous-silo impossible ({e})")
+        return []
+
+
+def inserer_lien_pilier(contenu_html, silo_name, sous_silo_val):
+    """Insere en tout DEBUT d'article un lien vers la page pilier du
+    sous-silo cible, garantissant que c'est le PREMIER lien interne de
+    l'article. Insertion deterministe en code, pas via consigne au
+    modele seul -- des articles ont deja ete publies avec 0 lien interne
+    malgre instruction, la fiabilite doit etre structurelle. Sous-silos
+    hors des 7 cibles nommees : contenu retourne inchange."""
+    import re as re_local
+    sous_silo_base = re_local.sub(r' \(\d+\)$', '', str(sous_silo_val))
+    cle = (silo_name, sous_silo_base)
+    if cle not in LIENS_PILIERS_SOUS_SILO:
+        return contenu_html
+    url_relative, texte_ancre = LIENS_PILIERS_SOUS_SILO[cle]
+    url_complete = f"https://www.comprendre-mon-energie.fr{url_relative}"
+    lien_html = f'<p>Pour aller plus loin, consultez <a href="{url_complete}">{texte_ancre}</a>.</p>\n'
+    return lien_html + contenu_html
+
+
 def recuperer_articles_meme_silo(silo_name, wp_config):
     silo_propre = silo_name.split('. ')[-1] if '. ' in silo_name else silo_name
     r = requests.get(
@@ -4514,11 +4566,15 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
         print(f"\n{'='*55}")
         print(f"📂 {silo_name} — {brief.get('titre_seo')}")
 
-        articles_silo = recuperer_articles_meme_silo(silo_name, wp_config)
+        sous_silo_pour_maillage = sous_silo_override or brief.get('sous_silo', brief.get('Sous-Silo', ''))
+        articles_silo = recuperer_articles_meme_sous_silo(silo_name, sous_silo_pour_maillage, client_bq)
+        if not articles_silo:
+            articles_silo = recuperer_articles_meme_silo(silo_name, wp_config)
         contenu_html, erreur = rediger_article(brief, config, articles_silo, client_bq)
         if erreur:
             print(f"  {erreur}")
             continue
+        contenu_html = inserer_lien_pilier(contenu_html, silo_name, sous_silo_pour_maillage)
 
         liens = re.findall(
             r'<a href="https://www\.comprendre-mon-energie\.fr[^"]*"', contenu_html
