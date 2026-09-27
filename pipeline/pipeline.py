@@ -829,6 +829,14 @@ def nettoyer_texte_ia(texte, annee_courante=None):
     texte = re.sub(r'<a\s[^>]*href="[^"]*<[^"]*"[^>]*>.*?</a>', '', texte)
     texte = re.sub(r'<a\s[^>]*href="https?://[^"]*https?://[^"]*"[^>]*>(.*?)</a>', r'\1', texte)
     texte = re.sub(r'\?src_post=\d+', '', texte)
+    # --- Patch C : href tronque (jamais ferme, ex. reponse Claude coupee) ---
+    # Complete le Patch B, qui exige un guillemet de fermeture apres le "<"
+    # rencontre dans le href -- ne couvre donc pas le cas ou la balise ne se
+    # ferme jamais du tout (ex : <a href="https://exemple." suivi directement
+    # d'un autre bloc HTML sans avoir ferme le guillemet ni la balise).
+    # Retire uniquement l'ouverture <a href="..." tronquee, jusqu'au prochain
+    # "<" rencontre, quel qu'il soit -- laisse le texte environnant intact.
+    texte = re.sub(r'<a\s+href="[^"]*(?=<)', '', texte, flags=re.DOTALL)
     return texte
 
 
