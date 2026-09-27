@@ -4995,6 +4995,58 @@ JSON : {{"prompt_dalle":"prompt anglais 50-100 mots","description_fr":"descripti
         }
 
 
+def generer_image_matplotlib_bouteilles(post_id):
+    """Genere un graphique matplotlib (PNG, bytes) pour les articles du
+    sous-silo 'Bouteilles' -- remplace DALL-E pour ce sous-silo
+    specifiquement (porteur de projet non satisfait de la qualite des
+    images IA). Alterne entre 2 designs selon la parite du post_id, pour
+    eviter de repeter la meme image sur plusieurs articles publies le
+    meme jour. Donnees reelles reprises du diagnostic de la page pilier
+    Bouteilles (prix par canal d'achat et par taille de bouteille) --
+    production deterministe et fiable plutot que generee par IA."""
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    import io as io_local
+
+    BLEU_FONCE = '#1e3a8a'
+    BLEU_CLAIR = '#3b82f6'
+
+    fig, ax = plt.subplots(figsize=(8, 5), dpi=150)
+
+    if post_id % 2 == 0:
+        categories = ['Grandes\nsurfaces', 'Distributeur\ndirect', 'Avec\nabonnement']
+        prix = [26, 34, 24]
+        titre = "Prix moyen d'une bouteille de gaz 13 kg par canal d'achat"
+        couleurs = [BLEU_FONCE, BLEU_CLAIR, BLEU_FONCE]
+    else:
+        categories = ['5 kg', '13 kg', '35 kg']
+        prix = [11.5, 26, 63]
+        titre = "Prix moyen d'une bouteille de gaz selon sa taille"
+        couleurs = [BLEU_CLAIR, BLEU_FONCE, BLEU_CLAIR]
+
+    barres = ax.bar(categories, prix, color=couleurs, width=0.55)
+
+    for barre, valeur in zip(barres, prix):
+        etiquette = f"{valeur:.1f} €" if valeur != int(valeur) else f"{int(valeur)} €"
+        ax.text(barre.get_x() + barre.get_width() / 2, barre.get_height() + max(prix) * 0.02,
+                etiquette, ha='center', fontsize=13, fontweight='bold', color='#1e293b')
+
+    ax.set_title(titre, fontsize=13, fontweight='bold', color='#1e293b', pad=15)
+    ax.set_ylabel('Prix (€)', fontsize=11)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_ylim(0, max(prix) * 1.25)
+    ax.tick_params(axis='both', labelsize=10)
+    fig.tight_layout()
+
+    buffer = io_local.BytesIO()
+    fig.savefig(buffer, format='png', facecolor='white')
+    plt.close(fig)
+    buffer.seek(0)
+    return buffer.read()
+
+
 def generer_image_dalle(prompt_dalle, openai_config):
     headers = {
         "Authorization": f"Bearer {openai_config['api_key']}",
@@ -5094,8 +5146,13 @@ def generer_featured_images(df_publications, client_bq, config, openai_config, w
 
         print(f"\n📂 {silo_name} | {sous_silo}")
 
-        prompt_data = generer_prompt_dalle(mot_cle_brief, sous_silo, silo_name, h1_texte, config)
-        image_bytes, erreur = generer_image_dalle(prompt_data['prompt_dalle'], openai_config)
+        sous_silo_base_img = re.sub(r' \(\d+\)$', '', str(sous_silo))
+        if sous_silo_base_img == "Bouteilles":
+            image_bytes = generer_image_matplotlib_bouteilles(post_id)
+            erreur = None if image_bytes else "Erreur generation graphique matplotlib"
+        else:
+            prompt_data = generer_prompt_dalle(mot_cle_brief, sous_silo, silo_name, h1_texte, config)
+            image_bytes, erreur = generer_image_dalle(prompt_data['prompt_dalle'], openai_config)
 
         if not image_bytes:
             print(f"  ❌ {erreur}")
