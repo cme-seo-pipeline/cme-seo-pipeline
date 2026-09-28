@@ -5003,6 +5003,61 @@ JSON : {{"prompt_dalle":"prompt anglais 50-100 mots","description_fr":"descripti
         }
 
 
+def generer_carte_titre(titre, sous_silo, mot_cle, couleur_fond, couleur_accent):
+    """Genere la carte titre (PNG 1200x630) servant d'image a la une :
+    libelle du sous-silo, titre de l'article, mot-cle, nom du site, sur les
+    couleurs du silo (celles des CTA). Aucun appel externe, aucune cle, et
+    aucun chiffre : le rendu est deterministe, donc l'empreinte retournee
+    (sha256 tronque) permet de detecter deux cartes strictement identiques
+    avant publication. Leve une exception si le titre est vide (l'appelant
+    laisse alors l'article sans image plutot que de publier une carte vide)."""
+    import io as io_local
+    import hashlib
+    import textwrap
+    import html as html_local
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
+
+    titre = html_local.unescape(str(titre or '')).strip()
+    if not titre:
+        raise ValueError("titre vide, carte impossible")
+    sous_silo = re.sub(r' \(\d+\)$', '', str(sous_silo or ''))
+    mot_cle = html_local.unescape(str(mot_cle or '')).strip()
+
+    lignes = textwrap.wrap(titre, width=26)
+    taille = 40
+    if len(lignes) > 3:
+        lignes = textwrap.wrap(titre, width=31)
+        taille = 34
+    if len(lignes) > 4:
+        lignes = lignes[:4]
+        lignes[-1] = lignes[-1].rstrip('.,;: ') + '...'
+
+    fig = plt.figure(figsize=(12, 6.3), dpi=100, facecolor=couleur_fond)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1200)
+    ax.set_ylim(0, 630)
+    ax.axis('off')
+    ax.add_patch(Rectangle((0, 0), 24, 630, color=couleur_accent, lw=0))
+    ax.text(80, 565, sous_silo.upper(), color=couleur_accent, fontsize=20,
+            fontweight='bold', va='top')
+    ax.text(80, 480, "\n".join(lignes), color='white', fontsize=taille,
+            fontweight='bold', va='top', linespacing=1.25)
+    if mot_cle:
+        ax.text(80, 70, mot_cle, color=(1, 1, 1, 0.8), fontsize=20, va='bottom')
+    ax.text(1140, 70, "Comprendre Mon Énergie", color=(1, 1, 1, 0.8),
+            fontsize=18, fontweight='bold', va='bottom', ha='right')
+
+    buffer = io_local.BytesIO()
+    fig.savefig(buffer, format='png', facecolor=couleur_fond,
+                metadata={'Software': None})
+    plt.close(fig)
+    png = buffer.getvalue()
+    return png, hashlib.sha256(png).hexdigest()[:12]
+
+
 def generer_image_matplotlib_bouteilles(post_id):
     """Genere un graphique matplotlib (PNG, bytes) pour les articles du
     sous-silo 'Bouteilles' -- remplace DALL-E pour ce sous-silo
@@ -5117,7 +5172,7 @@ def set_featured_image_wordpress(image_bytes, filename, seo_tags, post_id, wp_co
 
 
 def generer_featured_images(df_publications, client_bq, config, openai_config, wp_config):
-    print("🎨 FEATURED IMAGES DALL-E...")
+    print("🎨 FEATURED IMAGES (cartes titre)...")
     ids_utilises = set()
     try:
         df_ids = client_bq.query(f"""
@@ -5155,29 +5210,37 @@ def generer_featured_images(df_publications, client_bq, config, openai_config, w
         print(f"\n📂 {silo_name} | {sous_silo}")
 
         sous_silo_base_img = re.sub(r' \(\d+\)$', '', str(sous_silo))
-        if sous_silo_base_img == "Bouteilles":
-            image_bytes = generer_image_matplotlib_bouteilles(post_id)
-            erreur = None if image_bytes else "Erreur generation graphique matplotlib"
-        else:
-            prompt_data = generer_prompt_dalle(mot_cle_brief, sous_silo, silo_name, h1_texte, config)
-            image_bytes, erreur = generer_image_dalle(prompt_data['prompt_dalle'], openai_config)
+        cfg_carte = CTA_TOOLS.get(silo_name) or CTA_TOOLS["1. Gaz"]
+        try:
+            image_bytes, empreinte = generer_carte_titre(
+                h1_texte, sous_silo_base_img, mot_cle_brief,
+                cfg_carte["couleur1"], cfg_carte["couleur2"]
+            )
+        except Exception as e_carte:
+            print(f"  ❌ Carte titre impossible : {e_carte}")
+            continue
 
-        if not image_bytes:
-            print(f"  ❌ {erreur}")
+        # Controle d'unicite : une carte dont l'empreinte est deja connue
+        # (run en cours + historique charge en debut de fonction) n'est
+        # jamais publiee -- l'article reste sans image plutot qu'en doublon.
+        if not ids_utilises:
+            print("  ⚠️ Registre d'images vide ou indisponible : unicite verifiee dans ce run uniquement")
+        if any(str(i).startswith(f"carte_{empreinte}_") for i in ids_utilises):
+            print(f"  ⛔ Carte identique deja publiee (empreinte {empreinte}) : article laisse sans image")
             continue
 
         seo_tags = {
-            "alt": f"{mot_cle_brief} - {silo_name} - {datetime.now().year}",
+            "alt": h1_texte[:120],
             "titre": titre_article[:60],
-            "caption": "Image générée par IA"
+            "caption": ""
         }
-        filename = f"dalle_{re.sub(r'[^a-zA-Z0-9]','_',sous_silo[:20])}_{post_id}.png"
+        filename = f"carte_{re.sub(r'[^a-zA-Z0-9]','_',sous_silo[:20])}_{post_id}.png"
         succes, resultat = set_featured_image_wordpress(
             image_bytes, filename, seo_tags, post_id, wp_config
         )
 
         if succes:
-            image_id = f"dalle_{post_id}_{idx}"
+            image_id = f"carte_{empreinte}_{post_id}"
             ids_utilises.add(image_id)
             try:
                 client_bq.query(f"""
@@ -5185,8 +5248,8 @@ def generer_featured_images(df_publications, client_bq, config, openai_config, w
                 SET image_id = '{image_id}'
                 WHERE post_id = {post_id}
                 """).result()
-            except:
-                pass
+            except Exception as e_maj:
+                print(f"  ⚠️ image_id non enregistre en base ({e_maj}) : unicite des prochains runs non garantie")
             print(f"  ✅ {resultat['url']}")
         else:
             print(f"  ❌ {resultat}")
@@ -5273,7 +5336,7 @@ def run_pipeline(force=False):
     nettoyer_et_generer_schemas(df_publications, WP_CONFIG, CONFIG)
 
     # ── FEATURED IMAGES ────────────────────────────────────
-    print("\n🖼️ FEATURED IMAGES DALL-E...")
+    print("\n🖼️ FEATURED IMAGES (cartes titre)...")
     generer_featured_images(df_publications, client_bq, CONFIG, OPENAI_CONFIG, WP_CONFIG)
     # ── PUBLICATION FACEBOOK ────────────────────────────────
     if CONFIG.get("FACEBOOK_INSTAGRAM_ACTIF", True):
