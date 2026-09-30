@@ -837,6 +837,18 @@ def nettoyer_texte_ia(texte, annee_courante=None):
     # Retire uniquement l'ouverture <a href="..." tronquee, jusqu'au prochain
     # "<" rencontre, quel qu'il soit -- laisse le texte environnant intact.
     texte = re.sub(r'<a\s+href="[^"]*(?=<)', '', texte, flags=re.DOTALL)
+    # --- Patch D : tableaux enveloppes pour le defilement mobile ---
+    # Diagnostic du 30/09 : 332 des 639 articles publies contiennent au moins un
+    # tableau, 257 avec 4 colonnes ou plus -- aucun n'est enveloppe, ils debordent
+    # ou s'ecrasent sur mobile (confirme visuellement sur un article reel). Un
+    # <table> genere par Claude n'est jamais imbrique dans un autre <table> dans
+    # ce pipeline, donc un simple compte de balises suffit a le reperer sans
+    # dependance supplementaire (pas de BeautifulSoup ici, nettoyer_texte_ia
+    # reste une fonction texte-vers-texte).
+    def _envelopper_tableau(m):
+        return ('<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;'
+                'margin:24px 0;">' + m.group(0) + '</div>')
+    texte = re.sub(r'<table(?:\s[^>]*)?>.*?</table>', _envelopper_tableau, texte, flags=re.DOTALL)
     return texte
 
 
