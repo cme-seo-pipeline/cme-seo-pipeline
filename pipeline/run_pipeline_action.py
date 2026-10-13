@@ -5,7 +5,10 @@ from pipeline import run_pipeline
 if __name__ == "__main__":
     force = "--force" in sys.argv
     try:
-        run_pipeline(force=force)
+        resultat = run_pipeline(force=force)
     except Exception as e:
         print(f"Erreur pipeline : {e}")
+        sys.exit(1)
+    if resultat == 0:
+        print("Aucun article publie : run considere en echec")
         sys.exit(1)

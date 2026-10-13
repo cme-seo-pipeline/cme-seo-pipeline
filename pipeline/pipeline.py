@@ -320,15 +320,15 @@ def selectionner_silos_a_traiter(client_bq, config):
     print(f"📅 Run par sous-silo cible → {total_vise} articles vises sur {len(QUOTAS_SOUS_SILO)} sous-silos")
     resultats = []
     for silo_du_jour, sous_silo_cible, quota in QUOTAS_SOUS_SILO:
-        silo_safe = silo_du_jour.replace("'", "''")
-        sous_silo_safe = sous_silo_cible.replace("'", "''")
+        silo_safe = silo_du_jour.replace("\\", "\\\\").replace("'", "\\'")
+        sous_silo_safe = sous_silo_cible.replace("\\", "\\\\").replace("'", "\\'")
         nb_trouves = 0
         sous_silos_deja_vus = []
         try:
             df_opp = client_bq.query(f"""
             SELECT
-                '{silo_du_jour}' AS silo,
-                '{sous_silo_cible}' AS sous_silo,
+                '{silo_safe}' AS silo,
+                '{sous_silo_safe}' AS sous_silo,
                 query AS mot_cle,
                 score_opportunite,
                 ROUND(position, 1) AS position,
@@ -415,6 +415,7 @@ def generate_niche_query(silo, subcat):
 def scraper_concurrents(silos_a_traiter, search_api_key):
     all_market_data = []
     print("🚀 SCRAPING CONCURRENTS...")
+    cache_requetes = {}   # une requete identique n'est payee qu'une fois par run
 
     for _, row in silos_a_traiter.iterrows():
         silo = row['silo']
@@ -429,13 +430,24 @@ def scraper_concurrents(silos_a_traiter, search_api_key):
             "api_key": search_api_key
         }
         organic_results = []
-        for tentative in range(3):
+        erreur_service = None
+        deja_demandee = search_query in cache_requetes
+        if deja_demandee:
+            organic_results = cache_requetes[search_query]
+            print("   ↩️ requete deja executee dans ce run, resultats reutilises")
+        for tentative in (range(3) if not deja_demandee else []):
             try:
                 response = requests.get(
                     "https://www.searchapi.io/api/v1/search",
                     params=params, timeout=45
                 )
-                organic_results = response.json().get("organic_results", [])
+                donnees = response.json()
+                if response.status_code in (401, 402, 403, 429):
+                    erreur_service = (response.status_code, str(donnees.get("error", ""))[:200])
+                    break
+                if response.status_code != 200 or "error" in donnees:
+                    print(f"⚠️ SearchApi HTTP {response.status_code} : {str(donnees.get('error', ''))[:200]}")
+                organic_results = donnees.get("organic_results", [])
                 break
             except Exception as e:
                 if tentative < 2:
@@ -444,6 +456,11 @@ def scraper_concurrents(silos_a_traiter, search_api_key):
                     time.sleep(attente)
                 else:
                     print(f"❌ Scraping abandonné après 3 tentatives pour '{search_query}' : {e}")
+
+        if erreur_service:
+            raise RuntimeError(f"SearchApi inutilisable (HTTP {erreur_service[0]}) : {erreur_service[1]}")
+        if not deja_demandee and organic_results:
+            cache_requetes[search_query] = organic_results
 
         count = 0
         for r in organic_results:
@@ -5290,14 +5307,14 @@ def run_pipeline(force=False):
     silos_a_traiter = selectionner_silos_a_traiter(client_bq, CONFIG)
     if silos_a_traiter is None or silos_a_traiter.empty:
         print("❌ Aucun silo disponible")
-        return
+        return 0
 
     # Vérification anti-doublons
     # Pas de filtre doublon par titre : la rotation gère la diversité
     silos_valides = list(silos_a_traiter.iterrows())
     if not silos_valides:
         print("⚠️ Aucun silo disponible")
-        return
+        return 0
     # silos_a_traiter déjà prêt
 
     # ── SCRAPING ───────────────────────────────────────────
@@ -5305,14 +5322,14 @@ def run_pipeline(force=False):
     df_market = scraper_concurrents(silos_a_traiter, SEARCH_API_KEY)
     if df_market.empty:
         print("❌ Aucun concurrent trouvé")
-        return
+        return 0
 
     # ── EXTRACTION CONTENU ─────────────────────────────────
     print("\n📄 EXTRACTION CONTENU...")
     df_contenus = scraper_contenu_concurrents(df_market)
     if df_contenus.empty:
         print("❌ Aucun contenu extrait")
-        return
+        return 0
 
     # ── ANALYSE STYLE ──────────────────────────────────────
     print("\n🧠 ANALYSE ÉDITORIALE...")
@@ -5327,7 +5344,7 @@ def run_pipeline(force=False):
     all_briefs_finaux = generer_tous_briefs(df_final, client_bq, CONFIG)
     if not all_briefs_finaux:
         print("❌ Aucun brief généré")
-        return
+        return 0
 
     # ── EXPORT BIGQUERY ────────────────────────────────────
     print("\n💾 EXPORT BIGQUERY...")
@@ -5341,7 +5358,7 @@ def run_pipeline(force=False):
     )
     if df_publications.empty:
         print("❌ Aucun article publié")
-        return
+        return 0
 
     # ── SCHÉMAS SVG ────────────────────────────────────────
     print("\n🎨 SCHÉMAS SVG...")
@@ -5362,6 +5379,7 @@ def run_pipeline(force=False):
     print(f"✅ PIPELINE TERMINÉ — {len(df_publications)} articles publiés")
     print(f"📅 Run ID : {run_id}")
     print(f"{'='*60}")
+    return len(df_publications)
 
 
 if __name__ == "__main__":
