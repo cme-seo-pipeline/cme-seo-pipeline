@@ -225,12 +225,105 @@ add_action('wp_footer', function () {
     }
   }
 
+
+  // ── BANDEAU FLOTTANT : INSTALLATION DE L'APP ANDROID ─────────────────────
+  var APP_PLAY_URL = 'https://play.google.com/store/apps/details?id=fr.comprendremonenergie.espaceclient&referrer=utm_source%3Dcomprendre-mon-energie%26utm_medium%3Dbanniere';
+  var APP_LOGO = 'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/03/logo-officiel-comprendre-mon-energie-observatoire.png';
+  var APP_BADGE = 'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/08/comprendre-mon-energie-play-store-badge.png';
+  var APP_DELAI_MS = 30000;      // delai avant affichage
+  var APP_JOURS_SILENCE = 30;    // apres fermeture ou clic : ne revient pas pendant ce nombre de jours
+  var APP_CLE = 'cme_app_bandeau_ferme';
+  var EXPERT_HORS_ANDROID = false;   // true : iPhone et ordinateur voient un bandeau "Contactez un expert"
+  var EXPERT_URL = BASE + '/contactez-un-expert/?src=bandeau-flottant';
+
+  function appSilence() {
+    try {
+      var t = parseInt(window.localStorage.getItem(APP_CLE) || '0', 10);
+      return !!t && (Date.now() - t) < APP_JOURS_SILENCE * 86400000;
+    } catch (e) { return false; }
+  }
+  function appMemoriser() {
+    try { window.localStorage.setItem(APP_CLE, String(Date.now())); } catch (e) {}
+  }
+
+  function afficherApp(modeApp) {
+    if (document.getElementById('cme-app-flottant')) { return; }
+    var etroit = (window.innerWidth || document.documentElement.clientWidth) < 400;
+    var d = document.createElement('div');
+    d.id = 'cme-app-flottant';
+    d.style.cssText = 'position:fixed;left:0;right:0;bottom:0;width:100%;z-index:99999;background:#fff;border-top:3px solid #1e3a8a;box-shadow:0 -4px 18px rgba(0,0,0,.18);box-sizing:border-box;';
+    var ligne = document.createElement('div');
+    ligne.style.cssText = 'max-width:900px;margin:0 auto;padding:10px 40px 10px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;box-sizing:border-box;';
+
+    var logo = document.createElement('img');
+    logo.src = APP_LOGO;
+    logo.alt = 'Comprendre Mon Énergie';
+    logo.style.cssText = 'height:36px;width:auto;max-width:90px;object-fit:contain;border:0;';
+    ligne.appendChild(logo);
+
+    var bloc = document.createElement('div');
+    bloc.style.cssText = 'flex:1 1 150px;min-width:0;';
+    var titre = document.createElement('div');
+    titre.style.cssText = 'color:#111827;font-weight:700;font-size:14px;line-height:1.3;';
+    titre.textContent = modeApp ? 'Application Comprendre Mon Énergie' : 'Un projet énergie ? Parlez à un expert';
+    bloc.appendChild(titre);
+    if (modeApp && !etroit) {
+      var sous = document.createElement('div');
+      sous.style.cssText = 'color:#4b5563;font-size:12px;line-height:1.35;margin-top:2px;';
+      sous.textContent = "Simulez vos coûts et suivez votre demande auprès d'un expert.";
+      bloc.appendChild(sous);
+    }
+    ligne.appendChild(bloc);
+
+    var action = document.createElement('a');
+    if (modeApp) {
+      action.href = APP_PLAY_URL;
+      action.target = '_blank';
+      action.rel = 'noopener';
+      var badge = document.createElement('img');
+      badge.src = APP_BADGE;
+      badge.alt = 'Disponible sur Google Play';
+      badge.style.cssText = 'height:40px;width:auto;display:block;border:0;';
+      action.appendChild(badge);
+    } else {
+      action.href = EXPERT_URL;
+      action.textContent = 'Contactez un expert →';
+      action.style.cssText = 'display:inline-block;background:#1e3a8a;color:#fff;font-weight:700;font-size:14px;padding:9px 18px;border-radius:9px;text-decoration:none;white-space:nowrap;';
+    }
+    action.addEventListener('click', appMemoriser);
+    ligne.appendChild(action);
+    d.appendChild(ligne);
+
+    var fermer = document.createElement('button');
+    fermer.setAttribute('aria-label', 'Fermer');
+    fermer.textContent = '×';
+    fermer.style.cssText = 'position:absolute;top:4px;right:8px;background:none;border:none;color:#374151;font-size:22px;line-height:1;cursor:pointer;padding:4px 6px;';
+    fermer.onclick = function () { appMemoriser(); d.remove(); };
+    d.appendChild(fermer);
+    document.body.appendChild(d);
+  }
+
+  function demarrerAppFlottant() {
+    try {
+      if (MODE === 'off') { return; }
+      if (MODE === 'apercu' && !/[?&]cta60=1(&|$)/.test(window.location.search)) { return; }
+      var test = /[?&]appbandeau=test(&|$)/.test(window.location.search);
+      if (!document.body || !document.body.classList.contains('single-post')) { return; }
+      var prefixe = window.location.pathname.split('/').filter(Boolean)[0];
+      if (SILOS_ZENDURE_FLOTTANT.indexOf(prefixe) === -1) { return; }
+      var android = /Android/i.test(navigator.userAgent || '');
+      if (!test && !android && !EXPERT_HORS_ANDROID) { return; }
+      if (!test && appSilence()) { return; }
+      window.setTimeout(function () { afficherApp(android || test); }, test ? 800 : APP_DELAI_MS);
+    } catch (e) {}
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', demarrer);
-    document.addEventListener('DOMContentLoaded', demarrerZendureFlottant);
+    document.addEventListener('DOMContentLoaded', demarrerAppFlottant);
   } else {
     demarrer();
-    demarrerZendureFlottant();
+    demarrerAppFlottant();
   }
 })();
 
