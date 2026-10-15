@@ -83,9 +83,6 @@ add_action('wp_footer', function () {
       if (!offres || !offres.length) { arret("prefixe d'URL inconnu : " + prefixe); return; }   // pas de bouton plutot qu'une mauvaise destination
       zone.setAttribute('data-cta60', '1');
 
-      var m = (article.className || '').match(/(?:^|\s)post-(\d+)(?:\s|$)/);
-      var idArticle = m ? m[1] : '';
-
       function creer(n) {
         var offre = offres[(n - 1) % offres.length];
         var d = document.createElement('div');
@@ -99,8 +96,7 @@ add_action('wp_footer', function () {
         if (offre.lienExact) {
           a.href = offre.url;   // lien d'affiliation externe : jamais modifie, priorite a la commission
         } else {
-          var sep = offre.url.indexOf('?') === -1 ? '?' : '&';
-          a.href = offre.url + sep + (idArticle ? 'src_post=' + idArticle + '&' : '') + 'pos=' + n;
+          a.href = offre.url;   // page de contact unique, sans parametre de tracking (decision explicite)
         }
         a.textContent = offre.bouton + ' →';
         a.style.cssText = 'background:#fff;color:' + offre.c1 + ';font-weight:700;font-size:15px;padding:11px 22px;border-radius:9px;text-decoration:none;white-space:nowrap;display:inline-block;';

@@ -4346,8 +4346,11 @@ SILO_EMOJIS = {
 
 def generer_cta_html(silo_name, post_id=None):
     """Genere le bloc CTA HTML a injecter en fin d'article selon le silo.
-    Si post_id est fourni, ajoute ?src_post={post_id} au lien pour tracer
-    l'attribution article -> clic -> lead jusqu'a BigQuery.
+    post_id est conserve dans la signature pour compatibilite des appels
+    existants, mais n'est plus utilise : une seule destination de contact
+    unique pour tous les articles, sans parametre de tracking ?src_post=
+    (decision explicite du porteur de projet -- plus besoin de distinguer
+    la source puisqu'il n'y a plus qu'une seule page d'arrivee).
 
     Le div clear:both en tete de bloc evite le chevauchement visuel avec
     le footer quand l'article se termine par un tableau HTML genere par
@@ -4357,9 +4360,6 @@ def generer_cta_html(silo_name, post_id=None):
     if not cfg:
         return ""
     url_finale = cfg["url"]
-    if post_id:
-        sep = '&' if '?' in url_finale else '?'
-        url_finale = f"{url_finale}{sep}src_post={post_id}"
     return f'''
 <div style="clear:both;overflow:hidden;"></div>
 <div style="background:linear-gradient(135deg,{cfg["couleur1"]},{cfg["couleur2"]});border-radius:16px;padding:1.75rem;text-align:center;margin:32px 0;max-width:100%;box-sizing:border-box;">
