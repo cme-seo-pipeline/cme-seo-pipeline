@@ -1,14 +1,17 @@
 """
 CME — Injection CTA sur TOUS les articles WordPress (y compris pre-pipeline)
 """
+import os
 import sys
 import requests
 
 WP_CONFIG = {
     "url": "https://www.comprendre-mon-energie.fr",
-    "username": "Ouss",
-    "app_password": "6V3u GZyx LLg3 V8gG 5JCv fsVs"
+    "username": os.environ.get("WP_USERNAME", "Ouss"),
+    "app_password": os.environ.get("WP_APP_PASSWORD", "")
 }
+if not WP_CONFIG["app_password"]:
+    sys.exit("❌ WP_APP_PASSWORD manquant dans l'environnement (ne jamais le coder en dur ici)")
 
 CTA_MARKER = "cme-cta-tool-injected"
 
