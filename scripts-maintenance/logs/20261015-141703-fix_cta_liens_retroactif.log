@@ -1,0 +1,14 @@
+# Execution du 2026-10-15T14:17:03Z
+# Script    : scripts-maintenance/fix_cta_liens_retroactif.py
+# Arguments : 
+
+📥 Recuperation de tous les articles publies...
+   723 articles trouves au total
+
+
+============================================================
+Articles scannes (total sur le site) : 723
+Articles avec lien(s) a corriger : 0
+Liens trouves au total           : 0
+Mode LECTURE SEULE -- relancer avec --apply pour ecrire reellement
+============================================================
