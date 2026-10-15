@@ -3994,38 +3994,38 @@ def verifier_article_wp_existe(slug, wp_config):
 # ============================================================
 CTA_TOOLS = {
     "1. Gaz": {
-        "url": "https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/",
+        "url": "https://www.comprendre-mon-energie.fr/contactez-un-expert/",
         "titre": "Comparez les offres Gaz au meilleur prix",
         "texte": "Trouvez l'offre la moins chère selon votre profil en 2 minutes, gratuitement.",
-        "bouton": "Comparer les offres gaz",
+        "bouton": "Contactez un expert",
         "couleur1": "#1e3a8a", "couleur2": "#3b82f6"
     },
     "5. Électricité": {
-        "url": "https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/",
+        "url": "https://www.comprendre-mon-energie.fr/contactez-un-expert/",
         "titre": "Comparez les offres Électricité au meilleur prix",
         "texte": "Trouvez l'offre la moins chère selon votre profil en 2 minutes, gratuitement.",
-        "bouton": "Comparer les offres électricité",
+        "bouton": "Contactez un expert",
         "couleur1": "#1e3a8a", "couleur2": "#3b82f6"
     },
     "4. Solaire": {
-        "url": "https://www.comprendre-mon-energie.fr/devis-panneau-solaire/",
+        "url": "https://www.comprendre-mon-energie.fr/contactez-un-expert/",
         "titre": "Estimez votre installation solaire",
         "texte": "Rentabilité, nombre de panneaux et puissance kWc en 2 minutes, gratuitement.",
-        "bouton": "Simuler mon projet solaire",
+        "bouton": "Contactez un expert",
         "couleur1": "#052e16", "couleur2": "#16a34a"
     },
     "2. Rénovation Énergétique": {
-        "url": "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
+        "url": "https://www.comprendre-mon-energie.fr/contactez-un-expert/",
         "titre": "Calculez vos aides à la rénovation",
         "texte": "MaPrimeRénov', CEE, Éco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
-        "bouton": "Simuler mes aides",
+        "bouton": "Contactez un expert",
         "couleur1": "#78350f", "couleur2": "#f59e0b"
     },
     "3. Aide Énergétique": {
-        "url": "https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/",
+        "url": "https://www.comprendre-mon-energie.fr/contactez-un-expert/",
         "titre": "Calculez vos aides à la rénovation",
         "texte": "MaPrimeRénov', CEE, Éco-PTZ : estimez vos aides en 2 minutes, gratuitement.",
-        "bouton": "Simuler mes aides",
+        "bouton": "Contactez un expert",
         "couleur1": "#78350f", "couleur2": "#f59e0b"
     },
 }
@@ -4365,7 +4365,7 @@ def generer_cta_html(silo_name, post_id=None):
 <div style="background:linear-gradient(135deg,{cfg["couleur1"]},{cfg["couleur2"]});border-radius:16px;padding:1.75rem;text-align:center;margin:32px 0;max-width:100%;box-sizing:border-box;">
   <h3 style="color:#fff;font-size:20px;font-weight:700;margin:0 0 8px">{cfg["titre"]}</h3>
   <p style="color:rgba(255,255,255,.9);font-size:14px;margin:0 0 18px;line-height:1.5">{cfg["texte"]}</p>
-  <a href="{url_finale}" rel="nofollow sponsored" style="display:inline-block;background:#fff;color:{cfg["couleur2"]};font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">{cfg["bouton"]} &rarr;</a>
+  <a href="{url_finale}" style="display:inline-block;background:#fff;color:{cfg["couleur2"]};font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">{cfg["bouton"]} &rarr;</a>
 </div>
 '''
 

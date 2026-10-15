@@ -23,10 +23,10 @@ add_action('wp_footer', function () {
   var MOTS_FIN_MIN = 120;     // pas de bouton s'il reste moins de mots que cela
   var BASE = 'https://www.comprendre-mon-energie.fr';
 
-  var GAZ = { url: BASE + '/comparateur-energie-electricite-gaz/', texte: 'Comparez les offres Gaz au meilleur prix', bouton: 'Comparer les offres gaz', c1: '#1e3a8a', c2: '#3b82f6' };
-  var ELEC = { url: BASE + '/comparateur-energie-electricite-gaz/', texte: 'Comparez les offres Électricité au meilleur prix', bouton: 'Comparer les offres électricité', c1: '#1e3a8a', c2: '#3b82f6' };
-  var AIDES = { url: BASE + '/simulateur-aides-renovation-energetique/', texte: 'Calculez vos aides à la rénovation', bouton: 'Simuler mes aides', c1: '#78350f', c2: '#f59e0b' };
-  var SOLAIRE = { url: BASE + '/devis-panneau-solaire/', texte: 'Estimez votre installation solaire', bouton: 'Simuler mon projet solaire', c1: '#052e16', c2: '#16a34a' };
+  var GAZ = { url: BASE + '/contactez-un-expert/', texte: 'Comparez les offres Gaz au meilleur prix', bouton: 'Contactez un expert', c1: '#1e3a8a', c2: '#3b82f6' };
+  var ELEC = { url: BASE + '/contactez-un-expert/', texte: 'Comparez les offres Électricité au meilleur prix', bouton: 'Contactez un expert', c1: '#1e3a8a', c2: '#3b82f6' };
+  var AIDES = { url: BASE + '/contactez-un-expert/', texte: 'Calculez vos aides à la rénovation', bouton: 'Contactez un expert', c1: '#78350f', c2: '#f59e0b' };
+  var SOLAIRE = { url: BASE + '/contactez-un-expert/', texte: 'Estimez votre installation solaire', bouton: 'Contactez un expert', c1: '#052e16', c2: '#16a34a' };
   // Premier partenaire d'affiliation (Awin, programme Zendure EU) -- lien de suivi fourni par
   // Awin, copie EXACTEMENT tel quel : lienExact=true empeche creer() d'y ajouter src_post/pos,
   // par prudence sur la commission d'un tout premier partenariat. Code promo (-5%, AF5E24) et
