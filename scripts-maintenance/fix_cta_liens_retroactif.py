@@ -43,8 +43,11 @@ SIMULATEURS = (
 
 NOUVELLE_PAGE = "/contactez-un-expert/"
 NOUVEAU_LABEL = "Contactez un expert"
+NOUVELLE_URL = f"https://www.comprendre-mon-energie.fr{NOUVELLE_PAGE}"
 
 # Capture : groupe 1 = ce qui suit le slug du simulateur dans l'URL (ex. "?src_post=1234")
+#           -- delibere : capture mais non reutilise, le nouveau lien n'a plus
+#              de parametre de tracking (?src_post=...), demande explicite.
 #           groupe 2 = les autres attributs de la balise <a> (style, rel, etc.)
 #           groupe 3 = le texte interne du lien (le libelle du bouton, avec sa fleche eventuelle)
 PATTERN_A = re.compile(
@@ -55,7 +58,6 @@ PATTERN_A = re.compile(
 
 
 def construire_nouveau_lien(match):
-    query = match.group(1) or ""
     reste_attrs = match.group(2) or ""
     texte_interne = match.group(3) or ""
 
@@ -69,8 +71,9 @@ def construire_nouveau_lien(match):
     fleche = m_fleche.group(1) if m_fleche else ""
     nouveau_texte = NOUVEAU_LABEL + fleche
 
-    nouvelle_url = f"https://www.comprendre-mon-energie.fr{NOUVELLE_PAGE}{query}"
-    return f'<a href="{nouvelle_url}"{reste_attrs}>{nouveau_texte}</a>'
+    # Pas de parametre de tracking sur le nouveau lien (?src_post=... retire) :
+    # une seule destination unique, pas besoin de distinguer la source.
+    return f'<a href="{NOUVELLE_URL}"{reste_attrs}>{nouveau_texte}</a>'
 
 
 def lister_tous_les_posts():
