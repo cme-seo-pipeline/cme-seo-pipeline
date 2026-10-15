@@ -1,0 +1,73 @@
+name: CME - Maintenance a la demande
+
+# Declenche manuellement (via l'UI GitHub ou `gh workflow run`) un script de
+# scripts-maintenance/. Les runners GitHub ont un acces reseau complet au
+# site WordPress live et deja les secrets necessaires -- contrairement au
+# sandbox Claude Code, qui ne peut atteindre ni le site live ni GCP
+# directement. Voir CLAUDE.md, section "Contraintes de l'environnement
+# Claude Code".
+#
+# Securite : seuls des scripts sous scripts-maintenance/*.py peuvent etre
+# executes (verifie avant tout checkout de dependances). Ce workflow n'est
+# declenchable que par quelqu'un ayant un acces en ecriture au repo --
+# meme niveau de confiance que pousser directement du code.
+
+on:
+  workflow_dispatch:
+    inputs:
+      script:
+        description: "Chemin du script a executer, sous scripts-maintenance/ (ex: scripts-maintenance/fix_cta_liens_retroactif.py)"
+        required: true
+        type: string
+      arguments:
+        description: "Arguments passes au script (ex: --apply --limite=5). Vide = dry-run par defaut pour les scripts qui le supportent."
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  executer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Verifier que le script est autorise
+        run: |
+          SCRIPT="${{ inputs.script }}"
+          case "$SCRIPT" in
+            scripts-maintenance/*.py) ;;
+            *)
+              echo "::error::Refuse -- seuls les scripts sous scripts-maintenance/*.py sont autorises (recu : $SCRIPT)"
+              exit 1
+              ;;
+          esac
+          if [ ! -f "$SCRIPT" ]; then
+            echo "::error::Fichier introuvable : $SCRIPT"
+            exit 1
+          fi
+          echo "Script autorise : $SCRIPT"
+
+      - name: Configurer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dependances
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Configurer les identifiants GCP
+        env:
+          GCP_KEY_JSON: ${{ secrets.GCP_SA_KEY_CME }}
+        run: |
+          echo "$GCP_KEY_JSON" > /tmp/gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json" >> $GITHUB_ENV
+
+      - name: Executer le script
+        env:
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          WP_USERNAME: Ouss
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python3 ${{ inputs.script }} ${{ inputs.arguments }}
