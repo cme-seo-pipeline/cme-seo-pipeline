@@ -12,6 +12,9 @@ name: CME - Maintenance a la demande
 # declenchable que par quelqu'un ayant un acces en ecriture au repo --
 # meme niveau de confiance que pousser directement du code.
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
     inputs:
@@ -70,4 +73,33 @@ jobs:
           WP_USERNAME: Ouss
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          python3 ${{ inputs.script }} ${{ inputs.arguments }}
+          set -o pipefail
+          mkdir -p scripts-maintenance/logs
+          LOGFILE="scripts-maintenance/logs/$(date -u +%Y%m%d-%H%M%S)-$(basename "${{ inputs.script }}" .py).log"
+          echo "LOGFILE=$LOGFILE" >> "$GITHUB_ENV"
+          {
+            echo "# Execution du $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "# Script    : ${{ inputs.script }}"
+            echo "# Arguments : ${{ inputs.arguments }}"
+            echo ""
+            python3 ${{ inputs.script }} ${{ inputs.arguments }}
+          } 2>&1 | tee "$LOGFILE"
+
+      # Pousse le log dans le repo meme si le script a echoue -- c'est
+      # souvent le cas d'echec qu'on a le plus besoin de pouvoir relire.
+      # Le sandbox Claude Code ne peut pas lire les logs d'Actions via
+      # l'API GitHub (stockage blob hors de la liste blanche du proxy),
+      # donc ce log committe est le seul canal fiable pour Claude Code
+      # de voir le resultat complet d'une execution declenchee a distance.
+      - name: Committer le log d'execution
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -f "$LOGFILE" ]; then
+            git add "$LOGFILE"
+            if ! git diff --cached --quiet; then
+              git commit -m "CI: log d'execution -- ${{ inputs.script }} ${{ inputs.arguments }}"
+              git push
+            fi
+          fi
