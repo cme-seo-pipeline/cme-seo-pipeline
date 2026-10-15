@@ -112,8 +112,9 @@ def main():
     print(f"   {len(posts)} articles trouves au total\n")
 
     if limite:
-        posts = posts[:limite]
-        print(f"   (limite a {limite} articles pour ce test)\n")
+        print(f"   (limite : on s'arrete apres {limite} article(s) AVEC un lien a corriger —")
+        print(f"    pas les {limite} premiers articles de la liste, qui sont souvent les plus")
+        print(f"    recents et deja corriges depuis le patch du pipeline)\n")
 
     total_touches = 0
     total_liens = 0
@@ -121,8 +122,12 @@ def main():
     echantillon = []
 
     for post in posts:
+        if limite and total_touches >= limite:
+            break
+
         post_id = post["id"]
         titre = post.get("title", {}).get("rendered", "")
+        lien_wp = post.get("link", "")
         contenu = post.get("content", {}).get("raw") or post.get("content", {}).get("rendered", "")
 
         occurrences = list(PATTERN_A.finditer(contenu))
@@ -137,6 +142,7 @@ def main():
             echantillon.append({
                 "post_id": post_id,
                 "titre": titre[:60],
+                "lien": lien_wp,
                 "nb_liens": len(occurrences),
                 "avant": occurrences[0].group(0)[:220],
                 "apres": construire_nouveau_lien(occurrences[0])[:220],
@@ -144,6 +150,7 @@ def main():
 
         if not apply:
             print(f"  🔍 [SANS ECRITURE] post_id={post_id} — {len(occurrences)} lien(s) — {titre[:60]}")
+            print(f"      {lien_wp}")
             continue
 
         try:
@@ -154,6 +161,7 @@ def main():
             )
             if r.status_code == 200:
                 print(f"  ✅ post_id={post_id} — {len(occurrences)} lien(s) corrige(s) — {titre[:60]}")
+                print(f"      {lien_wp}")
             else:
                 print(f"  ❌ post_id={post_id} — HTTP {r.status_code}")
                 erreurs += 1
@@ -163,8 +171,8 @@ def main():
         time.sleep(0.3)  # menage pour l'hebergement mutualise, pas de rafale de POST
 
     print(f"\n{'='*60}")
-    print(f"Articles scannes                 : {len(posts)}")
-    print(f"Articles avec lien(s) a corriger : {total_touches}")
+    print(f"Articles scannes (total sur le site) : {len(posts)}")
+    print(f"Articles avec lien(s) a corriger : {total_touches}{' (limite atteinte)' if limite and total_touches >= limite else ''}")
     print(f"Liens trouves au total           : {total_liens}")
     if apply:
         print(f"Erreurs                          : {erreurs}")
@@ -176,6 +184,7 @@ def main():
         print("\nEchantillon (jusqu'a 5 articles, premier lien de chacun) :")
         for e in echantillon:
             print(f"\n  post_id={e['post_id']} ({e['nb_liens']} lien(s) dans cet article) — {e['titre']}")
+            print(f"    {e['lien']}")
             print(f"    AVANT : {e['avant']}...")
             print(f"    APRES : {e['apres']}...")
 
