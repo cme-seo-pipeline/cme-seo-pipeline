@@ -42,29 +42,42 @@ def main():
         print(f"⚠️ Erreur : {e}")
 
     print("\n" + "="*70)
-    print("2. Trafic GA4 — /contactez-un-expert/ (30 derniers jours synchronises)")
+    print("2. Trafic + conversions GA4 — /contactez-un-expert/ (donnees synchronisees)")
     print("="*70)
     try:
         df = client.query(f"""
-            SELECT date, SUM(sessions) AS sessions, AVG(bounce_rate_pct) AS bounce_rate_pct
+            SELECT date, sessions, page_views, bounce_rate, conversions
             FROM `{PROJECT_ID}.01_raw.ga4_pages`
-            WHERE page LIKE '%contactez-un-expert%'
-            GROUP BY date
+            WHERE page_path LIKE '%contactez-un-expert%'
             ORDER BY date DESC
-            LIMIT 30
+            LIMIT 60
         """).to_dataframe()
         if df.empty:
-            print("⚠️ Aucune ligne GA4 pour cette page.")
+            print("⚠️ Aucune ligne GA4 pour cette page -- elle n'apparait meme pas dans le sync.")
         else:
-            print(f"Total sessions (fenetre visible) : {int(df['sessions'].sum())}")
+            print(f"Total sessions : {int(df['sessions'].sum())} — Total conversions (GA4) : {int(df['conversions'].sum())}")
             print(df.to_string())
     except Exception as e:
-        print(f"⚠️ Erreur (verifier le nom exact des colonnes) : {e}")
-        try:
-            t = client.get_table(f"{PROJECT_ID}.01_raw.ga4_pages")
-            print("Colonnes reelles de ga4_pages :", [f.name for f in t.schema])
-        except Exception as e2:
-            print(f"⚠️ Erreur schema : {e2}")
+        print(f"⚠️ Erreur : {e}")
+
+    print("\n" + "="*70)
+    print("2bis. Conversions GA4 (colonne native) — site entier, 30 derniers jours synchronises")
+    print("="*70)
+    try:
+        df = client.query(f"""
+            SELECT page_path, SUM(sessions) AS sessions, SUM(conversions) AS conversions
+            FROM `{PROJECT_ID}.01_raw.ga4_pages`
+            GROUP BY page_path
+            HAVING conversions > 0
+            ORDER BY conversions DESC
+            LIMIT 20
+        """).to_dataframe()
+        if df.empty:
+            print("⚠️ AUCUNE page n'a de conversions GA4 > 0 sur toute la periode synchronisee.")
+        else:
+            print(df.to_string())
+    except Exception as e:
+        print(f"⚠️ Erreur : {e}")
 
     print("\n" + "="*70)
     print("3. Trafic global du site — tendance sur les 60 derniers jours (GA4)")
