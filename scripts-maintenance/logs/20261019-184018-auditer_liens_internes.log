@@ -1,0 +1,38 @@
+# Execution du 2026-10-19T18:40:18Z
+# Script    : scripts-maintenance/auditer_liens_internes.py
+# Arguments : --limite=15
+
+📥 Recuperation de tous les articles publies...
+   (limite de test : 15 articles)
+   15 articles a analyser
+
+🔎 Extraction des liens dans le contenu...
+   36 URLs cibles uniques trouvees (internes + externes)
+
+🌐 Verification de chaque lien (HTTP)...
+
+======================================================================
+RAPPORT — AUDIT DES LIENS DANS LE CONTENU DES ARTICLES
+======================================================================
+Articles analyses        : 15
+URLs cibles uniques       : 36
+OK                        : 34
+Problemes (liens internes): 1
+Problemes (liens externes): 1
+======================================================================
+
+⚠️ LIENS INTERNES CASSES / EN PROBLEME (1) :
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-de-gaz-normes-securite-1018/
+     Statut : HTTP 404
+     Cite dans 1 article(s) :
+       - post_id=10917 "Installation bouteille de gaz : étapes et normes de sécurité" — Facture gaz : décrypter les postes de consommation et
+         https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-guide-complet-1019/
+
+⚠️ LIENS EXTERNES CASSES / EN PROBLEME (1) :
+
+  🔗 https://www.maprimerenov.gouv.fr
+     Statut : HTTPSConnectionPool(host='france-renov.gouv.fr', port=443): Max retries exceeded with url: /landingpageMPR (Caused by SSLError(SSLCertVerificationErro
+     Cite dans 1 article(s) :
+       - post_id=10918 "maprimerenov.gouv.fr" — Aides chauffe-eau thermodynamique 2026 : évolutions
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-dispositifs-2026/
