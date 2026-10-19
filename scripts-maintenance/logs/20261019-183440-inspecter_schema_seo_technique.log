@@ -1,0 +1,85 @@
+# Execution du 2026-10-19T18:34:40Z
+# Script    : scripts-maintenance/inspecter_schema_seo_technique.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+======================================================================
+TABLE : 01_raw.gsc_queries
+======================================================================
+Nombre de lignes (estimation) : 10245
+Colonnes :
+  - date (DATE)
+  - query (STRING)
+  - page (STRING)
+  - clics (INTEGER)
+  - impressions (INTEGER)
+  - ctr (FLOAT)
+  - position (FLOAT)
+  - silo (STRING)
+  - sous_silo (STRING)
+  - synced_at (TIMESTAMP)
+  - rn (INTEGER)
+
+Exemple (3 lignes) :
+         date                                  query                                                                                                                                    page  clics  impressions  ctr  position                 silo                          sous_silo                        synced_at    rn
+0  2026-10-15  academiedubricolage.fr budget chauffe  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs-1001/      0           31  0.0      5.26  3. Aide Energetique  aides-chauffe-eau-thermodynamique 2026-10-18 03:34:14.939000+00:00  <NA>
+1  2026-10-14  academiedubricolage.fr budget chauffe  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs-1001/      0           19  0.0      5.74  3. Aide Energetique  aides-chauffe-eau-thermodynamique 2026-10-17 03:34:15.052000+00:00  <NA>
+2  2026-10-16  academiedubricolage.fr budget chauffe  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs-1001/      0           25  0.0      5.88  3. Aide Energetique  aides-chauffe-eau-thermodynamique 2026-10-19 03:34:16.037000+00:00  <NA>
+
+======================================================================
+TABLE : 03_final.seo_opportunities
+======================================================================
+Nombre de lignes (estimation) : 0
+Colonnes :
+  - url (STRING)
+  - silo (STRING)
+  - sous_silo (STRING)
+  - query (STRING)
+  - impressions (INTEGER)
+  - clics (INTEGER)
+  - position (FLOAT)
+  - ctr_pct (FLOAT)
+  - sessions (INTEGER)
+  - bounce_rate_pct (FLOAT)
+  - conversions (INTEGER)
+  - derniere_pub (TIMESTAMP)
+  - nb_articles_90j (INTEGER)
+  - jours_depuis_pub (INTEGER)
+  - score_opportunite (FLOAT)
+
+Exemple (3 lignes) :
+                                                                          url            silo sous_silo                       query  impressions  clics  position  ctr_pct  sessions  bounce_rate_pct  conversions derniere_pub  nb_articles_90j  jours_depuis_pub  score_opportunite
+0  https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/  5. Électricité            attestation de contrat edf           31      0       5.5      0.0        10             23.3            0          NaT                0              2483           182988.0
+1  https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/  5. Électricité               attestation contrat edf           27      0       6.1      0.0        10             23.3            0          NaT                0              2483           156052.0
+2  https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/  5. Électricité              e attestation mon compte           34      0      14.8      0.0        10             23.3            0          NaT                0              2483           137213.0
+
+======================================================================
+TABLE : 02_cleaned.wp_url_mapping
+======================================================================
+Nombre de lignes (estimation) : 495
+Colonnes :
+  - post_id (INTEGER)
+  - url (STRING)
+  - url_normalized (STRING)
+  - date_maj (TIMESTAMP)
+
+Exemple (3 lignes) :
+   post_id                                                                   url                                           url_normalized                         date_maj
+0       16            https://www.comprendre-mon-energie.fr/contactez-un-expert/            comprendre-mon-energie.fr/contactez-un-expert 2026-09-01 11:43:17.368711+00:00
+1       21                                https://www.comprendre-mon-energie.fr/                                comprendre-mon-energie.fr 2026-09-01 11:43:17.368708+00:00
+2       79  https://www.comprendre-mon-energie.fr/pourquoi-nous-faire-confiance/  comprendre-mon-energie.fr/pourquoi-nous-faire-confiance 2026-09-01 11:43:17.368705+00:00
+
+======================================================================
+APERCU — requetes GSC couvertes par plusieurs URLs du site
+======================================================================
+⚠️ Erreur sur l'apercu cannibalisation : 400 Unrecognized name: url at [2:42]; reason: invalidQuery, location: query, message: Unrecognized name: url at [2:42]
+
+Location: EU
+Job ID: 558ea96d-6478-4c57-969c-c40002b6ed93
+
