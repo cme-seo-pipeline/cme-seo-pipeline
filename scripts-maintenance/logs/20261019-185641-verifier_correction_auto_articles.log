@@ -1,0 +1,59 @@
+# Execution du 2026-10-19T18:56:41Z
+# Script    : scripts-maintenance/verifier_correction_auto_articles.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. indicateurs_reglementaires — valeurs de reference et fraicheur
+======================================================================
+Indicateurs distincts : 4
+                    indicateur      valeur  unite                date_verification
+0  ampleur_pourcent_ecretement   50.000000      % 2026-10-19 09:35:31.089424+00:00
+1               PRVG_moyen_TTC  194.900539  €/MWh 2026-10-19 09:35:30.531689+00:00
+2           TRVE_part_fixe_TTC  330.570000   €/an 2026-10-19 09:35:30.241195+00:00
+3       TRVE_part_variable_TTC    0.198500  €/kWh 2026-10-19 09:35:30.241189+00:00
+
+======================================================================
+2. mapping_indicateur_sous_silo — candidats eligibles a l'audit
+======================================================================
+                    indicateur                 silo sous_silo_strategique pertinence  total_lignes
+0               PRVG_moyen_TTC               1. Gaz           Facture Gaz    directe             7
+1               PRVG_moyen_TTC               1. Gaz           Contrat Gaz    directe             7
+2           TRVE_part_fixe_TTC       5. Électricité   Facture Électricité    directe             7
+3           TRVE_part_fixe_TTC       5. Électricité   Contrat Électricité    directe             7
+4       TRVE_part_variable_TTC       5. Électricité   Facture Électricité    directe             7
+5       TRVE_part_variable_TTC       5. Électricité   Contrat Électricité    directe             7
+6  ampleur_pourcent_ecretement  3. Aide Énergétique         MaPrimeRénov'    directe             7
+
+======================================================================
+3. corrections_articles_auto — journal reel des corrections appliquees
+======================================================================
+Derniere correction : 2026-10-01 10:10:02.868921+00:00
+    post_id                                                       titre              indicateur                  date_correction                                                                                                              url_wp
+0      7033           Facture Électricité : hausse de 3.1% en août 2026  TRVE_part_variable_TTC 2026-10-01 10:10:02.868921+00:00         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-7/
+1      7027           Facture Électricité : hausse de 1.7% en août 2026      TRVE_part_fixe_TTC 2026-10-01 10:09:53.846014+00:00         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-4/
+2      9241  Facture de gaz : les erreurs de calcul les plus fréquentes          PRVG_moyen_TTC 2026-10-01 10:08:38.256899+00:00                                     https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comment-lire-facture-gaz/
+3      6411       Facture gaz trop élevée : 7 solutions pour la réduire          PRVG_moyen_TTC 2026-10-01 10:08:00.964944+00:00                            https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-solutions/
+4      7268         Aide chèque énergie gaz : comment l'obtenir en 2026          PRVG_moyen_TTC 2026-10-01 10:07:48.898635+00:00                                 https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aide-cheque-energie-gaz-2026/
+5      6535                Comment fonctionne un contrat de gaz naturel          PRVG_moyen_TTC 2026-10-01 10:07:41.002258+00:00                           https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/fonctionnement-contrat-gaz-naturel/
+6      6419                 Lire et comprendre sa facture d'électricité  TRVE_part_variable_TTC 2026-10-01 10:07:18.182631+00:00          https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite/
+7      7037           Facture Électricité : hausse de 3.1% en août 2026  TRVE_part_variable_TTC 2026-10-01 10:07:06.905247+00:00         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-9/
+8      7035           Facture Électricité : hausse de 0.9% en août 2026      TRVE_part_fixe_TTC 2026-10-01 10:07:00.419580+00:00         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-8/
+9      8340              Facture Gaz : hausse de 6.3% en septembre 2026          PRVG_moyen_TTC 2026-10-01 10:06:06.543054+00:00                                   https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-septembre-2026/
+10     5235       Tarif social électricité 2026 : conditions et demande  TRVE_part_variable_TTC 2026-10-01 10:05:17.160036+00:00  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-social-electricite-conditions-demande/
+11     7025           Facture Électricité : hausse de 3.0% en août 2026  TRVE_part_variable_TTC 2026-10-01 10:04:51.775199+00:00         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-3/
+12     6732              Facture de gaz trop élevée : comparez les prix          PRVG_moyen_TTC 2026-10-01 10:02:52.769808+00:00                        https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-comparer-prix/
+13     7392                Offres gaz fixe vs indexé : lequel choisir ?          PRVG_moyen_TTC 2026-10-01 10:02:28.143514+00:00                                           https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/gaz-fixe-vs-indexe/
+14     7019           Facture Électricité : hausse de 2.1% en août 2026  TRVE_part_variable_TTC 2026-10-01 10:02:08.292918+00:00                https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026/
+
+======================================================================
+4. Combien d'articles sont actuellement eligibles (jointure reelle) ?
+======================================================================
+Couples (indicateur, article) candidats a l'audit ce mois-ci : 331
