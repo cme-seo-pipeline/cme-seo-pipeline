@@ -1,0 +1,19 @@
+# Execution du 2026-10-19T22:14:24Z
+# Script    : scripts-maintenance/diagnostiquer_relais_tracking.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. POST direct sur https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead
+   Marqueur de ce test : diag-4dd2edeb026d
+======================================================================
+   Code HTTP : 200
+   Corps de reponse (500 premiers caracteres) : '{"status":"ok"}'
+
+======================================================================
+2. Attente 10s puis recherche du marqueur dans leads_convertis...
+======================================================================
+❌ Aucune ligne avec le marqueur diag-4dd2edeb026d trouvee apres 10s.
+
+⚠️ Si le point 1 montrait un 200 OK mais que la ligne n'arrive jamais ici : le probleme est dans le relais PHP lui-meme (wp_remote_post qui echoue a joindre Cloud Run depuis l'hebergement -- pare-feu sortant, timeout, etc.), pas cote navigateur.
