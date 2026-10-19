@@ -1,0 +1,42 @@
+# Execution du 2026-10-19T20:39:39Z
+# Script    : scripts-maintenance/inspecter_pages_a_tracker.py
+# Arguments : 
+
+
+======================================================================
+contact — https://www.comprendre-mon-energie.fr/contactez-un-expert/
+======================================================================
+Statut HTTP : 200  (URL finale : https://www.comprendre-mon-energie.fr/contactez-un-expert/)
+Systeme(s) de formulaire detecte(s) : ['WPForms']
+Balises <form> trouvees (1) :
+  <form id="wpforms-form-472" class="wpforms-validate wpforms-form wpforms-ajax-form" data-formid="472" method="post" enctype="multipart/form-data" action="/contactez-un-expert/" data-token="5b990a7f518
+(info) lien tel: egalement present sur cette page : <a href="tel:+33189713648" class="btn-cta" style="font-size: 20px;">📞 01 89 71 36 48</a>
+
+======================================================================
+simulateur_comparateur — https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+======================================================================
+Statut HTTP : 200  (URL finale : https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/)
+Reference a /api/log-lead dans le HTML : False
+Reference a /api/log-clic dans le HTML : True
+Reference a dataLayer (GTM) dans le HTML : True
+
+======================================================================
+simulateur_aides — https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/
+======================================================================
+Statut HTTP : 200  (URL finale : https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/)
+Reference a /api/log-lead dans le HTML : False
+Reference a /api/log-clic dans le HTML : False
+Reference a dataLayer (GTM) dans le HTML : True
+
+======================================================================
+simulateur_solaire — https://www.comprendre-mon-energie.fr/devis-panneau-solaire/
+======================================================================
+Statut HTTP : 200  (URL finale : https://www.comprendre-mon-energie.fr/devis-panneau-solaire/)
+Reference a /api/log-lead dans le HTML : False
+Reference a /api/log-clic dans le HTML : False
+Reference a dataLayer (GTM) dans le HTML : True
+
+======================================================================
+Numero de telephone du header (verification structure exacte)
+======================================================================
+<a href="tel:+33189713648" class="btn-cta" style="font-size: 20px;">📞 01 89 71 36 48</a>
