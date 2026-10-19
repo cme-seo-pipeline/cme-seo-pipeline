@@ -45,6 +45,7 @@ except ImportError:
 
 PROJECT_ID = "seo-data-hub-cme"
 RELAIS_URL = "https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead"
+DEBUG_URL = "https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead-debug"
 
 
 def main():
@@ -102,6 +103,16 @@ def main():
                   "pas cote navigateur.")
     except Exception as e:
         print(f"⚠️ Erreur BigQuery : {e}")
+
+    print("\n" + "=" * 70)
+    print(f"3. Lecture de {DEBUG_URL} (dernier essai de relais vu cote WordPress)")
+    print("=" * 70)
+    try:
+        debug_resp = requests.get(DEBUG_URL, timeout=15)
+        print(f"   Code HTTP : {debug_resp.status_code}")
+        print(f"   Corps : {debug_resp.text[:800]}")
+    except Exception as e:
+        print(f"   ⚠️ Erreur en lisant l'endpoint de debug : {e}")
 
 
 if __name__ == "__main__":
