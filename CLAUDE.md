@@ -91,6 +91,47 @@ publication (`<a href="..." style="...">` vs `<a style="..." href="...">`)
 importe sa position** parmi les attributs, jamais supposer qu'il est le
 premier.
 
+## Tracking de conversion (chantier oct. 2026, suite du chantier CTA)
+
+Depuis la migration des CTA vers `/contactez-un-expert/`, plus aucun systeme
+ne journalisait la conversion (ni soumission de formulaire, ni clic sur le
+numero de telephone du header) -- confirme par `leads_convertis` au point
+mort depuis aout 2026 et par la colonne `conversions` de GA4 (synchronisee
+dans `01_raw.ga4_pages`) a zero partout, sur toute la periode. Voir le
+document "CME — Diagnostic trafic & conversion" (doc Claude, oct. 2026) pour
+le detail complet du diagnostic.
+
+**`wordpress-mu-plugins/cme-tracking-conversion.php`** (nouveau, distinct de
+`cme-cta-progressifs.php` -- portee differente : tracking site entier, pas
+insertion de CTA limitee aux articles) journalise deux evenements :
+- Soumission reussie du formulaire de contact (WPForms, formulaire #472 sur
+  `/contactez-un-expert/`) -- ecoute `wpformsAjaxSubmitSuccess` (jQuery),
+  avec un repli par `MutationObserver` sur l'apparition du message de
+  confirmation, au cas ou l'evenement jQuery venait a changer.
+- Clic sur n'importe quel lien `tel:` du site (delegation sur `document`,
+  couvre le numero du header partout ou il apparait).
+
+Chaque evenement pousse un `dataLayer.push(...)` (`generate_lead` /
+`click_to_call` -- **a marquer manuellement comme Key Event dans
+l'interface GA4**, Admin → Evenements, Claude Code n'a pas acces a cette
+configuration) ET journalise cote serveur via `POST /api/log-lead` vers
+`https://cme-tracking-api-217943559750.europe-west1.run.app` (meme table
+`leads_convertis` que les 3 anciens simulateurs, `tool` = `contact-expert-formulaire`
+ou `appel-telephone`), pour un suivi independant de la configuration GA4.
+
+**Meme contrainte de deploiement que `cme-cta-progressifs.php`** : fichier
+non versionne automatiquement sur le serveur. Apres toute modification,
+l'operateur doit : `cloudshell download` le fichier, renommer l'ancien en
+`.bak` horodate en cPanel, uploader le nouveau dans `/wp-content/mu-plugins/`,
+purger les deux caches LiteSpeed (cPanel + wp-admin), verifier avec
+`?t=$RANDOM`.
+
+Verifie le 19/10 : les 3 anciens simulateurs sont toujours des pages live
+(HTTP 200) et leur tracking existant (`log-lead` cote serveur PHP,
+`log-clic` cote client pour le comparateur) est toujours fonctionnel --
+leur volume est juste naturellement proche de zero puisqu'ils ne sont plus
+la destination des CTA du site.
+
 ## Cache — deux couches distinctes à purger
 
 LiteSpeed Cache existe à **deux niveaux séparés**, purger l'un ne purge pas
