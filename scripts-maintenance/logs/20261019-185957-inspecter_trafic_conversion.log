@@ -1,0 +1,134 @@
+# Execution du 2026-10-19T18:59:57Z
+# Script    : scripts-maintenance/inspecter_trafic_conversion.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. leads_convertis — derniere activite, par mois
+======================================================================
+      mois                 tool  nb_leads
+0  2026-08  comparateur-energie         2
+1  2026-08              solaire         1
+2  2026-08     aides-renovation         1
+3  2026-07  comparateur-energie         5
+4  2026-07              solaire         4
+5  2026-07     aides-renovation         4
+
+======================================================================
+2. Trafic + conversions GA4 — /contactez-un-expert/ (donnees synchronisees)
+======================================================================
+Total sessions : 19 — Total conversions (GA4) : 0
+          date  sessions  page_views  bounce_rate  conversions
+0   2026-10-18         1           1          0.0            0
+1   2026-10-17         1           1          0.0            0
+2   2026-10-15         1           1          0.0            0
+3   2026-10-15         1           1          0.0            0
+4   2026-10-01         1           1          0.0            0
+5   2026-07-21         1           1          1.0            0
+6   2026-07-10         1           1          0.0            0
+7   2026-07-09         1           1          1.0            0
+8   2026-07-06         1           1          1.0            0
+9   2026-06-16         1           1          0.0            0
+10  2026-05-26         1           1          0.0            0
+11  2026-05-18         1           1          0.0            0
+12  2026-05-15         1           1          0.0            0
+13  2026-05-14         1           1          0.0            0
+14  2026-05-13         1           1          0.0            0
+15  2026-05-12         1           1          0.0            0
+16  2026-05-06         1           1          0.0            0
+17  2026-04-30         1           1          0.0            0
+18  2026-04-23         1           1          0.0            0
+
+======================================================================
+2bis. Conversions GA4 (colonne native) — site entier, 30 derniers jours synchronises
+======================================================================
+⚠️ AUCUNE page n'a de conversions GA4 > 0 sur toute la periode synchronisee.
+
+======================================================================
+3. Trafic global du site — tendance sur les 60 derniers jours (GA4)
+======================================================================
+          date  sessions_totales
+0   2026-10-18                51
+1   2026-10-17                40
+2   2026-10-16                19
+3   2026-10-15               200
+4   2026-10-14               144
+5   2026-10-13                95
+6   2026-10-02                84
+7   2026-10-01                86
+8   2026-09-30                90
+9   2026-09-29                58
+10  2026-09-28                50
+11  2026-09-27                66
+12  2026-09-26                52
+13  2026-09-01                23
+14  2026-08-28                40
+15  2026-08-27                11
+16  2026-08-26                19
+17  2026-08-21                15
+18  2026-08-20                17
+19  2026-08-19                23
+20  2026-08-18                14
+21  2026-08-17                 9
+22  2026-08-16                 7
+23  2026-08-15                15
+24  2026-08-14                 9
+25  2026-08-11                16
+26  2026-08-10                10
+27  2026-08-09                 7
+28  2026-08-08                19
+29  2026-08-07                12
+30  2026-08-06                10
+31  2026-08-05                17
+32  2026-08-04                17
+33  2026-08-02                17
+34  2026-08-01                74
+35  2026-07-31                 8
+36  2026-07-30                19
+37  2026-07-29                13
+38  2026-07-28                24
+39  2026-07-27                15
+40  2026-07-26                 4
+41  2026-07-24                 5
+42  2026-07-23                10
+43  2026-07-22                11
+44  2026-07-21                11
+45  2026-07-20                11
+46  2026-07-19                 7
+47  2026-07-18                 7
+48  2026-07-17                 7
+49  2026-07-13                13
+50  2026-07-12                 5
+51  2026-07-11                 3
+52  2026-07-10                12
+53  2026-07-09                22
+54  2026-07-06                 7
+55  2026-07-05                 1
+56  2026-07-03                 4
+57  2026-07-02                 2
+58  2026-07-01                 3
+59  2026-06-30                 3
+
+======================================================================
+4. vue_arbre_performance — rollup par silo (si disponible)
+======================================================================
+                  silo             sous_silo                                                 titre_article                                                                                                                      url  post_id                 date_publication  impressions  clics  somme_position  conversions
+0       5. Électricité   Contrat Électricité      Normes électriques 2024 : obligations légales et risques                                       https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/     3492 2026-06-18 07:48:57.082279+00:00           96      1             973            0
+1       5. Électricité   Facture Électricité       Tarif heures pleines heures creuses : comment ça marche  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-heures-pleines-creuses-fonctionnement-0929/     8719 2026-09-29 09:45:41.744091+00:00           32      0             414            0
+2               1. Gaz           Contrat Gaz             Résiliation contrat gaz : vos droits et démarches                           https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilition-contrat-gaz-droits-demarches/     6867 2026-08-25 03:07:15.372607+00:00          119      2            1280            0
+3  3. Aide Énergétique         MaPrimeRénov'               MaPrimeRénov' : comment fonctionne le versement               https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-versement/     9460 2026-10-03 09:06:06.393652+00:00            6      0              38            0
+4           4. Solaire            Non classé                                     aides-chauffe-eau-solaire                             https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire/     <NA>                              NaT          215      0            5423            0
+5               1. Gaz           Contrat Gaz                  Comment fonctionne un contrat de gaz naturel                                https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/fonctionnement-contrat-gaz-naturel/     6535 2026-08-20 04:07:35.428695+00:00            9      0              80            0
+6               1. Gaz           Facture Gaz              Lire sa facture gaz : décryptage ligne par ligne                                       https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-comprendre/     7834 2026-09-08 07:53:55.796447+00:00           46      0            1706            0
+7  3. Aide Énergétique  Eco-prêt à taux zéro  Éco-PTZ : comment fonctionne le mécanisme de remboursement ?             https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/mecanisme-remboursement-eco-ptz/     4535 2026-07-17 03:05:58.775550+00:00          170      3            1024            0
+8  3. Aide Énergétique        Chèque énergie    Chèque énergie : comment l'utiliser chez votre fournisseur       https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-comment-utiliser-fournisseur/     9357 2026-10-02 09:31:32.181993+00:00           14      0             131            0
+9               1. Gaz            Bouteilles        Bouteille de gaz : les erreurs courantes à éviter pour                               https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-de-gaz-1017/    10714 2026-10-17 07:30:39.806875+00:00            0      0               0            0
