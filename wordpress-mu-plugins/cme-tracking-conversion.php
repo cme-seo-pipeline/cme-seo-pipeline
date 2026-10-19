@@ -68,16 +68,52 @@ add_action('rest_api_init', function () {
 
 function cme_relayer_log_lead(WP_REST_Request $request) {
     $payload = $request->get_body();
-    wp_remote_post(CME_TRACKING_API_URL, [
+    // CORRECTIF du 19/10 (v3) : un 2e test reel (apres le relais same-origin
+    // de la v2) montre toujours 0 ligne en base, alors que cette route
+    // WordPress repond bien 200 OK -- la panne est donc dans cet appel
+    // sortant lui-meme (wp_remote_post vers Cloud Run), invisible jusqu'ici
+    // car 'blocking' => false avalait silencieusement toute erreur. Passe en
+    // bloquant (sans impact visiteur : c'est un appel serveur-a-serveur en
+    // arriere-plan, pas le JS du navigateur) et journalise le resultat dans
+    // un transient consultable via /wp-json/cme/v1/log-lead-debug,
+    // en l'absence d'acces aux logs serveur (SSH/cPanel) depuis Claude Code.
+    $reponse = wp_remote_post(CME_TRACKING_API_URL, [
         'headers'  => ['Content-Type' => 'application/json'],
         'body'     => $payload,
-        'timeout'  => 5,
-        // Fire-and-forget : on ne fait pas attendre le navigateur la reponse
-        // de l'API Cloud Run, le tracking est best-effort par design.
-        'blocking' => false,
+        'timeout'  => 8,
+        'blocking' => true,
     ]);
+
+    if (is_wp_error($reponse)) {
+        set_transient('cme_tracking_last_error', 'WP_Error: ' . $reponse->get_error_message(), HOUR_IN_SECONDS);
+    } else {
+        $code = wp_remote_retrieve_response_code($reponse);
+        $corps = wp_remote_retrieve_body($reponse);
+        set_transient(
+            'cme_tracking_last_error',
+            ($code === 200 ? 'OK' : "HTTP $code") . ' @ ' . current_time('mysql') . ' -- ' . substr($corps, 0, 300),
+            HOUR_IN_SECONDS
+        );
+    }
+
     return new WP_REST_Response(['status' => 'ok'], 200);
 }
+
+// Route de diagnostic en lecture seule : etat du dernier appel sortant
+// tente vers Cloud Run (voir correctif v3 ci-dessus). A retirer une fois le
+// probleme reellement identifie et corrige -- n'expose aucune donnee
+// personnelle, uniquement un statut technique.
+add_action('rest_api_init', function () {
+    register_rest_route('cme/v1', '/log-lead-debug', [
+        'methods'             => 'GET',
+        'callback'            => function () {
+            return new WP_REST_Response([
+                'dernier_essai' => get_transient('cme_tracking_last_error') ?: '(aucun test recent)',
+            ], 200);
+        },
+        'permission_callback' => '__return_true',
+    ]);
+});
 
 add_action('wp_footer', function () {
     echo "<script id=\"cme-tracking-conversion\">\n";
