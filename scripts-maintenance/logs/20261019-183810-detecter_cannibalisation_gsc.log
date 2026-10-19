@@ -1,0 +1,502 @@
+# Execution du 2026-10-19T18:38:10Z
+# Script    : scripts-maintenance/detecter_cannibalisation_gsc.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+🔎 Fenetre d'analyse : 90 derniers jours — seuil de bruit : 30 impressions cumulees minimum par requete
+
+======================================================================
+RAPPORT — CANNIBALISATION DE MOTS-CLES (donnees GSC)
+======================================================================
+Requetes avec plusieurs pages en concurrence : 41
+  dont forte concurrence (action prioritaire) : 5
+  dont concurrence faible (a surveiller)       : 36
+======================================================================
+
+⚠️ CANNIBALISATION FORTE — action prioritaire (fusionner, differencier ou rediriger) (5) :
+
+  🔑 "installation chaudiere gaz" — 1. Gaz / chauffage-gaz
+     Impressions cumulees (toutes pages) : 74
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes/
+         impressions=31 clics=0 position_moyenne=70.5
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/installer-chaudiere-gaz-demarches-couts/
+         impressions=25 clics=0 position_moyenne=26.0
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz/
+         impressions=13 clics=0 position_moyenne=61.5
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installer-chaudiere-gaz-etapes-couts/
+         impressions=3 clics=0 position_moyenne=87.3
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-couts/
+         impressions=1 clics=0 position_moyenne=70.0
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installation-chaudiere-gaz-etapes-couts-0903/
+         impressions=1 clics=0 position_moyenne=60.0
+
+  🔑 "mon énérgie" —  / 
+     Impressions cumulees (toutes pages) : 54
+       - https://www.comprendre-mon-energie.fr/
+         impressions=35 clics=0 position_moyenne=49.5
+       - https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+         impressions=19 clics=0 position_moyenne=23.1
+
+  🔑 "quel fournisseur de gaz choisir" — 1. Gaz / comparatifs-fournisseurs-gaz
+     Impressions cumulees (toutes pages) : 47
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleur-fournisseur-gaz-2024-comparatif/
+         impressions=19 clics=0 position_moyenne=88.6
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur-0905/
+         impressions=15 clics=0 position_moyenne=2.9
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleur-fournisseur-gaz-comparatif-2024/
+         impressions=7 clics=0 position_moyenne=71.6
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/
+         impressions=6 clics=0 position_moyenne=88.7
+
+  🔑 "quelle facture pour justificatif de domicile" — 5. Electricite / facture-electricite
+     Impressions cumulees (toutes pages) : 44
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+         impressions=31 clics=0 position_moyenne=10.6
+       - https://www.comprendre-mon-energie.fr/electricite/facture/justificatif-de-domicile/
+         impressions=13 clics=0 position_moyenne=11.8
+
+  🔑 "mon energie" —  / 
+     Impressions cumulees (toutes pages) : 40
+       - https://www.comprendre-mon-energie.fr/
+         impressions=27 clics=0 position_moyenne=31.4
+       - https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+         impressions=13 clics=0 position_moyenne=21.3
+
+⚠️ CANNIBALISATION FAIBLE — a surveiller, pas forcement a traiter (36) :
+
+  🔑 "meilleur fournisseur gaz" — 1. Gaz / comparatifs-fournisseurs-gaz
+     Impressions cumulees (toutes pages) : 275
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleur-fournisseur-gaz-2024-comparatif/
+         impressions=157 clics=0 position_moyenne=30.6
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleur-fournisseur-gaz-comparatif-2024/
+         impressions=76 clics=0 position_moyenne=33.3
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/
+         impressions=36 clics=0 position_moyenne=77.9
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs-gaz-2024/
+         impressions=5 clics=0 position_moyenne=43.6
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-moins-chers-classement/
+         impressions=1 clics=0 position_moyenne=28.0
+
+  🔑 "changer de fournisseur de gaz" — 1. Gaz / contrat-gaz
+     Impressions cumulees (toutes pages) : 144
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz-0810/
+         impressions=52 clics=0 position_moyenne=73.2
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz/
+         impressions=43 clics=0 position_moyenne=77.8
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement/
+         impressions=24 clics=0 position_moyenne=84.3
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+         impressions=9 clics=0 position_moyenne=78.0
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-fournisseurs-gaz-tarifs/
+         impressions=8 clics=0 position_moyenne=87.1
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changer-fournisseur-gaz-demarches/
+         impressions=8 clics=0 position_moyenne=68.3
+
+  🔑 "installation chaudière gaz" — 1. Gaz / contrat-gaz
+     Impressions cumulees (toutes pages) : 140
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/installer-chaudiere-gaz-demarches-couts/
+         impressions=49 clics=0 position_moyenne=39.5
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes/
+         impressions=41 clics=0 position_moyenne=69.6
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz/
+         impressions=30 clics=0 position_moyenne=69.0
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installer-chaudiere-gaz-etapes-couts/
+         impressions=9 clics=0 position_moyenne=90.4
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere-gaz-condensation/
+         impressions=8 clics=0 position_moyenne=94.2
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes-0815/
+         impressions=3 clics=0 position_moyenne=78.0
+
+  🔑 "électricité" — 5. Electricite / compteur
+     Impressions cumulees (toutes pages) : 105
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electrique-mesure-optimisation/
+         impressions=104 clics=0 position_moyenne=2.2
+       - https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-2026-comparatif-tarifs/
+         impressions=1 clics=0 position_moyenne=3.0
+
+  🔑 "maison-mineur-energies.fr bilan thermique" — 2. Renovation Energetique / bilan-energetique
+     Impressions cumulees (toutes pages) : 92
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/bilan-thermique-maison-methode-interpretation/
+         impressions=90 clics=0 position_moyenne=7.8
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere-gaz-condensation/
+         impressions=1 clics=0 position_moyenne=16.0
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/bilan-thermique-maison-interpreter/
+         impressions=1 clics=0 position_moyenne=7.0
+
+  🔑 "prix du gaz bouteille 2026" — 1. Gaz / bouteilles
+     Impressions cumulees (toutes pages) : 84
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-tarifs-bons-plans/
+         impressions=66 clics=0 position_moyenne=5.9
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs/
+         impressions=14 clics=0 position_moyenne=7.1
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015-2/
+         impressions=2 clics=0 position_moyenne=6.0
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-propane-tarifs/
+         impressions=2 clics=0 position_moyenne=6.5
+
+  🔑 "chèque énergie" — 3. Aide Energetique / cheque-energie
+     Impressions cumulees (toutes pages) : 79
+       - https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montants-conditions-2025/
+         impressions=66 clics=0 position_moyenne=2.0
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/cheques-energie-electricite-obtenir-utiliser/
+         impressions=13 clics=0 position_moyenne=55.7
+
+  🔑 "aide chauffe eau thermodynamique" — 3. Aide Energetique / aides-chauffe-eau-thermodynamique
+     Impressions cumulees (toutes pages) : 77
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/
+         impressions=35 clics=0 position_moyenne=84.2
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0829/
+         impressions=19 clics=0 position_moyenne=8.7
+       - https://www.comprendre-mon-energie.fr/aide-energetique/
+         impressions=10 clics=0 position_moyenne=22.6
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-cumul-maprimerenov-cee/
+         impressions=8 clics=0 position_moyenne=79.0
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2025/
+         impressions=5 clics=0 position_moyenne=98.8
+
+  🔑 "aide chaudière gaz condensation" — 3. Aide Energetique / aides-chaudiere
+     Impressions cumulees (toutes pages) : 70
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installation-chaudiere-gaz-condensation-guide-2025/
+         impressions=24 clics=0 position_moyenne=72.5
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installation-chaudiere-gaz-aides-subventions/
+         impressions=22 clics=0 position_moyenne=52.2
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installation-chaudiere-gaz-condensation-prix-aides/
+         impressions=17 clics=0 position_moyenne=60.9
+       - https://www.comprendre-mon-energie.fr/aide-energetique/
+         impressions=7 clics=0 position_moyenne=17.7
+
+  🔑 "pompe a chaleur aide 2024" — 2. Renovation Energetique / pompe-a-chaleur
+     Impressions cumulees (toutes pages) : 68
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024/
+         impressions=66 clics=0 position_moyenne=33.6
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/
+         impressions=2 clics=0 position_moyenne=14.5
+
+  🔑 "ma prime rénov chauffe-eau thermodynamique" — 3. Aide Energetique / aides-chauffe-eau-thermodynamique
+     Impressions cumulees (toutes pages) : 61
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/
+         impressions=20 clics=0 position_moyenne=92.1
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-cumul-maprimerenov-cee/
+         impressions=18 clics=0 position_moyenne=48.5
+       - https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-2026/
+         impressions=17 clics=0 position_moyenne=83.9
+       - https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-travaux-eligibles-non-eligibles/
+         impressions=2 clics=0 position_moyenne=46.5
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2025/
+         impressions=2 clics=0 position_moyenne=100.0
+       - https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-2026/
+         impressions=1 clics=0 position_moyenne=100.0
+       - https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2025/
+         impressions=1 clics=0 position_moyenne=96.0
+
+  🔑 "contrat energie prix fixe ou variable" — 1. Gaz / contrat-gaz
+     Impressions cumulees (toutes pages) : 59
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/contrat-gaz-fixe-ou-variable/
+         impressions=13 clics=0 position_moyenne=68.9
+       - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-variable/
+         impressions=10 clics=0 position_moyenne=75.8
+       - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-variable-0908/
+         impressions=9 clics=0 position_moyenne=26.4
+       - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-variable-0908-2/
+         impressions=8 clics=0 position_moyenne=61.9
+       - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-ou-variable/
+         impressions=7 clics=0 position_moyenne=67.6
+       - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/offres-electricite-fixe-variable-comparaison/
+         impressions=5 clics=0 position_moyenne=34.4
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/contrat-gaz-fixe-vs-variable/
+         impressions=4 clics=0 position_moyenne=69.0
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/offres-gaz-variable-vs-fixe/
+         impressions=3 clics=0 position_moyenne=82.2
+
+  🔑 "ma prime renov chauffe eau thermodynamique" — 3. Aide Energetique / aides-chauffe-eau-thermodynamique
+     Impressions cumulees (toutes pages) : 58
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/
+         impressions=22 clics=0 position_moyenne=92.7
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-cumul-maprimerenov-cee/
+         impressions=16 clics=0 position_moyenne=37.1
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2025/
+         impressions=9 clics=0 position_moyenne=97.9
+       - https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-2026/
+         impressions=9 clics=0 position_moyenne=87.1
+       - https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-travaux-eligibles-non-eligibles/
+         impressions=1 clics=0 position_moyenne=40.0
+       - https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-2026/
+         impressions=1 clics=0 position_moyenne=100.0
+
+  🔑 "fournisseur gaz" — 1. Gaz / comparatifs-fournisseurs-gaz
+     Impressions cumulees (toutes pages) : 57
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/
+         impressions=51 clics=0 position_moyenne=71.8
+       - https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur-0905/
+         impressions=6 clics=0 position_moyenne=5.4
+
+  🔑 "facture de gaz trop élevée" — 1. Gaz / facture-gaz
+     Impressions cumulees (toutes pages) : 56
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-causes-solutions/
+         impressions=43 clics=0 position_moyenne=42.8
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-comparer-prix/
+         impressions=6 clics=0 position_moyenne=30.3
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-solutions/
+         impressions=5 clics=0 position_moyenne=48.3
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/augmentation-facture-gaz-causes-solutions/
+         impressions=2 clics=0 position_moyenne=89.5
+
+  🔑 "installation compteur electrique" — 5. Electricite / compteur
+     Impressions cumulees (toutes pages) : 56
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/cout-installation-compteur-electricite/
+         impressions=17 clics=0 position_moyenne=45.6
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installer-compteur-electrique-demarches-couts/
+         impressions=16 clics=0 position_moyenne=40.7
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823-2/
+         impressions=9 clics=0 position_moyenne=37.8
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823/
+         impressions=3 clics=0 position_moyenne=68.3
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823-3/
+         impressions=3 clics=0 position_moyenne=71.0
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0817/
+         impressions=3 clics=0 position_moyenne=60.3
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts/
+         impressions=3 clics=0 position_moyenne=45.0
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installer-compteur-electrique-guide/
+         impressions=2 clics=0 position_moyenne=82.5
+
+  🔑 "prix bouteille de gaz" — 1. Gaz / bouteilles
+     Impressions cumulees (toutes pages) : 56
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024-tarifs/
+         impressions=32 clics=0 position_moyenne=27.8
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-tarifs-bons-plans/
+         impressions=11 clics=0 position_moyenne=42.6
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024/
+         impressions=9 clics=0 position_moyenne=44.1
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015-2/
+         impressions=2 clics=0 position_moyenne=29.0
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015/
+         impressions=1 clics=0 position_moyenne=69.0
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024-0721/
+         impressions=1 clics=0 position_moyenne=15.0
+
+  🔑 "attestation de contrat edf" — 5. Electricite / 
+     Impressions cumulees (toutes pages) : 55
+       - https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+         impressions=51 clics=0 position_moyenne=8.1
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+         impressions=4 clics=0 position_moyenne=54.7
+
+  🔑 "changement fournisseur gaz" — 1. Gaz / contrat-gaz
+     Impressions cumulees (toutes pages) : 53
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz-0810/
+         impressions=23 clics=0 position_moyenne=40.4
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz/
+         impressions=15 clics=0 position_moyenne=52.8
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement/
+         impressions=8 clics=0 position_moyenne=70.7
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+         impressions=3 clics=0 position_moyenne=77.5
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-fournisseurs-gaz-tarifs/
+         impressions=3 clics=0 position_moyenne=69.2
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changer-fournisseur-gaz-demarches/
+         impressions=1 clics=0 position_moyenne=68.0
+
+  🔑 "comprendre sa facture electricite" — 5. Electricite / facture-electricite
+     Impressions cumulees (toutes pages) : 49
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite-detail/
+         impressions=19 clics=0 position_moyenne=41.8
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide/
+         impressions=17 clics=0 position_moyenne=35.7
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite/
+         impressions=6 clics=0 position_moyenne=45.2
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite/
+         impressions=2 clics=0 position_moyenne=72.0
+       - https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+         impressions=2 clics=0 position_moyenne=47.5
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/
+         impressions=2 clics=0 position_moyenne=85.0
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-guide-complet/
+         impressions=1 clics=0 position_moyenne=62.0
+
+  🔑 "attestation contrat edf" — 5. Electricite / 
+     Impressions cumulees (toutes pages) : 48
+       - https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+         impressions=39 clics=0 position_moyenne=11.5
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+         impressions=9 clics=0 position_moyenne=57.4
+
+  🔑 "changer fournisseur gaz" — 1. Gaz / contrat-gaz
+     Impressions cumulees (toutes pages) : 47
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz-0810/
+         impressions=19 clics=0 position_moyenne=44.8
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz/
+         impressions=16 clics=0 position_moyenne=32.1
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement/
+         impressions=6 clics=0 position_moyenne=81.6
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changer-fournisseur-gaz-demarches/
+         impressions=2 clics=0 position_moyenne=58.5
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-fournisseurs-gaz-tarifs/
+         impressions=2 clics=0 position_moyenne=88.0
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+         impressions=2 clics=0 position_moyenne=62.5
+
+  🔑 "changement fournisseur énergie processus" — 5. Electricite / demenagement
+     Impressions cumulees (toutes pages) : 46
+       - https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement/
+         impressions=14 clics=0 position_moyenne=80.7
+       - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-procedure/
+         impressions=13 clics=0 position_moyenne=69.5
+       - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-demarches/
+         impressions=11 clics=0 position_moyenne=82.4
+       - https://www.comprendre-mon-energie.fr/electricite/demenagement/changement-fournisseur-electricite-demenagement/
+         impressions=5 clics=0 position_moyenne=64.0
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changer-fournisseur-gaz-demarches/
+         impressions=2 clics=0 position_moyenne=53.5
+       - https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0828/
+         impressions=1 clics=0 position_moyenne=93.0
+
+  🔑 "attestation de contrat d'électricité" — 5. Electricite / 
+     Impressions cumulees (toutes pages) : 45
+       - https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+         impressions=39 clics=0 position_moyenne=10.5
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+         impressions=5 clics=0 position_moyenne=37.0
+       - https://www.comprendre-mon-energie.fr/electricite/facture/justificatif-de-domicile/
+         impressions=1 clics=0 position_moyenne=29.0
+
+  🔑 "comment changer de fournisseur de gaz" — 1. Gaz / contrat-gaz
+     Impressions cumulees (toutes pages) : 45
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz-0810/
+         impressions=17 clics=0 position_moyenne=60.6
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz/
+         impressions=13 clics=0 position_moyenne=74.6
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement/
+         impressions=6 clics=0 position_moyenne=72.9
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+         impressions=6 clics=0 position_moyenne=67.5
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-fournisseurs-gaz-tarifs/
+         impressions=2 clics=0 position_moyenne=77.0
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changer-fournisseur-gaz-demarches/
+         impressions=1 clics=0 position_moyenne=62.0
+
+  🔑 "déménagement gaz" — 1. Gaz / demenagement-gaz
+     Impressions cumulees (toutes pages) : 42
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement/
+         impressions=16 clics=0 position_moyenne=63.3
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/transfert-gaz-demenagement-guide/
+         impressions=14 clics=0 position_moyenne=64.4
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+         impressions=8 clics=0 position_moyenne=83.4
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/
+         impressions=3 clics=0 position_moyenne=61.2
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/gaz-coupe-apres-demenagement-retablir/
+         impressions=1 clics=0 position_moyenne=7.0
+
+  🔑 "attestation edf" — 5. Electricite / 
+     Impressions cumulees (toutes pages) : 40
+       - https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+         impressions=33 clics=0 position_moyenne=17.2
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+         impressions=6 clics=0 position_moyenne=59.0
+       - https://www.comprendre-mon-energie.fr/electricite/facture/justificatif-de-domicile/
+         impressions=1 clics=0 position_moyenne=61.0
+
+  🔑 "butane ou propane" — 1. Gaz / bouteilles
+     Impressions cumulees (toutes pages) : 38
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-butane-vs-propane-differences/
+         impressions=19 clics=0 position_moyenne=61.9
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-vs-propane-laquelle-choisir/
+         impressions=6 clics=0 position_moyenne=84.3
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-butane-comparatif-guide/
+         impressions=5 clics=0 position_moyenne=80.2
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-vs-propane-comparatif/
+         impressions=3 clics=0 position_moyenne=61.0
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-vs-propane/
+         impressions=2 clics=0 position_moyenne=47.0
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-quel-choix/
+         impressions=1 clics=0 position_moyenne=83.0
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-comparatif-bouteilles-gaz/
+         impressions=1 clics=0 position_moyenne=68.0
+       - https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-propane-vs-butane-comparatif/
+         impressions=1 clics=0 position_moyenne=42.0
+
+  🔑 "justificatif de domicile edf" — 5. Electricite / 
+     Impressions cumulees (toutes pages) : 38
+       - https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+         impressions=31 clics=0 position_moyenne=26.8
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+         impressions=5 clics=0 position_moyenne=63.8
+       - https://www.comprendre-mon-energie.fr/electricite/facture/justificatif-de-domicile/
+         impressions=2 clics=0 position_moyenne=65.0
+
+  🔑 "isolation maison cout" — 2. Renovation Energetique / isolation
+     Impressions cumulees (toutes pages) : 37
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/cout-isolation-thermique-prix-devis-2024/
+         impressions=29 clics=0 position_moyenne=87.0
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/prix-isolation-maison-devis-2024/
+         impressions=8 clics=0 position_moyenne=25.4
+
+  🔑 "isolation maison tarif" — 2. Renovation Energetique / isolation
+     Impressions cumulees (toutes pages) : 36
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/cout-isolation-thermique-prix-devis-2024/
+         impressions=31 clics=0 position_moyenne=94.6
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/prix-isolation-maison-devis-2024/
+         impressions=5 clics=0 position_moyenne=24.8
+
+  🔑 "installation chaudière" — 1. Gaz / chauffage-gaz
+     Impressions cumulees (toutes pages) : 35
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes/
+         impressions=19 clics=0 position_moyenne=67.1
+       - https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere-etapes-normes/
+         impressions=8 clics=0 position_moyenne=54.4
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz/
+         impressions=4 clics=0 position_moyenne=70.2
+       - https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installer-chaudiere-gaz-etapes-couts/
+         impressions=2 clics=0 position_moyenne=73.0
+       - https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-couts/
+         impressions=2 clics=0 position_moyenne=70.5
+
+  🔑 "attestation de contrat d'énergie" — 5. Electricite / 
+     Impressions cumulees (toutes pages) : 34
+       - https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+         impressions=29 clics=0 position_moyenne=11.5
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+         impressions=5 clics=0 position_moyenne=37.6
+
+  🔑 "comment utiliser le chèque énergie" — 3. Aide Energetique / cheque-energie
+     Impressions cumulees (toutes pages) : 32
+       - https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-0928/
+         impressions=9 clics=0 position_moyenne=64.9
+       - https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-eligibilite-utilisation/
+         impressions=7 clics=0 position_moyenne=67.2
+       - https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie/
+         impressions=6 clics=0 position_moyenne=71.9
+       - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/cheques-energie-electricite-obtenir-utiliser/
+         impressions=5 clics=0 position_moyenne=61.3
+       - https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs/
+         impressions=2 clics=0 position_moyenne=54.0
+       - https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1015/
+         impressions=2 clics=0 position_moyenne=47.0
+       - https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1015-2/
+         impressions=1 clics=0 position_moyenne=70.0
+
+  🔑 "tarif installation compteur edf" — 5. Electricite / compteur
+     Impressions cumulees (toutes pages) : 31
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/cout-installation-compteur-electricite/
+         impressions=20 clics=0 position_moyenne=31.9
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electricite-tarifs/
+         impressions=6 clics=0 position_moyenne=39.7
+       - https://www.comprendre-mon-energie.fr/electricite/compteur/installer-compteur-electrique-demarches-couts/
+         impressions=5 clics=0 position_moyenne=71.6
+
+  🔑 "changer de fournisseur gaz" — 1. Gaz / contrat-gaz
+     Impressions cumulees (toutes pages) : 30
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz-0810/
+         impressions=9 clics=0 position_moyenne=33.2
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement/
+         impressions=8 clics=0 position_moyenne=46.4
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz/
+         impressions=7 clics=0 position_moyenne=37.2
+       - https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+         impressions=2 clics=0 position_moyenne=58.0
+       - https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changer-fournisseur-gaz-demarches/
+         impressions=2 clics=0 position_moyenne=24.5
+       - https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-fournisseurs-gaz-tarifs/
+         impressions=2 clics=0 position_moyenne=86.0
