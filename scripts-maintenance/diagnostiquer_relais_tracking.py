@@ -46,6 +46,7 @@ except ImportError:
 PROJECT_ID = "seo-data-hub-cme"
 RELAIS_URL = "https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead"
 DEBUG_URL = "https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead-debug"
+CLOUD_RUN_DIRECT_URL = "https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead"
 
 
 def main():
@@ -113,6 +114,23 @@ def main():
         print(f"   Corps : {debug_resp.text[:800]}")
     except Exception as e:
         print(f"   ⚠️ Erreur en lisant l'endpoint de debug : {e}")
+
+    print("\n" + "=" * 70)
+    print(f"4. POST DIRECT sur Cloud Run (sans passer par WordPress) : {CLOUD_RUN_DIRECT_URL}")
+    print("   -> Si ca echoue aussi d'ici (runner GitHub, IP totalement differente du")
+    print("      cPanel de l'hebergeur) : restriction d'ingress globale sur le service")
+    print("      Cloud Run, pas un blocage specifique a l'IP de l'hebergement WordPress.")
+    print("=" * 70)
+    try:
+        direct_resp = requests.post(
+            CLOUD_RUN_DIRECT_URL,
+            json={"tool": "diagnostic-relais-test", "details": {"marqueur": f"{marqueur}-direct"}},
+            timeout=15,
+        )
+        print(f"   Code HTTP : {direct_resp.status_code}")
+        print(f"   Corps (300 premiers caracteres) : {direct_resp.text[:300]!r}")
+    except Exception as e:
+        print(f"   ⚠️ Erreur reseau : {e}")
 
 
 if __name__ == "__main__":
