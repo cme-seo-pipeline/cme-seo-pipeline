@@ -1,0 +1,26 @@
+# Execution du 2026-10-19T22:05:10Z
+# Script    : scripts-maintenance/verifier_tracking_conversion_recent.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Evenements 'contact-expert-formulaire' / 'appel-telephone' -- 7 derniers jours
+======================================================================
+⚠️ Aucune ligne sur les 7 derniers jours pour ces deux outils.
+   -> Normal si personne n'a encore soumis le formulaire ni clique sur
+      le numero depuis le deploiement du mu-plugin. Pas concluant seul :
+      faire un test manuel (soumettre le formulaire une fois, cliquer
+      une fois sur le tel: du header) puis relancer ce script.
+
+======================================================================
+Pour comparaison -- dernieres lignes toutes sources confondues (verifie que la table repond)
+======================================================================
+                         timestamp                 tool
+0 2026-08-01 11:36:15.787111+00:00     aides-renovation
+1 2026-08-01 11:35:00.908215+00:00  comparateur-energie
+2 2026-08-01 11:24:57.164718+00:00              solaire
+3 2026-08-01 11:23:42.970172+00:00  comparateur-energie
+4 2026-07-31 14:30:24.470249+00:00              solaire
