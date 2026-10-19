@@ -277,6 +277,42 @@ via le contexte runtime (lignes `Co-Authored-By:` / `Claude-Session:` à
 ajouter en fin de message de commit). Suivre la consigne donnée dans la
 session en cours plutôt que de supposer un format figé ici.
 
+## Apps Script — expiration hebdomadaire de l'API GSC/GA4 (tranché, oct. 2026)
+
+**Diagnostic clos** (investigation du 19/10). Hypothèse initiale (clé de
+service account GCP capée à 7 jours par une org policy
+`iam.serviceAccountKeyExpiryHours`) **écartée définitivement** : la
+politique effective sur le projet est `allowAll` (aucune contrainte), et
+les 7 clés existantes du compte `cme-apps-script@seo-data-hub-cme.iam.gserviceaccount.com`
+expirent soit en 2028 soit jamais (`9999-12-31`) — aucune ne suit un cycle
+hebdomadaire.
+
+**Vraie cause (confirmée par le commentaire de tête de
+`apps-scripts/cme-auth.gs`)** : le symptôme "ça expire chaque semaine"
+correspondait au comportement classique d'un **refresh token OAuth2
+utilisateur** sur des scopes sensibles (Search Console, BigQuery) quand
+l'écran de consentement OAuth du projet GCP est en statut "Testing" —
+ce type de token expire après 7 jours tant que l'app n'est pas
+vérifiée/publiée. Rien à voir avec une clé de compte de service.
+
+**Déjà corrigé** : la migration vers l'authentification par JWT de compte
+de service (`getServiceAccountToken_()` dans `cme-auth.gs`, utilisée par
+`cme-ga4-to-bq.gs` et `cme-gsc-to-bq.gs`) élimine ce mécanisme — les
+comptes de service ne sont pas soumis à l'expiration de refresh token à 7
+jours. Confirmé en conditions réelles : `syncQuotidien` et
+`syncGA4Quotidien` tournent automatiquement via déclencheur horaire sans
+intervention manuelle depuis le 17/10 (3 jours consécutifs au 19/10, après
+des lancements manuels de vérification les 14-16/10).
+
+**Suivi recommandé** (léger, pas de nouveau code) :
+- Confirmer que ça tient jusqu'à ~26/10 (un cycle hebdo complet depuis le
+  14-16/10) sans aucune intervention manuelle.
+- Vérifier que les notifications d'échec sont activées sur les
+  déclencheurs Apps Script (éditeur → Déclencheurs → icône notification →
+  "m'avertir immédiatement" en cas d'échec), pour être alerté par email si
+  ça recasse un jour, sans avoir à repasser par l'onglet Exécutions chaque
+  semaine.
+
 ## Divergence connue, non résolue
 
 `pipeline.py` à la racine du repo (~85 Ko, legacy, **non exécuté** par les
