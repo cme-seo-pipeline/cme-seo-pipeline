@@ -1,0 +1,100 @@
+# Execution du 2026-10-19T20:43:45Z
+# Script    : scripts-maintenance/analyser_duplication_editoriale.py
+# Arguments : --limite=3
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Lecture de historique_publications...
+   729 articles charges — colonnes utilisees : titre=titre, post_id=post_id, url=url_wp, silo=silo, sous_silo=sous_silo_strategique, date=date_publication
+
+🔎 42 cluster(s) d'articles quasi-dupliques trouve(s) (meme forme de titre, meme silo)
+
+   (limite de test : 3 cluster(s))
+
+
+======================================================================
+CLUSTER 1/3 — 10 articles — silo : 5. Électricité / Facture Électricité
+======================================================================
+  - post_id=7023 : "Facture Électricité : hausse de 1.9% en août 2026" (2026-08-27 02:01:07.445507+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-2/
+  - post_id=7025 : "Facture Électricité : hausse de 3.0% en août 2026" (2026-08-27 02:01:28.084294+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-3/
+  - post_id=7027 : "Facture Électricité : hausse de 1.7% en août 2026" (2026-08-27 02:01:49.025959+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-4/
+  - post_id=7029 : "Facture Électricité : hausse de 3.0% en août 2026" (2026-08-27 02:02:10.577303+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-5/
+  - post_id=7031 : "Facture Électricité : hausse de 1.4% en août 2026" (2026-08-27 02:02:33.657489+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-6/
+  - post_id=7033 : "Facture Électricité : hausse de 3.1% en août 2026" (2026-08-27 02:02:54.959226+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-7/
+  - post_id=7035 : "Facture Électricité : hausse de 0.9% en août 2026" (2026-08-27 02:03:16.775505+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-8/
+  - post_id=7037 : "Facture Électricité : hausse de 3.1% en août 2026" (2026-08-27 02:03:37.339474+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-9/
+  - post_id=7021 : "Facture Électricité : hausse de 3.0% en août 2026" (2026-08-27 02:00:46.423491+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827/
+  - post_id=7019 : "Facture Électricité : hausse de 2.1% en août 2026" (2026-08-27 02:00:24.497053+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+7029
+
+===PLAN===
+- **Consolider autour du taux le plus récent/officiel** : Vérifier quelle est la hausse réelle annoncée (il semble y avoir confusion entre 0.9% et 3.1%) et unifier l'information avec la source officielle
+- **Ajouter une section contexte historique** : Intégrer un tableau ou graphique montrant l'évolution des hausses précédentes (2024, 2025) pour donner de la perspective
+- **Expliquer les écarts de pourcentage** : Si les variations (1.4%, 1.9%, 3.0%, 3.1%) correspondent à différents profils de consommateurs ou zones tarifaires, créer une section comparative claire
+- **Enrichir avec impact budgétaire concret** : Calculer l'impact en euros sur différents profils (petite/moyenne/grande consommation) pour rendre l'information actionnable
+- **Ajouter conseils pratiques** : Intégrer une section sur comment réduire sa facture face à cette hausse (gestes économies, comparateur offres, heures creuses)
+
+===FIN===
+
+======================================================================
+CLUSTER 2/3 — 6 articles — silo : 1. Gaz / Comparatifs Fournisseurs Gaz
+======================================================================
+  - post_id=4851 : "Gaz naturel vs propane : quel fournisseur choisir ?" (2026-07-25 03:04:16.921037+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-comparaison/
+  - post_id=5994 : "Gaz naturel vs propane : quel fournisseur choisir" (2026-08-14 08:46:24.602645+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-comparatif-fournisseurs/
+  - post_id=7727 : "Gaz naturel vs propane : quel fournisseur choisir ?" (2026-09-05 03:09:28.560389+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur-0905/
+  - post_id=5419 : "Gaz naturel vs propane : quel fournisseur choisir" (2026-08-08 03:04:21.273028+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur/
+  - post_id=7057 : "Gaz naturel vs propane : quel fournisseur choisir" (2026-08-27 03:06:24.134806+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-quel-fournisseur-choisir/
+  - post_id=6276 : "Gaz naturel vs propane : quel fournisseur choisir" (2026-08-17 03:08:20.406647+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-quel-fournisseur/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+4851
+
+===PLAN===
+1. **Consolider le contenu unique** : Analyser les 6 versions pour identifier les sections, exemples ou arguments présents dans certaines versions mais absents dans d'autres, et tout intégrer dans l'article principal.
+
+2. **Enrichir la comparaison** : Créer un tableau comparatif détaillé (coûts, disponibilité, installation, impact environnemental, usages recommandés) et ajouter des exemples concrets de situations favorisant l'un ou l'autre.
+
+3. **Ajouter une section fournisseurs** : Lister les principaux fournisseurs pour chaque type de gaz avec leurs spécificités, zones de couverture et critères de choix objectifs.
+
+4. **Optimiser la structure** : Intégrer une FAQ complète reprenant les questions récurrentes sur la thématique gaz naturel vs propane pour maximiser le potentiel SEO.
+
+5. **Supprimer les doublons** : Rediriger les 5 autres URLs (5994, 7727, 5419, 7057, 6276) en 301 vers l'article 4851 pour consolider l'autorité SEO et éliminer la cannibalisation.
+
+===FIN===
+
+======================================================================
+CLUSTER 3/3 — 6 articles — silo : 3. Aide Énergétique / Aides chauffe-eau thermodynamique
+======================================================================
+  - post_id=9670 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-10-14 08:28:24.928085+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1014/
+  - post_id=5941 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-08-14 08:15:08.794325+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0814/
+  - post_id=7197 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-08-29 03:11:47.040805+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0829/
+  - post_id=8703 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-09-29 09:35:16.909224+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0929/
+  - post_id=4855 : "Installation chauffe-eau thermodynamique : étapes et coûts 2" (2026-07-25 03:06:34.810395+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts/
+  - post_id=8450 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-09-27 09:02:29.820732+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0927/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+4855
+
+===PLAN===
+1. **Conserver la structure complète** : Garder l'article 4855 car le "2" dans le titre suggère qu'il s'agit d'une version mise à jour ou améliorée du contenu original.
+
+2. **Enrichir la section étapes** : Compiler toutes les variations d'étapes d'installation présentes dans les 6 articles pour créer un guide exhaustif et détaillé, en éliminant les redondances.
+
+3. **Consolider les données de coûts** : Agréger toutes les fourchettes de prix, aides financières et exemples chiffrés présents dans les différentes versions pour offrir une vision complète et actualisée.
+
+4. **Intégrer les cas particuliers** : Récupérer les spécificités techniques, conseils pratiques ou FAQ uniques trouvés dans chaque variante pour enrichir le contenu final.
+
+5. **Mettre à jour avec la date la plus récente** : S'assurer que les informations (prix, réglementations, aides) reflètent les données les plus actuelles parmi toutes les versions.
+
+===FIN===
