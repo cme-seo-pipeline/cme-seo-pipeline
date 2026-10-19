@@ -1,0 +1,34 @@
+# Execution du 2026-10-19T22:26:21Z
+# Script    : scripts-maintenance/diagnostiquer_relais_tracking.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. POST direct sur https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead
+   Marqueur de ce test : diag-abd23beef518
+======================================================================
+   Code HTTP : 200
+   Corps de reponse (500 premiers caracteres) : '{"status":"ok"}'
+
+======================================================================
+2. Attente 10s puis recherche du marqueur dans leads_convertis...
+======================================================================
+❌ Aucune ligne avec le marqueur diag-abd23beef518 trouvee apres 10s.
+
+⚠️ Si le point 1 montrait un 200 OK mais que la ligne n'arrive jamais ici : le probleme est dans le relais PHP lui-meme (wp_remote_post qui echoue a joindre Cloud Run depuis l'hebergement -- pare-feu sortant, timeout, etc.), pas cote navigateur.
+
+======================================================================
+3. Lecture de https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead-debug (dernier essai de relais vu cote WordPress)
+======================================================================
+   Code HTTP : 200
+   Corps : {"dernier_essai":"HTTP 403 @ 2026-10-19 22:26:23 -- \n<html><head>\n<meta http-equiv=\"content-type\" content=\"text\/html;charset=utf-8\">\n<title>403 Forbidden<\/title>\n<\/head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Forbidden<\/h1>\n<h2>Your client does not have permission to get URL <code>\/api\/log-lead<\/code> from this server.<\/h2>\n<h2><\/h2>\n<\/body><"}
+
+======================================================================
+4. POST DIRECT sur Cloud Run (sans passer par WordPress) : https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead
+   -> Si ca echoue aussi d'ici (runner GitHub, IP totalement differente du
+      cPanel de l'hebergeur) : restriction d'ingress globale sur le service
+      Cloud Run, pas un blocage specifique a l'IP de l'hebergement WordPress.
+======================================================================
+   Code HTTP : 403
+   Corps (300 premiers caracteres) : '\n<html><head>\n<meta http-equiv="content-type" content="text/html;charset=utf-8">\n<title>403 Forbidden</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Forbidden</h1>\n<h2>Your client does not have permission to get URL <code>/api/log-lead</code> from this server.</h2>\n<h2></h2>\n</body><'
