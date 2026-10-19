@@ -127,10 +127,55 @@ purger les deux caches LiteSpeed (cPanel + wp-admin), verifier avec
 `?t=$RANDOM`.
 
 Verifie le 19/10 : les 3 anciens simulateurs sont toujours des pages live
-(HTTP 200) et leur tracking existant (`log-lead` cote serveur PHP,
-`log-clic` cote client pour le comparateur) est toujours fonctionnel --
-leur volume est juste naturellement proche de zero puisqu'ils ne sont plus
-la destination des CTA du site.
+(HTTP 200). **Correction d'une premiere verification erronee du meme
+jour** : leur tracking (`log-lead`/`log-clic`, meme service Cloud Run
+`cme-tracking-api` que le nouveau mu-plugin) n'etait PAS fonctionnel --
+voir l'incident IAM ci-dessous, qui touchait les 4 outils simultanement
+(3 simulateurs + nouveau tracking formulaire/tel), pas seulement un volume
+naturellement bas du aux CTA deplaces.
+
+### Incident reel (19/10/2026) : politique IAM vide sur `cme-tracking-api`
+
+Le nouveau mu-plugin de tracking (formulaire + tel:) montrait `0` ligne en
+base malgre des evenements GA4 reels (`generate_lead`/`click_to_call`
+visibles et marquables comme Key Event). Diagnostic en 4 etapes (voir
+`scripts-maintenance/diagnostiquer_relais_tracking.py`, utilise comme
+outil reutilisable de debogage reseau via le pont GitHub Actions) :
+1. Le JS envoyait en cross-origin (`sendBeacon` + `Content-Type:
+   application/json`) directement vers Cloud Run -- echoue silencieusement
+   (preflight CORS que `sendBeacon` ne gere pas de maniere fiable).
+   **Corrige** par un relais same-origin WordPress
+   (`/wp-json/cme/v1/log-lead`, voir `cme-tracking-conversion.php`) qui
+   republie cote serveur (`wp_remote_post`) vers Cloud Run.
+2. Toujours `0` ligne apres ce correctif -- le relais WordPress
+   repondait `200 OK`, mais `wp_remote_post` echouait en silence
+   (`blocking => false` avalait l'erreur). Passe en bloquant + stockage du
+   resultat dans un transient, lisible via un endpoint de debug temporaire
+   (`/wp-json/cme/v1/log-lead-debug`).
+3. Cet endpoint a revele un `403 Forbidden` (page Google classique
+   "Your client does not have permission..."), reproduit aussi en appelant
+   Cloud Run **directement depuis un runner GitHub Actions** (IP totalement
+   differente du cPanel) -- donc pas un blocage reseau specifique a
+   l'hebergement, mais une restriction globale sur le service.
+4. `gcloud run services get-iam-policy cme-tracking-api
+   --region=europe-west1` a montre une politique **completement vide**
+   (aucun `bindings`) -- le service exigeait une authentification que
+   personne n'avait. Corrige avec :
+   ```bash
+   gcloud run services add-iam-policy-binding cme-tracking-api \
+     --region=europe-west1 --project=seo-data-hub-cme \
+     --member="allUsers" --role="roles/run.invoker"
+   ```
+   (`--ingress=all` avait aussi ete applique par precaution avant ce
+   dernier test, mais la valeur etait deja `all` -- ce n'etait pas la
+   cause). Confirme fonctionnel de bout en bout apres coup (requete directe
+   -> relais WordPress -> Cloud Run -> ligne visible dans
+   `leads_convertis`).
+
+**Lecon** : si ce service Cloud Run est un jour redeploye
+(`gcloud run deploy`) sans script d'infra-as-code figeant l'IAM, verifier
+que `allUsers` / `roles/run.invoker` est toujours present -- un redeploiement
+simple peut reinitialiser la politique IAM a vide selon la methode utilisee.
 
 ## Cache — deux couches distinctes à purger
 
@@ -321,3 +366,10 @@ potentiellement les mêmes `CTA_TOOLS`/`generer_cta_html()` mais n'a pas été
 vérifié pour cohérence avec les changements CTA d'octobre 2026. Faible
 priorité (fichier inutilisé par l'automatisation), mais à nettoyer ou
 supprimer un jour pour éviter toute confusion future.
+
+`/wp-json/cme/v1/log-lead-debug` (endpoint de diagnostic ajouté dans
+`cme-tracking-conversion.php` pendant l'incident IAM du 19/10, voir
+ci-dessus) est resté en place après résolution — il n'expose qu'un
+statut HTTP générique (aucune donnée personnelle), risque faible, mais à
+retirer à la prochaine modification de ce fichier pour ne pas laisser un
+endpoint public inutile.
