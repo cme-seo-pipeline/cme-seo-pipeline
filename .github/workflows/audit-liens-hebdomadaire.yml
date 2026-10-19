@@ -1,0 +1,42 @@
+name: CME - Audit liens hebdomadaire
+
+# Audit exhaustif des liens (internes + externes) dans le contenu des
+# articles publies -- scripts-maintenance/auditer_liens_internes.py.
+# Lecture seule : le resultat s'affiche dans les logs de ce run (onglet
+# Actions), rien n'est commite dans le repo pour ne pas l'encombrer d'un
+# fichier a chaque execution automatique (contrairement au workflow a la
+# demande, destine a etre relu par Claude Code, celui-ci est destine a
+# etre relu directement par l'operateur).
+#
+# Cadence hebdomadaire : les liens casses viennent surtout de pages
+# supprimees/renommees ailleurs (lent a apparaitre), alors que de
+# nouveaux articles sont publies quotidiennement et peuvent introduire de
+# nouveaux liens internes -- une semaine suffit a les detecter avant
+# qu'ils ne s'accumulent, sans tourner inutilement tous les jours.
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+jobs:
+  auditer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dependances
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Lancer l'audit des liens
+        env:
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          WP_USERNAME: Ouss
+        run: python3 scripts-maintenance/auditer_liens_internes.py

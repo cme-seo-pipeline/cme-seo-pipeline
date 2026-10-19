@@ -1,0 +1,59 @@
+name: CME - Audit cannibalisation mensuel
+
+# Detection de cannibalisation de mots-cles par requete Google Search
+# Console -- scripts-maintenance/detecter_cannibalisation_gsc.py. Lecture
+# seule : le resultat s'affiche dans les logs de ce run (onglet Actions),
+# rien n'est commite dans le repo (meme logique que audit-liens-hebdomadaire.yml).
+#
+# Cadence mensuelle, alignee sur le rythme de audit-mensuel.yml (meme jour,
+# decale de 2h pour eviter tout chevauchement) : les donnees GSC ont besoin
+# de plusieurs semaines pour accumuler assez d'impressions par requete pour
+# qu'un signal de cannibalisation soit fiable (pas juste du bruit de
+# longue traine) -- une cadence hebdomadaire ne ferait que repeter les
+# memes cas sans rien de nouveau a montrer. Le mois correspond aussi au
+# rythme de decision deja en place pour les autres audits du site.
+
+on:
+  schedule:
+    - cron: '10 5 1 * *'
+  workflow_dispatch:
+    inputs:
+      jours:
+        description: "Fenetre d'analyse en jours (defaut : 90)"
+        required: false
+        type: string
+        default: "90"
+      impressions_min:
+        description: "Seuil de bruit -- impressions cumulees minimum par requete (defaut : 30)"
+        required: false
+        type: string
+        default: "30"
+
+jobs:
+  detecter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dependances
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Configurer les identifiants GCP
+        env:
+          GCP_KEY_JSON: ${{ secrets.GCP_SA_KEY_CME }}
+        run: |
+          echo "$GCP_KEY_JSON" > /tmp/gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json" >> $GITHUB_ENV
+
+      - name: Lancer la detection de cannibalisation
+        run: >
+          python3 scripts-maintenance/detecter_cannibalisation_gsc.py
+          --jours=${{ inputs.jours || '90' }}
+          --impressions-min=${{ inputs.impressions_min || '30' }}

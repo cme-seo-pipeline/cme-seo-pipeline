@@ -139,9 +139,76 @@ partagé par plusieurs blocs différents.
 | `sync-clarity.yml`, `sync-clarity-par-page.yml` | — | Sync Microsoft Clarity |
 | `sync-indicateurs.yml` | — | Rafraîchit les indicateurs réglementaires |
 | `sync-leads-app.yml` | — | Sync leads vers l'app |
+| `maintenance-a-la-demande.yml` | `workflow_dispatch` uniquement | Exécute un script de `scripts-maintenance/*.py` à la demande (déclenché par Claude Code via `gh workflow run`) ; commite le log d'exécution dans le repo (seul canal lisible par Claude Code, cf. section sandbox ci-dessous) |
+| `audit-liens-hebdomadaire.yml` | cron hebdo (lundi 5h UTC) + `workflow_dispatch` | Audit exhaustif des liens (internes + externes) **dans le contenu** des articles (`auditer_liens_internes.py`) — résultat dans les logs du run, rien de commité |
+| `audit-cannibalisation-mensuel.yml` | cron mensuel (1er du mois, 5h10 UTC) + `workflow_dispatch` | Détection de cannibalisation de mots-clés par requête GSC (`detecter_cannibalisation_gsc.py`) — résultat dans les logs du run, rien de commité |
 
-Aucun de ces workflows n'exécute automatiquement les scripts de
-`scripts-maintenance/` — ce sont des scripts à lancer manuellement.
+Seul `maintenance-a-la-demande.yml` exécute un script de
+`scripts-maintenance/` **sur demande explicite** (via `gh workflow run`,
+typiquement déclenché par Claude Code) et commite son log, car c'est le
+seul canal par lequel Claude Code peut relire le résultat (voir section
+sandbox). Les deux audits SEO technique ci-dessus sont au contraire des
+**workflows récurrents autonomes** : ils tournent seuls sur leur cron,
+sans que Claude Code n'ait besoin de les déclencher ni d'en lire le
+résultat — c'est l'opérateur qui consulte l'onglet Actions GitHub
+directement. Ne pas les faire aussi commiter un log à chaque run
+automatique, ce serait un commit par semaine/mois pour rien.
+
+## SEO technique délégué — liens cassés & cannibalisation (chantier oct. 2026)
+
+Contexte : les outils ORCAAS existants (`auditer_site_technique`,
+`agent_orcaas_analyser_chevauchement`, sync indexation/RankMath dans
+`pipeline/pipeline.py` + leurs endpoints dans `pipeline/server.py`) sont
+**à l'abandon côté usage** et tournent sur Cloud Run (`seo-data-hub-cme`),
+ce qui contribue à la facture Cloud. Décision explicite : ne pas les
+étendre ni bâtir de nouveau crawler sur cette infrastructure. Les deux
+nouveaux scripts ci-dessous tournent sur les runners GitHub Actions
+(gratuits dans les limites habituelles), pas sur Cloud Run, et n'écrivent
+dans aucune table BigQuery :
+
+- **`scripts-maintenance/auditer_liens_internes.py`** — lit le contenu réel
+  de chaque article publié (API REST WordPress), extrait TOUS les liens
+  `<a href="...">` (internes et externes), et vérifie chacun en HTTP
+  (HEAD, repli en GET si HEAD échoue/est bloqué). Couvre un trou que
+  l'audit technique existant ne couvre pas : `auditer_site_technique` ne
+  vérifie que les 437 pages **elles-mêmes** (via `wp_url_mapping`), pas les
+  liens qu'elles contiennent. Même piège que `fix_cta_liens_retroactif.py`
+  appliqué ici : le `href` n'est jamais supposé être le premier attribut
+  de la balise `<a>`.
+- **`scripts-maintenance/detecter_cannibalisation_gsc.py`** — vraie
+  détection de cannibalisation par **requête GSC** (table
+  `01_raw.gsc_queries` : colonnes `date, query, page, clics, impressions,
+  ctr, position, silo, sous_silo`), distincte de
+  `agent_orcaas_analyser_chevauchement` qui ne regarde que l'état
+  d'indexation (`'Crawled - currently not indexed'`) entre pages voisines
+  par préfixe d'URL. Ici : pour chaque requête réellement tapée par des
+  internautes, si plusieurs pages du site se la disputent (au-dessus d'un
+  seuil d'impressions anti-bruit), classe le cas en "forte" (la 2ᵉ page
+  capte ≥25% des impressions ET se classe en position ≤30 — vraie
+  hésitation de Google) ou "faible" (à surveiller). **Lecture seule dans
+  les deux cas** — aucune correction automatique, la décision (fusionner,
+  rediriger, différencier) reste éditoriale.
+
+Validé en conditions réelles le 19/10 via le pont GitHub Actions : le
+script de liens a trouvé un vrai 404 interne et un lien externe cassé sur
+un échantillon de seulement 15 articles ; le script de cannibalisation a
+remonté 41 requêtes en concurrence interne (dont 5 cas forts), avec un
+schéma récurrent révélateur : plusieurs variantes quasi-identiques du même
+article publiées à des dates différentes (ex. `changement-fournisseur-gaz`
+vs `changement-fournisseur-gaz-0810` vs `...-0810-2`) — à investiguer côté
+génération éditoriale (déduplication avant publication), au-delà du simple
+constat récurrent.
+
+**Cadence** (question posée explicitement à l'opérateur comme un choix
+stratégique, pas un détail de rituel) : hebdomadaire pour les liens (les
+liens cassés viennent surtout de pages tierces supprimées/renommées,
+lent à apparaître, mais de nouveaux articles sortent chaque jour — une
+semaine suffit à détecter sans tourner pour rien) ; mensuelle pour la
+cannibalisation, alignée sur le rythme de `audit-mensuel.yml` (les données
+GSC ont besoin de plusieurs semaines pour accumuler un signal fiable par
+requête — une cadence plus courte ne ferait que répéter les mêmes cas).
+Ajustable via `--jours=`/`--impressions-min=` en `workflow_dispatch` sans
+toucher au code.
 
 ## Contraintes de l'environnement Claude Code (sandbox)
 
