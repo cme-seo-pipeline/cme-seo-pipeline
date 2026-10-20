@@ -82,6 +82,44 @@ def main():
     except Exception as e:
         print(f"   ❌ Erreur SQL : {e}")
 
+    print("\n" + "=" * 70)
+    print("4. Meme requete SANS le filtre NOT IN (pour comparaison -- la table")
+    print("   seo_opportunities a-t-elle seulement des lignes pour ce sous-silo ?)")
+    print("=" * 70)
+    try:
+        df_sans_filtre = client_bq.query(f"""
+        SELECT query AS mot_cle, score_opportunite
+        FROM `{PROJECT_ID}.03_final.seo_opportunities`
+        WHERE silo = '{silo_safe}' AND sous_silo = '{sous_silo_safe}'
+          AND jours_depuis_pub >= 30
+        ORDER BY score_opportunite DESC
+        LIMIT 5
+        """).to_dataframe()
+        print(f"   {len(df_sans_filtre)} ligne(s) sans le filtre")
+        if not df_sans_filtre.empty:
+            print(df_sans_filtre.to_string())
+    except Exception as e:
+        print(f"   ❌ Erreur SQL : {e}")
+
+    print("\n" + "=" * 70)
+    print("5. Contenu de la sous-requete d'exclusion (mots-cles deja publies)")
+    print("=" * 70)
+    try:
+        df_exclus = client_bq.query(f"""
+        SELECT LOWER(mot_cle) AS mot_cle, sous_silo_strategique, date_publication
+        FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+        WHERE sous_silo_strategique LIKE '{sous_silo_safe}%'
+          AND date_publication >= '2026-07-22'
+          AND mot_cle IS NOT NULL AND mot_cle != ''
+        ORDER BY date_publication DESC
+        LIMIT 10
+        """).to_dataframe()
+        print(f"   {len(df_exclus)} mot(s)-cle(s) deja publie(s) recemment pour ce sous-silo (exclus par le filtre)")
+        if not df_exclus.empty:
+            print(df_exclus.to_string())
+    except Exception as e:
+        print(f"   ❌ Erreur SQL : {e}")
+
 
 if __name__ == "__main__":
     main()
