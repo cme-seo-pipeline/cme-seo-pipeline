@@ -1,0 +1,916 @@
+# Execution du 2026-10-20T23:04:01Z
+# Script    : scripts-maintenance/analyser_duplication_editoriale.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Lecture de historique_publications...
+   743 articles charges — colonnes utilisees : titre=titre, post_id=post_id, url=url_wp, silo=silo, sous_silo=sous_silo_strategique, date=date_publication
+
+🔎 44 cluster(s) d'articles quasi-dupliques trouve(s) (meme forme de titre, meme silo)
+
+
+======================================================================
+CLUSTER 1/44 — 10 articles — silo : 5. Électricité / Facture Électricité
+======================================================================
+  - post_id=7023 : "Facture Électricité : hausse de 1.9% en août 2026" (2026-08-27 02:01:07.445507+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-2/
+  - post_id=7025 : "Facture Électricité : hausse de 3.0% en août 2026" (2026-08-27 02:01:28.084294+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-3/
+  - post_id=7027 : "Facture Électricité : hausse de 1.7% en août 2026" (2026-08-27 02:01:49.025959+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-4/
+  - post_id=7029 : "Facture Électricité : hausse de 3.0% en août 2026" (2026-08-27 02:02:10.577303+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-5/
+  - post_id=7031 : "Facture Électricité : hausse de 1.4% en août 2026" (2026-08-27 02:02:33.657489+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-6/
+  - post_id=7033 : "Facture Électricité : hausse de 3.1% en août 2026" (2026-08-27 02:02:54.959226+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-7/
+  - post_id=7035 : "Facture Électricité : hausse de 0.9% en août 2026" (2026-08-27 02:03:16.775505+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-8/
+  - post_id=7037 : "Facture Électricité : hausse de 3.1% en août 2026" (2026-08-27 02:03:37.339474+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-9/
+  - post_id=7021 : "Facture Électricité : hausse de 3.0% en août 2026" (2026-08-27 02:00:46.423491+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827/
+  - post_id=7019 : "Facture Électricité : hausse de 2.1% en août 2026" (2026-08-27 02:00:24.497053+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+7029
+
+===PLAN===
+1. **Créer un article de référence unique** intitulé "Facture Électricité : hausse de 3.0% en août 2026" (le pourcentage le plus fréquent dans les variantes) qui fait autorité sur cette augmentation tarifaire.
+
+2. **Intégrer une section contexte et fourchette** : expliquer que les estimations varient entre 0.9% et 3.1% selon les sources/fournisseurs/types de contrats, avec un tableau comparatif si pertinent.
+
+3. **Enrichir avec des éléments pratiques** : impact concret sur une facture moyenne mensuelle, historique des hausses précédentes, conseils pour réduire sa consommation, aides disponibles.
+
+4. **Ajouter une FAQ complète** reprenant les questions courantes sur cette hausse (pourquoi, quand exactement, qui est concerné, comment calculer son impact personnel).
+
+5. **Mettre en place des redirections 301** de tous les autres post_id vers le 7029 pour consolider le jus SEO et éviter la cannibalisation des mots-clés.
+
+===FIN===
+
+======================================================================
+CLUSTER 2/44 — 7 articles — silo : 3. Aide Énergétique / Aides chauffe-eau thermodynamique
+======================================================================
+  - post_id=11031 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-10-20 08:19:32.357315+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1020-2/
+  - post_id=5941 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-08-14 08:15:08.794325+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0814/
+  - post_id=7197 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-08-29 03:11:47.040805+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0829/
+  - post_id=8703 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-09-29 09:35:16.909224+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0929/
+  - post_id=9670 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-10-14 08:28:24.928085+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1014/
+  - post_id=4855 : "Installation chauffe-eau thermodynamique : étapes et coûts 2" (2026-07-25 03:06:34.810395+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts/
+  - post_id=8450 : "Installation chauffe-eau thermodynamique : étapes et coûts" (2026-09-27 09:02:29.820732+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0927/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+11031
+
+===PLAN===
+1. **Conserver la structure complète** : étapes détaillées (préparation, installation, mise en service) et décomposition précise des coûts (équipement, main d'œuvre, aides financières)
+
+2. **Intégrer les variations de contenu** : comparer les différentes versions pour identifier et incorporer tout contenu unique (exemples spécifiques, conseils pratiques, points techniques) présent dans les autres variantes
+
+3. **Enrichir avec des cas concrets** : ajouter 2-3 exemples de projets types avec budgets détaillés selon la configuration (maison neuve, rénovation, différentes capacités)
+
+4. **Optimiser la mise à jour** : s'assurer que les prix et réglementations sont à jour (2024/2025), et supprimer définitivement les 6 doublons (5941, 7197, 8703, 9670, 4855, 8450)
+
+5. **Améliorer le maillage interne** : rediriger en 301 tous les doublons vers 11031 pour préserver le jus SEO et éviter la cannibalisation
+
+===FIN===
+
+======================================================================
+CLUSTER 3/44 — 6 articles — silo : 1. Gaz / Comparatifs Fournisseurs Gaz
+======================================================================
+  - post_id=4851 : "Gaz naturel vs propane : quel fournisseur choisir ?" (2026-07-25 03:04:16.921037+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-comparaison/
+  - post_id=5994 : "Gaz naturel vs propane : quel fournisseur choisir" (2026-08-14 08:46:24.602645+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-comparatif-fournisseurs/
+  - post_id=7727 : "Gaz naturel vs propane : quel fournisseur choisir ?" (2026-09-05 03:09:28.560389+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur-0905/
+  - post_id=5419 : "Gaz naturel vs propane : quel fournisseur choisir" (2026-08-08 03:04:21.273028+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur/
+  - post_id=7057 : "Gaz naturel vs propane : quel fournisseur choisir" (2026-08-27 03:06:24.134806+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-quel-fournisseur-choisir/
+  - post_id=6276 : "Gaz naturel vs propane : quel fournisseur choisir" (2026-08-17 03:08:20.406647+00:00) — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-quel-fournisseur/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+4851
+
+===PLAN===
+- Consolider tout le contenu informatif sur les différences entre gaz naturel et propane (coûts, disponibilité, efficacité énergétique) dans un seul article complet et à jour
+- Créer une section comparative détaillée des principaux fournisseurs avec tableau synthétique (prix, zones de couverture, services)
+- Intégrer des critères de décision clairs : disponibilité du réseau, type de logement, besoins énergétiques, budget
+- Ajouter une FAQ consolidant les questions récurrentes probablement dispersées dans les 6 versions
+- Mettre en place des redirections 301 de tous les autres post_id vers le 4851 pour préserver le référencement
+
+===FIN===
+
+======================================================================
+CLUSTER 4/44 — 4 articles — silo : 3. Aide Énergétique / Eco-prêt à taux zéro
+======================================================================
+  - post_id=6605 : "Eco-PTZ vs MaPrimeRénov' : quel financement choisir" (2026-08-21 12:29:40.948404+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif-0821/
+  - post_id=7733 : "Eco-PTZ vs MaPrimeRénov' : quel financement choisir" (2026-09-05 03:12:38.931275+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif-0905/
+  - post_id=4893 : "Éco-PTZ vs MaPrimeRénov' : quel financement choisir ?" (2026-07-26 03:07:01.193454+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif/
+  - post_id=7270 : "Eco-PTZ vs MaPrimeRénov' : quel financement choisir" (2026-08-31 09:27:12.494885+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-quel-financement-choisir/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+4893
+
+===PLAN===
+1. **Conserver la structure comparative complète** : Garder le format du post_id=4893 (avec point d'interrogation, qui incite davantage au clic) et développer une comparaison exhaustive des deux dispositifs avec tableau comparatif (conditions, montants, cumul possible).
+
+2. **Intégrer les cas d'usage concrets** : Récupérer de chaque variante les exemples pratiques ou simulations chiffrées qui aident le lecteur à déterminer quel dispositif lui convient selon son projet (isolation, chauffage, rénovation globale).
+
+3. **Ajouter une section décisionnelle** : Créer un arbre de décision ou questionnaire simple ("Quel financement pour mon profil ?") basé sur les critères : revenus du ménage, type de travaux, besoin de trésorerie immédiate.
+
+4. **Mettre à jour avec les derniers barèmes** : Vérifier et harmoniser les montants, plafonds et conditions 2024/2025 pour éviter les informations obsolètes présentes dans les doublons.
+
+5. **Rediriger les 3 autres URLs** : Mettre en place des redirections 301 des post_id 6605, 7733 et 7270 vers le 4893 pour préserver le SEO et consolider l'autorité sur cette requête unique.
+
+===FIN===
+
+======================================================================
+CLUSTER 5/44 — 4 articles — silo : 5. Électricité / Compteur
+======================================================================
+  - post_id=6288 : "Installation compteur électrique : étapes et coûts" (2026-08-17 03:15:11.513341+00:00) — https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0817/
+  - post_id=6742 : "Installation compteur électrique : étapes et coûts" (2026-08-23 03:16:53.363057+00:00) — https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823-2/
+  - post_id=6744 : "Installation compteur électrique : étapes et coûts" (2026-08-23 03:17:48.569549+00:00) — https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823-3/
+  - post_id=6740 : "Installation compteur électrique : étapes et coûts" (2026-08-23 03:15:48.629057+00:00) — https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+6288
+===PLAN===
+1. **Conserver la structure de base** : Garder l'article 6288 comme fondation avec ses étapes et coûts principaux
+2. **Supprimer les doublons** : Éliminer les posts 6742, 6744 et 6740 qui sont des duplicatas exacts sans valeur ajoutée distincte
+3. **Enrichir l'article principal** : Ajouter des sections complémentaires (comparaison compteur classique vs Linky, délais d'installation, démarches administratives, cas particuliers)
+4. **Optimiser le SEO** : Consolider la puissance de référencement sur un seul article au lieu de diluer l'autorité sur 4 URLs identiques
+5. **Mettre en place des redirections 301** : Rediriger les 3 doublons vers le post 6288 pour préserver le jus SEO et éviter le contenu dupliqué pénalisant
+===FIN===
+
+======================================================================
+CLUSTER 6/44 — 4 articles — silo : 5. Électricité / Contrat Électricité
+======================================================================
+  - post_id=6809 : "Résiliation contrat électricité : délais et procédure" (2026-08-24 03:15:36.348756+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-procedure/
+  - post_id=6355 : "Résiliation contrat électricité : délais et procédure" (2026-08-17 11:40:39.503597+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais/
+  - post_id=6353 : "Résiliation contrat électricité : délais et procédure" (2026-08-17 11:39:16.877022+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-procedure/
+  - post_id=8824 : "Résiliation contrat électricité : délais et procédure" (2026-09-30 09:35:26.452680+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+8824
+===PLAN===
+1. **Conserver la structure principale** : Garder l'article le plus récent (8824) comme base, en vérifiant qu'il contient les informations légales à jour sur les délais réglementaires (14 jours) et la procédure standard de résiliation.
+
+2. **Enrichir avec les cas spécifiques** : Intégrer les variantes de résiliation selon les situations (déménagement, changement de fournisseur, insatisfaction) si ces distinctions apparaissent dans les autres versions.
+
+3. **Ajouter une section comparative** : Inclure un tableau comparatif des délais selon les fournisseurs principaux (EDF, Engie, TotalEnergies, etc.) si ces données figurent dans les articles 6809, 6355 ou 6353.
+
+4. **Développer les aspects pratiques** : Compiler tous les modèles de lettres, checklist et conseils pratiques présents dans les 4 versions pour créer un guide complet et actionnable.
+
+5. **Rediriger en 301** : Mettre en place des redirections 301 depuis les posts 6809, 6355 et 6353 vers 8824 pour préserver le SEO et éviter le contenu dupliqué.
+===FIN===
+
+======================================================================
+CLUSTER 7/44 — 3 articles — silo : 1. Gaz / Bouteilles
+======================================================================
+  - post_id=5758 : "Installer une bouteille de gaz : étapes et sécurité" (2026-08-14 06:54:08.987727+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/installer-bouteille-gaz-etapes-securite/
+  - post_id=5760 : "Installer une bouteille de gaz : étapes et sécurité" (2026-08-14 06:54:08+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-etapes-normes/
+  - post_id=5760 : "Installer une bouteille de gaz : étapes et sécurité" (2026-08-14 06:54:08+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-etapes-normes/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+5758
+===PLAN===
+1. **Vérifier s'il s'agit d'un doublon technique** : Ces trois articles semblent être des duplicatas complets (même titre exact). Supprimer purement et simplement les posts 5760 (les deux entrées dupliquées).
+2. **Consolider tout contenu unique** : Avant suppression, vérifier si les versions 5760 contiennent des paragraphes, images ou conseils absents de la version 5758, et les intégrer.
+3. **Mettre en place une redirection 301** : Rediriger les URLs des posts 5760 vers le post 5758 pour préserver le jus SEO et éviter les erreurs 404.
+4. **Enrichir l'article conservé** : Ajouter des sections différenciées (gaz butane vs propane, installation intérieure vs extérieure, normes de sécurité par pays) pour justifier un article unique et complet.
+5. **Vérifier la base de données** : Investiguer la cause de cette duplication (erreur d'import, bug de publication) pour éviter que cela se reproduise.
+===FIN===
+
+======================================================================
+CLUSTER 8/44 — 3 articles — silo : 1. Gaz / Chauffage Gaz
+======================================================================
+  - post_id=5587 : "Comment fonctionne une chaudière gaz ? Guide complet" (2026-08-12 03:04:11.765132+00:00) — https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0812/
+  - post_id=6533 : "Comment fonctionne une chaudière gaz : guide complet" (2026-08-20 04:05:52.487335+00:00) — https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0820/
+  - post_id=7468 : "Comment fonctionne une chaudière gaz ? Guide complet" (2026-09-02 17:23:00.210825+00:00) — https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0902/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+5587
+===PLAN===
+- Conserver le post_id le plus ancien (5587) qui bénéficie probablement de la meilleure ancienneté SEO et du meilleur historique de backlinks
+- Analyser les contenus des trois articles pour identifier les sections uniques ou mieux rédigées dans 6533 et 7468, et les intégrer dans 5587
+- Enrichir l'article final avec des schémas explicatifs, FAQ détaillée et comparaisons entre types de chaudières gaz si ces éléments diffèrent entre versions
+- Mettre en place des redirections 301 depuis 6533 et 7468 vers 5587 pour consolider le jus SEO et éviter la cannibalisation
+- Optimiser l'URL et le title de 5587 en choisissant la formulation la plus performante (avec ou sans point d'interrogation selon les données analytics)
+===FIN===
+
+======================================================================
+CLUSTER 9/44 — 3 articles — silo : 3. Aide Énergétique / Aides chauffe-eau thermodynamique
+======================================================================
+  - post_id=4695 : "Chauffe-eau thermodynamique : comment ça marche ?" (2026-10-15 08:08:58.815488+00:00) — https://www.comprendre-mon-energie.fr/?p=4695
+  - post_id=6347 : "Chauffe-eau thermodynamique : comment ça marche?" (2026-08-17 11:34:29.288667+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement-0817/
+  - post_id=8568 : "Chauffe-eau thermodynamique : comment ça marche" (2026-09-28 09:25:29.465110+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement-0928-2/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+4695
+===PLAN===
+1. **Audit de contenu** : Comparer les trois versions pour identifier si des différences substantielles existent (illustrations, exemples, niveau de détail). Intégrer tout élément unique trouvé dans les versions 6347 et 8568.
+
+2. **Enrichissement technique** : Consolider dans l'article 4695 une explication complète couvrant : principe de fonctionnement, composants clés (évaporateur, compresseur, condenseur), cycle thermodynamique, et différences avec chauffe-eau classique.
+
+3. **Ajout de sections pratiques** : Intégrer conseils d'installation, conditions optimales d'utilisation, comparatif de performances (COP), et économies d'énergie réalisables pour créer un guide complet.
+
+4. **Redirection 301** : Rediriger les URLs des posts 6347 et 8568 vers 4695 pour consolider l'autorité SEO et éviter la cannibalisation de mots-clés.
+
+5. **Suppression des doublons** : Supprimer définitivement les posts 6347 et 8568 après migration du contenu unique et mise en place des redirections.
+===FIN===
+
+======================================================================
+CLUSTER 10/44 — 3 articles — silo : 3. Aide Énergétique / Chèque énergie
+======================================================================
+  - post_id=10824 : "Chèque énergie : comment l'utiliser pour vos factures" (2026-10-18 07:56:56.665891+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/ch-que-nergie-comment-utiliser/
+  - post_id=9800 : "Chèque énergie : comment l'utiliser pour vos factures" (2026-10-15 08:11:23.087984+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1015-2/
+  - post_id=6067 : "Chèque énergie : comment l'utiliser pour vos factures" (2026-08-15 03:12:21.939920+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+10824
+
+===PLAN===
+1. **Conserver la structure de base** du post 10824 (le plus récent) en vérifiant qu'il contient les informations à jour sur les montants et dates de versement du chèque énergie
+2. **Auditer les 3 versions** pour identifier les sections uniques : certains articles peuvent avoir des exemples pratiques, FAQ ou cas d'usage spécifiques absents des autres
+3. **Enrichir avec tous les modes d'utilisation** : paiement factures en ligne, envoi postal, utilisation chez les fournisseurs, travaux de rénovation énergétique - compiler toutes les méthodes mentionnées dans les 3 versions
+4. **Intégrer une section "Mise à jour"** en haut de l'article pour indiquer la dernière actualisation et les changements annuels (montants, dates) sans créer de nouveaux articles chaque année
+5. **Rediriger 301** les posts 9800 et 6067 vers 10824 pour consolider l'autorité SEO et éviter la cannibalisation
+
+===FIN===
+
+======================================================================
+CLUSTER 11/44 — 3 articles — silo : 3. Aide Énergétique / Prime énergie
+======================================================================
+  - post_id=7272 : "Prime énergie vs MaPrimeRénov' : laquelle choisir" (2026-08-31 09:28:09.292529+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov-comparaison/
+  - post_id=6803 : "Prime énergie vs MaPrimeRénov' : laquelle choisir" (2026-08-24 03:12:23.161465+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov/
+  - post_id=5142 : "Prime énergie vs MaPrimeRénov' : laquelle choisir" (2026-08-01 03:06:17.527119+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenovconditionnement/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+7272
+
+===PLAN===
+1. **Garder l'article le plus récent (7272)** car les dispositifs d'aides énergétiques évoluent régulièrement (plafonds, conditions, montants) - la version 2024 sera la plus à jour et pertinente pour les utilisateurs.
+
+2. **Vérifier les différences de contenu** entre les 3 versions : si certaines contenaient des exemples chiffrés, des cas pratiques ou des tableaux comparatifs absents des autres, les intégrer dans l'article final.
+
+3. **Ajouter une section "Historique des évolutions"** pour valoriser le contenu historique : expliquer comment ces primes ont évolué depuis leur création (montants, conditions d'éligibilité, démarches) - cela capitalise sur les anciennes versions.
+
+4. **Supprimer les doublons 6803 et 5142** avec redirections 301 vers 7272 pour préserver le jus SEO et éviter la cannibalisation.
+
+5. **Enrichir avec FAQ actualisée** incluant les questions sur le cumul possible, les délais de versement 2024, et les changements réglementaires récents pour maximiser la valeur ajoutée.
+
+===FIN===
+
+======================================================================
+CLUSTER 12/44 — 3 articles — silo : 5. Électricité / Chauffage Électricité
+======================================================================
+  - post_id=8000 : "Installation radiateur électrique : étapes et coûts" (2026-09-09 03:19:53.686690+00:00) — https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-etapes-couts-0909-2/
+  - post_id=7994 : "Installation radiateur électrique : étapes et coûts" (2026-09-09 03:15:43.037859+00:00) — https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-etapes-couts-0909/
+  - post_id=6006 : "Installation radiateur électrique : étapes et coûts 2026" (2026-08-14 08:53:38.819510+00:00) — https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-etapes-couts/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+6006
+
+===PLAN===
+- Garder la structure complète de l'article 6006 en conservant les informations actualisées pour 2026 (tarifs, normes, aides financières)
+- Intégrer les éventuelles spécificités techniques ou étapes détaillées présentes uniquement dans les articles 8000 et 7994
+- Ajouter une section "Évolution des coûts et réglementations" qui justifie la date 2026 dans le titre et apporte une vraie valeur temporelle
+- Enrichir avec un tableau comparatif des différents types de radiateurs électriques si présent dans l'une des versions
+- Mettre à jour régulièrement l'article unique pour maintenir sa pertinence sans créer de nouvelles versions
+
+===FIN===
+
+======================================================================
+CLUSTER 13/44 — 3 articles — silo : 5. Électricité / Déménagement
+======================================================================
+  - post_id=6615 : "Changer de fournisseur électricité lors d'un déménagement" (2026-08-21 12:36:59.805911+00:00) — https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0821-2/
+  - post_id=7136 : "Changer de fournisseur électricité lors d'un déménagement" (2026-08-28 03:15:51.642112+00:00) — https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0828/
+  - post_id=7662 : "Changer de fournisseur électricité lors d'un déménagement" (2026-09-04 03:15:46.390705+00:00) — https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0904/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+6615
+
+===PLAN===
+- Conserver l'article le plus ancien (6615) pour préserver l'historique SEO et l'autorité accumulée sur cette requête
+- Vérifier les trois versions pour identifier les conseils, procédures ou informations uniques dans 7136 et 7662, et les intégrer à 6615
+- Enrichir l'article final avec des sections complémentaires (timeline du changement, comparatif fournisseurs, checklist déménagement + électricité)
+- Implémenter des redirections 301 permanentes depuis 7136 et 7662 vers 6615 pour consolider le jus SEO
+- Mettre à jour la date de publication de 6615 après enrichissement pour signaler la fraîcheur du contenu
+
+===FIN===
+
+======================================================================
+CLUSTER 14/44 — 3 articles — silo : 5. Électricité / Heures Pleines/Creuses
+======================================================================
+  - post_id=6208 : "Heures pleines et creuses : comment ça marche" (2026-08-16 03:15:13.565414+00:00) — https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0816-2/
+  - post_id=6675 : "Heures pleines et creuses : comment ça marche" (2026-08-22 21:00:10.252590+00:00) — https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0822/
+  - post_id=7203 : "Heures pleines et creuses : comment ça marche" (2026-08-29 03:15:28.644840+00:00) — https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0829/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+6208
+===PLAN===
+• Vérifier que l'article conservé contient la définition complète du système heures pleines/creuses et son fonctionnement technique
+• Intégrer les exemples pratiques et cas d'usage présents dans les variantes (calculs d'économies, profils de consommateurs concernés)
+• Consolider tous les horaires par zone tarifaire et fournisseurs d'énergie mentionnés dans les trois versions
+• Ajouter une FAQ enrichie reprenant les questions spécifiques traitées séparément dans chaque doublon
+• Rediriger 301 les posts 6675 et 7203 vers 6208 pour préserver le SEO
+===FIN===
+
+======================================================================
+CLUSTER 15/44 — 2 articles — silo : 1. Gaz / Bouteilles
+======================================================================
+  - post_id=6341 : "Aides bouteille de gaz : subventions et réductions 2026" (2026-08-17 11:29:50.256252+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-bouteille-gaz-subventions-2026/
+  - post_id=8697 : "Aides bouteille de gaz : subventions et réductions 2026" (2026-09-29 09:30:35.369358+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-financieres-bouteille-gaz/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+6341
+===PLAN===
+1. **Vérifier et consolider le contenu** : Comparer ligne par ligne les deux articles pour identifier si l'un contient des informations actualisées, des aides régionales spécifiques ou des exemples concrets absents de l'autre
+2. **Enrichir avec les meilleures sections** : Intégrer dans l'article 6341 tous les éléments différenciants trouvés dans 8697 (tableaux comparatifs, montants précis, conditions d'éligibilité détaillées)
+3. **Supprimer les redondances** : Éliminer les répétitions et restructurer pour avoir un seul article exhaustif couvrant toutes les subventions et réductions disponibles en 2026
+4. **Rediriger 301** : Mettre en place une redirection permanente de 8697 vers 6341 pour préserver le SEO et éviter le contenu dupliqué
+===FIN===
+
+======================================================================
+CLUSTER 16/44 — 2 articles — silo : 1. Gaz / Bouteilles
+======================================================================
+  - post_id=9239 : "Comment recharger une bouteille de gaz en toute sécurité" (2026-10-01 09:49:48.164953+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-gaz-securite/
+  - post_id=10606 : "Comment recharger une bouteille de gaz en toute sécurité" (2026-10-16 07:53:38.771323+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-gaz-securite-1016/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+10606
+===PLAN===
+- Conserver le post le plus récent (10606) car il contient probablement les informations de sécurité les plus à jour et conformes aux réglementations actuelles
+- Auditer les deux articles pour identifier si l'un contient des conseils pratiques, illustrations ou avertissements absents de l'autre et les intégrer
+- Vérifier si l'un des deux couvre des types de bouteilles spécifiques (propane, butane, GPL) que l'autre ne mentionne pas et enrichir avec ces détails
+- S'assurer que l'article final inclut toutes les étapes de sécurité, points de vigilance légaux et contacts utiles présents dans l'une ou l'autre version
+- Mettre en place une redirection 301 du post 9239 vers le post 10606 pour préserver le SEO
+===FIN===
+
+======================================================================
+CLUSTER 17/44 — 2 articles — silo : 1. Gaz / Bouteilles
+======================================================================
+  - post_id=10812 : "Installation bouteille de gaz : étapes et normes de sécurité" (2026-10-18 07:48:00.078009+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-normes-securite-1018/
+  - post_id=10814 : "Installation bouteille de gaz : étapes et normes de sécurité" (2026-10-18 07:49:29.814303+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-normes-securite-1018-2/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+10812
+===PLAN===
+- Vérifier le contenu des deux articles pour identifier s'il y a des différences mineures (exemples, illustrations, détails techniques)
+- Conserver la version la plus complète et la mieux structurée des étapes d'installation
+- Intégrer toute information complémentaire unique trouvée dans l'article 10814 (si elle existe)
+- Supprimer définitivement l'article 10814 et mettre en place une redirection 301 vers 10812
+- Optimiser l'article final pour éviter la cannibalisation SEO sur la même requête cible
+===FIN===
+
+======================================================================
+CLUSTER 18/44 — 2 articles — silo : 1. Gaz / Bouteilles
+======================================================================
+  - post_id=9792 : "Prix bouteille de gaz 2026 : tarifs actuels et économies" (2026-10-15 08:04:34.760902+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015-2/
+  - post_id=9790 : "Prix bouteille de gaz 2026 : tarifs actuels et économies" (2026-10-15 08:03:23.026082+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+9792
+
+===PLAN===
+1. **Vérifier le contenu réel** : Examiner si les deux articles ont un contenu identique ou des différences substantielles (l'un pourrait être un brouillon/doublon technique)
+
+2. **Consolider les données tarifaires** : Intégrer toutes les informations de prix, grilles tarifaires et comparaisons présentes dans les deux versions pour maximiser la complétude
+
+3. **Enrichir avec une vision temporelle** : Si l'un des articles contient des données historiques ou projections différentes, créer une section évolution des prix 2024-2026
+
+4. **Optimiser les conseils d'économies** : Fusionner tous les conseils pratiques des deux versions pour offrir le guide le plus exhaustif possible
+
+5. **Nettoyer techniquement** : Supprimer le post 9790, mettre en place une redirection 301 vers 9792 pour préserver le SEO et éviter le contenu dupliqué
+
+===FIN===
+
+======================================================================
+CLUSTER 19/44 — 2 articles — silo : 1. Gaz / Bouteilles
+======================================================================
+  - post_id=9345 : "Prix bouteille de gaz : tarifs 2026 et economies" (2026-10-02 09:22:43.993123+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-2026/
+  - post_id=5714 : "Prix bouteille de gaz 2024 : tarifs et économies" (2026-08-14 03:06:15.605324+00:00) — https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024-tarifs/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+5714
+===PLAN===
+- Garder l'article 2024 comme base et ajouter une section "Prévisions tarifaires 2026" pour intégrer le contenu prospectif sans créer de cannibalisation SEO
+- Structurer l'article avec une chronologie claire : tarifs actuels 2024 (priorité) → évolution récente → perspectives 2025-2026
+- Enrichir avec un comparatif d'évolution des prix sur 3 ans pour donner une vision complète et historique
+- Ajouter une section "Comment anticiper les hausses futures" qui valorise l'information prospective sans créer un article séparé
+- Mettre à jour régulièrement l'article unique plutôt que créer une nouvelle URL chaque année (meilleur pour l'autorité SEO et l'expérience utilisateur)
+===FIN===
+
+======================================================================
+CLUSTER 20/44 — 2 articles — silo : 1. Gaz / Chauffage Gaz
+======================================================================
+  - post_id=5992 : "Aides chauffage gaz 2024 : MaPrimeRénov et dispositifs" (2026-08-14 08:45:24.780933+00:00) — https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2024/
+  - post_id=6953 : "Aides chauffage gaz 2026 : MaPrimeRénov et dispositifs" (2026-08-26 03:08:45.196757+00:00) — https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026-0826/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+5992
+===PLAN===
+- Transformer l'article en guide permanent "Aides chauffage gaz : MaPrimeRénov et dispositifs" sans année figée dans le titre
+- Ajouter une section introductive avec tableau récapitulatif des évolutions 2024-2026 (montants, conditions, calendrier)
+- Intégrer un encadré d'alerte sur les changements prévus en 2025-2026 (fin progressive des aides gaz, orientations vers alternatives)
+- Créer une section dédiée "Anticiper 2026" avec les dispositifs de transition et aides pour sortie du gaz
+- Maintenir l'article à jour avec mention de dernière mise à jour visible, plutôt que multiplier les versions annuelles
+===FIN===
+
+======================================================================
+CLUSTER 21/44 — 2 articles — silo : 2. Rénovation Énergétique / Audit énergétique
+======================================================================
+  - post_id=4422 : "Audit énergétique obligatoire : qui est concerné en 2024 ?" (2026-07-14 03:05:39.926047+00:00) — https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-obligatoire-2024/
+  - post_id=7984 : "Audit énergétique obligatoire : qui est concerné en 2026" (2026-09-09 03:08:49.575202+00:00) — https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-obligatoire/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+4422
+===PLAN===
+- Créer une section chronologique exhaustive détaillant l'évolution réglementaire : qui était concerné en 2023, 2024, 2025 et 2026 (durcissement progressif des critères DPE)
+- Intégrer un tableau comparatif clair montrant les seuils DPE par année et les catégories de logements concernés à chaque étape
+- Ajouter une section "Anticiper les obligations futures" expliquant les échéances 2026 et au-delà pour aider les propriétaires à planifier
+- Développer les conseils pratiques selon la situation : que faire si concerné maintenant vs. concerné en 2026 (urgence différente, stratégies adaptées)
+- Optimiser le titre en "Audit énergétique obligatoire : qui est concerné ? [2024-2026]" pour capter toutes les requêtes temporelles
+===FIN===
+
+======================================================================
+CLUSTER 22/44 — 2 articles — silo : 3. Aide Énergétique / Aides chaudière
+======================================================================
+  - post_id=7334 : "Aides chaudière fioul : cumul MaPrimeRénov' et CEE" (2026-08-31 11:47:13.792410+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-cumul-maprimerenov-cee-0831/
+  - post_id=6479 : "Aides chaudière fioul : cumul MaPrimeRénov' et CEE" (2026-08-19 03:58:15.068816+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-cumul-maprimerenov-cee/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+7334
+===PLAN===
+1. **Garder le contenu le plus récent** (post 7334) car les aides MaPrimeRénov' et CEE évoluent régulièrement (montants, conditions d'éligibilité, barèmes)
+2. **Vérifier les différences de contenu** entre les deux versions : intégrer toute information complémentaire, exemple chiffré ou cas pratique présent uniquement dans le post 6479
+3. **Ajouter une mention de mise à jour** en intro pour indiquer la date de dernière actualisation et rassurer sur la fiabilité des montants mentionnés
+4. **Rediriger 301 le post 6479 vers 7334** pour consolider l'autorité SEO et éviter la cannibalisation sur une requête identique
+5. **Enrichir avec un tableau comparatif** récapitulant les montants cumulables selon les revenus et le type de logement pour maximiser la valeur ajoutée
+===FIN===
+
+======================================================================
+CLUSTER 23/44 — 2 articles — silo : 3. Aide Énergétique / Aides chaudière
+======================================================================
+  - post_id=4025 : "Coût installation chaudière gaz : tarifs 2025" (2026-07-02 12:34:12.521245+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/cout-installation-chaudiere-gaz-tarifs-2025/
+  - post_id=7128 : "Coût installation chaudière gaz : tarifs 2026" (2026-08-28 03:11:11.257335+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/cout-installation-chaudiere-gaz/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+4025
+===PLAN===
+- Conserver 4025 avec un titre évolutif "Coût installation chaudière gaz : tarifs 2025-2026" ou simplement "tarifs et prix actualisés"
+- Intégrer une section sur l'évolution tarifaire prévisionnelle entre 2025 et 2026 (tendances du marché, facteurs d'augmentation/stabilisation)
+- Ajouter un tableau comparatif des fourchettes de prix 2025 vs projections 2026 pour différents types de chaudières
+- Mettre en place un système de mise à jour annuelle avec mention "Dernière mise à jour : [mois/année]" plutôt que créer un nouvel article chaque année
+- Rediriger 7128 vers 4025 en 301 pour préserver le SEO et centraliser l'autorité sur un seul article actualisé
+===FIN===
+
+======================================================================
+CLUSTER 24/44 — 2 articles — silo : 3. Aide Énergétique / Aides chauffe-eau thermodynamique
+======================================================================
+  - post_id=7656 : "Aides chauffe-eau thermodynamique : cumuler MaPrimeRénov'" (2026-09-04 03:11:49.827447+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-cumul-maprimerenov-cee/
+  - post_id=6539 : "Aides chauffe-eau thermodynamique : cumuler MaPrimeRénov'" (2026-08-20 04:10:42.413871+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-cumul/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+7656
+===PLAN===
+1. **Vérifier et consolider le contenu** : Comparer les deux articles ligne par ligne pour identifier les différences de contenu (montants d'aides, conditions d'éligibilité, plafonds de ressources) et conserver la version la plus à jour et complète
+2. **Enrichir avec les éléments uniques** : Si l'un des deux articles contient des exemples concrets, des tableaux de montants ou des FAQ absents de l'autre, les intégrer dans l'article conservé
+3. **Mettre à jour les informations 2024/2025** : S'assurer que tous les montants MaPrimeRénov', CEE et autres aides mentionnés correspondent aux barèmes en vigueur
+4. **Optimiser la structure SEO** : Ajouter une table des matières claire (conditions, montants, cumul possible, démarches) pour améliorer l'expérience utilisateur
+5. **Rediriger 301** : Mettre en place une redirection permanente du post_id 6539 vers 7656 pour préserver le jus SEO et éviter la cannibalisation
+===FIN===
+
+======================================================================
+CLUSTER 25/44 — 2 articles — silo : 3. Aide Énergétique / Chèque énergie
+======================================================================
+  - post_id=10924 : "Chèque énergie : qui peut en bénéficier en 2026" (2026-10-19 08:36:14.033316+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/ch-que-energie-qui-peut-beneficier-eligibilite/
+  - post_id=9249 : "Chèque énergie : qui peut en bénéficier en 2026" (2026-10-01 09:56:27.839207+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-eligibilite-conditions-1001/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+10924
+===PLAN===
+1. **Vérifier et consolider les conditions d'éligibilité** : S'assurer que tous les critères (plafonds de revenus, composition du foyer) sont à jour et complets en fusionnant les informations des deux versions
+2. **Enrichir avec un historique récent** : Ajouter une section comparative montrant l'évolution 2024-2025-2026 pour contextualiser et capter les recherches sur plusieurs années
+3. **Compléter les informations pratiques** : Intégrer tous les éléments opérationnels présents dans les deux articles (calendrier d'envoi, démarches, montants, utilisation)
+4. **Optimiser la structure SEO** : Créer des sous-sections claires (Qui est éligible / Montants / Comment l'obtenir / Quand arrive-t-il) pour maximiser les featured snippets
+5. **Rediriger 301 le post_id=9249 vers 10924** pour transférer l'autorité SEO et éviter la cannibalisation de mots-clés
+===FIN===
+
+======================================================================
+CLUSTER 26/44 — 2 articles — silo : 3. Aide Énergétique / Chèque énergie
+======================================================================
+  - post_id=11035 : "Chèque énergie vs MaPrimeRénov' : quelle aide choisir" (2026-10-20 08:22:41.671445+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-maprimer-nov-comparatif-aides/
+  - post_id=9565 : "Chèque énergie vs MaPrimeRénov' : quelle aide choisir" (2026-10-13 21:26:46.906537+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-vs-maprimerenov-quelle-aide-choisir/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+11035
+
+===PLAN===
+1. **Vérifier le contenu le plus à jour** : Garder l'article 11035 (plus récent) et s'assurer qu'il contient les plafonds, conditions et montants 2024-2025 actualisés pour les deux dispositifs.
+
+2. **Enrichir avec un tableau comparatif synthétique** : Créer une comparaison visuelle claire (montants, conditions de ressources, types de travaux éligibles, cumul possible) pour faciliter la décision du lecteur.
+
+3. **Intégrer des cas d'usage concrets** : Ajouter 2-3 profils types (locataire précaire, propriétaire classe moyenne, copropriété) montrant quelle aide privilégier selon la situation.
+
+4. **Ajouter une FAQ dédiée** : Inclure les questions "Peut-on cumuler les deux ?", "Quelle aide demander en priorité ?" pour capter plus de requêtes longue traîne.
+
+5. **Rediriger 9565 vers 11035 en 301** : Éviter la cannibalisation SEO et concentrer l'autorité sur un seul article de référence.
+
+===FIN===
+
+======================================================================
+CLUSTER 27/44 — 2 articles — silo : 3. Aide Énergétique / Eco-prêt à taux zéro
+======================================================================
+  - post_id=5270 : "Éco-PTZ : comment ça marche et qui peut l'obtenir" (2026-08-04 03:06:45.298785+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-conditions-acces/
+  - post_id=7061 : "Eco-PTZ : comment ça marche et qui peut l'obtenir" (2026-08-27 03:09:12.152138+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-remise-dette/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+7061
+
+===PLAN===
+1. **Garder la structure de l'article 7061** (probablement plus récent vu le post_id supérieur) et vérifier qu'il contient les informations les plus à jour sur l'éco-PTZ (plafonds 2024, conditions actuelles)
+
+2. **Récupérer du post 5270 tout contenu unique** : exemples concrets, études de cas, tableaux récapitulatifs ou FAQ qui n'existeraient pas dans le 7061
+
+3. **Harmoniser l'orthographe** : choisir définitivement entre "Éco-PTZ" et "Eco-PTZ" (privilégier "Éco-PTZ" avec accent, forme officielle) pour cohérence SEO
+
+4. **Enrichir avec une FAQ complète** fusionnant les questions des deux versions + ajouter section sur les erreurs courantes à éviter lors de la demande
+
+5. **Rediriger 301 le post 5270 vers 7061** pour consolider l'autorité SEO et éviter la cannibalisation de mots-clés
+
+===FIN===
+
+======================================================================
+CLUSTER 28/44 — 2 articles — silo : 3. Aide Énergétique / MaPrimeRénov'
+======================================================================
+  - post_id=9802 : "Comment fonctionne MaPrimeRénov' : étapes et délais" (2026-10-15 08:12:57.989867+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-etapes-delais/
+  - post_id=10828 : "Comment fonctionne MaPrimeRénov' : étapes et délais" (2026-10-18 07:59:53.029131+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-etapes-delais-1018/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+10828
+
+===PLAN===
+- Vérifier et conserver la version la plus à jour des informations réglementaires (barèmes, plafonds, dates de référence) entre les deux articles
+- Intégrer tout élément unique présent dans l'article 9802 : exemples spécifiques, captures d'écran, ou étapes détaillées absentes de 10828
+- Enrichir la section "délais" en consolidant les informations temporelles des deux versions (délais d'instruction, de versement, périodes de dépôt)
+- Ajouter une mention de dernière mise à jour visible pour rassurer les lecteurs sur la fraîcheur de l'information
+- Mettre en place une redirection 301 de l'article 9802 vers 10828 pour préserver le jus SEO
+
+===FIN===
+
+======================================================================
+CLUSTER 29/44 — 2 articles — silo : 3. Aide Énergétique / MaPrimeRénov'
+======================================================================
+  - post_id=9804 : "Comment fonctionne MaPrimeRénov' : guide complet" (2026-10-15 08:14:13.372175+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov/
+  - post_id=6673 : "Comment fonctionne MaPrimeRénov' ? Guide complet" (2026-08-22 20:59:13.627531+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/fonctionnement-maprimerenov-guide-complet/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+9804
+
+===PLAN===
+- Conserver la structure du guide complet de l'article 9804 comme base principale
+- Comparer les deux versions pour identifier les sections uniques ou mieux développées dans l'article 6673 et les intégrer
+- Vérifier si l'un des deux contient des informations plus récentes (barèmes, plafonds, critères d'éligibilité) et privilégier les données à jour
+- Harmoniser les exemples pratiques et cas d'usage en fusionnant les meilleurs de chaque version
+- Rediriger 301 l'URL de l'article 6673 vers 9804 après fusion pour consolider l'autorité SEO
+
+===FIN===
+
+======================================================================
+CLUSTER 30/44 — 2 articles — silo : 3. Aide Énergétique / MaPrimeRénov'
+======================================================================
+  - post_id=5998 : "MaPrimeRénov' 2025 : comment ça marche vraiment" (2026-08-14 08:49:20.303327+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-2025/
+  - post_id=6351 : "MaPrimeRénov' 2026 : comment ça marche vraiment" (2026-08-17 11:37:46.699533+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-2026/
+
+===VERDICT===
+differencier
+
+===POST_ID_A_GARDER===
+
+
+===PLAN===
+**Post 5998 (MaPrimeRénov' 2025)** : Le repositionner comme article d'archive/référence historique avec angle "Ce qui a changé entre 2025 et 2026" + redirection SEO partielle vers le 6351 pour les requêtes génériques. Garder uniquement pour les recherches spécifiques "2025".
+
+**Post 6351 (MaPrimeRénov' 2026)** : En faire LA référence principale et à jour. Optimiser pour "MaPrimeRénov'" (sans année) + "MaPrimeRénov' 2026". Ajouter en intro un encadré "Vous cherchez les anciennes conditions 2025 ?" avec lien vers 5998.
+
+**Bonus** : Créer un article pivot "Évolution MaPrimeRénov' : historique et changements" qui compare les années et fait des liens vers chaque version annuelle, capturant ainsi les requêtes comparatives.
+
+===FIN===
+
+======================================================================
+CLUSTER 31/44 — 2 articles — silo : 3. Aide Énergétique / MaPrimeRénov'
+======================================================================
+  - post_id=7589 : "MaPrimeRénov' 2026 : conditions d'éligibilité et montants" (2026-09-03 03:13:41.361701+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/eligibilite-maprimerenov-conditions-montants/
+  - post_id=8576 : "MaPrimeRénov' : conditions d'éligibilité 2026 et montants" (2026-09-28 09:30:46.434399+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/conditions-eligibilite-maprimerenov-montants/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+7589
+
+===PLAN===
+- Conserver la structure chronologique claire du 7589 ("MaPrimeRénov' 2026") qui positionne mieux la temporalité dans le titre
+- Intégrer les éventuelles nuances de formulation des conditions d'éligibilité présentes dans le 8576 pour enrichir la section explicative
+- Ajouter un historique comparatif 2025/2026 si le 8576 contient des éléments antérieurs, pour contextualiser les évolutions
+- Structurer avec des ancres permettant d'accéder rapidement soit aux conditions, soit aux montants (répondre aux deux intentions de recherche)
+- Prévoir une mise à jour régulière avec bandeau de dernière actualisation pour maintenir la fraîcheur SEO
+
+===FIN===
+
+======================================================================
+CLUSTER 32/44 — 2 articles — silo : 3. Aide Énergétique / MaPrimeRénov'
+======================================================================
+  - post_id=9359 : "MaPrimeRénov' 2026 : montants et conditions d'éligibilité" (2026-10-02 09:33:17.917658+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2026/
+  - post_id=9677 : "MaPrimeRénov' 2026 : montants et conditions d'éligibilité" (2026-10-14 08:31:57.091042+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2025/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+9677
+===PLAN===
+1. **Garder le post le plus récent (9677)** comme référence principale, car il est probablement plus à jour sur les informations MaPrimeRénov' 2026
+2. **Vérifier et intégrer tout contenu unique du post 9359** : tableaux de montants différents, exemples de calcul, ou conditions d'éligibilité qui auraient été omises dans 9677
+3. **Enrichir avec une structure complète** : ajouter un comparatif 2025 vs 2026 si absent, un simulateur ou calculateur, et une FAQ pour couvrir tous les cas d'usage
+4. **Rediriger 9359 vers 9677 en 301** pour consolider l'autorité SEO et éviter la cannibalisation sur la même requête cible
+5. **Optimiser l'article fusionné** avec des sections distinctes par type de travaux et profil de ménage pour maximiser la couverture sémantique
+===FIN===
+
+======================================================================
+CLUSTER 33/44 — 2 articles — silo : 3. Aide Énergétique / MaPrimeRénov'
+======================================================================
+  - post_id=11039 : "MaPrimeRénov' vs autres aides : lequel choisir" (2026-10-20 08:25:39.369358+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-autres-aides-comparatif-1020/
+  - post_id=9567 : "MaPrimeRénov' vs autres aides : lequel choisir" (2026-10-13 21:28:03.272109+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-comparaison-autres-aides-energetiques/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+11039
+===PLAN===
+1. **Conserver l'article le plus récent (11039)** car il contient probablement les informations les plus à jour sur MaPrimeRénov' et les autres dispositifs d'aides à la rénovation énergétique
+2. **Vérifier et intégrer les éventuelles spécificités de l'article 9567** : exemples concrets, comparatifs chiffrés ou cas d'usage qui n'apparaîtraient pas dans la version 11039
+3. **Enrichir avec un tableau comparatif détaillé** : MaPrimeRénov', CEE, Éco-PTZ, TVA réduite, aides locales - critères d'éligibilité, montants, délais
+4. **Ajouter une section décisionnelle pratique** : arbre de décision ou quiz pour guider le lecteur selon son profil (revenus, type de logement, travaux envisagés)
+5. **Mettre à jour avec les barèmes 2024-2025** et supprimer définitivement l'article 9567 en redirigeant via 301 vers le 11039
+===FIN===
+
+======================================================================
+CLUSTER 34/44 — 2 articles — silo : 3. Aide Énergétique / MaPrimeRénov'
+======================================================================
+  - post_id=9251 : "MaPrimeRénov' vs éco-PTZ : quelle aide choisir ?" (2026-10-01 09:57:34.775729+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-eco-ptz-comparatif/
+  - post_id=9253 : "MaPrimeRénov' vs Éco-PTZ : quelle aide choisir" (2026-10-01 09:58:54.657735+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-eco-ptz-comparatif/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+9251
+===PLAN===
+1. **Harmoniser la typographie** : Utiliser la graphie officielle "Éco-PTZ" avec majuscule initiale pour la cohérence (comme dans 9251)
+2. **Créer un comparatif structuré** : Tableau comparatif des critères (montants, conditions d'éligibilité, durée de remboursement, travaux concernés, cumul possible)
+3. **Ajouter des cas d'usage pratiques** : Scénarios types indiquant quand privilégier l'une, l'autre, ou les deux aides combinées selon le profil du demandeur
+4. **Intégrer un arbre de décision** : Outil simple permettant au lecteur de s'auto-orienter selon sa situation (revenus, type de travaux, capacité d'emprunt)
+5. **Optimiser pour l'intention de recherche comparative** : Enrichir avec une FAQ ciblée sur les questions "peut-on cumuler", "laquelle est plus avantageuse pour moi", "délais d'obtention comparés"
+===FIN===
+
+======================================================================
+CLUSTER 35/44 — 2 articles — silo : 3. Aide Énergétique / Prime énergie
+======================================================================
+  - post_id=4777 : "Prime énergie CEE : comment ça marche en 2025 ?" (2026-07-23 03:06:41.882565+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement/
+  - post_id=7480 : "Prime énergie CEE : comment ça marche en 2026" (2026-09-02 17:25:52.649307+00:00) — https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement-0902/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+4777
+===PLAN===
+- Garder 4777 comme article principal avec un titre générique "Prime énergie CEE : comment ça marche ?" (sans année) pour éviter l'obsolescence programmée
+- Intégrer une section "Évolutions et calendrier" mentionnant les changements 2025-2026 et au-delà, avec un tableau comparatif des montants/conditions par période si pertinent
+- Ajouter un encadré "Mise à jour" en haut d'article indiquant la dernière actualisation pour rassurer sur la fraîcheur de l'information
+- Créer une section FAQ avec questions temporelles ("La prime change-t-elle en 2026 ?") pour capter les requêtes datées sans multiplier les articles
+- Mettre en place un processus de revue annuelle de cet article unique plutôt que de créer une nouvelle version chaque année
+===FIN===
+
+======================================================================
+CLUSTER 36/44 — 2 articles — silo : 5. Électricité / Chauffage Électricité
+======================================================================
+  - post_id=7990 : "Radiateur électrique : installation DIY ou professionnel ?" (2026-09-09 03:12:56.982767+00:00) — https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-diy-pro/
+  - post_id=7996 : "Radiateur électrique : installation DIY ou professionnel" (2026-09-09 03:17:11.778131+00:00) — https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-diy-professionnel/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+7990
+===PLAN===
+- Garder l'article 7990 car le titre avec point d'interrogation est plus SEO-friendly et incitatif au clic
+- Vérifier si le contenu des deux articles diffère et intégrer les sections uniques ou plus détaillées de l'article 7996
+- Structurer l'article final avec une comparaison claire : avantages/inconvénients DIY vs professionnel, coûts, risques, cadre légal
+- Ajouter un tableau comparatif ou un outil d'aide à la décision pour enrichir le contenu fusionné
+- Rediriger 301 l'URL de l'article 7996 vers 7990 pour consolider le jus SEO et éviter la cannibalisation
+===FIN===
+
+======================================================================
+CLUSTER 37/44 — 2 articles — silo : 5. Électricité / Comparatifs Fournisseurs Électricité
+======================================================================
+  - post_id=6547 : "Électricité verte : comparer les offres écologiques 2026" (2026-08-20 04:16:40.303872+00:00) — https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparer-offres-electricite-verte/
+  - post_id=6545 : "Électricité verte : comparer les offres écologiques" (2026-08-20 04:15:21.693126+00:00) — https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/electricite-verte-comparer-offres-ecologiques/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+6545
+===PLAN===
+- Garder le titre générique sans millésime (6545) pour éviter l'obsolescence rapide et maintenir la pertinence SEO long terme
+- Intégrer une section "Offres 2026" comme chapitre actualisé au sein de l'article principal, facilement modifiable chaque année
+- Ajouter un encadré "Dernière mise à jour" en haut de page pour rassurer sur la fraîcheur des informations
+- Créer une structure évolutive avec tableau comparatif daté, permettant de garder un historique des évolutions tarifaires si pertinent
+- Mettre en place une redirection 301 du post 6547 vers 6545 pour préserver le jus SEO
+===FIN===
+
+======================================================================
+CLUSTER 38/44 — 2 articles — silo : 5. Électricité / Contrat Électricité
+======================================================================
+  - post_id=7903 : "Contrat électricité fixe ou variable : quel est le meilleur" (2026-09-08 09:24:53.498011+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-ou-variable/
+  - post_id=7901 : "Contrat électricité fixe ou variable : quel est le meilleur" (2026-09-08 09:23:39.612431+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-variable-0908-2/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+7903
+===PLAN===
+1. Conserver un seul article de référence sur "Contrat électricité fixe ou variable" puisque les titres sont identiques et traitent exactement de la même requête
+2. Comparer les deux versions pour identifier les sections uniques ou mieux rédigées dans chaque article et intégrer le meilleur contenu de chacune
+3. Enrichir l'article fusionné avec des exemples concrets actualisés, un comparatif détaillé des avantages/inconvénients selon différents profils de consommateurs
+4. Ajouter une FAQ complète reprenant les questions spécifiques qui pourraient être traitées différemment dans les deux versions
+5. Supprimer ou rediriger 301 le post_id=7901 vers le 7903 pour éviter la cannibalisation SEO et concentrer l'autorité sur un seul article
+===FIN===
+
+======================================================================
+CLUSTER 39/44 — 2 articles — silo : 5. Électricité / Contrat Électricité
+======================================================================
+  - post_id=9255 : "Électricité : combien économiser en changeant de" (2026-10-01 10:00:35.641826+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-1001/
+  - post_id=10830 : "Électricité : combien économiser en changeant de" (2026-10-18 08:01:27.031779+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-economies/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+9255
+===PLAN===
+1. Conserver le cadre général sur les économies potentielles en changeant de fournisseur d'électricité
+2. Intégrer les données chiffrées et exemples concrets des deux versions pour enrichir l'argumentation
+3. Ajouter une section comparative des différents profils de consommateurs (petit/moyen/gros consommateur) avec fourchettes d'économies réalistes
+4. Inclure une méthodologie claire pour calculer ses propres économies potentielles selon sa situation
+5. Actualiser avec les données tarifaires les plus récentes et prévoir une mise à jour annuelle plutôt que de multiplier les articles
+===FIN===
+
+======================================================================
+CLUSTER 40/44 — 2 articles — silo : 5. Électricité / Contrat Électricité
+======================================================================
+  - post_id=6357 : "Résiliation contrat électricité : droits et procédure" (2026-08-17 11:42:10.617367+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite-droits-procedure/
+  - post_id=8462 : "Résiliation contrat électricité : droits et procédure" (2026-09-27 09:10:42.255310+00:00) — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-droits-procedure/
+
+===VERDICT===
+fusionner
+
+===POST_ID_A_GARDER===
+6357
+
+===PLAN===
+1. **Vérifier l'antériorité et l'autorité SEO** : Conserver le post_id 6357 (probablement plus ancien vu l'ID inférieur), sauf si 8462 a significativement plus de backlinks ou de trafic organique
+2. **Comparer le contenu ligne par ligne** : Identifier les sections uniques dans chaque version (exemples concrets, modèles de lettres, cas particuliers) et intégrer tous les éléments différenciants dans l'article conservé
+3. **Enrichir avec une structure exhaustive** : Organiser l'article final en couvrant tous les cas de figure (déménagement, changement de fournisseur, insatisfaction, décès) avec leurs procédures spécifiques
+4. **Implémenter une redirection 301** : Rediriger le post supprimé vers l'article conservé pour préserver le jus SEO et éviter les erreurs 404
+5. **Optimiser pour éviter la cannibalisation** : L'article unique consolidé aura plus de poids SEO qu'aucun des doublons en compétition
+
+===FIN===
+
+======================================================================
+CLUSTER 41/44 — 2 articles — silo : 5. Électricité / Déménagement
+======================================================================
+  - post_id=6141 : "Électricité et déménagement : checklist complète" (2026-08-15 13:54:23.510926+00:00) — https://www.comprendre-mon-energie.fr/?p=6141
+  - post_id=6143 : "Électricité et déménagement : checklist complète" (2026-08-15 13:53:30.919695+00:00) — https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist-0815/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+6141
+===PLAN===
+1. Vérifier si les deux articles ont un contenu identique ou des variations mineures - si oui, supprimer purement le doublon 6143
+2. Si légères différences existent, extraire les éléments uniques de 6143 (étapes supplémentaires, conseils pratiques, délais spécifiques) et les intégrer dans 6141
+3. Enrichir l'article fusionné avec une checklist chronologique complète (avant/pendant/après déménagement) pour maximiser la valeur
+4. Optimiser l'article unique sur la requête "électricité déménagement checklist" sans cannibalisation SEO
+5. Mettre en place une redirection 301 de 6143 vers 6141 pour préserver le jus SEO
+===FIN===
+
+======================================================================
+CLUSTER 42/44 — 2 articles — silo : 5. Électricité / Facture Électricité
+======================================================================
+  - post_id=8085 : "Comment lire sa facture d'électricité : guide pratique" (2026-09-10 03:13:39.858836+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide/
+  - post_id=8083 : "Comment lire sa facture d'électricité : guide pratique" (2026-09-10 03:12:13.702636+00:00) — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+8085
+===PLAN===
+- Fusionner les deux articles qui sont strictement identiques en titre et sujet
+- Conserver uniquement le post_id 8085 (probablement le plus récent ou le mieux référencé)
+- Vérifier le contenu des deux versions pour récupérer tout élément unique ou exemple complémentaire présent dans le 8083
+- Mettre en place une redirection 301 du post_id 8083 vers le 8085 pour préserver le SEO
+- Supprimer définitivement le doublon 8083 après la redirection pour éviter la cannibalisation
+===FIN===
+
+======================================================================
+CLUSTER 43/44 — 2 articles — silo : 5. Électricité / Heures Pleines/Creuses
+======================================================================
+  - post_id=7205 : "Heures creuses électricité : comment ça marche réellement" (2026-08-29 03:16:38.031799+00:00) — https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/
+  - post_id=7737 : "Heures creuses électricité : comment ça marche réellement" (2026-09-05 03:15:11.120266+00:00) — https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-fonctionnement/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+7205
+===PLAN===
+1. Conserver l'article le plus ancien (7205) pour préserver l'historique SEO et l'autorité accumulée
+2. Auditer le contenu des deux versions pour identifier les différences (exemples, illustrations, explications) et intégrer tout élément unique du post 7737
+3. Enrichir l'article final avec des sections complémentaires si manquantes : calcul d'économies, choix du bon contrat, appareils à privilégier en heures creuses
+4. Supprimer définitivement le post 7737 et mettre en place une redirection 301 vers le post 7205
+5. Optimiser l'article fusionné avec des données à jour (tarifs actuels, nouveaux fournisseurs) pour justifier la consolidation
+===FIN===
+
+======================================================================
+CLUSTER 44/44 — 2 articles — silo : 5. Électricité / Heures Pleines/Creuses
+======================================================================
+  - post_id=3903 : "Heures pleines creuses : comment ça marche vraiment" (2026-08-07 03:08:46.223164+00:00) — https://www.comprendre-mon-energie.fr/?p=3903
+  - post_id=4821 : "Heures pleines creuses : comment ça marche vraiment ?" (2026-07-24 03:08:48.394588+00:00) — https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0724/
+
+===VERDICT===
+fusionner
+===POST_ID_A_GARDER===
+3903
+===PLAN===
+1. Conserver l'article 3903 (sans point d'interrogation, meilleure pratique SEO pour éviter la duplication)
+2. Vérifier si le contenu des deux articles diffère et intégrer les sections uniques ou mieux rédigées du 4821 dans le 3903
+3. Rediriger 301 le post_id 4821 vers le 3903 pour transférer l'autorité SEO et éviter la cannibalisation
+4. S'assurer que l'article fusionné couvre tous les aspects : définition, fonctionnement, tarification, avantages/inconvénients, et conseils pratiques
+===FIN===
