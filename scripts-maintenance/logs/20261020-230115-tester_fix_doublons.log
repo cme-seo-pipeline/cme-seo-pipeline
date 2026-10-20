@@ -1,0 +1,23 @@
+# Execution du 2026-10-20T23:01:15Z
+# Script    : scripts-maintenance/tester_fix_doublons.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. verifier_doublons() -- cas connu (doit renvoyer True)
+======================================================================
+   Titre : 'Facture Électricité : hausse de 3.0% en août 2026'
+   Resultat : True ✅ attendu
+
+======================================================================
+2. verifier_doublons() -- cas inedit (doit renvoyer False)
+======================================================================
+   Titre : 'Test diagnostic totalement inedit xyz-d14f7eac'
+   Resultat : False ✅ attendu
+
+======================================================================
+3. Requete SQL corrigee de selectionner_silos_a_traiter (filtre NOT IN)
+======================================================================
+   ✅ Requete executee sans erreur -- 0 ligne(s) retournee(s)
+   (0 ligne -- soit aucune opportunite pour ce sous-silo, soit toutes deja exclues)
