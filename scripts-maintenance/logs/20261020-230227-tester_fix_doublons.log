@@ -1,0 +1,49 @@
+# Execution du 2026-10-20T23:02:27Z
+# Script    : scripts-maintenance/tester_fix_doublons.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. verifier_doublons() -- cas connu (doit renvoyer True)
+======================================================================
+   Titre : 'Facture Électricité : hausse de 3.0% en août 2026'
+   Resultat : True ✅ attendu
+
+======================================================================
+2. verifier_doublons() -- cas inedit (doit renvoyer False)
+======================================================================
+   Titre : 'Test diagnostic totalement inedit xyz-4ad1ddcc'
+   Resultat : False ✅ attendu
+
+======================================================================
+3. Requete SQL corrigee de selectionner_silos_a_traiter (filtre NOT IN)
+======================================================================
+   ✅ Requete executee sans erreur -- 0 ligne(s) retournee(s)
+   (0 ligne -- soit aucune opportunite pour ce sous-silo, soit toutes deja exclues)
+
+======================================================================
+4. Meme requete SANS le filtre NOT IN (pour comparaison -- la table
+   seo_opportunities a-t-elle seulement des lignes pour ce sous-silo ?)
+======================================================================
+   0 ligne(s) sans le filtre
+
+======================================================================
+5. Contenu de la sous-requete d'exclusion (mots-cles deja publies)
+======================================================================
+   10 mot(s)-cle(s) deja publie(s) recemment pour ce sous-silo (exclus par le filtre)
+                             mot_cle sous_silo_strategique                 date_publication
+0    facture électricité trop élevée   Facture Électricité 2026-10-20 08:31:16.307590+00:00
+1            coût électricité tarifs   Facture Électricité 2026-10-20 08:29:45.515243+00:00
+2          aides électricité facture   Facture Électricité 2026-10-19 08:43:58.577840+00:00
+3             aides électricité 2026   Facture Électricité 2026-10-19 08:42:43.137261+00:00
+4        comparer tarifs électricité   Facture Électricité 2026-10-18 08:06:08.560135+00:00
+5  comparer fournisseurs électricité   Facture Électricité 2026-10-18 08:04:18.557695+00:00
+6           lire facture électricité   Facture Électricité 2026-10-17 07:51:00.151740+00:00
+7           lire facture électricité   Facture Électricité 2026-10-17 07:49:04.904647+00:00
+8         tarifs facture électricité   Facture Électricité 2026-10-16 08:10:16.307290+00:00
+9       éléments facture électricité   Facture Électricité 2026-10-16 08:09:06.413323+00:00
