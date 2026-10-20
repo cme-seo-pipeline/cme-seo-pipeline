@@ -262,7 +262,12 @@ def verifier_doublons(titre, mot_cle, client_bq, config):
         return r2['nb'].iloc[0] > 0
     except Exception as e:
         print(f"  ⚠️ verifier_doublons erreur: {e}")
-        return False
+        # Fail-safe du 20/10/2026 : avant, une erreur transitoire (reseau,
+        # quota BigQuery) etait traitee comme "pas de doublon" -- dangereux
+        # maintenant que cette fonction est reellement appelee en prod.
+        # Mieux vaut rater une publication ce jour-la (retentee au run
+        # suivant) que publier un doublon qu'il faudra corriger a la main.
+        return True
 
 
 def creer_table_historique(client_bq):
@@ -318,6 +323,19 @@ def selectionner_silos_a_traiter(client_bq, config):
     ]
     total_vise = sum(q for _, _, q in QUOTAS_SOUS_SILO)
     print(f"📅 Run par sous-silo cible → {total_vise} articles vises sur {len(QUOTAS_SOUS_SILO)} sous-silos")
+    # ANTI-DOUBLON (fix du 20/10/2026, voir CLAUDE.md) : sans ce filtre, le
+    # mot-cle le mieux classe pour un sous-silo pouvait etre reselectionne
+    # run apres run tant qu'aucun autre ne depassait son score, produisant
+    # un article quasi-identique a quelques semaines d'intervalle (constate
+    # en prod : clusters "gaz naturel vs propane" et "chauffe-eau
+    # thermodynamique", 6 articles chacun etales sur 1-2 mois). Exclut
+    # directement dans la requete les mots-cles deja publies sur ce meme
+    # sous-silo dans la fenetre anti-doublon -- LIKE (pas egalite stricte)
+    # car un sous-silo avec quota > 1 peut etre stocke suffixe (ex.
+    # "Bouteilles (2)") par le mecanisme d'anti-collision ci-dessus.
+    date_limite_rotation = (datetime.now() - timedelta(
+        days=config['fenetre_anti_doublon_jours']
+    )).strftime('%Y-%m-%d')
     resultats = []
     for silo_du_jour, sous_silo_cible, quota in QUOTAS_SOUS_SILO:
         silo_safe = silo_du_jour.replace("\\", "\\\\").replace("'", "\\'")
@@ -337,6 +355,13 @@ def selectionner_silos_a_traiter(client_bq, config):
             FROM `{PROJECT_ID}.03_final.seo_opportunities`
             WHERE silo = '{silo_safe}' AND sous_silo = '{sous_silo_safe}'
               AND jours_depuis_pub >= 30
+              AND LOWER(query) NOT IN (
+                  SELECT LOWER(mot_cle)
+                  FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+                  WHERE sous_silo_strategique LIKE '{sous_silo_safe}%'
+                    AND date_publication >= '{date_limite_rotation}'
+                    AND mot_cle IS NOT NULL AND mot_cle != ''
+              )
             ORDER BY score_opportunite DESC
             LIMIT {quota}
             """).to_dataframe()
@@ -3607,10 +3632,29 @@ def publier_actualites_reglementaires(client_bq, config, wp_config, run_id):
         return []
     print(f"  🔎 {len(df_changements)} changement(s) detecte(s)")
     lignes_publications = []
+    # ANTI-DOUBLON (fix du 20/10/2026, voir CLAUDE.md) : CAUSE CONFIRMEE du
+    # cluster de 10 articles quasi-identiques publies en 3 minutes le
+    # 27/08/2026 ("Facture Electricite : hausse de X% en aout 2026") --
+    # plusieurs indicateurs reglementaires distincts peuvent legitimement
+    # cibler le MEME sous-silo de contenu le meme jour (ex. plusieurs
+    # composantes tarifaires electricite qui changent ensemble), et cette
+    # boucle publiait un article separe pour chacun, sans aucune
+    # verification. Un seul article par (sous-silo, jour) suffit a couvrir
+    # le changement reglementaire du point de vue editorial. Garde en
+    # memoire (instantane, fiable) pour les doublons dans CE run, en plus
+    # de verifier_doublons() (BigQuery) pour les runs precedents.
+    sous_silos_deja_publies_ce_run = set()
     for _, changement in df_changements.iterrows():
         brief = construire_brief_actualite(changement, client_bq)
         if not brief:
             print(f"  ⚠️ Pas de silo mappe pour {changement['indicateur']}, ignore")
+            continue
+        cle_sous_silo = brief['sous_silo'].strip().lower()
+        if cle_sous_silo in sous_silos_deja_publies_ce_run:
+            print(f"  ⏭️ {brief['titre_seo']} : sous-silo '{brief['sous_silo']}' deja couvert dans ce run, ignore")
+            continue
+        if verifier_doublons(brief['titre_seo'], brief['mot_cle_principal'], client_bq, config):
+            print(f"  ⏭️ {brief['titre_seo']} : deja couvert recemment (anti-doublon), ignore")
             continue
         print(f"  ✍️ Redaction : {brief['titre_seo']}")
         contenu_html, erreur = rediger_article(brief, config, None, client_bq)
@@ -3622,6 +3666,7 @@ def publier_actualites_reglementaires(client_bq, config, wp_config, run_id):
             wp_config, client_bq, run_id, config
         )
         if resultat['success']:
+            sous_silos_deja_publies_ce_run.add(cle_sous_silo)
             print(f"  ✅ ACTUALITE PUBLIEE : {resultat['url']}")
             try:
                 client_bq.query(f"""
@@ -5309,13 +5354,15 @@ def run_pipeline(force=False):
         print("❌ Aucun silo disponible")
         return 0
 
-    # Vérification anti-doublons
-    # Pas de filtre doublon par titre : la rotation gère la diversité
+    # Anti-doublon : deja applique en amont, dans selectionner_silos_a_traiter
+    # (filtre SQL sur les mots-cles deja publies pour ce sous-silo -- voir
+    # le correctif du 20/10/2026 dans CLAUDE.md). Ne pas reappliquer un
+    # filtre ici : silos_a_traiter contient uniquement des candidats deja
+    # verifies.
     silos_valides = list(silos_a_traiter.iterrows())
     if not silos_valides:
         print("⚠️ Aucun silo disponible")
         return 0
-    # silos_a_traiter déjà prêt
 
     # ── SCRAPING ───────────────────────────────────────────
     print("\n🔎 SCRAPING CONCURRENTS...")
