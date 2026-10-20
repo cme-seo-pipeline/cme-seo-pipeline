@@ -358,6 +358,73 @@ des lancements manuels de vérification les 14-16/10).
   ça recasse un jour, sans avoir à repasser par l'onglet Exécutions chaque
   semaine.
 
+## Duplication éditoriale — root cause et correctif (chantier oct. 2026)
+
+**Diagnostic** : `scripts-maintenance/analyser_duplication_editoriale.py`
+(lecture seule, regroupe les articles publiés par "forme" de titre dans le
+même silo/sous-silo + avis editorial IA par cluster) a trouvé **42
+clusters** d'articles quasi-dupliqués dans `historique_publications`,
+jusqu'à 10 articles dans un seul cluster.
+
+**Root cause confirmée le 20/10** : `verifier_doublons()` existait dans
+`pipeline/pipeline.py` mais n'était **appelée nulle part** dans le code
+(ni dans ce fichier, ni dans le legacy `pipeline.py` à la racine). Deux
+chemins de publication distincts en étaient responsables :
+
+1. **`publier_actualites_reglementaires()`** (Mode Actualité, déclenché
+   quotidiennement par `sync-indicateurs.yml`) publiait un article par
+   changement d'indicateur réglementaire détecté (`vue_changements_indicateurs`),
+   sans aucune vérification. Plusieurs indicateurs distincts ciblant le
+   même sous-silo (ex. plusieurs composantes tarifaires électricité qui
+   changent le même jour) déclenchaient chacun leur propre article quasi-
+   identique — cause confirmée du plus gros cluster (10 articles "Facture
+   Électricité : hausse de X% en août 2026", publiés en 3 minutes le
+   27/08/2026).
+2. **`selectionner_silos_a_traiter()`** (quota quotidien principal, 14
+   articles/jour) portait un commentaire explicite *"Pas de filtre
+   doublon par titre : la rotation gère la diversité"* — faux en pratique
+   si le même mot-clé GSC reste le mieux classé pour un sous-silo d'un
+   run à l'autre : rien n'empêchait de le resélectionner. Cause des
+   clusters "gaz naturel vs propane" et "chauffe-eau thermodynamique" (6
+   articles chacun, étalés sur 1-2 mois) — et, confirmé par un test le
+   20/10, **toujours actif cette semaine même** (10 mots-clés quasi-
+   identiques publiés sur "Facture Électricité" entre le 16 et le 20/10).
+
+**Corrigé** (commit `9e88067`) :
+- `selectionner_silos_a_traiter()` exclut désormais directement dans sa
+  requête SQL (`NOT IN`) les mots-clés déjà publiés pour ce même sous-
+  silo dans la fenêtre anti-doublon (`config['fenetre_anti_doublon_jours']`,
+  90 jours). Match en `LIKE` (pas égalité stricte) car un sous-silo avec
+  quota > 1 peut être stocké suffixé (`"Bouteilles (2)"`) par le mécanisme
+  d'anti-collision existant.
+- `publier_actualites_reglementaires()` appelle maintenant
+  `verifier_doublons()` avant de rédiger/publier chaque changement
+  détecté, plus un garde en mémoire intra-run (un seul article par
+  (sous-silo, jour), même si plusieurs indicateurs distincts changent le
+  même jour).
+- `verifier_doublons()` elle-même : une erreur BigQuery transitoire
+  renvoyait silencieusement "pas de doublon" (`return False`) — dangereux
+  maintenant qu'elle est réellement appelée en prod. Passée en fail-safe
+  (`return True` sur erreur) : mieux vaut rater une publication ce jour-là
+  (retentée au run suivant) que publier un doublon à nettoyer à la main.
+
+Testé en lecture seule sur données réelles via
+`scripts-maintenance/tester_fix_doublons.py` (le pont GitHub Actions, pas
+Cloud Shell) avant le commit : `verifier_doublons()` renvoie bien `True`
+pour un titre déjà publié et `False` pour un titre inédit ; la sous-
+requête d'exclusion retrouve bien les publications récentes attendues.
+**Pas encore validé en conditions réelles** (le prochain run de
+`sync-indicateurs.yml`/`publication-quotidienne.yml` le confirmera — à
+vérifier qu'aucun nouveau cluster n'apparaît après le 20/10).
+
+**Étape 2 (séparée, pas automatique)** : les 42 clusters déjà publiés
+restent à traiter. `analyser_duplication_editoriale.py` ne fait que
+proposer un plan d'enrichissement éditorial par cluster (fusionner avec
+plan de contenu enrichi, ou différencier) — **lecture seule**, aucune
+fusion ni redirection 301 n'est appliquée automatiquement. Nécessite une
+relecture humaine avant toute application sur du contenu déjà publié et
+indexé.
+
 ## Divergence connue, non résolue
 
 `pipeline.py` à la racine du repo (~85 Ko, legacy, **non exécuté** par les
