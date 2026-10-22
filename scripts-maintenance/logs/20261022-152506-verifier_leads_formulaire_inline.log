@@ -1,0 +1,16 @@
+# Execution du 2026-10-22T15:25:06Z
+# Script    : scripts-maintenance/verifier_leads_formulaire_inline.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Leads 'contact-expert-inline' -- 48 dernieres heures
+======================================================================
+                         timestamp        prenom   telephone                     email code_postal                                                                                                     source_page source_post_id                                      details
+0 2026-10-22 15:20:57.889202+00:00  Oussama Blal  0694374991  o.blal@decodetheself.com       75012  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/          11258  "{\"position\":1,\"silo\":\"electricite\"}"
+1 2026-10-22 15:12:20.848477+00:00       oussama  0694374991  o.blal@decodetheself.com       75012  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/          11258  "{\"position\":1,\"silo\":\"electricite\"}"
+2 2026-10-22 14:39:56.466114+00:00        lionel  0607112671     lionel.nore@gmail.com       76160                                                                                                                           5502      "{\"position\":5,\"silo\":\"solaire\"}"
+3 2026-10-22 14:23:09.737303+00:00  Oussama Blal  0695410020  o.blal@decodetheself.com       75012                                                                                                                          11262  "{\"position\":1,\"silo\":\"electricite\"}"
+
+   4 ligne(s) trouvee(s).
