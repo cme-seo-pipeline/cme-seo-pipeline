@@ -1,0 +1,1632 @@
+# Execution du 2026-10-22T13:33:03Z
+# Script    : scripts-maintenance/nettoyer_anciens_cta_statiques.py
+# Arguments : 
+
+📥 Recuperation de tous les articles publies...
+   818 articles trouves au total
+
+  🔍 [SANS ECRITURE] post_id=11262 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne la facturation de l&rsquo;électricité
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/fonctionnement-facturation-electricite/
+  🔍 [SANS ECRITURE] post_id=11260 — 3 bloc(s) CTA statique(s) a retirer — Facture électricité : structure tarifaire et frais cachés
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/composantes-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=11258 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne un contrat d&rsquo;électricité en France
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+  🔍 [SANS ECRITURE] post_id=11256 — 3 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité : économies réelles et
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-guide-1022/
+  🔍 [SANS ECRITURE] post_id=11254 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : qui peut vraiment installer les travau
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-artisans-installation-conditions/
+  🔍 [SANS ECRITURE] post_id=11252 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : conditions d&rsquo;éligibilité mi
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/conditions-eligibilite-maprimerenov-2026/
+  🔍 [SANS ECRITURE] post_id=11250 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : montants 2026 et conditions d&rsquo;accès
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montants-2026-conditions/
+  🔍 [SANS ECRITURE] post_id=11248 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie 2026 : simulation personnalisée du montant
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2025-eligibilite-obtention/
+  🔍 [SANS ECRITURE] post_id=11246 — 3 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique 2026 : montants et
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2026-montants/
+  🔍 [SANS ECRITURE] post_id=11244 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : ROI et économies réalisées
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-budget/
+  🔍 [SANS ECRITURE] post_id=11242 — 3 bloc(s) CTA statique(s) a retirer — Fournisseurs gaz naturel : guide complet pour changer
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparatif-fournisseurs-gaz-naturel/
+  🔍 [SANS ECRITURE] post_id=11240 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz 13 kg vs 5 kg : quel format choisir
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-13kg-vs-5kg-comparatif/
+  🔍 [SANS ECRITURE] post_id=11238 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz butane vs propane : quel choix
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/butane-vs-propane-bouteille-gaz/
+  🔍 [SANS ECRITURE] post_id=11236 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz portable : guide complet pour vos
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-portable-guide-deplacement/
+  🔍 [SANS ECRITURE] post_id=11153 — 3 bloc(s) CTA statique(s) a retirer — Lire sa facture électricité : décrypter chaque ligne
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-decrypter-lignes/
+  🔍 [SANS ECRITURE] post_id=11151 — 3 bloc(s) CTA statique(s) a retirer — Facture électricité : les erreurs de facturation à vérifier
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide-1021/
+  🔍 [SANS ECRITURE] post_id=11149 — 3 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : droits et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-droits-procedure-1021/
+  🔍 [SANS ECRITURE] post_id=11147 — 3 bloc(s) CTA statique(s) a retirer — Résilier contrat électricité : les pénalités et frais
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-guide-complet/
+  🔍 [SANS ECRITURE] post_id=11145 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne MaPrimeRénov&rsquo; : guide complet
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-guide-complet/
+  🔍 [SANS ECRITURE] post_id=11143 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne MaPrimeRénov&rsquo; : le guide complet
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/fonctionnement-maprimerenov-guide-complet-1021/
+  🔍 [SANS ECRITURE] post_id=11141 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne le chèque énergie : guide complet
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-fonctionne-cheque-energie/
+  🔍 [SANS ECRITURE] post_id=11139 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : les erreurs courantes qui vous coûtent
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1021/
+  🔍 [SANS ECRITURE] post_id=11137 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : comment ça marche
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement-1021/
+  🔍 [SANS ECRITURE] post_id=11135 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : les principes physiques
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/fonctionnement-chauffe-eau-thermodynamique-1021/
+  🔍 [SANS ECRITURE] post_id=11133 — 3 bloc(s) CTA statique(s) a retirer — Aides facture gaz 2026 : critères d&rsquo;éligibilité et
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-reductions-2026/
+  🔍 [SANS ECRITURE] post_id=11131 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : comment ça marche et les risques
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/comment-fonctionne-bouteille-gaz/
+  🔍 [SANS ECRITURE] post_id=11129 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne une bouteille de gaz : mécanisme
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/comment-fonctionne-bouteille-de-gaz/
+  🔍 [SANS ECRITURE] post_id=11127 — 3 bloc(s) CTA statique(s) a retirer — Propane ou butane : quel gaz choisir selon son usage et son
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-bouteille-gaz/
+  🔍 [SANS ECRITURE] post_id=11047 — 3 bloc(s) CTA statique(s) a retirer — Facture électricité trop élevée : 7 leviers pour la réduire
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-trop-elevee-leviers-reduction/
+  🔍 [SANS ECRITURE] post_id=11045 — 3 bloc(s) CTA statique(s) a retirer — Calculateur de coût électricité : simulez votre
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/cout-tarif-electricite-facteurs/
+  🔍 [SANS ECRITURE] post_id=11043 — 3 bloc(s) CTA statique(s) a retirer — Installation électricité : délais et démarches expliqués
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/installation-electricite-delais-demarches/
+  🔍 [SANS ECRITURE] post_id=11041 — 3 bloc(s) CTA statique(s) a retirer — Tarif électricité fixe ou variable : simulateur de coût
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tarif-fixe-ou-variable-contrat-electricite/
+  🔍 [SANS ECRITURE] post_id=11039 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; vs autres aides : lequel choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-autres-aides-comparatif-1020/
+  🔍 [SANS ECRITURE] post_id=11037 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; vs autres aides : quel dispositif choisi
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-comparatif-autres-aides-energetiques/
+  🔍 [SANS ECRITURE] post_id=11035 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie vs MaPrimeRénov&rsquo; : quelle aide choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-maprimer-nov-comparatif-aides/
+  🔍 [SANS ECRITURE] post_id=11033 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie ou MaPrimeRénov&rsquo; : lequel maximise vos
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-vs-maprimerenov-quelle-aide-choisir-1020/
+  🔍 [SANS ECRITURE] post_id=11031 — 3 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1020-2/
+  🔍 [SANS ECRITURE] post_id=11029 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : guide complet pour installer
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1020/
+  🔍 [SANS ECRITURE] post_id=11027 — 3 bloc(s) CTA statique(s) a retirer — Facture gaz : comprendre chaque ligne pour détecter les
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comment-lire-facture-gaz-1020/
+  🔍 [SANS ECRITURE] post_id=11025 — 3 bloc(s) CTA statique(s) a retirer — Stockage bouteille de gaz : règles de sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/stockage-bouteille-gaz-regles-securite/
+  🔍 [SANS ECRITURE] post_id=11023 — 3 bloc(s) CTA statique(s) a retirer — Recharge bouteille de gaz : guide complet et tarifs
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharge-bouteille-gaz-guide-tarifs/
+  🔍 [SANS ECRITURE] post_id=11021 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz vide : les points de collecte et services
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-de-gaz-ou-comment/
+  🔍 [SANS ECRITURE] post_id=10932 — 3 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : simulateur personnalisé selon
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-electricite-2026-reduire-facture-1019/
+  🔍 [SANS ECRITURE] post_id=10930 — 3 bloc(s) CTA statique(s) a retirer — Contrat électricité : décrypter les clauses qui impactent
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1019/
+  🔍 [SANS ECRITURE] post_id=10928 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : délais de versement et calendrier
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-delais-versement-calendrier/
+  🔍 [SANS ECRITURE] post_id=10926 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : qui peut en bénéficier en 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-eligibilite-conditions-2026/
+  🔍 [SANS ECRITURE] post_id=10924 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : qui peut en bénéficier en 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/ch-que-energie-qui-peut-beneficier-eligibilite/
+  🔍 [SANS ECRITURE] post_id=10922 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie 2026 : les catégories de ménages exclus et
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-eligibilite-conditions-1019/
+  🔍 [SANS ECRITURE] post_id=10920 — 3 bloc(s) CTA statique(s) a retirer — Aides financières chauffe-eau thermodynamique 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-financieres-chauffe-eau-thermodynamique-2026/
+  🔍 [SANS ECRITURE] post_id=10918 — 3 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique 2026 : évolutions
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-dispositifs-2026/
+  🔍 [SANS ECRITURE] post_id=10915 — 3 bloc(s) CTA statique(s) a retirer — Durée de vie bouteille de gaz : quand la changer
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/duree-vie-bouteille-gaz-quand-changer/
+  🔍 [SANS ECRITURE] post_id=10913 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : comment négocier ses tarifs et réduire
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1019/
+  🔍 [SANS ECRITURE] post_id=10836 — 3 bloc(s) CTA statique(s) a retirer — Comparer les tarifs électricité : économisez jusqu&rsquo;à 1
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-tarifs-electricite-economiser/
+  🔍 [SANS ECRITURE] post_id=10834 — 3 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité : calculer réellement
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite-economies/
+  🔍 [SANS ECRITURE] post_id=10832 — 3 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité : guide complet
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-guide/
+  🔍 [SANS ECRITURE] post_id=10830 — 3 bloc(s) CTA statique(s) a retirer — Électricité : combien économiser en changeant de
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-economies/
+  🔍 [SANS ECRITURE] post_id=10828 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne MaPrimeRénov&rsquo; : étapes et délais
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-etapes-delais-1018/
+  🔍 [SANS ECRITURE] post_id=10826 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : comment fonctionne le dispositif
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-1018/
+  🔍 [SANS ECRITURE] post_id=10824 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : comment l&rsquo;utiliser pour vos factures
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/ch-que-nergie-comment-utiliser/
+  🔍 [SANS ECRITURE] post_id=10822 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : mode d&#8217;emploi pour le déclarer auprès
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs-1018/
+  🔍 [SANS ECRITURE] post_id=10820 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : quel prix et quel budget
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-prix-budget/
+  🔍 [SANS ECRITURE] post_id=10818 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : dimensionnement et
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1018/
+  🔍 [SANS ECRITURE] post_id=10816 — 3 bloc(s) CTA statique(s) a retirer — Facture gaz fixe ou variable : quel tarif choisir
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-fixe-ou-variable/
+  🔍 [SANS ECRITURE] post_id=10814 — 3 bloc(s) CTA statique(s) a retirer — Installation bouteille de gaz : étapes et normes de sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-normes-securite-1018-2/
+  🔍 [SANS ECRITURE] post_id=10812 — 3 bloc(s) CTA statique(s) a retirer — Installation bouteille de gaz : étapes et normes de sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-normes-securite-1018/
+  🔍 [SANS ECRITURE] post_id=10810 — 3 bloc(s) CTA statique(s) a retirer — Installer une bouteille de gaz en appartement : contraintes
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-normes-securite/
+  🔍 [SANS ECRITURE] post_id=10740 — 3 bloc(s) CTA statique(s) a retirer — Lire sa facture électricité : guide pratique décrypté
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-guide-complet-1017-2/
+  🔍 [SANS ECRITURE] post_id=10738 — 3 bloc(s) CTA statique(s) a retirer — Décoder les codes facture électricité : lexique des
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-guide-complet-1017/
+  🔍 [SANS ECRITURE] post_id=10736 — 3 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : délais et procédures
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilience-contrat-electricite-delais-procedures/
+  🔍 [SANS ECRITURE] post_id=10734 — 3 bloc(s) CTA statique(s) a retirer — Installation électricité : étapes, délais et coûts
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/installation-electricite-etapes-delais-couts/
+  🔍 [SANS ECRITURE] post_id=10732 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; vs autres aides : laquelle choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-autres-aides-comparatif/
+  🔍 [SANS ECRITURE] post_id=10730 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : montants et barèmes par revenus
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-baremes-2025/
+  🔍 [SANS ECRITURE] post_id=10728 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie et MaPrimeRénov&rsquo; : les combiner
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-maprimerenov-cumuler-1017/
+  🔍 [SANS ECRITURE] post_id=10726 — 3 bloc(s) CTA statique(s) a retirer — Cumuler le chèque énergie et MaPrimeRénov&rsquo; : les condi
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-maprimerenov-cumuler/
+  🔍 [SANS ECRITURE] post_id=10724 — 3 bloc(s) CTA statique(s) a retirer — Éco-PTZ chauffe-eau thermodynamique : conditions et montant
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/eco-ptz-chauffe-eau-thermodynamique/
+  🔍 [SANS ECRITURE] post_id=10722 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : peut-on cumuler
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cumul-aides-chauffe-eau-thermodynamique/
+  🔍 [SANS ECRITURE] post_id=10720 — 3 bloc(s) CTA statique(s) a retirer — Facture gaz : décoder la TVA, les taxes locales et les
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comprendre-frais-taxes-facture-gaz/
+  🔍 [SANS ECRITURE] post_id=10718 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz butane vs propane : comment choisir
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-propane-difference/
+  🔍 [SANS ECRITURE] post_id=10716 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz butane ou propane : différences
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-propane-differences/
+  🔍 [SANS ECRITURE] post_id=10714 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : les erreurs courantes à éviter
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-de-gaz-1017/
+  🔍 [SANS ECRITURE] post_id=10628 — 3 bloc(s) CTA statique(s) a retirer — Facture électricité : décrypter les tarifs et les frais
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/decrypter-tarifs-frais-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=10626 — 3 bloc(s) CTA statique(s) a retirer — Les pièges cachés des tarifs électricité :
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/elements-ignores-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=10624 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne un contrat d&rsquo;électricité
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1016-2/
+  🔍 [SANS ECRITURE] post_id=10622 — 3 bloc(s) CTA statique(s) a retirer — Contrat électricité : les 5 pièges à connaître
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1016/
+  🔍 [SANS ECRITURE] post_id=10620 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : les travaux éligibles et non éligibles
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-travaux-eligibles-non-eligibles/
+  🔍 [SANS ECRITURE] post_id=10618 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; refusée : comprendre les raisons du reje
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-refusee-raisons-recours/
+  🔍 [SANS ECRITURE] post_id=10616 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : les pièges à éviter pour bien l&rsquo;utili
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-pieges-a-eviter/
+  🔍 [SANS ECRITURE] post_id=10614 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : vérifier son éligibilité et estimer ses aid
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-qui-peut-demander/
+  🔍 [SANS ECRITURE] post_id=10612 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique vs traditionnel : quel prix ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-traditionnel-prix-comparatif/
+  🔍 [SANS ECRITURE] post_id=10610 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique vs chauffage gaz : toutes les ai
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-chauffage-gaz/
+  🔍 [SANS ECRITURE] post_id=10608 — 3 bloc(s) CTA statique(s) a retirer — Aides facture gaz 2026 : simulateur pour tout savoir
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-2026-1016/
+  🔍 [SANS ECRITURE] post_id=10606 — 3 bloc(s) CTA statique(s) a retirer — Comment recharger une bouteille de gaz en toute sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-gaz-securite-1016/
+  🔍 [SANS ECRITURE] post_id=10604 — 3 bloc(s) CTA statique(s) a retirer — Comment recharger une bouteille de gaz : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/comment-recharger-bouteille-gaz-guide-complet/
+  🔍 [SANS ECRITURE] post_id=10602 — 3 bloc(s) CTA statique(s) a retirer — Recharger sa bouteille de gaz propane
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-gaz-propane-1016/
+  🔍 [SANS ECRITURE] post_id=9812 — 3 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : réduire votre facture
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-electricite-reduire-facture/
+  🔍 [SANS ECRITURE] post_id=9810 — 3 bloc(s) CTA statique(s) a retirer — Aides électricité : comparatif des dispositifs par profil
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-reduction-facture-electricite-1015/
+  🔍 [SANS ECRITURE] post_id=9808 — 3 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : réductions et chèques énergie
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-1015/
+  🔍 [SANS ECRITURE] post_id=9806 — 3 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : conditions d&rsquo;éligibilité
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-reductions-subventions/
+  🔍 [SANS ECRITURE] post_id=9804 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne MaPrimeRénov&rsquo; : guide complet
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov/
+  🔍 [SANS ECRITURE] post_id=9802 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne MaPrimeRénov&rsquo; : étapes et délais
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-etapes-delais/
+  🔍 [SANS ECRITURE] post_id=9800 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : comment l&rsquo;utiliser pour vos factures
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1015-2/
+  🔍 [SANS ECRITURE] post_id=9798 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : guide pratique pour l&rsquo;utiliser en lig
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1015/
+  🔍 [SANS ECRITURE] post_id=9796 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : les erreurs courantes à éviter
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/fonctionnement-chauffe-eau-thermodynamique-1015/
+  🔍 [SANS ECRITURE] post_id=9794 — 3 bloc(s) CTA statique(s) a retirer — Facture gaz : les pièges à éviter pour les primo-accédants
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-guide-decryptage-1015/
+  🔍 [SANS ECRITURE] post_id=9792 — 3 bloc(s) CTA statique(s) a retirer — Prix bouteille de gaz 2026 : tarifs actuels et économies
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015-2/
+  🔍 [SANS ECRITURE] post_id=9790 — 3 bloc(s) CTA statique(s) a retirer — Prix bouteille de gaz 2026 : tarifs actuels et économies
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015/
+  🔍 [SANS ECRITURE] post_id=9788 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz 2026 : anticipez les hausses tarifaires
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs/
+  🔍 [SANS ECRITURE] post_id=9764 — 3 bloc(s) CTA statique(s) a retirer — Facture Gaz : hausse de 6.6% en octobre 2026
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-octobre-2026/
+  🔍 [SANS ECRITURE] post_id=9689 — 3 bloc(s) CTA statique(s) a retirer — Comparer les offres électricité : trouver le meilleur prix
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-offres-electricite-meilleur-prix/
+  🔍 [SANS ECRITURE] post_id=9686 — 3 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité : démarches et économies
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite-economiser-1014/
+  🔍 [SANS ECRITURE] post_id=9684 — 3 bloc(s) CTA statique(s) a retirer — Comparer les contrats électricité : guide pratique
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparer-contrats-electricite-guide-1014/
+  🔍 [SANS ECRITURE] post_id=9682 — 3 bloc(s) CTA statique(s) a retirer — Électricité : critères cachés pour bien comparer les
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparer-contrats-electricite-guide/
+  🔍 [SANS ECRITURE] post_id=9679 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : montants et barèmes selon vos rev
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-baremes-revenus/
+  🔍 [SANS ECRITURE] post_id=9677 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : montants et conditions d&rsquo;él
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2025/
+  🔍 [SANS ECRITURE] post_id=9675 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : montant 2026 et conditions d&rsquo;éligibil
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montant-2026-eligibilite/
+  🔍 [SANS ECRITURE] post_id=9672 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie 2026 : les nouveaux plafonds de revenus
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026-eligibilite-conditions/
+  🔍 [SANS ECRITURE] post_id=9670 — 3 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1014/
+  🔍 [SANS ECRITURE] post_id=9667 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : guide pas-à-pas pour les aides
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-1014/
+  🔍 [SANS ECRITURE] post_id=9665 — 3 bloc(s) CTA statique(s) a retirer — Négocier son contrat gaz : stratégies pour réduire ses coûts
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-fournisseurs-gaz-prix/
+  🔍 [SANS ECRITURE] post_id=9663 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz propane vs butane : quel choix pour vous ?
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-comparatif-bouteilles-gaz/
+  🔍 [SANS ECRITURE] post_id=9661 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz propane vs butane : quel choix
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-quel-choix/
+  🔍 [SANS ECRITURE] post_id=9659 — 3 bloc(s) CTA statique(s) a retirer — Butane ou propane : quel gaz choisir selon votre utilisation
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-vs-propane/
+  🔍 [SANS ECRITURE] post_id=9577 — 3 bloc(s) CTA statique(s) a retirer — Comprendre sa facture électricité : les lignes clés décrypté
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite-1013/
+  🔍 [SANS ECRITURE] post_id=9575 — 3 bloc(s) CTA statique(s) a retirer — Facture d&rsquo;électricité : guide complet des mentions
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/decoder-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=9573 — 3 bloc(s) CTA statique(s) a retirer — Fonctionnement contrat électricité : comprendre votre abonne
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1013/
+  🔍 [SANS ECRITURE] post_id=9571 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne un contrat électricité en France
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite/
+  🔍 [SANS ECRITURE] post_id=9569 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; vs autres aides : quel financement chois
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-comparatif-autres-aides-financement/
+  🔍 [SANS ECRITURE] post_id=9567 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; vs autres aides : lequel choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-comparaison-autres-aides-energetiques/
+  🔍 [SANS ECRITURE] post_id=9565 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie vs MaPrimeRénov&rsquo; : quelle aide choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-vs-maprimerenov-quelle-aide-choisir/
+  🔍 [SANS ECRITURE] post_id=9563 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : démarches de demande et documents
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-demande-eligibilite/
+  🔍 [SANS ECRITURE] post_id=9561 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique vs chaudière gaz : quelle aide ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-chaudiere-gaz-aides/
+  🔍 [SANS ECRITURE] post_id=9559 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau électrique : fonctionnement et consommation
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-electrique-comparatif/
+  🔍 [SANS ECRITURE] post_id=9557 — 3 bloc(s) CTA statique(s) a retirer — Facture gaz impayée : conséquences légales et solutions
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/delai-paiement-facture-gaz-1013/
+  🔍 [SANS ECRITURE] post_id=9555 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : comment ça marche et guide d&rsquo;usage
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-fonctionnement-guide-usage/
+  🔍 [SANS ECRITURE] post_id=9553 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : comment ça marche
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-de-gaz-1013/
+  🔍 [SANS ECRITURE] post_id=9551 — 3 bloc(s) CTA statique(s) a retirer — Détendeur de bouteille de gaz : guide d&rsquo;installation
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/detendeur-bouteille-gaz-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=9468 — 3 bloc(s) CTA statique(s) a retirer — Tarifs électricité heures creuses : économiser au quotidien
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarifs-heures-creuses-electricite/
+  🔍 [SANS ECRITURE] post_id=9466 — 3 bloc(s) CTA statique(s) a retirer — Tarif électricité : les facteurs qui font varier votre prix
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-electricite-comprendre-calcul-prix/
+  🔍 [SANS ECRITURE] post_id=9464 — 3 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : droits et modalités
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-droits-modalites/
+  🔍 [SANS ECRITURE] post_id=9462 — 3 bloc(s) CTA statique(s) a retirer — Résiliation électricité : éviter les pièges financiers et
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite-droits/
+  🔍 [SANS ECRITURE] post_id=9460 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : comment fonctionne le versement
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-versement/
+  🔍 [SANS ECRITURE] post_id=9458 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : comment ça marche étape par étape
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-comment-ca-marche/
+  🔍 [SANS ECRITURE] post_id=9456 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : délais de réception et activation
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-delais-reception-activation/
+  🔍 [SANS ECRITURE] post_id=9454 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : combien de temps avant expiration
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-validite-delai-expiration/
+  🔍 [SANS ECRITURE] post_id=9452 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : coûts et étapes d&rsquo;instal
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cout-installation-chauffe-eau-thermodynamique/
+  🔍 [SANS ECRITURE] post_id=9450 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : checklist de vérification
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1003/
+  🔍 [SANS ECRITURE] post_id=9448 — 3 bloc(s) CTA statique(s) a retirer — Aides gaz : guide complet des dispositifs cumulables
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-reductions-facture-gaz/
+  🔍 [SANS ECRITURE] post_id=9446 — 3 bloc(s) CTA statique(s) a retirer — Aides pour l&rsquo;achat de bouteilles de gaz : subventions 
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-achat-bouteilles-gaz-subventions/
+  🔍 [SANS ECRITURE] post_id=9444 — 3 bloc(s) CTA statique(s) a retirer — Aides pour l&rsquo;installation d&rsquo;une bouteille de gaz
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-installation-bouteille-gaz/
+  🔍 [SANS ECRITURE] post_id=9442 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : les aides gouvernementales
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-subventions-bouteille-gaz/
+  🔍 [SANS ECRITURE] post_id=9369 — 3 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : réductions et chèques énergie
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-electricite-reduction-facture/
+  🔍 [SANS ECRITURE] post_id=9367 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; électricité : accélérer la transition en
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-reduction-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=9365 — 3 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : obtenir vos réductions
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-reductions/
+  🔍 [SANS ECRITURE] post_id=9363 — 3 bloc(s) CTA statique(s) a retirer — Électricité : décrypter les clauses cachées de votre contrat
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparer-contrats-electricite-guide-tarifaire/
+  🔍 [SANS ECRITURE] post_id=9361 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : plafonds de revenus et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-eligibilite/
+  🔍 [SANS ECRITURE] post_id=9359 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : montants et conditions d&rsquo;él
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2026/
+  🔍 [SANS ECRITURE] post_id=9357 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : comment l&rsquo;utiliser chez votre fournis
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-comment-utiliser-fournisseur/
+  🔍 [SANS ECRITURE] post_id=9355 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : liste complète des dépenses éligibles
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1002/
+  🔍 [SANS ECRITURE] post_id=9353 — 3 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique : liste complète
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-liste-complete/
+  🔍 [SANS ECRITURE] post_id=9351 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : guide complet des aides
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-subventions/
+  🔍 [SANS ECRITURE] post_id=9349 — 3 bloc(s) CTA statique(s) a retirer — Tarification du gaz naturel : comment sont calculés
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comprendre-facture-gaz-tarifs-reductions/
+  🔍 [SANS ECRITURE] post_id=9347 — 3 bloc(s) CTA statique(s) a retirer — Prix bouteille de gaz : tarifs et frais cachés 2026
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1002/
+  🔍 [SANS ECRITURE] post_id=9345 — 3 bloc(s) CTA statique(s) a retirer — Prix bouteille de gaz : tarifs 2026 et economies
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-2026/
+  🔍 [SANS ECRITURE] post_id=9343 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : négocier ses tarifs
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs/
+  🔍 [SANS ECRITURE] post_id=9263 — 3 bloc(s) CTA statique(s) a retirer — Estimation facture électricité : simuler votre consommation
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/estimation-facture-electricite-simuler-consommation/
+  🔍 [SANS ECRITURE] post_id=9261 — 3 bloc(s) CTA statique(s) a retirer — Consommation électrique : les appareils qui consomment le pl
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-calcule-consommation-electricite/
+  🔍 [SANS ECRITURE] post_id=9257 — 3 bloc(s) CTA statique(s) a retirer — Changement fournisseur électricité :
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite/
+  🔍 [SANS ECRITURE] post_id=9255 — 3 bloc(s) CTA statique(s) a retirer — Électricité : combien économiser en changeant
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-1001/
+  🔍 [SANS ECRITURE] post_id=9253 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; vs Éco-PTZ : quelle aide choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-eco-ptz-comparatif/
+  🔍 [SANS ECRITURE] post_id=9251 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; vs éco-PTZ : quelle aide choisir ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-eco-ptz-comparatif/
+  🔍 [SANS ECRITURE] post_id=9249 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : qui peut en bénéficier en 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-eligibilite-conditions-1001/
+  🔍 [SANS ECRITURE] post_id=9247 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : les fournisseurs et prestataires
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-qui-y-a-droit-utilisation/
+  🔍 [SANS ECRITURE] post_id=9245 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : quel prix et quel coût
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-cout-chauffe-eau-thermodynamique/
+  🔍 [SANS ECRITURE] post_id=9243 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : budget total à prévoir
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs-1001/
+  🔍 [SANS ECRITURE] post_id=9241 — 3 bloc(s) CTA statique(s) a retirer — Facture de gaz : les erreurs de calcul les plus fréquentes
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comment-lire-facture-gaz/
+  🔍 [SANS ECRITURE] post_id=9239 — 3 bloc(s) CTA statique(s) a retirer — Recharger une bouteille de gaz
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-gaz-securite/
+  🔍 [SANS ECRITURE] post_id=9237 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne une bouteille de gaz ?
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-de-gaz-1001/
+  🔍 [SANS ECRITURE] post_id=9235 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : anatomie et cycles de fonctionnement
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-de-gaz/
+  🔍 [SANS ECRITURE] post_id=8828 — 3 bloc(s) CTA statique(s) a retirer — Délai de paiement facture électricité
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/delai-paiement-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=8826 — 3 bloc(s) CTA statique(s) a retirer — Facture d&rsquo;électricité : décrypter les pièges et optimi
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-decryptage/
+  🔍 [SANS ECRITURE] post_id=8824 — 3 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : délais et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite/
+  🔍 [SANS ECRITURE] post_id=8822 — 3 bloc(s) CTA statique(s) a retirer — Résiliation électricité : guide complet pour locataires
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-demarches/
+  🔍 [SANS ECRITURE] post_id=8820 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : démarches et délais d&rsquo;obtention
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-demarches-obtention-guide/
+  🔍 [SANS ECRITURE] post_id=8818 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : dossier refusé, comment faire appel
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-dossier-refuse-appel/
+  🔍 [SANS ECRITURE] post_id=8816 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : montant exact et calcul 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montant-calcul/
+  🔍 [SANS ECRITURE] post_id=8814 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : cumulable avec MaPrimeRénov&rsquo; et l&rsq
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-cumul-aides-cumulables/
+  🔍 [SANS ECRITURE] post_id=8812 — 3 bloc(s) CTA statique(s) a retirer — Comment fonctionne un chauffe-eau thermodynamique
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/fonctionnement-chauffe-eau-thermodynamique-0930-2/
+  🔍 [SANS ECRITURE] post_id=8810 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : consommation énergétique
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/fonctionnement-chauffe-eau-thermodynamique-0930/
+  🔍 [SANS ECRITURE] post_id=8808 — 3 bloc(s) CTA statique(s) a retirer — Changer de fournisseur de gaz : démarches, économies
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-fournisseurs-gaz-tarifs/
+  🔍 [SANS ECRITURE] post_id=8806 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz butane vs propane
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-vs-propane-comparatif/
+  🔍 [SANS ECRITURE] post_id=8804 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz propane vs butane : guide comparatif
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-butane-comparatif-guide/
+  🔍 [SANS ECRITURE] post_id=8802 — 3 bloc(s) CTA statique(s) a retirer — Normes de sécurité bouteille de gaz : obligations légales
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-etapes-normes-0930/
+  🔍 [SANS ECRITURE] post_id=8719 — 3 bloc(s) CTA statique(s) a retirer — Tarif heures pleines heures creuses : comment ça marche
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-heures-pleines-creuses-fonctionnement-0929/
+  🔍 [SANS ECRITURE] post_id=8717 — 3 bloc(s) CTA statique(s) a retirer — Structure tarifaire électricité : comprendre le mécanisme
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/calcul-tarif-electricite-facture/
+  🔍 [SANS ECRITURE] post_id=8715 — 3 bloc(s) CTA statique(s) a retirer — Offres électricité fixe vs variable : quelle option choisir
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/offres-electricite-fixe-variable-comparaison/
+  🔍 [SANS ECRITURE] post_id=8713 — 3 bloc(s) CTA statique(s) a retirer — Tacite reconduction électricité : comment éviter le piège
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tacite-reconduction-contrat-electricite/
+  🔍 [SANS ECRITURE] post_id=8711 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : délais de versement et statut
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-delais-versement-statut/
+  🔍 [SANS ECRITURE] post_id=8709 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; et autres aides : cumuler vos financemen
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/cumuler-maprimerenov-autres-aides/
+  🔍 [SANS ECRITURE] post_id=8707 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : délais de versement et suivi
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-delai-versement-suivi/
+  🔍 [SANS ECRITURE] post_id=8705 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : comment contester un refus
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-refus-causes-recours/
+  🔍 [SANS ECRITURE] post_id=8703 — 3 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0929/
+  🔍 [SANS ECRITURE] post_id=8701 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique vs chaudière gaz/fioul
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-chaudiere-comparatif/
+  🔍 [SANS ECRITURE] post_id=8699 — 3 bloc(s) CTA statique(s) a retirer — Aides gaz 2026 : plafonds de ressources et montants
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-2026/
+  🔍 [SANS ECRITURE] post_id=8697 — 3 bloc(s) CTA statique(s) a retirer — Aides bouteille de gaz : subventions et réductions
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-financieres-bouteille-gaz/
+  🔍 [SANS ECRITURE] post_id=8695 — 3 bloc(s) CTA statique(s) a retirer — Prix bouteille de gaz : tarifs et plans
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-tarifs-bons-plans/
+  🔍 [SANS ECRITURE] post_id=8693 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : critères de choix selon votre budget
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-bouteille-gaz-subventions/
+  🔍 [SANS ECRITURE] post_id=8584 — 3 bloc(s) CTA statique(s) a retirer — Aides pour payer sa facture d&rsquo;électricité
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-facture-electricite-solutions/
+  🔍 [SANS ECRITURE] post_id=8582 — 3 bloc(s) CTA statique(s) a retirer — Chèques énergie électricité
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/cheques-energie-electricite-obtenir-utiliser/
+  🔍 [SANS ECRITURE] post_id=8580 — 3 bloc(s) CTA statique(s) a retirer — Comparatif fournisseurs électricité 2026
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparatif-fournisseurs-electricite-prix/
+  🔍 [SANS ECRITURE] post_id=8578 — 3 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité : tout savoir
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-0928/
+  🔍 [SANS ECRITURE] post_id=8576 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : conditions d&rsquo;éligibilité
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/conditions-eligibilite-maprimerenov-montants/
+  🔍 [SANS ECRITURE] post_id=8574 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : montants exacts
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-2026/
+  🔍 [SANS ECRITURE] post_id=8572 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : éligibilité et utilisation
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-eligibilite-utilisation-0928/
+  🔍 [SANS ECRITURE] post_id=8570 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : les erreurs à éviter pour bien l&rsquo;util
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-0928/
+  🔍 [SANS ECRITURE] post_id=8568 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique fonctionnement
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement-0928-2/
+  🔍 [SANS ECRITURE] post_id=8566 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : les 5 mécanismes clés qui
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement-0928/
+  🔍 [SANS ECRITURE] post_id=8564 — 3 bloc(s) CTA statique(s) a retirer — Délai de paiement facture gaz : obligations et droits
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/delai-paiement-facture-gaz-0928/
+  🔍 [SANS ECRITURE] post_id=8562 — 3 bloc(s) CTA statique(s) a retirer — Durée de vie bouteille de gaz : combien de temps ça dure
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/duree-vie-bouteille-gaz-0928/
+  🔍 [SANS ECRITURE] post_id=8560 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : fonctionnement détaillé et maintenance
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-gaz-mecanisme/
+  🔍 [SANS ECRITURE] post_id=8558 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : les mécanismes internes expliqués
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-gaz-0928/
+  🔍 [SANS ECRITURE] post_id=8466 — 3 bloc(s) CTA statique(s) a retirer — Interpréter votre facture électrique
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/interpreter-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=8464 — 3 bloc(s) CTA statique(s) a retirer — Décoder les frais cachés de votre facture électricité
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-facture-electricite-detail/
+  🔍 [SANS ECRITURE] post_id=8462 — 3 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-droits-procedure/
+  🔍 [SANS ECRITURE] post_id=8460 — 3 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilition-contrat-electricite-delais-frais/
+  🔍 [SANS ECRITURE] post_id=8458 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; refusée
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-refusee-causes-solutions/
+  🔍 [SANS ECRITURE] post_id=8456 — 3 bloc(s) CTA statique(s) a retirer — Radiateur électrique : installation MaPrimeRénov&rsquo;
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/radiateur-electrique-installation-maprimerenov/
+  🔍 [SANS ECRITURE] post_id=8454 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie : montants 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montants-conditions-demarches-2026/
+  🔍 [SANS ECRITURE] post_id=8452 — 3 bloc(s) CTA statique(s) a retirer — Chèque énergie 2026 montants et versement
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026-montants-dates-versement/
+  🔍 [SANS ECRITURE] post_id=8450 — 3 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0927/
+  🔍 [SANS ECRITURE] post_id=8448 — 3 bloc(s) CTA statique(s) a retirer — Installation Chauffe-eau thermodynamique
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes/
+  🔍 [SANS ECRITURE] post_id=8446 — 3 bloc(s) CTA statique(s) a retirer — Facture gaz : identifier les frais cachés et optimiser
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-decryptage-0927/
+  🔍 [SANS ECRITURE] post_id=8444 — 3 bloc(s) CTA statique(s) a retirer — Comment utiliser une bouteille de gaz en toute sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/utiliser-bouteille-gaz-securite/
+  🔍 [SANS ECRITURE] post_id=8442 — 3 bloc(s) CTA statique(s) a retirer — Comment recharger bouteille gaz
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/comment-recharger-bouteille-gaz-guide/
+  🔍 [SANS ECRITURE] post_id=8440 — 3 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : guide d&rsquo;achat comparatif pour début
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/choisir-bouteille-gaz-utilisation/
+  🔍 [SANS ECRITURE] post_id=8375 — 3 bloc(s) CTA statique(s) a retirer — Heures creuses électricité : les appareils à brancher
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-fonctionnement-tarification/
+  🔍 [SANS ECRITURE] post_id=8373 — 3 bloc(s) CTA statique(s) a retirer — Délais de mise en service électricité : pourquoi ça traîne
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/delai-mise-en-service-electricite-demenagement/
+  🔍 [SANS ECRITURE] post_id=8371 — 3 bloc(s) CTA statique(s) a retirer — Relevé compteur électrique : erreurs à éviter et validation
+      https://www.comprendre-mon-energie.fr/electricite/compteur/releve-compteur-electrique-methode/
+  🔍 [SANS ECRITURE] post_id=8369 — 3 bloc(s) CTA statique(s) a retirer — Électricité pas chère : stratégies pour réduire sa facture
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/fournisseur-electricite-pas-cher-classement/
+  🔍 [SANS ECRITURE] post_id=8367 — 3 bloc(s) CTA statique(s) a retirer — Pompe à chaleur : aides 2026, montants exacts et démarches
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-pompe-chaleur/
+  🔍 [SANS ECRITURE] post_id=8365 — 3 bloc(s) CTA statique(s) a retirer — Éco-PTZ 2026 : simulateur de montant et tableau comparatif
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-conditions-eligibilite-montants/
+  🔍 [SANS ECRITURE] post_id=8363 — 3 bloc(s) CTA statique(s) a retirer — Résilier son contrat gaz avant un déménagement
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+  🔍 [SANS ECRITURE] post_id=8361 — 3 bloc(s) CTA statique(s) a retirer — Négocier son contrat gaz : astuces pour réduire ses factures
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs-gaz-marche/
+  🔍 [SANS ECRITURE] post_id=8359 — 3 bloc(s) CTA statique(s) a retirer — Normes légales chaudière gaz 2026 : obligations et démarches
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installer-chaudiere-gaz-etapes-normes/
+  🔍 [SANS ECRITURE] post_id=8357 — 3 bloc(s) CTA statique(s) a retirer — Propane ou butane : comparatif complet des performances
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-propane-vs-butane-comparatif/
+  🔍 [SANS ECRITURE] post_id=8340 — 3 bloc(s) CTA statique(s) a retirer — Facture Gaz : hausse de 6.3% en septembre 2026
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-septembre-2026/
+  🔍 [SANS ECRITURE] post_id=8293 — 3 bloc(s) CTA statique(s) a retirer — Heures pleines creuses : les pièges cachés
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-heures-pleines-creuses-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=8291 — 3 bloc(s) CTA statique(s) a retirer — Mise en service électricité déménagement : erreurs à éviter
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/mise-en-service-electricite-demenagement-delais/
+  🔍 [SANS ECRITURE] post_id=8289 — 3 bloc(s) CTA statique(s) a retirer — Compteur électrique : barème complet des frais
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-tarifs-delais/
+  🔍 [SANS ECRITURE] post_id=8287 — 3 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : conditions d&rsquo;éligibilité
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/aides-electricite-fournisseurs-2026/
+  🔍 [SANS ECRITURE] post_id=8285 — 3 bloc(s) CTA statique(s) a retirer — Isoler combles perdus soi-même : matériel nécessaire
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isoler-combles-perdus-etapes-installation/
+  🔍 [SANS ECRITURE] post_id=8283 — 3 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : comparatif des marques
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs/
+  🔍 [SANS ECRITURE] post_id=8281 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov gaz : obtenir jusqu&rsquo;à 90% de financement
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/maprimerenov-gaz-financement/
+  🔍 [SANS ECRITURE] post_id=8279 — 3 bloc(s) CTA statique(s) a retirer — Aides gaz déménagement pour locataires : droits et démarches
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-financieres-demenagement-gaz/
+  🔍 [SANS ECRITURE] post_id=8277 — 3 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; gaz : guide complet pour maximiser votre
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/maprimerenov-gaz-aide-2026/
+  🔍 [SANS ECRITURE] post_id=8275 — 3 bloc(s) CTA statique(s) a retirer — Aides chauffage gaz 2026 : critères d&rsquo;éligibilité
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026-0925/
+  🔍 [SANS ECRITURE] post_id=8217 — 3 bloc(s) CTA statique(s) a retirer — Heures pleines et creuses : les erreurs à éviter
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0924/
+  🔍 [SANS ECRITURE] post_id=8215 — 3 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité après un déménagement
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0924/
+  🔍 [SANS ECRITURE] post_id=8213 — 3 bloc(s) CTA statique(s) a retirer — Compteur électrique intelligent : avantages et économies
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-intelligent-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=8211 — 3 bloc(s) CTA statique(s) a retirer — Électricité moins chère : comment négocier avec votre fourni
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-classement-2026/
+  🔍 [SANS ECRITURE] post_id=8209 — 3 bloc(s) CTA statique(s) a retirer — Budget rénovation toiture par type de matériau : comparatif
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cout-renovation-toiture-tarifs-aides/
+  🔍 [SANS ECRITURE] post_id=8207 — 3 bloc(s) CTA statique(s) a retirer — Chaudière gaz : guide complet des aides 2026 et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installation-chaudiere-gaz-aides-subventions/
+  🔍 [SANS ECRITURE] post_id=8205 — 3 bloc(s) CTA statique(s) a retirer — Ouverture compteur gaz déménagement
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/ouverture-compteur-gaz-demenagement-delais/
+  🔍 [SANS ECRITURE] post_id=8203 — 3 bloc(s) CTA statique(s) a retirer — Réduire sa facture gaz : stratégies et économies réelles
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-moins-chers-comparatif/
+  🔍 [SANS ECRITURE] post_id=8201 — 3 bloc(s) CTA statique(s) a retirer — Chaudière gaz : schéma de fonctionnement et optimisation
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0924/
+  🔍 [SANS ECRITURE] post_id=8199 — 3 bloc(s) CTA statique(s) a retirer — Les étapes clés pour l&rsquo;installation et la mise en serv
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/comment-fonctionne-bouteille-gaz-propane/
+  🔍 [SANS ECRITURE] post_id=8093 — 1 bloc(s) CTA statique(s) a retirer — Pourquoi votre facture électrique augmente : causes réelles
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-facture-electricite-causes/
+  🔍 [SANS ECRITURE] post_id=8091 — 1 bloc(s) CTA statique(s) a retirer — Comparer les fournisseurs électricité : économisez sur
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite-economiser-0910/
+  🔍 [SANS ECRITURE] post_id=8089 — 1 bloc(s) CTA statique(s) a retirer — Comparer les fournisseurs électricité : comment économiser
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite/
+  🔍 [SANS ECRITURE] post_id=8087 — 1 bloc(s) CTA statique(s) a retirer — Comparer les fournisseurs d&rsquo;électricité : économisez
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite-economiser/
+  🔍 [SANS ECRITURE] post_id=8085 — 1 bloc(s) CTA statique(s) a retirer — Comment lire sa facture d&rsquo;électricité : guide pratique
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide/
+  🔍 [SANS ECRITURE] post_id=8083 — 1 bloc(s) CTA statique(s) a retirer — Comment lire sa facture d&rsquo;électricité : guide pratique
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=8081 — 1 bloc(s) CTA statique(s) a retirer — Comment lire sa facture électricité : guide complet
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-guide/
+  🔍 [SANS ECRITURE] post_id=8079 — 1 bloc(s) CTA statique(s) a retirer — Chaudière gaz ou fioul : quel système choisir
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/chaudiere-gaz-ou-fioul-comparatif/
+  🔍 [SANS ECRITURE] post_id=8077 — 1 bloc(s) CTA statique(s) a retirer — DPE et bilan énergétique : différences et utilité
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/dpe-bilan-energetique-differences/
+  🔍 [SANS ECRITURE] post_id=8002 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : installation et mise en place
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-installation/
+  🔍 [SANS ECRITURE] post_id=8000 — 1 bloc(s) CTA statique(s) a retirer — Installation radiateur électrique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-etapes-couts-0909-2/
+  🔍 [SANS ECRITURE] post_id=7998 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : guide complet d&rsquo;installation
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-guide/
+  🔍 [SANS ECRITURE] post_id=7996 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : installation DIY ou professionnel
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-diy-professionnel/
+  🔍 [SANS ECRITURE] post_id=7994 — 1 bloc(s) CTA statique(s) a retirer — Installation radiateur électrique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-etapes-couts-0909/
+  🔍 [SANS ECRITURE] post_id=7992 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : installation et mise en service
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-installation-mise-en-service/
+  🔍 [SANS ECRITURE] post_id=7990 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : installation DIY ou professionnel ?
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-diy-pro/
+  🔍 [SANS ECRITURE] post_id=7988 — 1 bloc(s) CTA statique(s) a retirer — Installation chauffage électrique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-chauffage-electrique-etapes-couts/
+  🔍 [SANS ECRITURE] post_id=7986 — 1 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique : étapes et normes
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-normes/
+  🔍 [SANS ECRITURE] post_id=7984 — 1 bloc(s) CTA statique(s) a retirer — Audit énergétique obligatoire : qui est concerné en 2026
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-obligatoire/
+  🔍 [SANS ECRITURE] post_id=7909 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; électricité : aides 2026 et conditions
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/maprimerenov-electricite-aides-2026/
+  🔍 [SANS ECRITURE] post_id=7907 — 1 bloc(s) CTA statique(s) a retirer — Contrat électricité : quels critères vraiment essentiels ?
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/criteres-contrat-electricite-essentiels/
+  🔍 [SANS ECRITURE] post_id=7905 — 1 bloc(s) CTA statique(s) a retirer — Tarif réglementé vs marché libre : quel contrat choisir
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tarif-reglemente-vs-marche-libre/
+  🔍 [SANS ECRITURE] post_id=7903 — 1 bloc(s) CTA statique(s) a retirer — Contrat électricité fixe ou variable : quel est le meilleur
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-ou-variable/
+  🔍 [SANS ECRITURE] post_id=7901 — 1 bloc(s) CTA statique(s) a retirer — Contrat électricité fixe ou variable : quel est le meilleur
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-variable-0908-2/
+  🔍 [SANS ECRITURE] post_id=7899 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : délais et frais expliqués
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilience-contrat-electricite-delais-frais/
+  🔍 [SANS ECRITURE] post_id=7897 — 1 bloc(s) CTA statique(s) a retirer — Contrat électricité fixe ou variable : lequel choisir
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-variable-0908/
+  🔍 [SANS ECRITURE] post_id=7895 — 1 bloc(s) CTA statique(s) a retirer — Fenêtres simple ou double vitrage : quel choix pour rénover
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/fenetre-simple-double-vitrage-comparatif-0908/
+  🔍 [SANS ECRITURE] post_id=7893 — 1 bloc(s) CTA statique(s) a retirer — Fenêtres simple ou double vitrage : lequel choisir ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/fenetre-simple-double-vitrage-comparatif/
+  🔍 [SANS ECRITURE] post_id=7846 — 1 bloc(s) CTA statique(s) a retirer — Compteur électrique : fonctionnement et lecture expliqués
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/
+  🔍 [SANS ECRITURE] post_id=7844 — 1 bloc(s) CTA statique(s) a retirer — Compteur électrique : comment fonctionne-t-il vraiment
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=7842 — 1 bloc(s) CTA statique(s) a retirer — Compteur électrique communicant Linky : mode d&#8217;emploi
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky-fonctionnement-0908/
+  🔍 [SANS ECRITURE] post_id=7840 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite fenêtres : économies et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-fenetres-economies-conditions/
+  🔍 [SANS ECRITURE] post_id=7838 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : comment fonctionne cette aide en 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-2026/
+  🔍 [SANS ECRITURE] post_id=7836 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie : qui peut l&rsquo;utiliser et comment ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-eligibilite-utilisation/
+  🔍 [SANS ECRITURE] post_id=7834 — 1 bloc(s) CTA statique(s) a retirer — Lire sa facture gaz : décryptage ligne par ligne
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-comprendre/
+  🔍 [SANS ECRITURE] post_id=7832 — 1 bloc(s) CTA statique(s) a retirer — Certificat de conformité gaz déménagement
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/certificat-conformite-gaz-demenagement/
+  🔍 [SANS ECRITURE] post_id=7830 — 1 bloc(s) CTA statique(s) a retirer — Tacite reconduction gaz : comment l&rsquo;éviter et économis
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/tacite-reconduction-gaz/
+  🔍 [SANS ECRITURE] post_id=7737 — 1 bloc(s) CTA statique(s) a retirer — Heures creuses électricité : comment ça marche réellement
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=7735 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie vs MaPrimeRénov&rsquo; : quelle aide choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov-quelle-aide-choisir/
+  🔍 [SANS ECRITURE] post_id=7733 — 1 bloc(s) CTA statique(s) a retirer — Eco-PTZ vs MaPrimeRénov&rsquo; : quel financement choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif-0905/
+  🔍 [SANS ECRITURE] post_id=7731 — 1 bloc(s) CTA statique(s) a retirer — Cumul aides toiture : MaPrimeRénov&rsquo; + CEE + Éco-PTZ
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cumul-aides-toiture-maprimerenovcee-ecoptz/
+  🔍 [SANS ECRITURE] post_id=7729 — 1 bloc(s) CTA statique(s) a retirer — Changement fournisseur gaz déménagement : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement/
+  🔍 [SANS ECRITURE] post_id=7727 — 1 bloc(s) CTA statique(s) a retirer — Gaz naturel vs propane : quel fournisseur choisir ?
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur-0905/
+  🔍 [SANS ECRITURE] post_id=7725 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz : étapes et coûts 2026
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz/
+  🔍 [SANS ECRITURE] post_id=7666 — 1 bloc(s) CTA statique(s) a retirer — Électricité lors d&rsquo;un déménagement : faites votre dema
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet-0904/
+  🔍 [SANS ECRITURE] post_id=7662 — 1 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité lors d&rsquo;un déménagem
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0904/
+  🔍 [SANS ECRITURE] post_id=7658 — 1 bloc(s) CTA statique(s) a retirer — Aides combles perdus : le guide complet 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/aides-combles-perdus-guide-complet/
+  🔍 [SANS ECRITURE] post_id=7656 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique : cumuler MaPrimeRénov&rsq
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-cumul-maprimerenov-cee/
+  🔍 [SANS ECRITURE] post_id=7654 — 1 bloc(s) CTA statique(s) a retirer — Réduction facture gaz : aides et dispositifs 2026
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/reduction-facture-gaz-aides-2026/
+  🔍 [SANS ECRITURE] post_id=7652 — 1 bloc(s) CTA statique(s) a retirer — Délai ouverture gaz déménagement : combien de temps ?
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/delai-ouverture-gaz-demenagement/
+  🔍 [SANS ECRITURE] post_id=7650 — 1 bloc(s) CTA statique(s) a retirer — Prix bouteille gaz propane 2026 : tarifs et économies
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-propane-tarifs/
+  🔍 [SANS ECRITURE] post_id=7595 — 1 bloc(s) CTA statique(s) a retirer — Électricité verte vs électricité classique : quel prix ?
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/electricite-verte-vs-classique-tarifs-comparaison/
+  🔍 [SANS ECRITURE] post_id=7593 — 1 bloc(s) CTA statique(s) a retirer — Électricité verte vs électricité standard
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/electricite-verte-vs-standard-comparatif-prix/
+  🔍 [SANS ECRITURE] post_id=7591 — 1 bloc(s) CTA statique(s) a retirer — Électricité verte vs électricité classique : Tout savoir
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/electricite-verte-vs-classique-fournisseur/
+  🔍 [SANS ECRITURE] post_id=7589 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : conditions d&rsquo;éligibilité et
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/eligibilite-maprimerenov-conditions-montants/
+  🔍 [SANS ECRITURE] post_id=7587 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie 2026 : montant, conditions et
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026-montant-conditions/
+  🔍 [SANS ECRITURE] post_id=7585 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz : étapes et coûts expliqués
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installation-chaudiere-gaz-etapes-couts-0903/
+  🔍 [SANS ECRITURE] post_id=7583 — 1 bloc(s) CTA statique(s) a retirer — Aides déménagement gaz : réductions et financements 2026
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz-reductions-financements/
+  🔍 [SANS ECRITURE] post_id=7581 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : délais, frais et démarches
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilition-contrat-gaz-delais-frais/
+  🔍 [SANS ECRITURE] post_id=7579 — 1 bloc(s) CTA statique(s) a retirer — Meilleurs fournisseurs gaz 2026 : comparatif complet
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-2026/
+  🔍 [SANS ECRITURE] post_id=7496 — 1 bloc(s) CTA statique(s) a retirer — Forfait électricité vs consommation réelle : lequel choisir
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/forfait-electricite-vs-consommation-reelle/
+  🔍 [SANS ECRITURE] post_id=7492 — 1 bloc(s) CTA statique(s) a retirer — Fournisseur électricité : comment choisir le meilleur
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/fournisseur-electricite-comment-choisir/
+  🔍 [SANS ECRITURE] post_id=7490 — 1 bloc(s) CTA statique(s) a retirer — Facture électrique : décrypter vos charges et dépenses
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/decrypter-facture-electricite-charges/
+  🔍 [SANS ECRITURE] post_id=7488 — 1 bloc(s) CTA statique(s) a retirer — Fournisseur électricité moins cher : comparatif 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/fournisseur-electricite-moins-cher-comparatif/
+  🔍 [SANS ECRITURE] post_id=7484 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite travaux énergétiques : conditions et
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-energetiques-conditions/
+  🔍 [SANS ECRITURE] post_id=7480 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie CEE : comment ça marche en 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement-0902/
+  🔍 [SANS ECRITURE] post_id=7476 — 1 bloc(s) CTA statique(s) a retirer — Eco-PTZ : comment fonctionne le prêt écologique
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-pret-ecologique/
+  🔍 [SANS ECRITURE] post_id=7472 — 1 bloc(s) CTA statique(s) a retirer — Compteur gaz communicant Linky : fonctionnement et avantages
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-communicant-linky/
+  🔍 [SANS ECRITURE] post_id=7468 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne une chaudière gaz ? Guide complet
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0902/
+  🔍 [SANS ECRITURE] post_id=7464 — 1 bloc(s) CTA statique(s) a retirer — Bouteille de gaz propane : fonctionnement et sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-gaz-propane-0902/
+  🔍 [SANS ECRITURE] post_id=7408 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique vs pompe à chaleur : quel choix ?
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-vs-pompe-chaleur/
+  🔍 [SANS ECRITURE] post_id=7406 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : comment fonctionne et consomme
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-fonctionnement-consommation/
+  🔍 [SANS ECRITURE] post_id=7404 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique vs pompe à chaleur : quel est le meille
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-vs-pompe-a-chaleur-0901/
+  🔍 [SANS ECRITURE] post_id=7402 — 1 bloc(s) CTA statique(s) a retirer — Coût rénovation toiture : combien coûte vraiment ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cout-renovation-toiture-prix-exact/
+  🔍 [SANS ECRITURE] post_id=7400 — 1 bloc(s) CTA statique(s) a retirer — Devis isolation combles perdus :
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/cout-isolation-combles-perdus-tarifs/
+  🔍 [SANS ECRITURE] post_id=7398 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique vs gaz : quel est le meilleur
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-gaz/
+  🔍 [SANS ECRITURE] post_id=7396 — 1 bloc(s) CTA statique(s) a retirer — Lire et comprendre sa facture de gaz : guide détaillé
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-comprendre-facture-gaz/
+  🔍 [SANS ECRITURE] post_id=7394 — 1 bloc(s) CTA statique(s) a retirer — Installer le gaz dans votre nouveau logement
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/installer-gaz-nouveau-logement-delais/
+  🔍 [SANS ECRITURE] post_id=7392 — 1 bloc(s) CTA statique(s) a retirer — Offres gaz fixe vs indexé : lequel choisir ?
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/gaz-fixe-vs-indexe/
+  🔍 [SANS ECRITURE] post_id=7344 — 1 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : économisez jusqu&rsquo;à 200€/an
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-0831/
+  🔍 [SANS ECRITURE] post_id=7342 — 1 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : réduire votre facture
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-reduire-facture/
+  🔍 [SANS ECRITURE] post_id=7340 — 1 bloc(s) CTA statique(s) a retirer — Aide électricité 2026 : tous les dispositifs pour payer
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aide-electricite-dispositifs-2026/
+  🔍 [SANS ECRITURE] post_id=7338 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; cumulable : quelles aides associer
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-cumulable-aides-associer/
+  🔍 [SANS ECRITURE] post_id=7336 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie : comment l&rsquo;utiliser chez tous les
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs-0831/
+  🔍 [SANS ECRITURE] post_id=7334 — 1 bloc(s) CTA statique(s) a retirer — Aides chaudière fioul : cumul MaPrimeRénov&rsquo; et CEE
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-cumul-maprimerenov-cee-0831/
+  🔍 [SANS ECRITURE] post_id=7332 — 1 bloc(s) CTA statique(s) a retirer — Transfert gaz lors d&rsquo;un déménagement : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/transfert-gaz-demenagement-guide/
+  🔍 [SANS ECRITURE] post_id=7330 — 1 bloc(s) CTA statique(s) a retirer — Gaz naturel vs gaz propane : quel fournisseur choisir
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-gaz-propane-fournisseurs/
+  🔍 [SANS ECRITURE] post_id=7328 — 1 bloc(s) CTA statique(s) a retirer — Entretien chauffage gaz : guide complet et coûts
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chauffage-gaz/
+  🔍 [SANS ECRITURE] post_id=7278 — 1 bloc(s) CTA statique(s) a retirer — Installation compteur électrique : étapes et tarifs 2026
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-tarifs/
+  🔍 [SANS ECRITURE] post_id=7276 — 1 bloc(s) CTA statique(s) a retirer — Installation compteur électrique : tarifs et démarches
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electricite-tarifs/
+  🔍 [SANS ECRITURE] post_id=7274 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite 5,5% vs 20% : économies réelles
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-5-5-vs-20-economies/
+  🔍 [SANS ECRITURE] post_id=7272 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie vs MaPrimeRénov&rsquo; : laquelle choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov-comparaison/
+  🔍 [SANS ECRITURE] post_id=7270 — 1 bloc(s) CTA statique(s) a retirer — Eco-PTZ vs MaPrimeRénov&rsquo; : quel financement choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-quel-financement-choisir/
+  🔍 [SANS ECRITURE] post_id=7268 — 1 bloc(s) CTA statique(s) a retirer — Aide chèque énergie gaz : comment l&rsquo;obtenir en 2026
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aide-cheque-energie-gaz-2026/
+  🔍 [SANS ECRITURE] post_id=7266 — 1 bloc(s) CTA statique(s) a retirer — Aides déménagement gaz : quelles économies en 2026 ?
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz/
+  🔍 [SANS ECRITURE] post_id=7264 — 1 bloc(s) CTA statique(s) a retirer — Aides bouteilles gaz 2026 : subventions et réductions
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-bouteilles-gaz-2026/
+  🔍 [SANS ECRITURE] post_id=7258 — 1 bloc(s) CTA statique(s) a retirer — Gaz coupé après déménagement : comment le rétablir
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/gaz-coupe-apres-demenagement-retablir/
+  🔍 [SANS ECRITURE] post_id=7256 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : délais et démarches 2026
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz-0830/
+  🔍 [SANS ECRITURE] post_id=7207 — 1 bloc(s) CTA statique(s) a retirer — Heures pleines creuses : comment fonctionne ce tarif ?
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0829-2/
+  🔍 [SANS ECRITURE] post_id=7205 — 1 bloc(s) CTA statique(s) a retirer — Heures creuses électricité : comment ça marche réellement
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=7203 — 1 bloc(s) CTA statique(s) a retirer — Heures pleines et creuses : comment ça marche
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0829/
+  🔍 [SANS ECRITURE] post_id=7201 — 1 bloc(s) CTA statique(s) a retirer — Étapes pour obtenir une aide toiture sans erreur
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/obtenir-aide-toiture-etapes-sans-erreur/
+  🔍 [SANS ECRITURE] post_id=7199 — 1 bloc(s) CTA statique(s) a retirer — Isoler ses combles perdus : guide complet des étapes
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/comment-isoler-combles-perdus-guide-etapes/
+  🔍 [SANS ECRITURE] post_id=7197 — 1 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0829/
+  🔍 [SANS ECRITURE] post_id=7195 — 1 bloc(s) CTA statique(s) a retirer — Raccordement gaz après déménagement : étapes et délais
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/raccordement-gaz-demenagement-etapes-delais/
+  🔍 [SANS ECRITURE] post_id=7193 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs gaz moins chers : classement 2026
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-moins-chers-classement/
+  🔍 [SANS ECRITURE] post_id=7191 — 1 bloc(s) CTA statique(s) a retirer — Installation chauffage gaz : étapes et coûts expliqués
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chauffage-gaz/
+  🔍 [SANS ECRITURE] post_id=7138 — 1 bloc(s) CTA statique(s) a retirer — Électricité et déménagement : les étapes clés
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-etapes-cles/
+  🔍 [SANS ECRITURE] post_id=7136 — 1 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité lors d&rsquo;un déménagem
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0828/
+  🔍 [SANS ECRITURE] post_id=7134 — 1 bloc(s) CTA statique(s) a retirer — Électricité déménagement : guide complet 2026
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet/
+  🔍 [SANS ECRITURE] post_id=7132 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; plafond de ressources : qui peut vraimen
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafond-ressources-eligibilite/
+  🔍 [SANS ECRITURE] post_id=7130 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie impayé : recours et solutions rapides
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-impaye-recours-solutions/
+  🔍 [SANS ECRITURE] post_id=7128 — 1 bloc(s) CTA statique(s) a retirer — Coût installation chaudière gaz : tarifs 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/cout-installation-chaudiere-gaz/
+  🔍 [SANS ECRITURE] post_id=7126 — 1 bloc(s) CTA statique(s) a retirer — Comparer les prix du gaz : comment payer moins cher
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-prix-gaz-economiser/
+  🔍 [SANS ECRITURE] post_id=7124 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne le gaz naturel ? Guide technique
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/comment-fonctionne-gaz-naturel/
+  🔍 [SANS ECRITURE] post_id=7122 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne une bouteille de gaz propane ?
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-gaz-propane/
+  🔍 [SANS ECRITURE] post_id=7071 — 1 bloc(s) CTA statique(s) a retirer — Comparatif fournisseurs électricité 2026 : tarifs et offres
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparatif-fournisseurs-electricite-2026-tarifs-offres/
+  🔍 [SANS ECRITURE] post_id=7069 — 1 bloc(s) CTA statique(s) a retirer — Meilleur fournisseur électricité : comparatif 2026
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-comparatif-2026-0827/
+  🔍 [SANS ECRITURE] post_id=7067 — 1 bloc(s) CTA statique(s) a retirer — Comparer les fournisseurs d&rsquo;électricité : tarifs 2026
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-fournisseurs-electricite-tarifs-2026/
+  🔍 [SANS ECRITURE] post_id=7065 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite travaux rénovation : mode d&#8217;emploi complet
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-renovation-mode-emploi/
+  🔍 [SANS ECRITURE] post_id=7063 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie : comment ça marche et comment l&rsquo;obtenir
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-comment-ca-marche/
+  🔍 [SANS ECRITURE] post_id=7061 — 1 bloc(s) CTA statique(s) a retirer — Eco-PTZ : comment ça marche et qui peut l&rsquo;obtenir
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-remise-dette/
+  🔍 [SANS ECRITURE] post_id=7059 — 1 bloc(s) CTA statique(s) a retirer — Délai de mise en service gaz : combien de temps ?
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/delai-mise-en-service-gaz-demenagement-0827/
+  🔍 [SANS ECRITURE] post_id=7057 — 1 bloc(s) CTA statique(s) a retirer — Gaz naturel vs propane : quel fournisseur choisir
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-quel-fournisseur-choisir/
+  🔍 [SANS ECRITURE] post_id=7037 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 3.1% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-9/
+  🔍 [SANS ECRITURE] post_id=7035 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 0.9% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-8/
+  🔍 [SANS ECRITURE] post_id=7033 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 3.1% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-7/
+  🔍 [SANS ECRITURE] post_id=7031 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 1.4% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-6/
+  🔍 [SANS ECRITURE] post_id=7029 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 3.0% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-5/
+  🔍 [SANS ECRITURE] post_id=7027 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 1.7% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-4/
+  🔍 [SANS ECRITURE] post_id=7025 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 3.0% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-3/
+  🔍 [SANS ECRITURE] post_id=7023 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 1.9% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-2/
+  🔍 [SANS ECRITURE] post_id=7021 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 3.0% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827/
+  🔍 [SANS ECRITURE] post_id=7019 — 1 bloc(s) CTA statique(s) a retirer — Facture Électricité : hausse de 2.1% en août 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026/
+  🔍 [SANS ECRITURE] post_id=6967 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : comment fonctionne vraiment
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-fonctionnement-0826/
+  🔍 [SANS ECRITURE] post_id=6965 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : installation, choix et consommation
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-installation-choix-consommation/
+  🔍 [SANS ECRITURE] post_id=6963 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : installation, coûts et performances
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-installation-cout/
+  🔍 [SANS ECRITURE] post_id=6961 — 1 bloc(s) CTA statique(s) a retirer — Aides toiture 2026 : cumuler MaPrimeRénov&rsquo; et prime én
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-cumulables-toiture-2026/
+  🔍 [SANS ECRITURE] post_id=6959 — 1 bloc(s) CTA statique(s) a retirer — Isolation combles perdus vs aménageables : quelle aide
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isolation-combles-perdus-vs-amenageables-aide/
+  🔍 [SANS ECRITURE] post_id=6957 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique vs électrique : quelle aide
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-electrique-aide/
+  🔍 [SANS ECRITURE] post_id=6955 — 1 bloc(s) CTA statique(s) a retirer — Aides financières gaz déménagement : les dispositifs 2026
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-financieres-gaz-demenagement/
+  🔍 [SANS ECRITURE] post_id=6953 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffage gaz 2026 : MaPrimeRénov et dispositifs
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026-0826/
+  🔍 [SANS ECRITURE] post_id=6951 — 1 bloc(s) CTA statique(s) a retirer — Aide bouteille gaz 2026 : aides financières et réductions
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/aide-bouteille-gaz-2026/
+  🔍 [SANS ECRITURE] post_id=6883 — 1 bloc(s) CTA statique(s) a retirer — Comparer les fournisseurs électricité : tarifs et offres
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite-tarifs/
+  🔍 [SANS ECRITURE] post_id=6881 — 1 bloc(s) CTA statique(s) a retirer — Comparer les fournisseurs électricité : guide complet
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite-guide-0825/
+  🔍 [SANS ECRITURE] post_id=6879 — 1 bloc(s) CTA statique(s) a retirer — Lire sa facture d&rsquo;électricité : guide décryptage compl
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-guide-complet-0825/
+  🔍 [SANS ECRITURE] post_id=6877 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : montants réels par type de travau
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/montants-maprimerenov-par-travaux-2026/
+  🔍 [SANS ECRITURE] post_id=6875 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie 2026 : montant, conditions et démarche
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026-montant-conditions-demarche/
+  🔍 [SANS ECRITURE] post_id=6873 — 1 bloc(s) CTA statique(s) a retirer — Chaudière gaz vs pompe à chaleur : quelle aide choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/chaudiere-gaz-vs-pompe-a-chaleur-aide/
+  🔍 [SANS ECRITURE] post_id=6871 — 1 bloc(s) CTA statique(s) a retirer — Lire sa facture de gaz : guide de décryptage complet
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-guide-decryptage/
+  🔍 [SANS ECRITURE] post_id=6869 — 1 bloc(s) CTA statique(s) a retirer — Raccordement gaz déménagement : normes et sécurité
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/raccordement-gaz-demenagement-normes-securite/
+  🔍 [SANS ECRITURE] post_id=6867 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : vos droits et démarches
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilition-contrat-gaz-droits-demarches/
+  🔍 [SANS ECRITURE] post_id=6811 — 1 bloc(s) CTA statique(s) a retirer — Tarifs électricité 2026 : comprendre votre facture
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tarifs-electricite-comprendre-facture/
+  🔍 [SANS ECRITURE] post_id=6809 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : délais et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-procedure/
+  🔍 [SANS ECRITURE] post_id=6807 — 1 bloc(s) CTA statique(s) a retirer — Résilier son contrat électricité : démarches et délais
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-demarches/
+  🔍 [SANS ECRITURE] post_id=6805 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite 5,5% ou 20% : quand l&rsquo;appliquer vraiment
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-5-5-pourcent-ou-20-pourcent/
+  🔍 [SANS ECRITURE] post_id=6803 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie vs MaPrimeRénov&rsquo; : laquelle choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov/
+  🔍 [SANS ECRITURE] post_id=6801 — 1 bloc(s) CTA statique(s) a retirer — Eco-PTZ : conditions d&rsquo;accès et montant maximum en 202
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-conditions-acces-montant-maximum/
+  🔍 [SANS ECRITURE] post_id=6799 — 1 bloc(s) CTA statique(s) a retirer — Installer le gaz dans un nouveau logement : étapes
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/installer-gaz-nouveau-logement/
+  🔍 [SANS ECRITURE] post_id=6797 — 1 bloc(s) CTA statique(s) a retirer — Fournisseur gaz le moins cher : comparatif complet
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseur-gaz-moins-cher-comparatif/
+  🔍 [SANS ECRITURE] post_id=6795 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne un chauffage au gaz : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chauffage-gaz/
+  🔍 [SANS ECRITURE] post_id=6744 — 1 bloc(s) CTA statique(s) a retirer — Installation compteur électrique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823-3/
+  🔍 [SANS ECRITURE] post_id=6742 — 1 bloc(s) CTA statique(s) a retirer — Installation compteur électrique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823-2/
+  🔍 [SANS ECRITURE] post_id=6740 — 1 bloc(s) CTA statique(s) a retirer — Installation compteur électrique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823/
+  🔍 [SANS ECRITURE] post_id=6738 — 1 bloc(s) CTA statique(s) a retirer — Refaire sa toiture : étapes, matériaux et devis gratuit
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/refaire-toiture-etapes-materiaux-devis/
+  🔍 [SANS ECRITURE] post_id=6736 — 1 bloc(s) CTA statique(s) a retirer — Prix isolation combles perdus : budget réel en 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/prix-isolation-combles-perdus-2026/
+  🔍 [SANS ECRITURE] post_id=6734 — 1 bloc(s) CTA statique(s) a retirer — Installer un chauffe-eau thermodynamique : étapes et prix
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installer-chauffe-eau-thermodynamique-etapes-prix/
+  🔍 [SANS ECRITURE] post_id=6732 — 1 bloc(s) CTA statique(s) a retirer — Facture de gaz trop élevée : comparez les prix
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-comparer-prix/
+  🔍 [SANS ECRITURE] post_id=6730 — 1 bloc(s) CTA statique(s) a retirer — Délai de mise en service gaz : combien de temps attendre
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/delai-mise-en-service-gaz-demenagement/
+  🔍 [SANS ECRITURE] post_id=6728 — 1 bloc(s) CTA statique(s) a retirer — Bouteille de gaz butane ou propane : le bon choix
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-ou-propane-choix/
+  🔍 [SANS ECRITURE] post_id=6679 — 1 bloc(s) CTA statique(s) a retirer — Économiser sur vos heures creuses : tarifs et astuces
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/economiser-heures-creuses-tarifs-astuces/
+  🔍 [SANS ECRITURE] post_id=6677 — 1 bloc(s) CTA statique(s) a retirer — Heures creuses électricité : économisez jusqu&rsquo;à 40 %
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-economiser-facture/
+  🔍 [SANS ECRITURE] post_id=6675 — 1 bloc(s) CTA statique(s) a retirer — Heures pleines et creuses : comment ça marche
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0822/
+  🔍 [SANS ECRITURE] post_id=6673 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne MaPrimeRénov&rsquo; ? Guide complet
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/fonctionnement-maprimerenov-guide-complet/
+  🔍 [SANS ECRITURE] post_id=6671 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie : comment l&rsquo;utiliser chez vos fournisse
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs/
+  🔍 [SANS ECRITURE] post_id=6669 — 1 bloc(s) CTA statique(s) a retirer — Installer une chaudière gaz : étapes et coûts réels
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installer-chaudiere-gaz-etapes-couts/
+  🔍 [SANS ECRITURE] post_id=6667 — 1 bloc(s) CTA statique(s) a retirer — Gaz coupé lors du déménagement : comment le rétablir
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/gaz-coupe-demenagement-retablir/
+  🔍 [SANS ECRITURE] post_id=6665 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; gaz : conditions et montants 2026
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/maprimer-nov-gaz-conditions-montants/
+  🔍 [SANS ECRITURE] post_id=6663 — 1 bloc(s) CTA statique(s) a retirer — Aides au chauffage gaz 2026 : les subventions à ne pas manqu
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026-0822/
+  🔍 [SANS ECRITURE] post_id=6615 — 1 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité lors d&rsquo;un déménagem
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0821-2/
+  🔍 [SANS ECRITURE] post_id=6613 — 1 bloc(s) CTA statique(s) a retirer — Changement fournisseur électricité déménagement
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0821/
+  🔍 [SANS ECRITURE] post_id=6611 — 1 bloc(s) CTA statique(s) a retirer — Changement fournisseur électricité : guide complet
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/changement-fournisseur-electricite-demenagement/
+  🔍 [SANS ECRITURE] post_id=6609 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite travaux : qui peut en bénéficier vraiment
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-eligibilite/
+  🔍 [SANS ECRITURE] post_id=6605 — 1 bloc(s) CTA statique(s) a retirer — Eco-PTZ vs MaPrimeRénov&rsquo; : quel financement choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif-0821/
+  🔍 [SANS ECRITURE] post_id=6603 — 1 bloc(s) CTA statique(s) a retirer — Déménagement et changement de gaz : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/demenagement-changement-fournisseur-gaz/
+  🔍 [SANS ECRITURE] post_id=6601 — 1 bloc(s) CTA statique(s) a retirer — Gaz vert vs gaz classique : quel fournisseur choisir
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-vert-vs-gaz-classique-fournisseur/
+  🔍 [SANS ECRITURE] post_id=6599 — 1 bloc(s) CTA statique(s) a retirer — Stocker une bouteille de gaz en toute sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/stocker-bouteille-gaz-securite/
+  🔍 [SANS ECRITURE] post_id=6549 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs électricité verts : comparatif et économies
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/fournisseurs-electricite-verts-comparatif/
+  🔍 [SANS ECRITURE] post_id=6547 — 1 bloc(s) CTA statique(s) a retirer — Électricité verte : comparer les offres écologiques 2026
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparer-offres-electricite-verte/
+  🔍 [SANS ECRITURE] post_id=6545 — 1 bloc(s) CTA statique(s) a retirer — Électricité verte : comparer les offres écologiques
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/electricite-verte-comparer-offres-ecologiques/
+  🔍 [SANS ECRITURE] post_id=6543 — 1 bloc(s) CTA statique(s) a retirer — Aides toiture 2026 : quelles primes pour votre rénovation
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-toiture-2026-primes-renovation/
+  🔍 [SANS ECRITURE] post_id=6541 — 1 bloc(s) CTA statique(s) a retirer — Isolation combles perdus : cumulez MaPrimeRénov&rsquo; et CE
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isolation-combles-perdus-cumuler-maprimerenov-cee/
+  🔍 [SANS ECRITURE] post_id=6539 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique : cumuler MaPrimeRénov&rsq
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-cumul/
+  🔍 [SANS ECRITURE] post_id=6537 — 1 bloc(s) CTA statique(s) a retirer — Comprendre sa facture de gaz : détails ligne par ligne
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comprendre-facture-gaz-details/
+  🔍 [SANS ECRITURE] post_id=6535 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne un contrat de gaz naturel
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/fonctionnement-contrat-gaz-naturel/
+  🔍 [SANS ECRITURE] post_id=6533 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne une chaudière gaz : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0820/
+  🔍 [SANS ECRITURE] post_id=6487 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : comment fonctionne le chauffage
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=6485 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique : installation et branchement
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-installation-branchement/
+  🔍 [SANS ECRITURE] post_id=6483 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; pour fenêtres : montant et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fenetre-montant-conditions/
+  🔍 [SANS ECRITURE] post_id=6481 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie 2026 : montant et utilisation pratique
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montant-utilisation-2026/
+  🔍 [SANS ECRITURE] post_id=6479 — 1 bloc(s) CTA statique(s) a retirer — Aides chaudière fioul : cumul MaPrimeRénov&rsquo; et CEE
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-cumul-maprimerenov-cee/
+  🔍 [SANS ECRITURE] post_id=6477 — 1 bloc(s) CTA statique(s) a retirer — Gaz naturel ou propane : lequel choisir selon votre région
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-propane-region/
+  🔍 [SANS ECRITURE] post_id=6475 — 1 bloc(s) CTA statique(s) a retirer — Bouteille de gaz butane vs propane : laquelle choisir
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-vs-propane-laquelle-choisir/
+  🔍 [SANS ECRITURE] post_id=6423 — 1 bloc(s) CTA statique(s) a retirer — Comparer les fournisseurs d&rsquo;électricité : guide comple
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite-guide/
+  🔍 [SANS ECRITURE] post_id=6421 — 1 bloc(s) CTA statique(s) a retirer — Comparer les offres d&rsquo;électricité : guide pratique
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-offres-electricite-guide/
+  🔍 [SANS ECRITURE] post_id=6419 — 1 bloc(s) CTA statique(s) a retirer — Lire et comprendre sa facture d&rsquo;électricité
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite/
+  🔍 [SANS ECRITURE] post_id=6417 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite rénovation : calculez vos économies
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-calculer-economies/
+  🔍 [SANS ECRITURE] post_id=6415 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur vs chaudière gaz : quelle aide?
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-vs-chaudiere-gaz-aides/
+  🔍 [SANS ECRITURE] post_id=6413 — 1 bloc(s) CTA statique(s) a retirer — Eco-PTZ : les étapes pour obtenir votre prêt rapidement
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/etapes-obtenir-eco-ptz-rapidement/
+  🔍 [SANS ECRITURE] post_id=6411 — 1 bloc(s) CTA statique(s) a retirer — Facture gaz trop élevée : 7 solutions pour la réduire
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-solutions/
+  🔍 [SANS ECRITURE] post_id=6409 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : délais et conditions
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz-delais-conditions/
+  🔍 [SANS ECRITURE] post_id=6407 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs gaz pas cher : comment trouver les meilleures
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-pas-cher/
+  🔍 [SANS ECRITURE] post_id=6357 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : droits et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite-droits-procedure/
+  🔍 [SANS ECRITURE] post_id=6355 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : délais et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais/
+  🔍 [SANS ECRITURE] post_id=6353 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : délais et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-procedure/
+  🔍 [SANS ECRITURE] post_id=6351 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : comment ça marche vraiment
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-2026/
+  🔍 [SANS ECRITURE] post_id=6349 — 1 bloc(s) CTA statique(s) a retirer — Combles perdus non accessibles : comment les isoler
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isoler-combles-perdus-non-accessibles/
+  🔍 [SANS ECRITURE] post_id=6347 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : comment ça marche?
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement-0817/
+  🔍 [SANS ECRITURE] post_id=6345 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; gaz : aides 2026 et conditions
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/maprimerenov-gaz-aides-2026/
+  🔍 [SANS ECRITURE] post_id=6343 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffage gaz 2026 : MaPrimeRénov et CEE
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026/
+  🔍 [SANS ECRITURE] post_id=6341 — 1 bloc(s) CTA statique(s) a retirer — Aides bouteille de gaz : subventions et réductions 2026
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-bouteille-gaz-subventions-2026/
+  🔍 [SANS ECRITURE] post_id=6290 — 1 bloc(s) CTA statique(s) a retirer — Aides pour changer de compteur électrique : financement
+      https://www.comprendre-mon-energie.fr/electricite/compteur/aides-changer-compteur-electricite/
+  🔍 [SANS ECRITURE] post_id=6288 — 1 bloc(s) CTA statique(s) a retirer — Installation compteur électrique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0817/
+  🔍 [SANS ECRITURE] post_id=6286 — 1 bloc(s) CTA statique(s) a retirer — Installer un compteur électrique : guide complet
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installer-compteur-electrique-guide/
+  🔍 [SANS ECRITURE] post_id=6284 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie : qui peut le demander et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-eligibilite-conditions/
+  🔍 [SANS ECRITURE] post_id=6282 — 1 bloc(s) CTA statique(s) a retirer — Installer une toiture végétalisée : aides et étapes
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/toiture-vegetalisee-installation-aides/
+  🔍 [SANS ECRITURE] post_id=6280 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz condensation : prix et aides
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installation-chaudiere-gaz-condensation-prix-aides/
+  🔍 [SANS ECRITURE] post_id=6278 — 1 bloc(s) CTA statique(s) a retirer — Comparer les prix du gaz : tarifs et fournisseurs
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-prix-gaz-fournisseurs/
+  🔍 [SANS ECRITURE] post_id=6276 — 1 bloc(s) CTA statique(s) a retirer — Gaz naturel vs propane : quel fournisseur choisir
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-quel-fournisseur/
+  🔍 [SANS ECRITURE] post_id=6274 — 1 bloc(s) CTA statique(s) a retirer — Radiateur gaz : fonctionnement et rendement expliqués
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/radiateur-gaz-fonctionnement-rendement/
+  🔍 [SANS ECRITURE] post_id=6266 — 1 bloc(s) CTA statique(s) a retirer — Chauffage Gaz : hausse de 10.8% en août 2026
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chauffage-gaz-aout-2026/
+  🔍 [SANS ECRITURE] post_id=6263 — 1 bloc(s) CTA statique(s) a retirer — Chauffage Gaz August 2026 : baisse de 82.8%
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chauffage-gaz-august-2026/
+  🔍 [SANS ECRITURE] post_id=6208 — 1 bloc(s) CTA statique(s) a retirer — Heures pleines et creuses : comment ça marche
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0816-2/
+  🔍 [SANS ECRITURE] post_id=6206 — 1 bloc(s) CTA statique(s) a retirer — Heures pleines creuses : comment ça marche réellement
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0816/
+  🔍 [SANS ECRITURE] post_id=6204 — 1 bloc(s) CTA statique(s) a retirer — Heures pleines creuses : comment ça marche et économiser
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-economies/
+  🔍 [SANS ECRITURE] post_id=6202 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite chauffage : quel système choisir?
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-systemes-chauffage-comparatif/
+  🔍 [SANS ECRITURE] post_id=6200 — 1 bloc(s) CTA statique(s) a retirer — Délai MaPrimeRénov&rsquo; : combien de temps pour toucher?
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delai-maprimerenov-versement/
+  🔍 [SANS ECRITURE] post_id=6198 — 1 bloc(s) CTA statique(s) a retirer — Eco-PTZ vs MaPrimeRénov&rsquo; : quelle aide choisir ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimereno-quelle-aide-choisir/
+  🔍 [SANS ECRITURE] post_id=6196 — 1 bloc(s) CTA statique(s) a retirer — Indexation prix gaz : comment fonctionne la formule
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/indexation-prix-gaz-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=6194 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs gaz régionaux : qualité vs prix
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-regionaux-qualite-prix/
+  🔍 [SANS ECRITURE] post_id=6192 — 1 bloc(s) CTA statique(s) a retirer — Comment recharger une bouteille de gaz propane
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-gaz-propane/
+  🔍 [SANS ECRITURE] post_id=6143 — 1 bloc(s) CTA statique(s) a retirer — Électricité et déménagement : checklist complète
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist-0815/
+  🔍 [SANS ECRITURE] post_id=6141 — 1 bloc(s) CTA statique(s) a retirer — Électricité et déménagement : checklist complète
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist-complete/
+  🔍 [SANS ECRITURE] post_id=6139 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie 2026 : cumul des aides et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cumul-aides-conditions/
+  🔍 [SANS ECRITURE] post_id=6137 — 1 bloc(s) CTA statique(s) a retirer — Coût isolation combles perdus : devis et aides 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/cout-isolation-combles-perdus-devis-aides/
+  🔍 [SANS ECRITURE] post_id=6135 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique 2026 : montants
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2026/
+  🔍 [SANS ECRITURE] post_id=6133 — 1 bloc(s) CTA statique(s) a retirer — Lire sa facture gaz : guide complet des postes
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-guide-complet/
+  🔍 [SANS ECRITURE] post_id=6131 — 1 bloc(s) CTA statique(s) a retirer — Entretien chaudière gaz : fréquence et coûts annuels
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz-frequence-couts/
+  🔍 [SANS ECRITURE] post_id=6129 — 1 bloc(s) CTA statique(s) a retirer — Bouteille de gaz propane : guide complet d&rsquo;utilisation
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-propane-guide-utilisation/
+  🔍 [SANS ECRITURE] post_id=6073 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs électricité verts : tarifs et engagements 2026
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/fournisseurs-electricite-verts-tarifs-2026/
+  🔍 [SANS ECRITURE] post_id=6071 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs électricité moins chers : comparatif 2026
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/fournisseurs-electricite-moins-chers-comparatif/
+  🔍 [SANS ECRITURE] post_id=6069 — 1 bloc(s) CTA statique(s) a retirer — Meilleur fournisseur électricité 2026 : guide comparatif
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-comparatif-2026/
+  🔍 [SANS ECRITURE] post_id=6067 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie : comment l&rsquo;utiliser pour vos factures
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie/
+  🔍 [SANS ECRITURE] post_id=6065 — 1 bloc(s) CTA statique(s) a retirer — Tuiles solaires vs panneaux classiques : quelle aide?
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/tuiles-solaires-vs-panneaux-photovoltaiques-aides/
+  🔍 [SANS ECRITURE] post_id=6063 — 1 bloc(s) CTA statique(s) a retirer — Chaudière gaz vs chaudière fioul : aides et économies
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/chaudiere-gaz-vs-fioul-aides/
+  🔍 [SANS ECRITURE] post_id=6061 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : délais et procédure
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz-procedure/
+  🔍 [SANS ECRITURE] post_id=6059 — 1 bloc(s) CTA statique(s) a retirer — Gaz en citerne vs gaz de réseau : quel choix ?
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-citerne-vs-reseau-comparatif/
+  🔍 [SANS ECRITURE] post_id=6057 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz : étapes et normes 2026
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes-0815/
+  🔍 [SANS ECRITURE] post_id=6006 — 1 bloc(s) CTA statique(s) a retirer — Installation radiateur électrique : étapes et coûts 2026
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-etapes-couts/
+  🔍 [SANS ECRITURE] post_id=6004 — 1 bloc(s) CTA statique(s) a retirer — Thermostat intelligent chauffage électrique : économies
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/thermostat-intelligent-chauffage-electrique/
+  🔍 [SANS ECRITURE] post_id=6002 — 1 bloc(s) CTA statique(s) a retirer — Installation chauffage électrique : normes, coûts et étapes
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-chauffage-electrique-normes-cout/
+  🔍 [SANS ECRITURE] post_id=6000 — 1 bloc(s) CTA statique(s) a retirer — TVA Réduite Travaux Rénovation : Guide Complet 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-renovation-2025/
+  🔍 [SANS ECRITURE] post_id=5998 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2025 : comment ça marche vraiment
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-2025/
+  🔍 [SANS ECRITURE] post_id=5996 — 1 bloc(s) CTA statique(s) a retirer — Éco-PTZ : comment fonctionne le prêt sans intérêt ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-complet/
+  🔍 [SANS ECRITURE] post_id=5994 — 1 bloc(s) CTA statique(s) a retirer — Gaz naturel vs propane : quel fournisseur choisir
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-comparatif-fournisseurs/
+  🔍 [SANS ECRITURE] post_id=5992 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffage gaz 2024 : MaPrimeRénov et dispositifs
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2024/
+  🔍 [SANS ECRITURE] post_id=5949 — 1 bloc(s) CTA statique(s) a retirer — Réduction facture électricité : aides et allocations 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduction-facture-electricite-aides-2026-0814/
+  🔍 [SANS ECRITURE] post_id=5947 — 1 bloc(s) CTA statique(s) a retirer — Réduction facture électricité : aides et dispositifs 2026
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduction-facture-electricite-aides-2026/
+  🔍 [SANS ECRITURE] post_id=5945 — 1 bloc(s) CTA statique(s) a retirer — Tarif réglementé électricité 2026 : prix et conditions
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-reglemente-electricite-2026/
+  🔍 [SANS ECRITURE] post_id=5943 — 1 bloc(s) CTA statique(s) a retirer — Isolation combles perdus : étapes d&rsquo;installation
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isolation-combles-perdus-etapes-installation/
+  🔍 [SANS ECRITURE] post_id=5941 — 1 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique : étapes et coûts
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-0814/
+  🔍 [SANS ECRITURE] post_id=5937 — 1 bloc(s) CTA statique(s) a retirer — Meilleur fournisseur gaz 2026 : guide comparatif complet
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs-gaz-2024/
+  🔍 [SANS ECRITURE] post_id=5935 — 1 bloc(s) CTA statique(s) a retirer — Chaudière gaz : comment fonctionne le système
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0814/
+  🔍 [SANS ECRITURE] post_id=5804 — 1 bloc(s) CTA statique(s) a retirer — Changement fournisseur électricité : délais et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-procedure-0814/
+  🔍 [SANS ECRITURE] post_id=5800 — 1 bloc(s) CTA statique(s) a retirer — Changement fournisseur électricité : procédure et économies
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-procedure/
+  🔍 [SANS ECRITURE] post_id=5798 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie pompe à chaleur vs chaudière gaz
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-vs-chaudiere-gaz-comparatif-aides/
+  🔍 [SANS ECRITURE] post_id=5796 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur air-air vs chaudière gaz 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-air-air-vs-chaudiere-gaz-0814/
+  🔍 [SANS ECRITURE] post_id=5792 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur air-air vs chaudière gaz : aide 2026
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-air-air-vs-chaudiere-gaz/
+  🔍 [SANS ECRITURE] post_id=5790 — 1 bloc(s) CTA statique(s) a retirer — Rénovation toiture : matériaux et aides financières 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/renovation-toiture-materiaux-aides-2025/
+  🔍 [SANS ECRITURE] post_id=5788 — 1 bloc(s) CTA statique(s) a retirer — Rénovation toiture : comparatif complet des aides 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-renovation-toiture-2025-comparatif/
+  🔍 [SANS ECRITURE] post_id=5786 — 1 bloc(s) CTA statique(s) a retirer — Rénovation toiture : comparatif des aides 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/comparatif-aides-renovation-toiture-2025/
+  🔍 [SANS ECRITURE] post_id=5784 — 1 bloc(s) CTA statique(s) a retirer — Rénovation toiture : comparer les aides 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/comparer-aides-renovation-toiture-2025/
+  🔍 [SANS ECRITURE] post_id=5782 — 1 bloc(s) CTA statique(s) a retirer — Rénovation toiture : aides financières et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-renovation-toiture-2025/
+  🔍 [SANS ECRITURE] post_id=5780 — 1 bloc(s) CTA statique(s) a retirer — Facture gaz TTC vs HT : comprendre la différence
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-ttc-vs-ht-taxes/
+  🔍 [SANS ECRITURE] post_id=5778 — 1 bloc(s) CTA statique(s) a retirer — Consommation gaz : calcul m³ et impact facture
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/consommation-gaz-calcul-impact-facture/
+  🔍 [SANS ECRITURE] post_id=5774 — 1 bloc(s) CTA statique(s) a retirer — Réduction facture gaz : 7 astuces pratiques
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/reduction-facture-gaz-astuces/
+  🔍 [SANS ECRITURE] post_id=5772 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : délais, frais et procédure
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz-procedure-2/
+  🔍 [SANS ECRITURE] post_id=5770 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : délais et procédure officielle
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilience-contrat-gaz-delais-procedure/
+  🔍 [SANS ECRITURE] post_id=5768 — 1 bloc(s) CTA statique(s) a retirer — Installer une chaudière gaz : démarches et coûts 2024
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/installer-chaudiere-gaz-demarches-couts/
+  🔍 [SANS ECRITURE] post_id=5766 — 1 bloc(s) CTA statique(s) a retirer — Installation bouteille de gaz : étapes et normes
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-etapes-normes-0814-3/
+  🔍 [SANS ECRITURE] post_id=5764 — 1 bloc(s) CTA statique(s) a retirer — Installation bouteille de gaz : étapes et normes
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-etapes-normes-0814-2/
+  🔍 [SANS ECRITURE] post_id=5762 — 1 bloc(s) CTA statique(s) a retirer — Installation bouteille de gaz : étapes et normes
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-etapes-normes-0814/
+  🔍 [SANS ECRITURE] post_id=5760 — 1 bloc(s) CTA statique(s) a retirer — Installation bouteille de gaz : étapes et normes de sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-etapes-normes/
+  🔍 [SANS ECRITURE] post_id=5758 — 1 bloc(s) CTA statique(s) a retirer — Installer une bouteille de gaz : étapes et sécurité
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/installer-bouteille-gaz-etapes-securite/
+  🔍 [SANS ECRITURE] post_id=5724 — 1 bloc(s) CTA statique(s) a retirer — Compteur électrique communicant : fonctionnement et données
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-communicant-fonctionnement-0814/
+  🔍 [SANS ECRITURE] post_id=5722 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie 2025 : montants et bénéficiaires
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montants-beneficiaires-2025/
+  🔍 [SANS ECRITURE] post_id=5720 — 1 bloc(s) CTA statique(s) a retirer — Chaudière gaz condensation : fonctionnement et gains
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/chaudiere-gaz-condensation-fonctionnement-0814/
+  🔍 [SANS ECRITURE] post_id=5718 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs gaz régulés vs fournisseurs alternatifs
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-regules-vs-alternatifs/
+  🔍 [SANS ECRITURE] post_id=5716 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov gaz 2024 : conditions et montants
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/maprimer-nov-gaz-2024-conditions-montants/
+  🔍 [SANS ECRITURE] post_id=5714 — 1 bloc(s) CTA statique(s) a retirer — Prix bouteille de gaz 2024 : tarifs et économies
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024-tarifs/
+  🔍 [SANS ECRITURE] post_id=5681 — 1 bloc(s) CTA statique(s) a retirer — Aides heures creuses 2026 : réductions tarifaires et crédits
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/aides-heures-creuses-2026/
+  🔍 [SANS ECRITURE] post_id=5679 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite travaux rénovation : conditions et plafonds
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-renovation-conditions/
+  🔍 [SANS ECRITURE] post_id=5677 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : cumul avec autres aides 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/cumul-maprimerenov-autres-aides-2025/
+  🔍 [SANS ECRITURE] post_id=5675 — 1 bloc(s) CTA statique(s) a retirer — Lire sa facture gaz : décryptage complet des lignes
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-decryptage/
+  🔍 [SANS ECRITURE] post_id=5673 — 1 bloc(s) CTA statique(s) a retirer — Contrat gaz fixe vs variable : lequel choisir ?
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/contrat-gaz-fixe-vs-variable/
+  🔍 [SANS ECRITURE] post_id=5671 — 1 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : guide complet d&rsquo;utilisation sécuris
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-guide-utilisation-securisee/
+  🔍 [SANS ECRITURE] post_id=5637 — 1 bloc(s) CTA statique(s) a retirer — Résiliation électricité déménagement : procédure complète
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/resilier-electricite-demenagement-0813/
+  🔍 [SANS ECRITURE] post_id=5635 — 1 bloc(s) CTA statique(s) a retirer — Kit solaire autoconsommation : installation DIY ou pro
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autoconsommation-installation/
+  🔍 [SANS ECRITURE] post_id=5633 — 1 bloc(s) CTA statique(s) a retirer — Éco-PTZ travaux éligibles : liste complète 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/travaux-eligibles-eco-ptz-2025/
+  🔍 [SANS ECRITURE] post_id=5631 — 1 bloc(s) CTA statique(s) a retirer — Entretien poêle bois : guide complet et fréquence
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/entretien-poele-bois-guide/
+  🔍 [SANS ECRITURE] post_id=5629 — 1 bloc(s) CTA statique(s) a retirer — Meilleurs fournisseurs gaz : comparatif tarifs
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/
+  🔍 [SANS ECRITURE] post_id=5595 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs électricité régulés vs fournisseurs alternatifs
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/fournisseurs-regules-vs-alternatifs-electrique/
+  🔍 [SANS ECRITURE] post_id=5593 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau solaire 2025 : tous les cumuls
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2025/
+  🔍 [SANS ECRITURE] post_id=5591 — 1 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique : guide complet
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-guide/
+  🔍 [SANS ECRITURE] post_id=5589 — 1 bloc(s) CTA statique(s) a retirer — Aides pompe à chaleur 2024 : financement et conditions
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/
+  🔍 [SANS ECRITURE] post_id=5587 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne une chaudière gaz ? Guide complet
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0812/
+  🔍 [SANS ECRITURE] post_id=5543 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique vs pompe à chaleur : comparatif 2026
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-vs-pompe-chaleur-comparatif/
+  🔍 [SANS ECRITURE] post_id=5541 — 1 bloc(s) CTA statique(s) a retirer — Installer un système solaire combiné : guide étape par étape
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/installer-systeme-solaire-combine-guide-etapes/
+  🔍 [SANS ECRITURE] post_id=5539 — 1 bloc(s) CTA statique(s) a retirer — Isolation combles perdus : étapes installation et normes
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isolation-combles-perdus-installation-etapes/
+  🔍 [SANS ECRITURE] post_id=5537 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz condensation : étapes et normes
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere-gaz-condensation/
+  🔍 [SANS ECRITURE] post_id=5535 — 1 bloc(s) CTA statique(s) a retirer — Aides facture gaz : allocations et réductions
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-2024/
+  🔍 [SANS ECRITURE] post_id=5504 — 1 bloc(s) CTA statique(s) a retirer — Lire sa facture électricité : décryptage complet
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-guide-complet/
+  🔍 [SANS ECRITURE] post_id=5502 — 1 bloc(s) CTA statique(s) a retirer — Obtenez vos aidez sur les batteries solaires
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2025/
+  🔍 [SANS ECRITURE] post_id=5500 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie fenêtres : tout savoir avant travaux
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-fenetres/
+  🔍 [SANS ECRITURE] post_id=5498 — 1 bloc(s) CTA statique(s) a retirer — Isolation par l&rsquo;intérieur : faites la demande aujourd&
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-par-interieur-installation-etapes/
+  🔍 [SANS ECRITURE] post_id=5496 — 1 bloc(s) CTA statique(s) a retirer — Changement fournisseur gaz : conditions et économies
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz-0810/
+  🔍 [SANS ECRITURE] post_id=5462 — 1 bloc(s) CTA statique(s) a retirer — Contrat électricité fixe vs variable : lequel choisir
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/contrat-electricite-fixe-variable/
+  🔍 [SANS ECRITURE] post_id=5460 — 1 bloc(s) CTA statique(s) a retirer — Tuiles photovoltaïques ou panneaux solaires : quel choix ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/tuiles-photovoltaiques-vs-panneaux-solaires/
+  🔍 [SANS ECRITURE] post_id=5458 — 1 bloc(s) CTA statique(s) a retirer — Coût rénovation globale maison : budget et financement
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/cout-renovation-globale-maison/
+  🔍 [SANS ECRITURE] post_id=5456 — 1 bloc(s) CTA statique(s) a retirer — Bouteille de gaz butane vs propane : quelle différence ?
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-butane-vs-propane-differences/
+  🔍 [SANS ECRITURE] post_id=5427 — 1 bloc(s) CTA statique(s) a retirer — Installation compteur électrique : étapes et coûts réels
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts/
+  🔍 [SANS ECRITURE] post_id=5425 — 1 bloc(s) CTA statique(s) a retirer — Kit solaire plug and play : fonctionnement et avantages
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-plug-and-play-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=5423 — 1 bloc(s) CTA statique(s) a retirer — Aides chaudière fioul 2025 : tous les dispositifs
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-2025/
+  🔍 [SANS ECRITURE] post_id=5421 — 1 bloc(s) CTA statique(s) a retirer — Bilan thermique maison : comment l&rsquo;interpréter
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/bilan-thermique-maison-interpreter/
+  🔍 [SANS ECRITURE] post_id=5419 — 1 bloc(s) CTA statique(s) a retirer — Gaz naturel vs propane : quel fournisseur choisir
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur/
+  🔍 [SANS ECRITURE] post_id=5388 — 1 bloc(s) CTA statique(s) a retirer — Installer un chauffe-eau solaire : étapes et coûts
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installer-chauffe-eau-solaire-etapes-couts/
+  🔍 [SANS ECRITURE] post_id=5386 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie : comment l&rsquo;utiliser pour vos travaux
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/utiliser-cheque-energie-travaux/
+  🔍 [SANS ECRITURE] post_id=5384 — 1 bloc(s) CTA statique(s) a retirer — Aides audit énergétique 2024 : financement MaPrimeRénov&rsqu
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/aides-audit-energetique-2024/
+  🔍 [SANS ECRITURE] post_id=5382 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz : coûts, étapes et normes
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-cout-etapes/
+  🔍 [SANS ECRITURE] post_id=5353 — 1 bloc(s) CTA statique(s) a retirer — Mise en service électricité déménagement : délais et coûts
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/mise-en-service-electricite-demenagement/
+  🔍 [SANS ECRITURE] post_id=5351 — 1 bloc(s) CTA statique(s) a retirer — Aides système solaire combiné 2025 : tous les cumuls
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2025/
+  🔍 [SANS ECRITURE] post_id=5349 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite pompe à chaleur : économies et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-pompe-a-chaleur/
+  🔍 [SANS ECRITURE] post_id=5347 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : économies et fonctionnement
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-guide-complet/
+  🔍 [SANS ECRITURE] post_id=5345 — 1 bloc(s) CTA statique(s) a retirer — Augmentation facture gaz : causes et solutions
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/augmentation-facture-gaz-causes-solutions/
+  🔍 [SANS ECRITURE] post_id=5312 — 1 bloc(s) CTA statique(s) a retirer — Meilleur fournisseur électricité 2026 : guide complet
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-2026/
+  🔍 [SANS ECRITURE] post_id=5310 — 1 bloc(s) CTA statique(s) a retirer — Batterie LiFePO4 vs plomb : quelle technologie choisir
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-lifepo4-vs-plomb-panneaux-solaires/
+  🔍 [SANS ECRITURE] post_id=5308 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2025 : calcul montant aide étape
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/calcul-montant-maprimerenov/
+  🔍 [SANS ECRITURE] post_id=5306 — 1 bloc(s) CTA statique(s) a retirer — Poêle bois vs poêle pellets : lequel choisir ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/poele-bois-vs-poele-pellets/
+  🔍 [SANS ECRITURE] post_id=5304 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : procédure et délais légaux
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz-0805/
+  🔍 [SANS ECRITURE] post_id=5274 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffage électrique 2026 : subventions et crédits
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/
+  🔍 [SANS ECRITURE] post_id=5272 — 1 bloc(s) CTA statique(s) a retirer — Prix panneaux solaires 2025 : tarifs réels et devis
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2025-tarifs/
+  🔍 [SANS ECRITURE] post_id=5270 — 1 bloc(s) CTA statique(s) a retirer — Éco-PTZ : comment ça marche et qui peut l&rsquo;obtenir
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-conditions-acces/
+  🔍 [SANS ECRITURE] post_id=5268 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur air-air : fonctionnement et efficacité
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=5266 — 1 bloc(s) CTA statique(s) a retirer — Recharge bouteille de gaz : où et comment faire
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharge-bouteille-gaz-ou-comment/
+  🔍 [SANS ECRITURE] post_id=5235 — 1 bloc(s) CTA statique(s) a retirer — Tarif social électricité 2026 : conditions et demande
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-social-electricite-conditions-demande/
+  🔍 [SANS ECRITURE] post_id=5233 — 1 bloc(s) CTA statique(s) a retirer — Kit solaire thermique vs électrique : lequel choisir
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-thermique-vs-electrique/
+  🔍 [SANS ECRITURE] post_id=5231 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique vs chauffe-eau électrique
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-electrique-0803/
+  🔍 [SANS ECRITURE] post_id=5229 — 1 bloc(s) CTA statique(s) a retirer — Chaudière gaz vs fioul : quelle énergie choisir ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/chaudiere-gaz-vs-fioul-comparatif/
+  🔍 [SANS ECRITURE] post_id=5227 — 1 bloc(s) CTA statique(s) a retirer — Gaz en citerne vs gaz naturel : lequel est moins cher ?
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-citerne-vs-gaz-naturel-tarifs/
+  🔍 [SANS ECRITURE] post_id=5188 — 1 bloc(s) CTA statique(s) a retirer — Changer de fournisseur électricité : démarches et délais
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-demarches/
+  🔍 [SANS ECRITURE] post_id=5186 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau solaire ou thermodynamique : quel système choisi
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique-0802/
+  🔍 [SANS ECRITURE] post_id=5184 — 1 bloc(s) CTA statique(s) a retirer — Aides combles perdus 2025 : tous les dispositifs financiers
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/aides-combles-perdus-2025-dispositifs-complets/
+  🔍 [SANS ECRITURE] post_id=5182 — 1 bloc(s) CTA statique(s) a retirer — Isolant thermique : quel matériau choisir ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolant-thermique-quel-materiau-choisir/
+  🔍 [SANS ECRITURE] post_id=5180 — 1 bloc(s) CTA statique(s) a retirer — Délai de paiement facture gaz : droits et recours
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/delai-paiement-facture-gaz/
+  🔍 [SANS ECRITURE] post_id=5146 — 1 bloc(s) CTA statique(s) a retirer — Compteur électrique communicant : comment fonctionne
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-communicant-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=5144 — 1 bloc(s) CTA statique(s) a retirer — Système solaire combiné : chauffage et ECS intégrés
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=5142 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie vs MaPrimeRénov&rsquo; : laquelle choisir
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenovconditionnement/
+  🔍 [SANS ECRITURE] post_id=5140 — 1 bloc(s) CTA statique(s) a retirer — Rénovation globale vs rénovation par étapes : quel choix ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/renovation-globale-vs-renovation-etapes/
+  🔍 [SANS ECRITURE] post_id=5138 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne une chaudière gaz : explications
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz/
+  🔍 [SANS ECRITURE] post_id=5103 — 1 bloc(s) CTA statique(s) a retirer — Tarif heures pleines creuses 2026 : prix par région
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-heures-pleines-creuses-2026-par-region/
+  🔍 [SANS ECRITURE] post_id=5101 — 1 bloc(s) CTA statique(s) a retirer — Installer une batterie solaire : étapes et coûts 2026
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/installer-batterie-solaire-guide-complet/
+  🔍 [SANS ECRITURE] post_id=5099 — 1 bloc(s) CTA statique(s) a retirer — Pose toiture isolante : étapes, coûts et aides 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/pose-toiture-isolante-etapes-couts-aides/
+  🔍 [SANS ECRITURE] post_id=5097 — 1 bloc(s) CTA statique(s) a retirer — Thermographie infrarouge maison : détecte les déperditions
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/thermographie-infrarouge-detection-d-perditions/
+  🔍 [SANS ECRITURE] post_id=5095 — 1 bloc(s) CTA statique(s) a retirer — Aides contrat gaz 2024 : MaPrimeRénov&rsquo; et CEE
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/aides-contrat-gaz-2024/
+  🔍 [SANS ECRITURE] post_id=5093 — 1 bloc(s) CTA statique(s) a retirer — Durée de vie bouteille gaz : consommation et entretien
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/duree-vie-bouteille-gaz/
+  🔍 [SANS ECRITURE] post_id=5056 — 1 bloc(s) CTA statique(s) a retirer — Résiliation électricité déménagement : délais et démarches
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/resilier-electricite-demenagement/
+  🔍 [SANS ECRITURE] post_id=5054 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; panneaux solaires 2025 : montants réels 
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2025/
+  🔍 [SANS ECRITURE] post_id=5052 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz condensation : guide complet 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/installation-chaudiere-gaz-condensation-guide-2025/
+  🔍 [SANS ECRITURE] post_id=5050 — 1 bloc(s) CTA statique(s) a retirer — Audit énergétique vs DPE : différences et utilité
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-vs-dpe-differences/
+  🔍 [SANS ECRITURE] post_id=5048 — 1 bloc(s) CTA statique(s) a retirer — Meilleur fournisseur gaz : comparez sur notre simulateur
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleur-fournisseur-gaz-2024-comparatif/
+  🔍 [SANS ECRITURE] post_id=5005 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs électricité sans engagement : liberté et flexib
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/fournisseurs-electricite-sans-engagement/
+  🔍 [SANS ECRITURE] post_id=5003 — 1 bloc(s) CTA statique(s) a retirer — Kit solaire autonome : dimensionner votre installation
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-dimensionnement-0729/
+  🔍 [SANS ECRITURE] post_id=5001 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie 2025 : montants et conditions
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montants-conditions-2025/
+  🔍 [SANS ECRITURE] post_id=4999 — 1 bloc(s) CTA statique(s) a retirer — Prix chauffe-eau thermodynamique 2024 : tarifs et économies
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-2024/
+  🔍 [SANS ECRITURE] post_id=4997 — 1 bloc(s) CTA statique(s) a retirer — Comment lire sa facture de gaz : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-guide/
+  🔍 [SANS ECRITURE] post_id=4972 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur électrique : rendement, économies réelles
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/pompe-chaleur-electrique-rendement-economies/
+  🔍 [SANS ECRITURE] post_id=4970 — 1 bloc(s) CTA statique(s) a retirer — Entretien chauffe-eau solaire : maintenance et durée
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/entretien-chauffe-eau-solaire-0728/
+  🔍 [SANS ECRITURE] post_id=4968 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite travaux rénovation énergétique 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-renovation-energetique-2025/
+  🔍 [SANS ECRITURE] post_id=4966 — 1 bloc(s) CTA statique(s) a retirer — Installation poêle de masse : coûts, étapes et réglementatio
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/installation-poele-masse/
+  🔍 [SANS ECRITURE] post_id=4964 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz : étapes, normes et coûts
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes/
+  🔍 [SANS ECRITURE] post_id=4934 — 1 bloc(s) CTA statique(s) a retirer — Réduction facture électricité : 7 astuces pour baisser
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduction-facture-electricite-astuces/
+  🔍 [SANS ECRITURE] post_id=4932 — 1 bloc(s) CTA statique(s) a retirer — Installer un système solaire combiné soi-même
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/installer-systeme-solaire-combine-etapes/
+  🔍 [SANS ECRITURE] post_id=4930 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : conditions d&rsquo;éligibilité 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/conditions-eligibilite-maprimerenov-2025/
+  🔍 [SANS ECRITURE] post_id=4928 — 1 bloc(s) CTA statique(s) a retirer — Aides pompe à chaleur 2024 : MaPrimeRénov, CEE, éco-PTZ
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024/
+  🔍 [SANS ECRITURE] post_id=4926 — 1 bloc(s) CTA statique(s) a retirer — Contrat gaz fixe ou variable : lequel choisir en 2024
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/contrat-gaz-fixe-ou-variable/
+  🔍 [SANS ECRITURE] post_id=4897 — 1 bloc(s) CTA statique(s) a retirer — Tarifs électricité : comparateur contrats 2026
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparateur-tarifs-electricite-2026/
+  🔍 [SANS ECRITURE] post_id=4895 — 1 bloc(s) CTA statique(s) a retirer — Batterie solaire : comment ça marche et pourquoi l&rsquo;ado
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-fonctionnement-avantages/
+  🔍 [SANS ECRITURE] post_id=4893 — 1 bloc(s) CTA statique(s) a retirer — Éco-PTZ vs MaPrimeRénov&rsquo; : quel financement choisir ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif/
+  🔍 [SANS ECRITURE] post_id=4891 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière : étapes, normes et coûts 2024
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere-etapes-normes/
+  🔍 [SANS ECRITURE] post_id=4889 — 1 bloc(s) CTA statique(s) a retirer — Bouteille de gaz : types, capacités et utilisation
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/types-bouteilles-gaz-capacites/
+  🔍 [SANS ECRITURE] post_id=4859 — 1 bloc(s) CTA statique(s) a retirer — Coût installation compteur électrique : votre demande en 2 m
+      https://www.comprendre-mon-energie.fr/electricite/compteur/cout-installation-compteur-electricite/
+  🔍 [SANS ECRITURE] post_id=4857 — 1 bloc(s) CTA statique(s) a retirer — Panneaux solaires monocristallins vs polycristallins : leque
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins/
+  🔍 [SANS ECRITURE] post_id=4855 — 1 bloc(s) CTA statique(s) a retirer — Installation chauffe-eau thermodynamique : étapes et coûts 2
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts/
+  🔍 [SANS ECRITURE] post_id=4853 — 1 bloc(s) CTA statique(s) a retirer — Coût isolation thermique maison : tarifs 2024 et devis
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/cout-isolation-thermique-prix-devis-2024/
+  🔍 [SANS ECRITURE] post_id=4851 — 1 bloc(s) CTA statique(s) a retirer — Gaz naturel vs propane : quel fournisseur choisir ?
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-comparaison/
+  🔍 [SANS ECRITURE] post_id=4821 — 1 bloc(s) CTA statique(s) a retirer — Heures pleines creuses : comment ça marche vraiment ?
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0724/
+  🔍 [SANS ECRITURE] post_id=4819 — 1 bloc(s) CTA statique(s) a retirer — Kit solaire plug and play : installation sans électricien
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-plug-and-play-installation-simple/
+  🔍 [SANS ECRITURE] post_id=4817 — 1 bloc(s) CTA statique(s) a retirer — Combles perdus : quel isolant choisir en 2025 ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/quel-isolant-combles-perdus-comparatif-2025/
+  🔍 [SANS ECRITURE] post_id=4815 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; rénovation globale : montants et conditi
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/maprimerenov-renovation-globale-2024/
+  🔍 [SANS ECRITURE] post_id=4813 — 1 bloc(s) CTA statique(s) a retirer — Facture gaz trop élevée : causes et solutions
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-causes-solutions/
+  🔍 [SANS ECRITURE] post_id=4781 — 1 bloc(s) CTA statique(s) a retirer — Aides électricité déménagement : MaPrimeRénov et subventions
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/aides-electricite-demenagement/
+  🔍 [SANS ECRITURE] post_id=4777 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie CEE : comment ça marche en 2025 ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=4775 — 1 bloc(s) CTA statique(s) a retirer — DPE maison : interpréter votre diagnostic énergétique
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/dpe-maison-interprete-diagnostic-energetique/
+  🔍 [SANS ECRITURE] post_id=4773 — 1 bloc(s) CTA statique(s) a retirer — Chaudière gaz condensation vs classique : comparaison
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chaudiere-gaz-condensation-vs-classique/
+  🔍 [SANS ECRITURE] post_id=4745 — 1 bloc(s) CTA statique(s) a retirer — Meilleur fournisseur électricité 2026 : comparatif tarifs ré
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-2026-comparatif-tarifs/
+  🔍 [SANS ECRITURE] post_id=4743 — 1 bloc(s) CTA statique(s) a retirer — Système solaire combiné vs panneaux seuls : lequel choisir ?
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-panneaux-seuls/
+  🔍 [SANS ECRITURE] post_id=4741 — 1 bloc(s) CTA statique(s) a retirer — Diagnostic toiture avant rénovation : checklist aide 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/diagnostic-toiture-avant-renovation-aide-2025/
+  🔍 [SANS ECRITURE] post_id=4739 — 1 bloc(s) CTA statique(s) a retirer — Audit énergétique maison : étapes et interprétation
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-etapes-interpretation/
+  🔍 [SANS ECRITURE] post_id=4737 — 1 bloc(s) CTA statique(s) a retirer — Changement fournisseur gaz : démarches et économies 2024
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz/
+  🔍 [SANS ECRITURE] post_id=4701 — 1 bloc(s) CTA statique(s) a retirer — Installation radiateur électrique : étapes, normes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-normes-cout/
+  🔍 [SANS ECRITURE] post_id=4699 — 1 bloc(s) CTA statique(s) a retirer — Batterie LiFePO4 vs lithium : quel type pour panneaux
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-lifepo4-vs-lithium-panneaux-solaires/
+  🔍 [SANS ECRITURE] post_id=4697 — 1 bloc(s) CTA statique(s) a retirer — Chaudière fioul : aides 2025 et solutions de remplacement
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-remplacement-2025/
+  🔍 [SANS ECRITURE] post_id=4695 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : comment ça marche ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=4693 — 1 bloc(s) CTA statique(s) a retirer — Prix bouteille gaz 2024 : tarifs propane butane
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024-0721/
+  🔍 [SANS ECRITURE] post_id=4669 — 1 bloc(s) CTA statique(s) a retirer — Comprendre sa facture électricité : détail ligne par ligne
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite-detail/
+  🔍 [SANS ECRITURE] post_id=4667 — 1 bloc(s) CTA statique(s) a retirer — Orientation panneaux solaires : optimiser votre production
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/orientation-panneaux-solaires-azimut-inclinaison/
+  🔍 [SANS ECRITURE] post_id=4665 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie refusé : causes et solutions
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-refuse-causes-solutions/
+  🔍 [SANS ECRITURE] post_id=4663 — 1 bloc(s) CTA statique(s) a retirer — Poêle bois vs poêle granulés : quel chauffage choisir ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/poele-bois-vs-granules-comparatif/
+  🔍 [SANS ECRITURE] post_id=4661 — 1 bloc(s) CTA statique(s) a retirer — Fournisseurs gaz sans engagement : prix et conditions 2024
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-sans-engagement/
+  🔍 [SANS ECRITURE] post_id=4632 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : délais, frais et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-frais/
+  🔍 [SANS ECRITURE] post_id=4630 — 1 bloc(s) CTA statique(s) a retirer — Aides kit solaire 2025 : subventions et crédits d&rsquo;impô
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/aides-kit-solaire-subventions-2025/
+  🔍 [SANS ECRITURE] post_id=4628 — 1 bloc(s) CTA statique(s) a retirer — TVA réduite 5,5% : qui peut en bénéficier en 2025 ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-conditions-eligibilite-2025/
+  🔍 [SANS ECRITURE] post_id=4624 — 1 bloc(s) CTA statique(s) a retirer — Aides réduction facture gaz 2024 : tous les dispositifs
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-reduction-facture-gaz-2024/
+  🔍 [SANS ECRITURE] post_id=4589 — 1 bloc(s) CTA statique(s) a retirer — Compteur électrique communicant Linky : fonctionnement réel
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=4587 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau solaire thermosiphon : fonctionnement simplifié
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-thermosiphon-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=4585 — 1 bloc(s) CTA statique(s) a retirer — Dossier MaPrimeRénov&rsquo; : délais traitement et versement
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/
+  🔍 [SANS ECRITURE] post_id=4581 — 1 bloc(s) CTA statique(s) a retirer — Radiateur gaz : fonctionnement, types et entretien
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/radiateur-gaz-fonctionnement-entretien/
+  🔍 [SANS ECRITURE] post_id=4537 — 1 bloc(s) CTA statique(s) a retirer — Diagnostic système solaire combiné : évaluer votre installat
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/diagnostic-systeme-solaire-combine/
+  🔍 [SANS ECRITURE] post_id=4535 — 1 bloc(s) CTA statique(s) a retirer — Éco-PTZ : comment fonctionne le mécanisme de remboursement ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/mecanisme-remboursement-eco-ptz/
+  🔍 [SANS ECRITURE] post_id=4533 — 1 bloc(s) CTA statique(s) a retirer — Isolation combles vs murs : quel choix prioritaire ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-combles-vs-murs-priorite/
+  🔍 [SANS ECRITURE] post_id=4531 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat gaz : procédure, délais et frais 2024
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz-0717/
+  🔍 [SANS ECRITURE] post_id=4497 — 1 bloc(s) CTA statique(s) a retirer — Électricité en déménagement : checklist complète
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist/
+  🔍 [SANS ECRITURE] post_id=4493 — 1 bloc(s) CTA statique(s) a retirer — Éco-PTZ : comment ça marche et qui peut l&rsquo;obtenir ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/comment-fonctionne-eco-ptz/
+  🔍 [SANS ECRITURE] post_id=4491 — 1 bloc(s) CTA statique(s) a retirer — Rénovation globale maison : étapes et planification 2024
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/renovation-globale-etapes-planification/
+  🔍 [SANS ECRITURE] post_id=4489 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne une bouteille de gaz : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-gaz/
+  🔍 [SANS ECRITURE] post_id=4458 — 1 bloc(s) CTA statique(s) a retirer — Électricité verte vs électricité classique : quel fournisseu
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/electricite-verte-vs-classique-comparatif/
+  🔍 [SANS ECRITURE] post_id=4456 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionnent les panneaux solaires photovoltaïques
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/fonctionnement-panneaux-solaires-photovoltaiques/
+  🔍 [SANS ECRITURE] post_id=4454 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique 2025 : montants et critère
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2025/
+  🔍 [SANS ECRITURE] post_id=4452 — 1 bloc(s) CTA statique(s) a retirer — Bilan thermique maison : demande d&rsquo;audit en 2 minutes
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/bilan-thermique-maison-methode-interpretation/
+  🔍 [SANS ECRITURE] post_id=4424 — 1 bloc(s) CTA statique(s) a retirer — Radiateur électrique vs pompe à chaleur : quel chauffage cho
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-vs-pompe-a-chaleur/
+  🔍 [SANS ECRITURE] post_id=4423 — 1 bloc(s) CTA statique(s) a retirer — Kit solaire autonome : dimensionnement et rentabilité
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-dimensionnement/
+  🔍 [SANS ECRITURE] post_id=4422 — 1 bloc(s) CTA statique(s) a retirer — Audit énergétique obligatoire : qui est concerné en 2024 ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-obligatoire-2024/
+  🔍 [SANS ECRITURE] post_id=4421 — 1 bloc(s) CTA statique(s) a retirer — Lire votre facture gaz : explications ligne par ligne
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-explications/
+  🔍 [SANS ECRITURE] post_id=4394 — 1 bloc(s) CTA statique(s) a retirer — Entretien chauffe-eau solaire : maintenance et durée de vie
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/entretien-chauffe-eau-solaire/
+  🔍 [SANS ECRITURE] post_id=4393 — 1 bloc(s) CTA statique(s) a retirer — Isolation combles perdus : étapes et techniques 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isolation-combles-perdus-etapes-techniques/
+  🔍 [SANS ECRITURE] post_id=4392 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique 2024 : financer votre proj
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2024-0713/
+  🔍 [SANS ECRITURE] post_id=4391 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière gaz : étapes, coûts et normes 2024
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-couts/
+  🔍 [SANS ECRITURE] post_id=4364 — 1 bloc(s) CTA statique(s) a retirer — Consommation électrique : comment mesurer et optimiser
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/consommation-electrique-mesure-optimisation-0713/
+  🔍 [SANS ECRITURE] post_id=4363 — 1 bloc(s) CTA statique(s) a retirer — Coût système solaire combiné : budget réel 2025
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-prix-systeme-solaire-combine/
+  🔍 [SANS ECRITURE] post_id=4362 — 1 bloc(s) CTA statique(s) a retirer — Cumul des aides énergétiques 2025 : ce que vous pouvez vraim
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2025/
+  🔍 [SANS ECRITURE] post_id=4361 — 1 bloc(s) CTA statique(s) a retirer — Aides chauffe-eau thermodynamique 2024 : MaPrimeRénov&rsquo;
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2024/
+  🔍 [SANS ECRITURE] post_id=4360 — 1 bloc(s) CTA statique(s) a retirer — Consommation gaz naturel : comment calculer et optimiser
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/consommation-gaz-naturel-calcul/
+  🔍 [SANS ECRITURE] post_id=4234 — 1 bloc(s) CTA statique(s) a retirer — Installation poêle : Étapes, normes de sécurité, conduit, ra
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/installation-poele-etapes-normes-couts/
+  🔍 [SANS ECRITURE] post_id=4233 — 1 bloc(s) CTA statique(s) a retirer — Installer une pompe à chaleur : Devis Installateur RGE, duré
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/installation-pompe-a-chaleur-guide-etapes/
+  🔍 [SANS ECRITURE] post_id=4187 — 1 bloc(s) CTA statique(s) a retirer — Comparez prime énergie vs MaPrimeRenov : cumul possible, mon
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov-comparatif/
+  🔍 [SANS ECRITURE] post_id=4183 — 1 bloc(s) CTA statique(s) a retirer — Découvrez les étapes concrètes d&rsquo;installation isolatio
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/etapes-installation-isolation-combles-perdus/
+  🔍 [SANS ECRITURE] post_id=4176 — 1 bloc(s) CTA statique(s) a retirer — Batterie solaire vs groupe électrogène ? Découvrez les diffé
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-groupe-electrogene/
+  🔍 [SANS ECRITURE] post_id=4150 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau solaire vs thermodynamique : quel système choisi
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique/
+  🔍 [SANS ECRITURE] post_id=4143 — 1 bloc(s) CTA statique(s) a retirer — Offres gaz variable vs fixe : comment choisir en 2 minutes
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/offres-gaz-variable-vs-fixe/
+  🔍 [SANS ECRITURE] post_id=4137 — 1 bloc(s) CTA statique(s) a retirer — Changer de fournisseur gaz : démarches et économies
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changer-fournisseur-gaz-demarches/
+  🔍 [SANS ECRITURE] post_id=4130 — 1 bloc(s) CTA statique(s) a retirer — Chaudière gaz condensation : fonctionnement et avantages
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chaudiere-gaz-condensation-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=4123 — 1 bloc(s) CTA statique(s) a retirer — Prix bouteille gaz 2024 &#8211; 2026 : tarifs et économies
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024/
+  🔍 [SANS ECRITURE] post_id=4117 — 1 bloc(s) CTA statique(s) a retirer — Aides gaz 2024 : MaPrimeRénov et subventions fournisseurs
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/aides-subventions-gaz-2024/
+  🔍 [SANS ECRITURE] post_id=4101 — 1 bloc(s) CTA statique(s) a retirer — Pourquoi votre facture d&rsquo;électricité a augmenté en 202
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-facture-electricite-2026/
+  🔍 [SANS ECRITURE] post_id=4095 — 1 bloc(s) CTA statique(s) a retirer — Aides électricité 2026 : réductions et subventions
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026/
+  🔍 [SANS ECRITURE] post_id=4032 — 1 bloc(s) CTA statique(s) a retirer — Prix isolation maison : coûts et devis 2026
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/prix-isolation-maison-devis-2024/
+  🔍 [SANS ECRITURE] post_id=4025 — 1 bloc(s) CTA statique(s) a retirer — Coût installation chaudière gaz : tarifs 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/cout-installation-chaudiere-gaz-tarifs-2025/
+  🔍 [SANS ECRITURE] post_id=4019 — 1 bloc(s) CTA statique(s) a retirer — Chèque énergie 2025 : montants, conditions et utilisation
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2025-montants-conditions-utilisation/
+  🔍 [SANS ECRITURE] post_id=4005 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2025 : barèmes et plafonds par revenus
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-baremes-plafonds-revenus-2025/
+  🔍 [SANS ECRITURE] post_id=3998 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; : Tout savoir sur l&rsquo;éligibilité 20
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-eligibilite-2025-2/
+  🔍 [SANS ECRITURE] post_id=3990 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2025 : plafonds de revenus et calcul
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-2025/
+  🔍 [SANS ECRITURE] post_id=3960 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2025 : plafonds de revenus et éligibilit
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-eligibilite-2025/
+  🔍 [SANS ECRITURE] post_id=3947 — 1 bloc(s) CTA statique(s) a retirer — MaPrimeRénov&rsquo; 2026 : barèmes de revenus et plafonds
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-baremes-revenus-plafonds-2025/
+  🔍 [SANS ECRITURE] post_id=3946 — 1 bloc(s) CTA statique(s) a retirer — DPE : diagnostic de performance énergétique expliqué
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/dpe-diagnostic-performance-energetique/
+  🔍 [SANS ECRITURE] post_id=3944 — 1 bloc(s) CTA statique(s) a retirer — Installer compteur électrique : votre demande en 2 minutes
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installer-compteur-electrique-demarches-couts/
+  🔍 [SANS ECRITURE] post_id=3942 — 1 bloc(s) CTA statique(s) a retirer — Audit énergétique : étapes clés et interprétation
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/deroulement-audit-energetique-interpretation/
+  🔍 [SANS ECRITURE] post_id=3903 — 1 bloc(s) CTA statique(s) a retirer — Heures pleines creuses : comment ça marche vraiment
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement/
+  🔍 [SANS ECRITURE] post_id=3902 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique : fonctionnement et économies
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/fonctionnement-chauffe-eau-thermodynamique/
+  🔍 [SANS ECRITURE] post_id=3901 — 1 bloc(s) CTA statique(s) a retirer — Chauffe-eau thermodynamique vs électrique : quel choix ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-electrique/
+  🔍 [SANS ECRITURE] post_id=3818 — 1 bloc(s) CTA statique(s) a retirer — Prime énergie 2025 : comment ça marche et qui peut en bénéfi
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/fonctionnement-prime-energie/
+  🔍 [SANS ECRITURE] post_id=3817 — 1 bloc(s) CTA statique(s) a retirer — Installation chaudière : étapes et démarches expliquées
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere/
+  🔍 [SANS ECRITURE] post_id=3816 — 1 bloc(s) CTA statique(s) a retirer — Facture gaz : comprendre vos frais et réduire vos coûts
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comprendre-et-reduire-facture-gaz/
+  🔍 [SANS ECRITURE] post_id=3778 — 1 bloc(s) CTA statique(s) a retirer — Avantages et inconvénients des fournisseurs d&rsquo;électric
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/avantages-inconvenients-fournisseurs-electricite/
+  🔍 [SANS ECRITURE] post_id=3775 — 1 bloc(s) CTA statique(s) a retirer — Quel poêle choisir ? Comparatif des meilleurs modèles 2024
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/meilleur-poele-comparatif/
+  🔍 [SANS ECRITURE] post_id=3774 — 1 bloc(s) CTA statique(s) a retirer — Résilier son contrat gaz : démarches et délais 2024
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz/
+  🔍 [SANS ECRITURE] post_id=3665 — 1 bloc(s) CTA statique(s) a retirer — Chauffage électrique : fonctionnement et rendement
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/fonctionnement-chauffage-electrique/
+  🔍 [SANS ECRITURE] post_id=3664 — 1 bloc(s) CTA statique(s) a retirer — Système solaire combiné : fonctionnement et avantages
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/fonctionnement-systeme-solaire-combine/
+  🔍 [SANS ECRITURE] post_id=3663 — 1 bloc(s) CTA statique(s) a retirer — Aides combles perdus : avantages et inconvénients
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/avantages-inconvenients-aides-combles-perdus/
+  🔍 [SANS ECRITURE] post_id=3662 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur : fonctionnement et avantages expliqués
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/fonctionnement-pompe-a-chaleur/
+  🔍 [SANS ECRITURE] post_id=3557 — 1 bloc(s) CTA statique(s) a retirer — Comparatif fournisseurs gaz 2026 : qualité vs prix
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs/
+  🔍 [SANS ECRITURE] post_id=3558 — 1 bloc(s) CTA statique(s) a retirer — Isolation thermique : guide complet des matériaux et techniq
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-thermique/
+  🔍 [SANS ECRITURE] post_id=3559 — 1 bloc(s) CTA statique(s) a retirer — Aides chaudière : comparatif complet par type de chauffage
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/comparatifs-aides-chaudieres/
+  🔍 [SANS ECRITURE] post_id=3560 — 1 bloc(s) CTA statique(s) a retirer — Batterie panneaux solaires : guide complet 2026
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/installation-batterie-panneaux-solaires/
+  🔍 [SANS ECRITURE] post_id=3561 — 1 bloc(s) CTA statique(s) a retirer — Lire sa facture d&rsquo;électricité : guide complet 2025
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/
+  🔍 [SANS ECRITURE] post_id=3489 — 1 bloc(s) CTA statique(s) a retirer — Rénovation énergétique : conformité et devis personnalisé
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/renovation-energetique/
+  🔍 [SANS ECRITURE] post_id=3488 — 1 bloc(s) CTA statique(s) a retirer — Entretien chaudière gaz : votre demande en ligne en 2 minute
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz/
+  🔍 [SANS ECRITURE] post_id=3492 — 1 bloc(s) CTA statique(s) a retirer — Normes électriques 2026 : obligations légales et risques
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/
+  🔍 [SANS ECRITURE] post_id=3491 — 1 bloc(s) CTA statique(s) a retirer — Panneaux solaires : erreurs à éviter lors de l&rsquo;install
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-solaires/
+  🔍 [SANS ECRITURE] post_id=3490 — 1 bloc(s) CTA statique(s) a retirer — Erreurs à éviter pour obtenir ses aides énergétiques
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aides-energetiques-guide/
+  🔍 [SANS ECRITURE] post_id=3384 — 1 bloc(s) CTA statique(s) a retirer — Aides rénovation énergétique 2026 : guide complet des financ
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/aides-renovation-energetique/
+  🔍 [SANS ECRITURE] post_id=3387 — 1 bloc(s) CTA statique(s) a retirer — Comparateur d&rsquo;électricité : trouvez l&rsquo;offre la m
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-electricite/
+  🔍 [SANS ECRITURE] post_id=3386 — 1 bloc(s) CTA statique(s) a retirer — Panneau solaire : simulation en ligne et devis personnalisé
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/devis-panneau-solaire/
+  🔍 [SANS ECRITURE] post_id=3385 — 1 bloc(s) CTA statique(s) a retirer — Aides énergétiques 2026 : guide complet pour financer vos tr
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/aides-energetiques-guide-2/
+  🔍 [SANS ECRITURE] post_id=3047 — 1 bloc(s) CTA statique(s) a retirer — Isolation extérieure (ITE) : Profitez des subventions de l&r
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-exterieure/
+  🔍 [SANS ECRITURE] post_id=2218 — 1 bloc(s) CTA statique(s) a retirer — Attestation Contrat Électricité : Copie en 2 min (2026)
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  🔍 [SANS ECRITURE] post_id=2039 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur air-eau : Pourquoi est-elle le choix n°1 pou
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-eau/
+  🔍 [SANS ECRITURE] post_id=1333 — 1 bloc(s) CTA statique(s) a retirer — Réduire sa Facture d’Électricité en 2026 : Économiser jusqu&
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+  🔍 [SANS ECRITURE] post_id=1150 — 1 bloc(s) CTA statique(s) a retirer — Heures Creuses 2026 : Le Guide Complet pour Maîtriser votre 
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+  🔍 [SANS ECRITURE] post_id=1006 — 1 bloc(s) CTA statique(s) a retirer — Tarif de Base de l&rsquo;électricité et quelle est la différ
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-de-base/
+  🔍 [SANS ECRITURE] post_id=908 — 1 bloc(s) CTA statique(s) a retirer — Production solaire
+      https://www.comprendre-mon-energie.fr/solaire/production-solaire/
+  🔍 [SANS ECRITURE] post_id=906 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur air air : pourquoi choisir une pour climatis
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air/
+  🔍 [SANS ECRITURE] post_id=904 — 1 bloc(s) CTA statique(s) a retirer — La Transition Énergétique : pourquoi c&rsquo;est la meilleur
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/transition-energetique/
+  🔍 [SANS ECRITURE] post_id=856 — 1 bloc(s) CTA statique(s) a retirer — Pompe à chaleur piscine : comment choisir une  pour prolonge
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-piscine/
+  🔍 [SANS ECRITURE] post_id=851 — 1 bloc(s) CTA statique(s) a retirer — Comprendre sa facture d&rsquo;électricité 2026 : comment déc
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+  🔍 [SANS ECRITURE] post_id=847 — 1 bloc(s) CTA statique(s) a retirer — Thermostat Connecté Gratuit : demande en ligne en 2 minutes
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aide-etat-thermostat-connecte/
+  🔍 [SANS ECRITURE] post_id=844 — 1 bloc(s) CTA statique(s) a retirer — Rénovation énergétique 2026 : par où commencer et quelles so
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/
+  🔍 [SANS ECRITURE] post_id=842 — 1 bloc(s) CTA statique(s) a retirer — Est ce que l&rsquo;entretient de la chaudière est-il obligat
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz-2/
+  🔍 [SANS ECRITURE] post_id=840 — 1 bloc(s) CTA statique(s) a retirer — Panneaux Photovoltaïques : comment trouver un installateur e
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-photovoltaiques/
+  🔍 [SANS ECRITURE] post_id=825 — 1 bloc(s) CTA statique(s) a retirer — Sèche linge pompe à chaleur : pourquoi choisir un  pour opti
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/seche-linge-pompe-a-chaleur/
+  🔍 [SANS ECRITURE] post_id=821 — 1 bloc(s) CTA statique(s) a retirer — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Écon
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+  🔍 [SANS ECRITURE] post_id=709 — 1 bloc(s) CTA statique(s) a retirer — Coupure électricité : comment faire si je n&rsquo;ai plus de
+      https://www.comprendre-mon-energie.fr/electricite/compteur/coupure-electricite/
+  🔍 [SANS ECRITURE] post_id=663 — 1 bloc(s) CTA statique(s) a retirer — Comment fonctionne le compteur Linky et quel est son impact 
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky/
+  🔍 [SANS ECRITURE] post_id=661 — 1 bloc(s) CTA statique(s) a retirer — Résiliation contrat électricité : quelles démarches et est c
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite/
+  🔍 [SANS ECRITURE] post_id=659 — 1 bloc(s) CTA statique(s) a retirer — Chèque Énergie 2026 : Guide pour Obtenir votre Aide
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+  🔍 [SANS ECRITURE] post_id=563 — 1 bloc(s) CTA statique(s) a retirer — Changer de fournisseur d&rsquo;électricité : est ce que cela
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/changer-fournisseur-electricite/
+  🔍 [SANS ECRITURE] post_id=561 — 1 bloc(s) CTA statique(s) a retirer — Prix de électricité : pourquoi varie-t-il ? Comprendre les m
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/prix-electricite/
+  🔍 [SANS ECRITURE] post_id=557 — 1 bloc(s) CTA statique(s) a retirer — Droits Électricité : quels sont vos droits sur un contrat d&
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/droits-electricite/
+  🔍 [SANS ECRITURE] post_id=538 — 1 bloc(s) CTA statique(s) a retirer — Comprendre le marché de l&rsquo;électricité : comprendre les
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/marche-electricite/
+
+============================================================
+Articles scannes (total sur le site) : 818
+Articles avec vieux CTA a retirer     : 803
+Blocs CTA statiques retires au total  : 1333
+Mode LECTURE SEULE -- relancer avec --apply pour ecrire reellement
+============================================================
+
+Echantillon (jusqu'a 5 articles concernes) :
+  post_id=11262 (3 bloc(s)) — Comment fonctionne la facturation de l&rsquo;électricité
+    https://www.comprendre-mon-energie.fr/electricite/facture-electricite/fonctionnement-facturation-electricite/
+  post_id=11260 (3 bloc(s)) — Facture électricité : structure tarifaire et frais cachés
+    https://www.comprendre-mon-energie.fr/electricite/facture-electricite/composantes-facture-electricite/
+  post_id=11258 (3 bloc(s)) — Comment fonctionne un contrat d&rsquo;électricité en France
+    https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+  post_id=11256 (3 bloc(s)) — Changer de fournisseur électricité : économies réelles et
+    https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-guide-1022/
+  post_id=11254 (3 bloc(s)) — MaPrimeRénov&rsquo; : qui peut vraiment installer les travau
+    https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-artisans-installation-conditions/
