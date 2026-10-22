@@ -96,9 +96,11 @@ premier.
 Décision explicite du porteur de projet, suite au diagnostic trafic/conversion
 du 22/10 (doc Claude "Stratégie d'augmentation des clics CTA") : **plus
 aucune bannière flottante sur le site**, quelle qu'elle soit. Concerne
-uniquement `wordpress-mu-plugins/cme-cta-progressifs.php` — les **boutons
-CTA progressifs insérés dans le corps du texte** (toutes les ~230 mots,
-fonction `demarrer()`) restent inchangés, ce n'est pas une bannière.
+uniquement `wordpress-mu-plugins/cme-cta-progressifs.php` — l'insertion
+progressive dans le corps du texte (toutes les ~230 mots, fonction
+`demarrer()`) n'est pas une bannière et n'a pas été retirée, mais **a été
+transformée en mini-formulaire** le même jour, voir la section suivante
+("Formulaire de contact progressif").
 
 Deux mécanismes retirés du fichier (code + appels dans l'IIFE) :
 - **Bannière flottante Zendure** (`demarrerZendureFlottant`, objet `ZENDURE`,
@@ -124,6 +126,110 @@ horodaté en cPanel, uploader le nouveau dans `/wp-content/mu-plugins/`,
 purger les deux caches LiteSpeed, vérifier avec `?t=$RANDOM` sur un article
 qui affichait une des deux bannières (silo gaz/électricité/aide/rénovation/
 solaire) qu'aucune des deux n'apparaît plus après 30-60 secondes.
+
+## Formulaire de contact progressif — remplacement du bouton CTA (22/10/2026)
+
+Décision explicite du porteur de projet, le même jour que l'arrêt des
+bannières ci-dessus : le bouton CTA "Contactez un expert" inséré toutes les
+~230 mots ne doit plus renvoyer vers `/contactez-un-expert/`, mais devenir
+**un mini-formulaire interactif intégré directement dans l'article**
+(type Typeform, une question affichée à la fois), pour inciter au
+remplissage sans faire quitter la page. Portée explicitement demandée :
+**nouveaux articles ET rétroactif sur les articles déjà publiés** — pas une
+option plus simple (ex. nouveaux articles uniquement), refusée.
+
+**Pourquoi pas le shortcode WPForms directement** : WordPress/WPForms
+décide côté serveur, **avant le rendu de la page**, s'il faut charger son
+CSS/JS/nonces — en détectant le shortcode/bloc dans le contenu **stocké**
+de l'article au moment du rendu. Un shortcode inséré côté client par ce
+mu-plugin arrive après coup : WPForms n'aurait jamais chargé ses propres
+assets, et le formulaire ne fonctionnerait pas (pas de soumission possible).
+D'où un mini-formulaire maison (HTML/CSS/JS pur, sans dépendance), seule
+option fiable pour une insertion dynamique côté client.
+
+**Implémentation** (`wordpress-mu-plugins/cme-cta-progressifs.php`) :
+- La fonction `creer(n)` (appelée par `demarrer()`, logique de répartition
+  toutes les ~230 mots **inchangée**) génère désormais un mini-formulaire
+  multi-étapes au lieu d'un bouton : barre de progression, un champ visible
+  à la fois (`prenom` → `telephone` → `email` → `code_postal`), validation
+  inline, navigation clavier (Entrée = étape suivante), étape finale "Merci"
+  après soumission. Une seule fonction génératrice réutilisée à chaque
+  position : c'est ce qui rend le mécanisme **modulaire** plutôt que de
+  dupliquer du balisage par position.
+- **Le rétroactif est couvert "gratuitement"** : ce mécanisme tourne déjà
+  côté client sur chaque page article, ancienne ou nouvelle (`wp_footer` +
+  `is_singular('post')`) — nul besoin de réécrire le contenu stocké de
+  chaque article pour que le nouveau formulaire y apparaisse.
+- **Champs retenus — hypothèse à confirmer par l'opérateur** : `prenom`,
+  `telephone`, `email`, `code_postal`, repris du schéma déjà en place
+  (`leads_convertis` / `tracking-api/server.py`), **pas nécessairement**
+  la liste exacte des champs du vrai formulaire WPForms #472 sur
+  `/contactez-un-expert/`, que ce sandbox ne peut pas inspecter (pas
+  d'accès au site live). À ajuster si l'opérateur confirme une liste
+  différente.
+- **Soumission** : poste directement en JSON vers le relais déjà déployé
+  et déjà validé en prod `/wp-json/cme/v1/log-lead` (voir
+  `cme-tracking-conversion.php`), qui républie côté serveur vers l'API
+  Cloud Run → table `leads_convertis`. **Aucun nouveau code backend
+  nécessaire.** `tool = 'contact-expert-inline'` pour distinguer ces
+  soumissions des autres (`contact-expert-formulaire`, `appel-telephone`).
+  Pousse aussi `dataLayer.push({event: 'generate_lead_inline', ...})` —
+  **à marquer comme Key Event dans GA4 si l'opérateur veut le suivre
+  séparément du `generate_lead` existant** (Claude Code n'a pas accès à
+  cette configuration).
+- Un petit `<script>` séparé, interpolé côté PHP (`get_the_ID()`), expose
+  `window.CME_POST_ID` pour l'attribution `source_post_id` du lead — seule
+  valeur injectée côté serveur, le reste du script JS reste un bloc statique
+  (nowdoc) comme avant.
+
+**Côté pipeline** (`pipeline/pipeline.py`, fonction `publier_article()`) :
+l'ancienne injection du CTA statique à la publication
+(`inserer_ctas_repartis()`, appelée dans le PATCH juste après la création
+du post) a été **désactivée** pour les nouveaux articles — elle serait
+redondante avec le nouveau formulaire dynamique, et superposerait un vieux
+bouton statique ET le nouveau formulaire sur le même article. La fonction
+`inserer_ctas_repartis()`/`generer_cta_html()` n'a pas été supprimée du
+fichier (gardée si ce choix devait être révisé), juste son appel.
+
+**Nettoyage rétroactif** (`scripts-maintenance/nettoyer_anciens_cta_statiques.py`,
+dry-run par défaut, `--apply` pour écrire, pattern habituel du projet) :
+retire des articles déjà publiés les anciens blocs CTA statiques (gabarit
+`generer_cta_html()` : `<div style="background:linear-gradient(...)">`
+contenant `<h3>`/`<p>`/`<a>…Contactez un expert…</a>`), pour qu'ils ne
+restent pas affichés en double avec le nouveau formulaire dynamique. Détection
+via BeautifulSoup (pas de regex sur du HTML imbriqué — plus fiable face aux
+variations de mise en forme, même piège de principe que l'ordre des
+attributs `href` déjà documenté pour `fix_cta_liens_retroactif.py`, mais ici
+il s'agit de retirer tout le bloc, pas de modifier un attribut). Testé avec
+un échantillon HTML fabriqué localement (le vrai gabarit, un paragraphe
+éditorial normal avec un lien interne, et un encart sans rapport) : retire
+exactement le bloc CTA attendu, laisse le reste intact.
+
+**Testé en lecture seule sur les données réelles le 22/10 via le pont
+GitHub Actions** : 818 articles publiés au total, **803 avec au moins un
+vieux bloc CTA statique à retirer, 1333 blocs au total** (3 par article
+dans l'immense majorité des cas — cohérent avec `inserer_ctas_repartis()`
+qui en posait jusqu'à 3). **Piège rencontré au premier essai** : le
+workflow `maintenance-a-la-demande.yml` exige le **chemin complet**
+`scripts-maintenance/<script>.py` en entrée (son étape de garde-fou rejette
+tout chemin qui ne commence pas par `scripts-maintenance/`) — un premier
+essai avec juste le nom de fichier a échoué silencieusement (aucun log
+committé, le job échoue avant même d'atteindre l'étape qui écrit le log).
+
+**Pas encore appliqué (`--apply`) sur le site réel** — volume important
+(803 articles déjà publiés et indexés) : relecture humaine recommandée
+avant d'écrire, par exemple en testant d'abord avec `--limite=5 --apply`
+comme pour les scripts précédents du même type.
+
+**Déploiement — même contrainte que d'habitude** pour
+`cme-cta-progressifs.php` : non versionné automatiquement sur le serveur.
+Vu qu'il s'agit d'un composant interactif entièrement nouveau (jamais testé
+visuellement, ce sandbox n'a pas d'accès navigateur/site live), **recommandé
+avant un déploiement direct en mode `actif`** : repasser temporairement
+`MODE` à `'apercu'` lors du premier upload cPanel, vérifier le rendu réel
+sur un article de chaque silo avec `?cta60=1`, puis repasser `MODE` à
+`'actif'` une fois validé visuellement — le mode apercu existe justement
+pour ce genre de vérification à moindre risque.
 
 ## Tracking de conversion (chantier oct. 2026, suite du chantier CTA)
 
