@@ -71,10 +71,23 @@ add_action('wp_footer', function () {
   var MOTS_FIN_MIN = 120;     // pas de formulaire s'il reste moins de mots que cela
   var API_LEAD = '/wp-json/cme/v1/log-lead';   // relais deja deploye (cme-tracking-conversion.php)
 
-  var GAZ = { texte: 'Comparez les offres Gaz au meilleur prix', c1: '#1e3a8a', c2: '#3b82f6' };
-  var ELEC = { texte: 'Comparez les offres Électricité au meilleur prix', c1: '#1e3a8a', c2: '#3b82f6' };
-  var AIDES = { texte: 'Calculez vos aides à la rénovation', c1: '#78350f', c2: '#f59e0b' };
-  var SOLAIRE = { texte: 'Estimez votre installation solaire', c1: '#052e16', c2: '#16a34a' };
+  // Couleurs UNIFIEES sur tout le site (22/10/2026, a la demande du porteur de
+  // projet) -- avant, chaque silo avait son propre gradient (bleu/ambre/vert).
+  // Desormais une seule identite visuelle, reprise du logo du site (fond
+  // navy #0a1120 -> bleu accent #60a5fa) pour que le formulaire soit tout de
+  // suite reconnu comme "le site officiel" partout, quel que soit le silo.
+  // Bouton d'action en orange/ambre (deja present sur le site, silo aides) :
+  // contraste chaud sur fond froid, volontairement different du fond pour
+  // que le bouton "ressorte" visuellement -- c'est ce contraste de couleur,
+  // pas l'harmonie avec le fond, qui pousse le plus au clic sur un CTA.
+  var FORMULAIRE_FOND1 = '#0f172a';     // navy, proche du logo (#0a1120)
+  var FORMULAIRE_FOND2 = '#1e3a8a';     // bleu de marque, deja utilise gaz/electricite
+  var FORMULAIRE_ACCENT = '#f59e0b';    // ambre, deja utilise silo aides -- couleur du bouton
+
+  var GAZ = { texte: 'Comparez les offres Gaz au meilleur prix' };
+  var ELEC = { texte: 'Comparez les offres Électricité au meilleur prix' };
+  var AIDES = { texte: 'Calculez vos aides à la rénovation' };
+  var SOLAIRE = { texte: 'Estimez votre installation solaire' };
   // ZENDURE (partenariat d'affiliation Awin) et la banniere flottante "app/expert"
   // ont ete retires le 22/10/2026 a la demande explicite du porteur de projet --
   // plus aucune banniere flottante sur le site, quelle qu'elle soit. Le bouton CTA
@@ -153,7 +166,7 @@ add_action('wp_footer', function () {
         var d = document.createElement('div');
         d.className = 'cme-cta60';
         d.setAttribute('data-pos', String(n));
-        d.style.cssText = 'background:linear-gradient(135deg,' + offre.c1 + ',' + offre.c2 + ');border-radius:16px;margin:26px 0;overflow:hidden;clear:both;max-width:100%;box-sizing:border-box;';
+        d.style.cssText = 'background:linear-gradient(135deg,' + FORMULAIRE_FOND1 + ',' + FORMULAIRE_FOND2 + ');border-radius:16px;margin:26px 0;overflow:hidden;clear:both;max-width:100%;box-sizing:border-box;';
 
         var etapesHtml = ETAPES.map(function (e, i) {
           return '<div class="cme-mf-etape" data-champ="' + e.champ + '" style="display:' + (i === 0 ? 'block' : 'none') + ';">' +
@@ -179,7 +192,7 @@ add_action('wp_footer', function () {
             '</div>' +
             '<div class="cme-mf-nav" style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;">' +
               '<button type="button" class="cme-mf-prec" style="background:none;border:none;color:#6b7280;font-size:14px;font-weight:600;cursor:pointer;padding:8px;visibility:hidden;">← Précédent</button>' +
-              '<button type="button" class="cme-mf-suiv" style="background:' + offre.c1 + ';color:#fff;font-weight:700;font-size:15px;padding:11px 24px;border:none;border-radius:9px;cursor:pointer;white-space:nowrap;">Suivant →</button>' +
+              '<button type="button" class="cme-mf-suiv" style="background:' + FORMULAIRE_ACCENT + ';color:#1f2937;font-weight:700;font-size:15px;padding:11px 24px;border:none;border-radius:9px;cursor:pointer;white-space:nowrap;">Suivant →</button>' +
             '</div>' +
           '</div>';
 

@@ -231,6 +231,28 @@ sur un article de chaque silo avec `?cta60=1`, puis repasser `MODE` à
 `'actif'` une fois validé visuellement — le mode apercu existe justement
 pour ce genre de vérification à moindre risque.
 
+**Déployé et validé en conditions réelles le 22/10** (confirmé par
+l'opérateur, formulaire fonctionnel sur le site live).
+
+**Couleurs unifiées (22/10/2026, suite)** : les 4 couleurs par silo
+(bleu/ambre/vert selon gaz-électricité/aides/solaire) ont été remplacées
+par **une identité visuelle unique sur tout le site** — demande explicite
+de l'opérateur ("unifier les couleurs du formulaire... une couleur qui
+correspond à l'identité du site et qui favorise la conversion"). Fond du
+formulaire repris du vrai logo du site (navy `#0a1120`/bleu accent
+`#60a5fa`, trouvés dans `scripts-maintenance/patch_logo_entete.py`, seule
+source fiable de l'identité de marque accessible depuis ce sandbox — pas
+d'accès au thème WordPress live) : dégradé `#0f172a` → `#1e3a8a`. Bouton
+d'action en ambre `#f59e0b` (déjà utilisé côté silo aides ailleurs sur le
+site) : contraste volontairement chaud sur fond froid plutôt qu'une
+couleur assortie au fond, principe standard de conversion (un bouton qui
+« ressort » visuellement du reste de la carte est cliqué davantage qu'un
+bouton qui s'y fond). Texte du bouton en gris foncé (`#1f2937`, pas blanc)
+pour un contraste lisible sur fond ambre. Le texte d'accroche reste
+personnalisé par silo (`GAZ`/`ELEC`/`AIDES`/`SOLAIRE` ne portent plus que
+`texte`, les couleurs ont été retirées de ces objets et centralisées dans
+`FORMULAIRE_FOND1`/`FORMULAIRE_FOND2`/`FORMULAIRE_ACCENT`).
+
 ## Tracking de conversion (chantier oct. 2026, suite du chantier CTA)
 
 Depuis la migration des CTA vers `/contactez-un-expert/`, plus aucun systeme
