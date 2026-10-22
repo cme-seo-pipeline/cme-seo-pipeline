@@ -1,0 +1,21 @@
+# Execution du 2026-10-22T12:52:28Z
+# Script    : scripts-maintenance/tester_fix_differenciation_suffixe.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Cas reel : occurrence 1 'MaPrimeRénov'' deja publiee le 20/10/2026
+08:24:16 -- titre='MaPrimeRénov' vs autres aides : quel dispositif
+choisir', mot_cle='MaPrimeRénov' vs autres aides'.
+Simule l'occurrence 2 (sous_silo SUFFIXE, comme recu en prod)
+proposant un brief quasi-identique.
+======================================================================
+  🔀 Chevauchement detecte avec un article existant -- angle differencie : 'MaPrimeRénov' vs MaPrimeRénov' Sérénité vs Éco-PTZ : comparatif complet des aides 2026' / 'comparaison aides rénovation MaPrimeRénov' Éco-PTZ' (au lieu de 'MaPrimeRénov' vs autres aides : lequel choisir pour vos travaux' / 'MaPrimeRénov' vs autres aides')
+
+Titre propose   : "MaPrimeRénov' vs autres aides : lequel choisir pour vos travaux"
+Titre renvoye   : "MaPrimeRénov' vs MaPrimeRénov' Sérénité vs Éco-PTZ : comparatif complet des aides 2026"
+Mot-cle propose : "MaPrimeRénov' vs autres aides"
+Mot-cle renvoye : "comparaison aides rénovation MaPrimeRénov' Éco-PTZ"
+
+✅ Chevauchement detecte et brief differencie -- le correctif fonctionne (avant le correctif, la fonction n'aurait trouve aucune ligne pour ce sous-silo suffixe et aurait renvoye le brief absolument inchange).
