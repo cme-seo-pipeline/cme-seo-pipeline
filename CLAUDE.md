@@ -91,6 +91,40 @@ publication (`<a href="..." style="...">` vs `<a style="..." href="...">`)
 importe sa position** parmi les attributs, jamais supposer qu'il est le
 premier.
 
+## CTA — arrêt des bannières flottantes (22/10/2026)
+
+Décision explicite du porteur de projet, suite au diagnostic trafic/conversion
+du 22/10 (doc Claude "Stratégie d'augmentation des clics CTA") : **plus
+aucune bannière flottante sur le site**, quelle qu'elle soit. Concerne
+uniquement `wordpress-mu-plugins/cme-cta-progressifs.php` — les **boutons
+CTA progressifs insérés dans le corps du texte** (toutes les ~230 mots,
+fonction `demarrer()`) restent inchangés, ce n'est pas une bannière.
+
+Deux mécanismes retirés du fichier (code + appels dans l'IIFE) :
+- **Bannière flottante Zendure** (`demarrerZendureFlottant`, objet `ZENDURE`,
+  `SILOS_ZENDURE_FLOTTANT`) — partenariat d'affiliation Awin (code promo
+  AF5E24, -5%), qui devait de toute façon s'arrêter automatiquement le
+  01/11/2026. **Implication business à garder en tête** : ça coupe le
+  partenariat Awin ~10 jours avant son terme naturel — décision assumée par
+  l'opérateur, mais à signaler si quelqu'un d'autre gère cette relation
+  commerciale.
+- **Bannière flottante app Android / "Contactez un expert"**
+  (`demarrerAppFlottant`, `afficherApp`, `appSilence`/`appMemoriser`,
+  variables `APP_*`/`EXPERT_HORS_ANDROID`/`EXPERT_URL`).
+
+Code supprimé plutôt que commenté (reste consultable dans l'historique git,
+commit du 22/10, si l'un des deux partenariats devait reprendre). `php -l`
+validé après coup, aucune référence orpheline (`ZENDURE`, `demarrerAppFlottant`
+etc. absents du fichier après coup, vérifié par grep).
+
+**Déploiement — même contrainte que d'habitude pour ce fichier** (voir plus
+bas) : non versionné automatiquement sur le serveur. L'opérateur doit
+`cloudshell download` le fichier corrigé, renommer l'ancien en `.bak`
+horodaté en cPanel, uploader le nouveau dans `/wp-content/mu-plugins/`,
+purger les deux caches LiteSpeed, vérifier avec `?t=$RANDOM` sur un article
+qui affichait une des deux bannières (silo gaz/électricité/aide/rénovation/
+solaire) qu'aucune des deux n'apparaît plus après 30-60 secondes.
+
 ## Tracking de conversion (chantier oct. 2026, suite du chantier CTA)
 
 Depuis la migration des CTA vers `/contactez-un-expert/`, plus aucun systeme
