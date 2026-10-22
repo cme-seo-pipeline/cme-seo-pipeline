@@ -57,11 +57,9 @@ define('CME_TRACKING_API_URL', 'https://cme-tracking-api-217943559750.europe-wes
 // "Formulaire de contact progressif"). Meme principe que les 3 anciens
 // simulateurs (wordpress-plugins/simulateur-*, apps-scripts/cme-*-leads.gs) :
 // relais server-side via wp_remote_get vers une Apps Script Web App, qui
-// ecrit dans le classeur partage. URL VIDE PAR DEFAUT -- a coller ici une
-// fois apps-scripts/cme-formulaire-article-leads.gs deploye (voir son
-// commentaire d'installation). Tant que c'est vide, ce relais est un no-op
-// silencieux : n'affecte pas le fonctionnement existant vers Cloud Run.
-define('CME_APPS_SCRIPT_LEADS_INLINE_URL', '');
+// ecrit dans le classeur partage (onglet "Leads Formulaire Article").
+// Deployee et URL renseignee le 22/10/2026.
+define('CME_APPS_SCRIPT_LEADS_INLINE_URL', 'https://script.google.com/macros/s/AKfycbxpzUna-KBj6kpASyufpeAz0rF2C-lXFHSAjpUGiHnrqpTujYsLnUZi9aJlQrHciSThxA/exec');
 
 // ── Relais server-side : le JS ci-dessous poste ICI (same-origin, sous
 // wp-json), et ce relais republie vers l'API Cloud Run. Elimine tout
