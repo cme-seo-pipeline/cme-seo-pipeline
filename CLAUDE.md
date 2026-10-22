@@ -481,10 +481,28 @@ Testé en lecture seule via `scripts-maintenance/tester_fix_differenciation_suff
 (pont GitHub Actions) : rejoue le cas réel du 20/10 (cluster `"MaPrimeRénov'
 vs autres aides"`, 2 articles à 83 secondes d'intervalle) en appelant la
 fonction corrigée avec un sous-silo suffixé et un brief quasi-identique à
-l'occurrence 1 réelle déjà en base — confirme qu'elle détecte maintenant
-le chevauchement et renvoie un titre/mot-clé différents (avant le
-correctif, elle aurait renvoyé le brief rigoureusement inchangé, faute
-d'avoir trouvé la moindre ligne correspondante).
+l'occurrence 1 réelle déjà en base.
+
+**Bug n°4 trouvé par ce test, corrigé dans la foulée** : premier essai en
+échec — `400 Syntax error: concatenated string literals must be separated
+by whitespace or comments`. Cause : l'échappement des apostrophes dans la
+requête utilisait `.replace("'", "''")` (doublement du guillemet) au lieu
+du style backslash déjà utilisé ailleurs dans le fichier (ex.
+`selectionner_silos_a_traiter`, `.replace("'", "\\'")`). Pour un sous-silo
+se terminant par une apostrophe (`"MaPrimeRénov'"`, le seul des 7 ciblés
+dans ce cas), ça produit 3 guillemets simples consécutifs juste avant la
+fermeture de la chaîne (`...v'''`), que BigQuery interprète comme
+l'ouverture d'une chaîne triple-guillemets plutôt qu'une apostrophe
+échappée — cassant la requête. Capturé par le `except` fail-open de la
+fonction (donc jamais un crash visible), mais silencieusement un no-op
+pour `MaPrimeRénov'` **depuis la création de cette fonction**, indépendamment
+du bug de suffixe ci-dessus. Corrigé en passant au même style d'échappement
+backslash partout dans la fonction.
+
+Re-testé après ce second correctif : détecte maintenant le chevauchement
+et renvoie un titre/mot-clé différents (avant les deux correctifs, la
+fonction aurait renvoyé le brief rigoureusement inchangé pour ce
+sous-silo, faute d'avoir pu exécuter la moindre requête).
 
 **Pas encore validé en conditions réelles** — à vérifier après le
 prochain run de `publication-quotidienne.yml` (le lendemain du commit)

@@ -4595,8 +4595,15 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
         return brief
 
     sous_silo_base = re.sub(r' \(\d+\)$', '', str(sous_silo))
-    silo_safe = str(silo_name).replace("'", "''")
-    sous_silo_safe = sous_silo_base.replace("'", "''")
+    # Echappement backslash (style BigQuery Standard SQL deja utilise dans
+    # selectionner_silos_a_traiter), PAS doublement du guillemet : un nom
+    # se terminant par une apostrophe (ex. "MaPrimeRénov'") produirait
+    # sinon une sequence de 3 guillemets simples consecutifs juste avant
+    # la fermeture de la chaine, que BigQuery interprete comme le debut
+    # d'une chaine triple-guillemets -- erreur de syntaxe decouverte le
+    # 22/10/2026 en testant le correctif ci-dessus (voir CLAUDE.md).
+    silo_safe = str(silo_name).replace("\\", "\\\\").replace("'", "\\'")
+    sous_silo_safe = sous_silo_base.replace("\\", "\\\\").replace("'", "\\'")
 
     try:
         df_existants = client_bq.query(f"""
