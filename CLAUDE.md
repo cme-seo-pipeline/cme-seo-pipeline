@@ -314,13 +314,19 @@ Ajouté dans `envoyerLead()` (`window.location.href`).
 - Transition de fondu (`opacity`) à chaque changement d'étape plutôt qu'un
   bascule brut `display:none`/`block`.
 
-**Pas encore déployé en cPanel** à la date de cette note (l'opérateur
-n'avait pas encore téléversé le fichier avec les couleurs unifiées au
-moment de cette demande) — les trois ajouts ci-dessus sont dans le même
-fichier `cme-cta-progressifs.php` que les couleurs, un seul redéploiement
-cPanel suffira pour tout. `cme-tracking-conversion.php` doit être
-redéployé séparément (fichier distinct) une fois
-`CME_APPS_SCRIPT_LEADS_INLINE_URL` renseignée.
+**Déployé et validé en conditions réelles le 22/10** : `CME_APPS_SCRIPT_LEADS_INLINE_URL`
+renseignée par l'opérateur
+(`apps-scripts/cme-formulaire-article-leads.gs` déployé comme Web App),
+les deux fichiers redéployés en cPanel. Confirmé par l'opérateur
+(nouvelle ligne visible dans l'onglet "Leads Formulaire Article") ET
+vérifié côté BigQuery via `scripts-maintenance/verifier_leads_formulaire_inline.py`
+(pont GitHub Actions) : 4 lignes `tool='contact-expert-inline'` sur les
+48h précédentes, dont un test à 15h20 UTC le 22/10 avec `source_page`
+correctement renseignée (confirme au passage le correctif de ce champ,
+absent des 2 tests les plus anciens de la même série, faits avant son
+ajout). Les deux destinations (BigQuery + Sheets) reçoivent bien la même
+soumission — chantier formulaire progressif entièrement clos et en
+production à cette date.
 
 ## Tracking de conversion (chantier oct. 2026, suite du chantier CTA)
 
