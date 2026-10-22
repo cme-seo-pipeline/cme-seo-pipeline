@@ -413,9 +413,10 @@ Testé en lecture seule sur données réelles via
 Cloud Shell) avant le commit : `verifier_doublons()` renvoie bien `True`
 pour un titre déjà publié et `False` pour un titre inédit ; la sous-
 requête d'exclusion retrouve bien les publications récentes attendues.
-**Pas encore validé en conditions réelles** (le prochain run de
-`sync-indicateurs.yml`/`publication-quotidienne.yml` le confirmera — à
-vérifier qu'aucun nouveau cluster n'apparaît après le 20/10).
+**Validé en conditions réelles le 22/10 — insuffisant, voir section
+suivante** : ce correctif couvrait bien les deux root causes identifiées
+le 20/10, mais un **troisième** mécanisme de duplication, non détecté à
+l'époque, continuait à produire des quasi-doublons quotidiens.
 
 **Étape 2 (séparée, pas automatique)** : les 42 clusters déjà publiés
 restent à traiter. `analyser_duplication_editoriale.py` ne fait que
@@ -424,6 +425,78 @@ plan de contenu enrichi, ou différencier) — **lecture seule**, aucune
 fusion ni redirection 301 n'est appliquée automatiquement. Nécessite une
 relecture humaine avant toute application sur du contenu déjà publié et
 indexé.
+
+## Duplication éditoriale — suite (22/10/2026) : troisième root cause
+
+**Constat** : `scripts-maintenance/verifier_doublons_post_fix.py` (lecture
+seule, écrit pour valider le correctif du 20/10 en conditions réelles) a
+montré que la duplication continuait **sans interruption** les 20, 21 et
+22/10 — notamment des `mot_cle` strictement identiques republiés à moins
+de 2 minutes d'intervalle, dans le **même run quotidien**, pour les
+sous-silos à quota > 1 (`MaPrimeRénov'` et `Chèque énergie` le 20/10,
+`Contrat Électricité` et `Facture Électricité` le 21/10, `Aides
+chauffe-eau thermodynamique` les 20 et 21/10). Les deux root causes
+corrigées le 20/10 sont restées valides (aucune régression sur ces
+mécanismes précis) — c'est un **troisième** mécanisme, non identifié à
+l'époque, qui en est responsable.
+
+**Root cause confirmée** : `selectionner_silos_a_traiter()` ajoute un
+suffixe anti-collision (`' (2)'`, `' (3)'`...) au nom de sous-silo quand
+le quota journalier pour ce sous-silo est > 1 (ex. `"MaPrimeRénov' (2)"`
+pour le 2ᵉ article du jour), afin que `generer_tous_briefs()` (qui groupe
+par `Silo + Sous-Silo`) ne fusionne pas les deux sujets en un seul brief.
+Mais ce suffixe est **toujours retiré avant écriture dans
+`historique_publications`** (`rediger_et_publier()`, juste avant l'appel
+à `publier_article()`, ligne `sous_silo_val = re.sub(r' \(\d+\)$', '',
+sous_silo_val)`) — la table ne contient donc **jamais** de sous-silo
+suffixé.
+
+`verifier_et_differencier_sujet()` — la fonction censée comparer chaque
+nouveau sujet aux articles déjà publiés sur le même sous-silo avant
+rédaction, et demander à l'IA un angle différent en cas de chevauchement
+— recevait pourtant ce sous-silo **suffixé** pour toute occurrence ≥ 2,
+et filtrait sa requête BigQuery dessus tel quel (`WHERE sous_silo_strategique
+= '{sous_silo_safe}'`, égalité stricte sur la valeur suffixée). Résultat :
+pour toute occurrence ≥ 2 d'un sous-silo à quota > 1 — exactement le cas
+où le risque de doublon est le plus élevé, puisque les deux occurrences
+partagent le même contexte concurrentiel scrapé (même requête de niche
+via `generate_niche_query`) — la requête ne trouvait **jamais aucune
+ligne**, ni l'historique des jours précédents, ni même son propre
+« jumeau » occurrence 1 publié quelques secondes plus tôt dans le même
+run (déjà présent en base à ce moment, puisque `rediger_et_publier()`
+traite les sujets un par un et écrit dans `historique_publications`
+avant de passer au suivant). La fonction se comportait donc comme un
+no-op silencieux à chaque fois qu'elle aurait dû servir.
+
+**Corrigé** (même commit que ce constat) : `verifier_et_differencier_sujet()`
+retire désormais le suffixe (`re.sub(r' \(\d+\)$', '', sous_silo)`) avant
+de construire sa requête, exactement comme le fait déjà le filtre SQL de
+`selectionner_silos_a_traiter()`. Étendu au passage pour différencier
+aussi `mot_cle_principal` (pas seulement `titre_seo`) quand un
+chevauchement est détecté — avant, un titre pouvait être reformulé tout
+en ciblant exactement le même mot-clé, laissant la duplication SEO
+(cannibalisation) intacte même quand le titre semblait différent.
+
+Testé en lecture seule via `scripts-maintenance/tester_fix_differenciation_suffixe.py`
+(pont GitHub Actions) : rejoue le cas réel du 20/10 (cluster `"MaPrimeRénov'
+vs autres aides"`, 2 articles à 83 secondes d'intervalle) en appelant la
+fonction corrigée avec un sous-silo suffixé et un brief quasi-identique à
+l'occurrence 1 réelle déjà en base — confirme qu'elle détecte maintenant
+le chevauchement et renvoie un titre/mot-clé différents (avant le
+correctif, elle aurait renvoyé le brief rigoureusement inchangé, faute
+d'avoir trouvé la moindre ligne correspondante).
+
+**Pas encore validé en conditions réelles** — à vérifier après le
+prochain run de `publication-quotidienne.yml` (le lendemain du commit)
+qu'aucun sous-silo à quota > 1 ne produit plus de `mot_cle` identique ou
+quasi-identique dans le même run.
+
+**Leçon à généraliser** : toute fonction qui compare à
+`historique_publications` (ou toute autre table où le suffixe anti-collision
+n'est pas stocké) doit débaser le sous-silo reçu avant de filtrer dessus.
+Si un futur mécanisme anti-doublon est ajouté ailleurs dans le pipeline et
+reçoit potentiellement un sous-silo suffixé, vérifier systématiquement
+qu'il fait de même.
 
 ## Divergence connue, non résolue
 

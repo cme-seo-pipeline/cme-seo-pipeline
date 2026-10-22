@@ -4565,52 +4565,81 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
 def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, config):
     """Verifie AVANT toute generation si le titre propose chevauche un
     article DEJA PUBLIE dans le meme silo/sous-silo. Si chevauchement
-    detecte, demande a Claude un TITRE ALTERNATIF avec un angle
-    genuinement distinct sur le meme theme (jamais une fusion -- le
+    detecte, demande a Claude un TITRE et un MOT-CLE ALTERNATIFS avec un
+    angle genuinement distinct sur le meme theme (jamais une fusion -- le
     porteur de projet a choisi explicitement la creation d'un nouvel
     angle plutot qu'une fusion avec l'existant). FAIL-OPEN : toute
     erreur dans cette verification laisse le brief original intact --
     ne doit jamais bloquer silencieusement la publication comme les
-    bugs deja rencontres ce jour."""
+    bugs deja rencontres ce jour.
+
+    BUG CORRIGE LE 22/10/2026 (voir CLAUDE.md, "Duplication editoriale --
+    suite") : `sous_silo` recu ici porte parfois le suffixe anti-collision
+    ' (2)', ' (3)'... ajoute par selectionner_silos_a_traiter() pour
+    distinguer plusieurs sujets industrialises sur le meme sous-silo dans
+    UN MEME run. Mais ce suffixe est toujours retire AVANT ecriture dans
+    historique_publications (rediger_et_publier, juste avant
+    publier_article) -- donc `sous_silo_strategique` n'y contient JAMAIS
+    de suffixe. Resultat : la requete ci-dessous, filtree sur le sous-silo
+    SUFFIXE, ne trouvait JAMAIS aucune ligne pour l'occurrence 2 (et
+    suivantes) d'un meme sous-silo -- ni les articles des jours
+    precedents, ni meme son propre "jumeau" occurrence 1 publie quelques
+    secondes plus tot DANS LE MEME RUN. Cette fonction se comportait donc
+    comme un no-op silencieux pour toute occurrence >= 2, exactement les
+    cas ou le risque de doublon est le plus eleve (meme contexte
+    concurrentiel scrape, meme requete de niche). Corrige en comparant
+    sur le sous-silo DEBASE (suffixe retire), comme le fait deja le filtre
+    SQL de selectionner_silos_a_traiter."""
     titre_propose = brief.get('titre_seo', '')
     if not titre_propose:
         return brief
 
+    sous_silo_base = re.sub(r' \(\d+\)$', '', str(sous_silo))
     silo_safe = str(silo_name).replace("'", "''")
-    sous_silo_safe = str(sous_silo).replace("'", "''")
+    sous_silo_safe = sous_silo_base.replace("'", "''")
 
     try:
         df_existants = client_bq.query(f"""
-            SELECT titre, MAX(date_publication) AS derniere_date
+            SELECT titre, mot_cle, MAX(date_publication) AS derniere_date
             FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
             WHERE silo = '{silo_safe}' AND sous_silo_strategique = '{sous_silo_safe}'
-            GROUP BY titre
+            GROUP BY titre, mot_cle
             ORDER BY derniere_date DESC LIMIT 15
         """).to_dataframe()
-        titres_existants = df_existants['titre'].tolist() if not df_existants.empty else []
+        existants = df_existants.to_dict('records') if not df_existants.empty else []
     except Exception as e:
         print(f"  ⚠️ Verification chevauchement impossible ({e}) -- sujet conserve tel quel")
         return brief
 
-    if not titres_existants:
+    if not existants:
         return brief
 
+    mot_cle_propose = brief.get('mot_cle_principal', '')
     prompt = (
-        f"Voici un titre d'article PROPOSE : \"{titre_propose}\"\n\n"
-        "Voici les titres DEJA PUBLIES dans le meme sous-silo :\n"
-        + "\n".join(f"- {t}" for t in titres_existants) + "\n\n"
-        "Le titre propose couvre-t-il un sujet QUASI-IDENTIQUE a l'un de ceux "
-        "deja publies (meme angle, meme intention de recherche) ? Si OUI, "
-        "propose un TITRE ALTERNATIF avec un angle genuinement distinct sur "
-        "le meme theme general -- jamais une simple reformulation, un vrai "
-        "angle different (public different, aspect different du sujet, "
-        "format different). Si NON, renvoie le titre propose tel quel.\n"
+        f"Voici un article PROPOSE :\n"
+        f"- Titre : \"{titre_propose}\"\n"
+        f"- Mot-cle principal : \"{mot_cle_propose}\"\n\n"
+        "Voici les articles DEJA PUBLIES (ou en cours de publication dans "
+        "ce meme run) dans le meme sous-silo :\n"
+        + "\n".join(f"- \"{e['titre']}\" (mot-cle : {e['mot_cle']})" for e in existants) + "\n\n"
+        "L'article propose couvre-t-il un sujet QUASI-IDENTIQUE a l'un de ceux "
+        "deja publies (meme angle, meme intention de recherche, meme mot-cle "
+        "ou variante triviale du meme mot-cle -- ex. ordre des mots inverse, "
+        "singulier/pluriel, synonyme evident) ? Si OUI, propose un TITRE et "
+        "un MOT-CLE PRINCIPAL ALTERNATIFS avec un angle genuinement distinct "
+        "sur le meme theme general -- jamais une simple reformulation, un "
+        "vrai angle different (public different, aspect different du sujet, "
+        "format different), et un mot-cle qui cible reellement cet angle "
+        "different (pas juste un synonyme du mot-cle existant). Si NON, "
+        "renvoie le titre et le mot-cle proposes tels quels.\n"
         "Reponds EXACTEMENT dans ce format, avec ces delimiteurs exacts "
         "(PAS de JSON) :\n"
         "===CHEVAUCHEMENT===\n"
         "(oui ou non)\n"
         "===TITRE===\n"
         "(le titre original si pas de chevauchement, sinon le nouveau titre differencie)\n"
+        "===MOT_CLE===\n"
+        "(le mot-cle original si pas de chevauchement, sinon le nouveau mot-cle differencie)\n"
         "===FIN==="
     )
 
@@ -4624,16 +4653,21 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
         resp.raise_for_status()
         texte = resp.json()['content'][0]['text']
         match_chev = re.search(r'===CHEVAUCHEMENT===\s*\n(.*?)\n===TITRE===', texte, re.DOTALL)
-        match_titre = re.search(r'===TITRE===\s*\n(.*?)\n===FIN===', texte, re.DOTALL)
-        if not (match_chev and match_titre):
+        match_titre = re.search(r'===TITRE===\s*\n(.*?)\n===MOT_CLE===', texte, re.DOTALL)
+        match_mot_cle = re.search(r'===MOT_CLE===\s*\n(.*?)\n===FIN===', texte, re.DOTALL)
+        if not (match_chev and match_titre and match_mot_cle):
             print("  ⚠️ Reponse de verification malformee -- sujet conserve tel quel")
             return brief
         chevauchement = 'oui' in match_chev.group(1).strip().lower()
         nouveau_titre = match_titre.group(1).strip()
+        nouveau_mot_cle = match_mot_cle.group(1).strip()
         if chevauchement and nouveau_titre:
-            print(f"  🔀 Chevauchement detecte avec un article existant -- angle differencie : '{nouveau_titre}' (au lieu de '{titre_propose}')")
+            print(f"  🔀 Chevauchement detecte avec un article existant -- angle differencie : "
+                  f"'{nouveau_titre}' / '{nouveau_mot_cle}' (au lieu de '{titre_propose}' / '{mot_cle_propose}')")
             brief = dict(brief)
             brief['titre_seo'] = nouveau_titre
+            if nouveau_mot_cle:
+                brief['mot_cle_principal'] = nouveau_mot_cle
         return brief
     except Exception as e:
         print(f"  ⚠️ Verification chevauchement echouee ({e}) -- sujet conserve tel quel")
