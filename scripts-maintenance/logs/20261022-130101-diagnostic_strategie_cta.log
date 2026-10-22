@@ -1,0 +1,133 @@
+# Execution du 2026-10-22T13:01:01Z
+# Script    : scripts-maintenance/diagnostic_strategie_cta.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+0a. Schema de 01_raw.ga4_pages
+======================================================================
+             column_name  data_type
+0                   date       DATE
+1              page_path     STRING
+2               page_url     STRING
+3                   silo     STRING
+4              sous_silo     STRING
+5               sessions      INT64
+6            bounce_rate    FLOAT64
+7   avg_session_duration    FLOAT64
+8             page_views      INT64
+9              new_users      INT64
+10           conversions      INT64
+11             synced_at  TIMESTAMP
+
+======================================================================
+0b. Schema de leads_convertis
+======================================================================
+         column_name  data_type
+0          timestamp  TIMESTAMP
+1               tool     STRING
+2             prenom     STRING
+3                nom     STRING
+4              email     STRING
+5          telephone     STRING
+6            adresse     STRING
+7        code_postal     STRING
+8     montant_estime      INT64
+9   economie_estimee      INT64
+10           details     STRING
+11        user_agent     STRING
+12       source_page     STRING
+13    source_post_id     STRING
+
+======================================================================
+1. Volume de clics/leads par outil et par mois (tout l'historique)
+======================================================================
+      mois                    tool  nb
+0  2026-07        aides-renovation   4
+1  2026-07     comparateur-energie   5
+2  2026-07                 solaire   4
+3  2026-08        aides-renovation   1
+4  2026-08     comparateur-energie   2
+5  2026-08                 solaire   1
+6  2026-10         appel-telephone   3
+7  2026-10  diagnostic-relais-test   2
+
+======================================================================
+2. Sessions/pages vues totales par mois (GA4, si colonne date/sessions dispo)
+======================================================================
+      mois  sessions_totales  conversions_ga4
+0  2026-04                56                0
+1  2026-05               105                0
+2  2026-06                61                0
+3  2026-07               224                0
+4  2026-08               378                0
+5  2026-09               339                0
+6  2026-10               876                0
+
+======================================================================
+3. Top 20 pages par trafic (30 derniers jours, GA4)
+======================================================================
+                                                                                                     page_path  sessions  conversions
+0                                                                                                            /        54            0
+1                                                                        /comparateur-energie-electricite-gaz/        52            0
+2                                                                     /gaz/bouteilles/prix-bouteille-gaz-2024/        44            0
+3                                                           /gaz/bouteilles/recharge-bouteille-gaz-ou-comment/        25            0
+4   /electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-2026-comparatif-tarifs/        24            0
+5                                                   /electricite/facture-electricite/justificatif-de-domicile/        22            0
+6                                           /aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/        18            0
+7                                              /electricite/facture-electricite/lire-sa-facture-d-electricite/        18            0
+8                                          /electricite/chauffage-electricite/aides-chauffage-electrique-2026/        17            0
+9                                            /electricite/compteur/compteur-electrique-fonctionnement-lecture/        16            0
+10                                                    /gaz/bouteilles/bouteille-butane-vs-propane-differences/        15            0
+11                                                    /gaz/bouteilles/installer-bouteille-gaz-etapes-securite/        15            0
+12                                                               /gaz/bouteilles/fonctionnement-bouteille-gaz/        13            0
+13                                                  /solaire/kit-solaire/kit-solaire-autonome-dimensionnement/        13            0
+14                                                             /gaz/bouteilles/types-bouteilles-gaz-capacites/        13            0
+15                               /electricite/facture-electricite/tarif-social-electricite-conditions-demande/        12            0
+16                                                                        /gaz/contrat-gaz/gaz-fixe-vs-indexe/        11            0
+17                                       /electricite/contrat-electricite/attestation-de-contrat-delectricite/        11            0
+18                                              /gaz/bouteilles/installation-bouteille-gaz-etapes-normes-0814/        10            0
+19                                                          /gaz/bouteilles/prix-bouteille-gaz-propane-tarifs/        10            0
+
+======================================================================
+4. Repartition device (30 derniers jours) si colonne device dispo
+======================================================================
+   ❌ Erreur SQL : 400 Unrecognized name: device_category at [2:16]; reason: invalidQuery, location: query, message: Unrecognized name: device_category at [2:16]
+
+Location: EU
+Job ID: faf73d7e-1b79-44b3-8fd6-3948fbbbf6ac
+
+
+======================================================================
+5. Trafic sur /contactez-un-expert/ (30 derniers jours)
+======================================================================
+         date  sessions
+0  2026-10-01         1
+1  2026-10-15         2
+2  2026-10-17         1
+3  2026-10-18         1
+4  2026-10-21         3
+
+======================================================================
+6. Toutes les lignes leads_convertis depuis le 01/09 (detail)
+======================================================================
+                         timestamp                    tool                                                                                                          source_page
+0 2026-10-22 12:19:31.722000+00:00         appel-telephone                                                         https://www.comprendre-mon-energie.fr/devis-panneau-solaire/
+1 2026-10-20 16:14:38.255000+00:00         appel-telephone           https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+2 2026-10-20 05:50:28.417000+00:00         appel-telephone  https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/
+3 2026-10-19 22:36:47.035691+00:00  diagnostic-relais-test                                                                                                                     
+4 2026-10-19 22:36:28.786979+00:00  diagnostic-relais-test                                                           https://www.comprendre-mon-energie.fr/contactez-un-expert/
+
