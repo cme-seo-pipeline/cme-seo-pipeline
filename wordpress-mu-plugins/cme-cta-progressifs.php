@@ -97,11 +97,15 @@ add_action('wp_footer', function () {
   var PAR_PREFIXE = { 'gaz': [GAZ], 'electricite': [ELEC], 'aide-energetique': [AIDES], 'renovation-energetique': [AIDES], 'solaire': [SOLAIRE] };
 
   var ETAPES = [
-    { champ: 'prenom', label: 'Quel est votre prénom ?', type: 'text', placeholder: 'Votre prénom' },
-    { champ: 'telephone', label: 'Votre numéro de téléphone ?', type: 'tel', placeholder: '06 12 34 56 78' },
-    { champ: 'email', label: 'Votre adresse email ?', type: 'email', placeholder: 'vous@exemple.fr' },
-    { champ: 'code_postal', label: 'Votre code postal ?', type: 'text', placeholder: '75001' }
+    { champ: 'prenom', icone: '👋', label: 'Quel est votre prénom ?', type: 'text', placeholder: 'Votre prénom' },
+    { champ: 'telephone', icone: '📱', label: 'Votre numéro de téléphone ?', type: 'tel', placeholder: '06 12 34 56 78' },
+    { champ: 'email', icone: '✉️', label: 'Votre adresse email ?', type: 'email', placeholder: 'vous@exemple.fr' },
+    { champ: 'code_postal', icone: '📍', label: 'Votre code postal ?', type: 'text', placeholder: '75001' }
   ];
+  // Lien vers la vraie page legale du site, meme URL et meme esprit de formule
+  // que les cases RGPD des anciens simulateurs (wordpress-plugins/simulateur-*),
+  // pour rester cohérent avec ce qui existe déjà ailleurs sur le site.
+  var URL_CADRE_LEGAL = 'https://www.comprendre-mon-energie.fr/cadre-legal-et-confidentialite/';
 
   // ── OUTILS ──────────────────────────────────────────────────────────────
   function mots(el) {
@@ -114,6 +118,21 @@ add_action('wp_footer', function () {
   function estVide(el) {
     return el.tagName === 'DIV' && el.children.length === 0 && !(el.textContent || '').trim();
   }
+  // Etats :focus/:hover impossibles a poser avec de simples attributs style="" :
+  // une petite feuille de style injectee une seule fois (idempotent) pour toute
+  // la page, plutot qu'une balise <style> par formulaire. Contribue a la
+  // conversion : un champ qui reagit visuellement au clic/survol se sent plus
+  // "vivant" et incite davantage a continuer qu'un champ statique.
+  function injecterStyles() {
+    if (document.getElementById('cme-mf-styles')) { return; }
+    var style = document.createElement('style');
+    style.id = 'cme-mf-styles';
+    style.textContent =
+      '.cme-mf-input:focus{border-color:' + FORMULAIRE_FOND2 + '!important;box-shadow:0 0 0 3px rgba(30,58,138,.15)!important;}' +
+      '.cme-mf-suiv:hover{background:#d97706!important;}' +
+      '.cme-mf-rgpd-case{accent-color:' + FORMULAIRE_FOND2 + ';width:16px;height:16px;}';
+    document.head.appendChild(style);
+  }
 
   // ── ENVOI DU LEAD (reutilise le relais deja deploye et deja valide en prod) ──
   function envoyerLead(valeurs, position, silo) {
@@ -125,7 +144,8 @@ add_action('wp_footer', function () {
         email: valeurs.email || '',
         code_postal: valeurs.code_postal || '',
         details: JSON.stringify({ position: position, silo: silo }),
-        source_post_id: String(window.CME_POST_ID || '')
+        source_post_id: String(window.CME_POST_ID || ''),
+        source_page: window.location.href
       };
       var body = JSON.stringify(payload);
       if (navigator.sendBeacon) {
@@ -157,6 +177,7 @@ add_action('wp_footer', function () {
       var offres = PAR_PREFIXE[prefixe];
       if (!offres || !offres.length) { arret("prefixe d'URL inconnu : " + prefixe); return; }   // pas de formulaire plutot qu'une mauvaise destination
       zone.setAttribute('data-cta60', '1');
+      injecterStyles();
 
       // ── GENERATEUR DE MINI-FORMULAIRE (type Typeform, une question a la fois) ──
       // Une seule fonction, reutilisee a chaque position : c'est ce qui rend ce
@@ -169,16 +190,24 @@ add_action('wp_footer', function () {
         d.style.cssText = 'background:linear-gradient(135deg,' + FORMULAIRE_FOND1 + ',' + FORMULAIRE_FOND2 + ');border-radius:16px;margin:26px 0;overflow:hidden;clear:both;max-width:100%;box-sizing:border-box;';
 
         var etapesHtml = ETAPES.map(function (e, i) {
+          var derniere = i === ETAPES.length - 1;
           return '<div class="cme-mf-etape" data-champ="' + e.champ + '" style="display:' + (i === 0 ? 'block' : 'none') + ';">' +
-            '<label style="display:block;font-weight:700;font-size:15px;color:#111827;margin-bottom:10px;">' + e.label + '</label>' +
-            '<input type="' + e.type + '" class="cme-mf-input" placeholder="' + e.placeholder + '" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:16px;outline:none;">' +
+            '<label style="display:block;font-weight:700;font-size:15px;color:#111827;margin-bottom:10px;"><span style="font-size:20px;margin-right:8px;">' + e.icone + '</span>' + e.label + '</label>' +
+            '<input type="' + e.type + '" class="cme-mf-input" placeholder="' + e.placeholder + '" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s;">' +
+            (derniere ?
+              '<label class="cme-mf-rgpd" style="display:flex;align-items:flex-start;gap:8px;margin-top:14px;font-size:12px;color:#6b7280;line-height:1.5;cursor:pointer;">' +
+                '<input type="checkbox" class="cme-mf-rgpd-case" style="margin-top:2px;flex-shrink:0;">' +
+                '<span>J’accepte d’être recontacté(e) par un conseiller et le traitement de mes données, conformément à notre <a href="' + URL_CADRE_LEGAL + '" target="_blank" rel="noopener" style="color:' + FORMULAIRE_FOND2 + ';text-decoration:underline;">politique de confidentialité</a>.</span>' +
+              '</label>'
+              : '') +
             '<div class="cme-mf-erreur" style="color:#dc2626;font-size:13px;margin-top:6px;display:none;"></div>' +
           '</div>';
         }).join('');
 
         d.innerHTML =
           '<div style="padding:18px 20px 10px;">' +
-            '<div style="color:#fff;font-weight:700;font-size:16px;margin-bottom:10px;">' + offre.texte + '</div>' +
+            '<div style="color:#fff;font-weight:700;font-size:16px;margin-bottom:6px;">' + offre.texte + '</div>' +
+            '<div style="color:rgba(255,255,255,.8);font-size:12px;margin-bottom:10px;">🔒 Vos données restent confidentielles · un conseiller vous recontacte sous 24h</div>' +
             '<div style="height:4px;background:rgba(255,255,255,.3);border-radius:2px;overflow:hidden;">' +
               '<div class="cme-mf-progres" style="height:100%;width:25%;background:#fff;transition:width .25s;"></div>' +
             '</div>' +
@@ -226,16 +255,27 @@ add_action('wp_footer', function () {
           if (msg) { erreurEl.textContent = msg; erreurEl.style.display = 'block'; }
           else { erreurEl.style.display = 'none'; }
         }
+        function afficherEtape(el) {
+          // Petite transition d'entree (fade-in) plutot qu'un affichage brut --
+          // display reste pilote en JS (simple et fiable), seule l'opacite est
+          // animee via la feuille de style partagee / transition inline.
+          el.style.display = 'block';
+          el.style.opacity = '0';
+          window.requestAnimationFrame(function () {
+            el.style.transition = 'opacity .2s ease';
+            el.style.opacity = '1';
+          });
+        }
         function allerA(nouvelIdx) {
           noeudsEtapes[idx].style.display = 'none';
           idx = nouvelIdx;
           if (idx >= ETAPES.length) {
-            noeudsEtapes[ETAPES.length].style.display = 'block';   // etape "merci"
+            afficherEtape(noeudsEtapes[ETAPES.length]);   // etape "merci"
             btnNav.style.display = 'none';
             barreProgres.style.width = '100%';
             return;
           }
-          noeudsEtapes[idx].style.display = 'block';
+          afficherEtape(noeudsEtapes[idx]);
           btnPrec.style.visibility = idx === 0 ? 'hidden' : 'visible';
           btnSuiv.textContent = idx === ETAPES.length - 1 ? 'Envoyer →' : 'Suivant →';
           majProgres();
@@ -247,6 +287,10 @@ add_action('wp_footer', function () {
           var inp = inputActif();
           var val = inp ? inp.value : '';
           var erreur = valider(champActuel, val);
+          if (!erreur && idx === ETAPES.length - 1) {
+            var caseRgpd = noeudsEtapes[idx].querySelector('.cme-mf-rgpd-case');
+            if (caseRgpd && !caseRgpd.checked) { erreur = 'Merci d’accepter la politique de confidentialité pour continuer.'; }
+          }
           if (erreur) { afficherErreur(erreur); return; }
           afficherErreur('');
           valeurs[champActuel] = val.trim();

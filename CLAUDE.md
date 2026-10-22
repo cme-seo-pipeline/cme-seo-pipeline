@@ -253,6 +253,75 @@ personnalisé par silo (`GAZ`/`ELEC`/`AIDES`/`SOLAIRE` ne portent plus que
 `texte`, les couleurs ont été retirées de ces objets et centralisées dans
 `FORMULAIRE_FOND1`/`FORMULAIRE_FOND2`/`FORMULAIRE_ACCENT`).
 
+## Formulaire progressif — RGPD, Google Sheets et finitions UX (22/10/2026, suite)
+
+Trois ajouts demandés par l'opérateur après le premier déploiement validé en
+prod (couleurs unifiées + confirmation que le formulaire fonctionne) :
+
+**1. Case RGPD obligatoire** (`cme-cta-progressifs.php`, dernière étape
+`code_postal`) : case à cocher requise, bloque l'envoi si non cochée
+(vérifiée dans `suivant()`, pas seulement côté style). Texte et lien repris
+**à l'identique de l'existant** sur les anciens simulateurs
+(`wordpress-plugins/simulateur-*`, qui avaient déjà cette case) :
+`https://www.comprendre-mon-energie.fr/cadre-legal-et-confidentialite/`
+(page réelle de politique de confidentialité/mentions légales du site —
+seule URL légale trouvée dans le repo, à confirmer par l'opérateur si une
+autre page existe entretemps).
+
+**2. Relais vers Google Sheets** : les leads de ce formulaire arrivaient
+uniquement dans BigQuery (`leads_convertis`), invisibles dans le classeur
+Google Sheets que l'opérateur utilise déjà pour surveiller les leads des 3
+anciens simulateurs + espace client (`SPREADSHEET_ID
+1LBgHQPioaT0buv9rev5egywRDtE8hKIFHFVwjNqw00o`, un onglet par source, via
+`apps-scripts/cme-*-leads.gs`). Nouveau fichier
+**`apps-scripts/cme-formulaire-article-leads.gs`** suivant exactement ce
+patron (même classeur, nouvel onglet "Leads Formulaire Article"). Branché
+**côté serveur** dans `cme-tracking-conversion.php`
+(`cme_relayer_log_lead()`, nouvelle constante
+`CME_APPS_SCRIPT_LEADS_INLINE_URL`) via `wp_remote_get` avec le payload en
+query string — même mécanisme que celui déjà utilisé par
+`wordpress-plugins/simulateur-solaire/simulateur-solaire.php` pour son
+propre relais vers Apps Script (code source du relais historique, pas
+réécrit à la main), choisi plutôt qu'un second appel JS côté client pour
+rester cohérent avec l'architecture existante et ne pas dupliquer la
+logique de formatage du payload. **Scope volontairement restreint** au
+`tool = 'contact-expert-inline'` : ne touche pas les clics `tel:` ni les
+soumissions du vrai formulaire de contact, qui n'alimentaient pas de Sheet
+avant et ne doivent pas commencer à y arriver sans qu'on l'ait demandé.
+**Nécessite une action manuelle de l'opérateur** (pas faisable depuis ce
+sandbox, pas d'accès à script.google.com) : déployer
+`cme-formulaire-article-leads.gs` comme Web App (voir son commentaire
+d'installation), copier l'URL `/exec` générée dans la constante
+`CME_APPS_SCRIPT_LEADS_INLINE_URL` (actuellement vide = no-op silencieux,
+n'affecte pas le relais Cloud Run existant), puis redéployer
+`cme-tracking-conversion.php` en cPanel comme d'habitude.
+
+**Bug annexe corrigé au passage** : le payload envoyé par le formulaire ne
+contenait pas `source_page` (URL de l'article) — absent aussi bien du
+nouvel onglet Sheets que de la colonne `leads_convertis.source_page` côté
+BigQuery, alors que les autres sources de leads l'incluent toutes.
+Ajouté dans `envoyerLead()` (`window.location.href`).
+
+**3. Finitions UI/UX pour la conversion** (`cme-cta-progressifs.php`) :
+- Icônes par étape (👋/📱/✉️/📍) pour une sensation plus humaine.
+- Phrase de réassurance sous l'accroche ("🔒 Vos données restent
+  confidentielles · un conseiller vous recontacte sous 24h").
+- États `:focus` (champ actif, bordure + halo bleu marque) et `:hover`
+  (bouton, ambre plus soncé) — impossibles à poser avec de simples
+  attributs `style=""` en ligne, ajoutés via une petite feuille de style
+  injectée **une seule fois par page** (`injecterStyles()`, idempotent via
+  un id, pas une balise `<style>` par formulaire).
+- Transition de fondu (`opacity`) à chaque changement d'étape plutôt qu'un
+  bascule brut `display:none`/`block`.
+
+**Pas encore déployé en cPanel** à la date de cette note (l'opérateur
+n'avait pas encore téléversé le fichier avec les couleurs unifiées au
+moment de cette demande) — les trois ajouts ci-dessus sont dans le même
+fichier `cme-cta-progressifs.php` que les couleurs, un seul redéploiement
+cPanel suffira pour tout. `cme-tracking-conversion.php` doit être
+redéployé séparément (fichier distinct) une fois
+`CME_APPS_SCRIPT_LEADS_INLINE_URL` renseignée.
+
 ## Tracking de conversion (chantier oct. 2026, suite du chantier CTA)
 
 Depuis la migration des CTA vers `/contactez-un-expert/`, plus aucun systeme

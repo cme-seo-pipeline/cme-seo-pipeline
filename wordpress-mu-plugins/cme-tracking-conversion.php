@@ -52,6 +52,17 @@ if (!defined('ABSPATH')) {
 
 define('CME_TRACKING_API_URL', 'https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead');
 
+// Onglet Google Sheets dedie aux leads du mini-formulaire integre aux
+// articles (22/10/2026, voir cme-cta-progressifs.php et CLAUDE.md section
+// "Formulaire de contact progressif"). Meme principe que les 3 anciens
+// simulateurs (wordpress-plugins/simulateur-*, apps-scripts/cme-*-leads.gs) :
+// relais server-side via wp_remote_get vers une Apps Script Web App, qui
+// ecrit dans le classeur partage. URL VIDE PAR DEFAUT -- a coller ici une
+// fois apps-scripts/cme-formulaire-article-leads.gs deploye (voir son
+// commentaire d'installation). Tant que c'est vide, ce relais est un no-op
+// silencieux : n'affecte pas le fonctionnement existant vers Cloud Run.
+define('CME_APPS_SCRIPT_LEADS_INLINE_URL', '');
+
 // ── Relais server-side : le JS ci-dessous poste ICI (same-origin, sous
 // wp-json), et ce relais republie vers l'API Cloud Run. Elimine tout
 // probleme de CORS/preflight cote navigateur (voir correctif #1 ci-dessus).
@@ -94,6 +105,24 @@ function cme_relayer_log_lead(WP_REST_Request $request) {
             ($code === 200 ? 'OK' : "HTTP $code") . ' @ ' . current_time('mysql') . ' -- ' . substr($corps, 0, 300),
             HOUR_IN_SECONDS
         );
+    }
+
+    // Relais secondaire vers Google Sheets, UNIQUEMENT pour les leads du
+    // mini-formulaire integre aux articles (22/10/2026) -- pas pour les
+    // clics tel: ni les soumissions du formulaire /contactez-un-expert/,
+    // qui ne passaient pas deja par un Sheet et ne doivent pas commencer a
+    // y arriver sans l'avoir demande. Meme forme d'appel que l'existant
+    // wordpress-plugins/simulateur-solaire/simulateur-solaire.php (wp_remote_get
+    // avec payload en query string, bloquant -- invisible pour le visiteur,
+    // c'est un appel serveur-a-serveur en arriere-plan comme celui ci-dessus).
+    if (CME_APPS_SCRIPT_LEADS_INLINE_URL) {
+        $donnees = json_decode($payload, true);
+        if (is_array($donnees) && ($donnees['tool'] ?? '') === 'contact-expert-inline') {
+            wp_remote_get(
+                CME_APPS_SCRIPT_LEADS_INLINE_URL . '?payload=' . rawurlencode($payload),
+                ['timeout' => 20, 'blocking' => true, 'sslverify' => false]
+            );
+        }
     }
 
     return new WP_REST_Response(['status' => 'ok'], 200);
