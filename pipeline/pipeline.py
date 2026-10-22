@@ -4532,22 +4532,14 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
             print(f"  ✅ Publié : {url_wp}")
             print(f"  🆔 Post ID : {post_id}")
 
-            # PATCH : injecter le CTA avec l'attribution ?src_post={post_id}
-            # (impossible de le faire avant, le post_id n'existait pas encore)
-            try:
-                contenu_avec_ctas = inserer_ctas_repartis(contenu_html, silo_name, post_id)
-                r_patch = requests.post(
-                    f"{wp_config['url']}/wp-json/wp/v2/posts/{post_id}",
-                    json={"content": contenu_avec_ctas},
-                    auth=(wp_config['username'], wp_config['app_password']),
-                    timeout=30
-                )
-                if r_patch.status_code == 200:
-                    print(f"  🎯 CTA repartis avec attribution injectes (src_post={post_id})")
-                else:
-                    print(f"  ⚠️ PATCH CTA échoué : HTTP {r_patch.status_code}")
-            except Exception as e_cta:
-                print(f"  ⚠️ Erreur injection CTA : {e_cta}")
+            # CTA statique DESACTIVE depuis le 22/10/2026 : le mu-plugin
+            # cme-cta-progressifs.php insere desormais un mini-formulaire
+            # interactif dynamique (cote client) toutes les ~230 mots, sur
+            # TOUS les articles (anciens et nouveaux) -- superposer en plus
+            # un vieux bouton statique bake ici serait redondant et visuellement
+            # concurrent avec le nouveau formulaire. Fonction inserer_ctas_repartis()
+            # gardee dans le fichier (non supprimee) au cas ou ce choix serait
+            # revise ; voir CLAUDE.md, section "Formulaire progressif (22/10/2026)".
 
 
             logger_publication_bq(
