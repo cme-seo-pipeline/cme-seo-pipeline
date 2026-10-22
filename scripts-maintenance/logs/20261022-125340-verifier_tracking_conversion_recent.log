@@ -1,0 +1,26 @@
+# Execution du 2026-10-22T12:53:40Z
+# Script    : scripts-maintenance/verifier_tracking_conversion_recent.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Evenements 'contact-expert-formulaire' / 'appel-telephone' -- 7 derniers jours
+======================================================================
+✅ 3 evenement(s) trouve(s) :
+                         timestamp             tool                                                                                                          source_page     telephone email
+0 2026-10-22 12:19:31.722000+00:00  appel-telephone                                                         https://www.comprendre-mon-energie.fr/devis-panneau-solaire/  +33189713648      
+1 2026-10-20 16:14:38.255000+00:00  appel-telephone           https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/  +33189713648      
+2 2026-10-20 05:50:28.417000+00:00  appel-telephone  https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/  +33189713648      
+
+======================================================================
+Pour comparaison -- dernieres lignes toutes sources confondues (verifie que la table repond)
+======================================================================
+                         timestamp                    tool
+0 2026-10-22 12:19:31.722000+00:00         appel-telephone
+1 2026-10-20 16:14:38.255000+00:00         appel-telephone
+2 2026-10-20 05:50:28.417000+00:00         appel-telephone
+3 2026-10-19 22:36:47.035691+00:00  diagnostic-relais-test
+4 2026-10-19 22:36:28.786979+00:00  diagnostic-relais-test
