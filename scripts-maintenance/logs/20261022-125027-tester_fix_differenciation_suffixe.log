@@ -1,0 +1,23 @@
+# Execution du 2026-10-22T12:50:27Z
+# Script    : scripts-maintenance/tester_fix_differenciation_suffixe.py
+# Arguments : 
+
+======================================================================
+Cas reel : occurrence 1 'MaPrimeRénov'' deja publiee le 20/10/2026
+08:24:16 -- titre='MaPrimeRénov' vs autres aides : quel dispositif
+choisir', mot_cle='MaPrimeRénov' vs autres aides'.
+Simule l'occurrence 2 (sous_silo SUFFIXE, comme recu en prod)
+proposant un brief quasi-identique.
+======================================================================
+  ⚠️ Verification chevauchement impossible (400 Syntax error: concatenated string literals must be separated by whitespace or comments at [4:90]; reason: invalidQuery, location: query, message: Syntax error: concatenated string literals must be separated by whitespace or comments at [4:90]
+
+Location: EU
+Job ID: 8dcd9c6b-089c-410c-ba4c-099713c4b5db
+) -- sujet conserve tel quel
+
+Titre propose   : "MaPrimeRénov' vs autres aides : lequel choisir pour vos travaux"
+Titre renvoye   : "MaPrimeRénov' vs autres aides : lequel choisir pour vos travaux"
+Mot-cle propose : "MaPrimeRénov' vs autres aides"
+Mot-cle renvoye : "MaPrimeRénov' vs autres aides"
+
+❌ INATTENDU : le brief est revenu inchange -- soit la fonction n'a toujours trouve aucune ligne existante (correctif inefficace), soit le modele a juge (a tort) qu'il n'y avait pas de chevauchement.
