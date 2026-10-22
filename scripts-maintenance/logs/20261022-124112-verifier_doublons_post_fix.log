@@ -1,0 +1,161 @@
+# Execution du 2026-10-22T12:41:12Z
+# Script    : scripts-maintenance/verifier_doublons_post_fix.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. Publications multiples le meme jour pour le meme sous-silo
+   depuis 2026-10-20T00:00:00Z (signature du root cause #1 -- Mode Actualite)
+======================================================================
+   ⚠️ 18 cas de publications multiples le meme jour / meme sous-silo :
+          jour              sous_silo_strategique  nb_articles                                                                                                mots_cles
+0   2026-10-22                         Bouteilles            3                 bouteille de gaz portable | butane vs propane bouteille | bouteille de gaz 13 kg vs 5 kg
+1   2026-10-21                         Bouteilles            3  propane vs butane bouteille gaz | comment fonctionne bouteille de gaz | fonctionnement bouteille de gaz
+2   2026-10-20                         Bouteilles            3                       recharger bouteille de gaz | recharge bouteille de gaz | stockage bouteille de gaz
+3   2026-10-22                     Chèque énergie            2                                           chèque énergie 2025 éligibilité | chèque énergie montants 2026
+4   2026-10-22  Aides chauffe-eau thermodynamique            2                                prix chauffe-eau thermodynamique | aides chauffe-eau thermodynamique 2026
+5   2026-10-22                Contrat Électricité            2                                     changer fournisseur électricité | fonctionnement contrat électricité
+6   2026-10-22                Facture Électricité            2                                     composantes facture électricité | fonctionnement facture électricité
+7   2026-10-22                      MaPrimeRénov'            2                              conditions d'éligibilité MaPrimeRénov' | MaPrimeRénov' installation artisan
+8   2026-10-21  Aides chauffe-eau thermodynamique            2                  fonctionnement chauffe-eau thermodynamique | chauffe-eau thermodynamique fonctionnement
+9   2026-10-21                     Chèque énergie            2                                      comment utiliser chèque énergie | comment fonctionne chèque énergie
+10  2026-10-21                      MaPrimeRénov'            2                                          fonctionnement MaPrimeRénov' | comment fonctionne MaPrimeRénov'
+11  2026-10-21                Contrat Électricité            2                                           résilier contrat électricité | résiliation contrat électricité
+12  2026-10-21                Facture Électricité            2                                                      lire facture électricité | lire facture électricité
+13  2026-10-20                     Chèque énergie            2                        chèque énergie MaPrimeRénov' différence | chèque énergie MaPrimeRénov' différence
+14  2026-10-20                      MaPrimeRénov'            2                                            MaPrimeRénov' vs autres aides | MaPrimeRénov' vs autres aides
+15  2026-10-20                Contrat Électricité            2                                            tarif fixe ou variable électricité | installation électricité
+16  2026-10-20                Facture Électricité            2                                                coût électricité tarifs | facture électricité trop élevée
+17  2026-10-20  Aides chauffe-eau thermodynamique            2                      installation chauffe-eau thermodynamique | installation chauffe-eau thermodynamique
+
+======================================================================
+2. Mots-cles re-publies pour un sous-silo deja traite dans les 90j
+   (signature du root cause #2 -- selectionner_silos_a_traiter)
+   Compare chaque publication depuis le 20/10 a tout ce qui existait
+   AVANT elle dans la fenetre anti-doublon de 90 jours pour le meme
+   sous-silo (prefixe, pour couvrir le suffixage anti-collision).
+======================================================================
+   ⚠️ 108 cas de mot-cle republie malgre la fenetre anti-doublon :
+                       date_nouvelle              sous_silo_strategique                             mot_cle_nouveau                  date_precedente                           mot_cle_precedent
+0   2026-10-22 08:30:44.708512+00:00                Contrat Électricité          fonctionnement contrat électricité 2026-10-19 08:40:19.856927+00:00          fonctionnement contrat électricité
+1   2026-10-22 08:30:44.708512+00:00                Contrat Électricité          fonctionnement contrat électricité 2026-10-16 08:05:46.838880+00:00          fonctionnement contrat électricité
+2   2026-10-22 08:30:44.708512+00:00                Contrat Électricité          fonctionnement contrat électricité 2026-10-16 08:07:35.171469+00:00          fonctionnement contrat électricité
+3   2026-10-22 08:30:44.708512+00:00                Contrat Électricité          fonctionnement contrat électricité 2026-10-13 21:31:53.585142+00:00          fonctionnement contrat électricité
+4   2026-10-22 08:30:44.708512+00:00                Contrat Électricité          fonctionnement contrat électricité 2026-10-19 08:41:21.264411+00:00          fonctionnement contrat électricité
+5   2026-10-22 08:29:17.581748+00:00                Contrat Électricité             changer fournisseur électricité 2026-09-28 09:32:18.950905+00:00             changer fournisseur électricité
+6   2026-10-22 08:29:17.581748+00:00                Contrat Électricité             changer fournisseur électricité 2026-10-18 08:02:53.546295+00:00             changer fournisseur électricité
+7   2026-10-22 08:29:17.581748+00:00                Contrat Électricité             changer fournisseur électricité 2026-10-18 08:01:27.031779+00:00             changer fournisseur électricité
+8   2026-10-22 08:25:00.688441+00:00                     Chèque énergie                chèque énergie montants 2026 2026-09-27 09:04:57.492738+00:00                chèque énergie montants 2026
+9   2026-10-22 08:22:53.638394+00:00  Aides chauffe-eau thermodynamique      aides chauffe-eau thermodynamique 2026 2026-08-15 13:49:03.341280+00:00      aides chauffe-eau thermodynamique 2026
+10  2026-10-22 08:21:30.686732+00:00  Aides chauffe-eau thermodynamique            prix chauffe-eau thermodynamique 2026-09-25 08:33:57.696108+00:00            prix chauffe-eau thermodynamique
+11  2026-10-22 08:21:30.686732+00:00  Aides chauffe-eau thermodynamique            prix chauffe-eau thermodynamique 2026-10-01 09:54:01.331683+00:00            prix chauffe-eau thermodynamique
+12  2026-10-22 08:21:30.686732+00:00  Aides chauffe-eau thermodynamique            prix chauffe-eau thermodynamique 2026-10-01 09:52:42.534548+00:00            prix chauffe-eau thermodynamique
+13  2026-10-22 08:17:49.068772+00:00                         Bouteilles                 butane vs propane bouteille 2026-08-19 03:54:59.443720+00:00                 butane vs propane bouteille
+14  2026-10-21 08:36:00.499075+00:00                Facture Électricité                    lire facture électricité 2026-09-10 03:11:15.353209+00:00                    lire facture électricité
+15  2026-10-21 08:36:00.499075+00:00                Facture Électricité                    lire facture électricité 2026-10-17 07:49:04.904647+00:00                    lire facture électricité
+16  2026-10-21 08:36:00.499075+00:00                Facture Électricité                    lire facture électricité 2026-10-17 07:51:00.151740+00:00                    lire facture électricité
+17  2026-10-21 08:36:00.499075+00:00                Facture Électricité                    lire facture électricité 2026-08-25 03:13:37.132526+00:00                    lire facture électricité
+18  2026-10-21 08:36:00.499075+00:00                Facture Électricité                    lire facture électricité 2026-09-30 09:36:42.656028+00:00                    lire facture électricité
+19  2026-10-21 08:36:00.499075+00:00                Facture Électricité                    lire facture électricité 2026-08-18 03:55:40.191277+00:00                    lire facture électricité
+20  2026-10-21 08:36:00.499075+00:00                Facture Électricité                    lire facture électricité 2026-10-13 21:33:28.463423+00:00                    lire facture électricité
+21  2026-10-21 08:36:00.499075+00:00                Facture Électricité                    lire facture électricité 2026-10-21 08:34:25.388311+00:00                    lire facture électricité
+22  2026-10-21 08:34:25.388311+00:00                Facture Électricité                    lire facture électricité 2026-09-10 03:11:15.353209+00:00                    lire facture électricité
+23  2026-10-21 08:34:25.388311+00:00                Facture Électricité                    lire facture électricité 2026-10-17 07:49:04.904647+00:00                    lire facture électricité
+24  2026-10-21 08:34:25.388311+00:00                Facture Électricité                    lire facture électricité 2026-10-17 07:51:00.151740+00:00                    lire facture électricité
+25  2026-10-21 08:34:25.388311+00:00                Facture Électricité                    lire facture électricité 2026-08-25 03:13:37.132526+00:00                    lire facture électricité
+26  2026-10-21 08:34:25.388311+00:00                Facture Électricité                    lire facture électricité 2026-09-30 09:36:42.656028+00:00                    lire facture électricité
+27  2026-10-21 08:34:25.388311+00:00                Facture Électricité                    lire facture électricité 2026-08-18 03:55:40.191277+00:00                    lire facture électricité
+28  2026-10-21 08:34:25.388311+00:00                Facture Électricité                    lire facture électricité 2026-10-13 21:33:28.463423+00:00                    lire facture électricité
+29  2026-10-21 08:33:02.628953+00:00                Contrat Électricité             résiliation contrat électricité 2026-09-27 09:09:24.388017+00:00             résiliation contrat électricité
+30  2026-10-21 08:33:02.628953+00:00                Contrat Électricité             résiliation contrat électricité 2026-09-27 09:10:42.255310+00:00             résiliation contrat électricité
+31  2026-10-21 08:33:02.628953+00:00                Contrat Électricité             résiliation contrat électricité 2026-08-17 11:39:16.877022+00:00             résiliation contrat électricité
+32  2026-10-21 08:33:02.628953+00:00                Contrat Électricité             résiliation contrat électricité 2026-10-03 09:09:14.410487+00:00             résiliation contrat électricité
+33  2026-10-21 08:33:02.628953+00:00                Contrat Électricité             résiliation contrat électricité 2026-10-17 07:47:28.684293+00:00             résiliation contrat électricité
+34  2026-10-21 08:33:02.628953+00:00                Contrat Électricité             résiliation contrat électricité 2026-10-03 09:07:45.993068+00:00             résiliation contrat électricité
+35  2026-10-21 08:33:02.628953+00:00                Contrat Électricité             résiliation contrat électricité 2026-08-17 11:42:10.617367+00:00             résiliation contrat électricité
+36  2026-10-21 08:33:02.628953+00:00                Contrat Électricité             résiliation contrat électricité 2026-09-08 09:27:14.810093+00:00             résiliation contrat électricité
+37  2026-10-21 08:31:30.203025+00:00                Contrat Électricité                résilier contrat électricité 2026-09-30 09:35:26.452680+00:00                résilier contrat électricité
+38  2026-10-21 08:31:30.203025+00:00                Contrat Électricité                résilier contrat électricité 2026-08-24 03:14:32.589765+00:00                résilier contrat électricité
+39  2026-10-21 08:31:30.203025+00:00                Contrat Électricité                résilier contrat électricité 2026-08-17 11:40:39.503597+00:00                résilier contrat électricité
+40  2026-10-21 08:31:30.203025+00:00                Contrat Électricité                résilier contrat électricité 2026-08-24 03:15:36.348756+00:00                résilier contrat électricité
+41  2026-10-21 08:31:30.203025+00:00                Contrat Électricité                résilier contrat électricité 2026-09-30 09:33:59.164003+00:00                résilier contrat électricité
+42  2026-10-21 08:30:09.989896+00:00                      MaPrimeRénov'            comment fonctionne MaPrimeRénov' 2026-10-18 07:59:53.029131+00:00            comment fonctionne MaPrimeRénov'
+43  2026-10-21 08:30:09.989896+00:00                      MaPrimeRénov'            comment fonctionne MaPrimeRénov' 2026-10-15 08:14:13.372175+00:00            comment fonctionne MaPrimeRénov'
+44  2026-10-21 08:30:09.989896+00:00                      MaPrimeRénov'            comment fonctionne MaPrimeRénov' 2026-10-15 08:12:57.989867+00:00            comment fonctionne MaPrimeRénov'
+45  2026-10-21 08:30:09.989896+00:00                      MaPrimeRénov'            comment fonctionne MaPrimeRénov' 2026-09-08 07:56:18.116597+00:00            comment fonctionne MaPrimeRénov'
+46  2026-10-21 08:30:09.989896+00:00                      MaPrimeRénov'            comment fonctionne MaPrimeRénov' 2026-10-18 07:58:27.136503+00:00            comment fonctionne MaPrimeRénov'
+47  2026-10-21 08:28:38.471434+00:00                      MaPrimeRénov'                fonctionnement MaPrimeRénov' 2026-08-22 20:59:13.627531+00:00                fonctionnement MaPrimeRénov'
+48  2026-10-21 08:26:04.015327+00:00                     Chèque énergie             comment utiliser chèque énergie 2026-09-28 09:26:53.050659+00:00             comment utiliser chèque énergie
+49  2026-10-21 08:26:04.015327+00:00                     Chèque énergie             comment utiliser chèque énergie 2026-08-07 03:06:23.909414+00:00             comment utiliser chèque énergie
+50  2026-10-21 08:26:04.015327+00:00                     Chèque énergie             comment utiliser chèque énergie 2026-08-15 03:12:21.939920+00:00             comment utiliser chèque énergie
+51  2026-10-21 08:26:04.015327+00:00                     Chèque énergie             comment utiliser chèque énergie 2026-10-18 07:55:38.801753+00:00             comment utiliser chèque énergie
+52  2026-10-21 08:26:04.015327+00:00                     Chèque énergie             comment utiliser chèque énergie 2026-10-15 08:10:04.356475+00:00             comment utiliser chèque énergie
+53  2026-10-21 08:26:04.015327+00:00                     Chèque énergie             comment utiliser chèque énergie 2026-10-02 09:30:23.796869+00:00             comment utiliser chèque énergie
+54  2026-10-21 08:26:04.015327+00:00                     Chèque énergie             comment utiliser chèque énergie 2026-10-18 07:56:56.665891+00:00             comment utiliser chèque énergie
+55  2026-10-21 08:24:38.615003+00:00  Aides chauffe-eau thermodynamique  chauffe-eau thermodynamique fonctionnement 2026-09-28 09:24:12.531139+00:00  chauffe-eau thermodynamique fonctionnement
+56  2026-10-21 08:24:38.615003+00:00  Aides chauffe-eau thermodynamique  chauffe-eau thermodynamique fonctionnement 2026-09-28 09:25:29.465110+00:00  chauffe-eau thermodynamique fonctionnement
+57  2026-10-21 08:24:38.615003+00:00  Aides chauffe-eau thermodynamique  chauffe-eau thermodynamique fonctionnement 2026-08-17 11:34:29.288667+00:00  chauffe-eau thermodynamique fonctionnement
+58  2026-10-21 08:24:38.615003+00:00  Aides chauffe-eau thermodynamique  chauffe-eau thermodynamique fonctionnement 2026-10-15 08:08:58.815488+00:00  chauffe-eau thermodynamique fonctionnement
+59  2026-10-21 08:23:25.853925+00:00  Aides chauffe-eau thermodynamique  fonctionnement chauffe-eau thermodynamique 2026-10-15 08:07:35.082820+00:00  fonctionnement chauffe-eau thermodynamique
+60  2026-10-21 08:23:25.853925+00:00  Aides chauffe-eau thermodynamique  fonctionnement chauffe-eau thermodynamique 2026-09-30 09:26:36.131233+00:00  fonctionnement chauffe-eau thermodynamique
+61  2026-10-21 08:23:25.853925+00:00  Aides chauffe-eau thermodynamique  fonctionnement chauffe-eau thermodynamique 2026-09-30 09:27:59.906059+00:00  fonctionnement chauffe-eau thermodynamique
+62  2026-10-21 08:21:57.814162+00:00                        Facture Gaz                           aides facture gaz 2026-09-29 09:32:12.714942+00:00                           aides facture gaz
+63  2026-10-21 08:21:57.814162+00:00                        Facture Gaz                           aides facture gaz 2026-10-16 07:55:09.624057+00:00                           aides facture gaz
+64  2026-10-21 08:21:57.814162+00:00                        Facture Gaz                           aides facture gaz 2026-08-11 03:04:39.878978+00:00                           aides facture gaz
+65  2026-10-21 08:20:09.661384+00:00                         Bouteilles             fonctionnement bouteille de gaz 2026-10-01 09:46:52.360583+00:00             fonctionnement bouteille de gaz
+66  2026-10-21 08:20:09.661384+00:00                         Bouteilles             fonctionnement bouteille de gaz 2026-10-17 07:30:39.806875+00:00             fonctionnement bouteille de gaz
+67  2026-10-21 08:20:09.661384+00:00                         Bouteilles             fonctionnement bouteille de gaz 2026-10-13 21:18:42.789093+00:00             fonctionnement bouteille de gaz
+68  2026-10-21 08:20:09.661384+00:00                         Bouteilles             fonctionnement bouteille de gaz 2026-10-01 09:48:27.801429+00:00             fonctionnement bouteille de gaz
+69  2026-10-21 08:20:09.661384+00:00                         Bouteilles             fonctionnement bouteille de gaz 2026-10-13 21:19:53.863640+00:00             fonctionnement bouteille de gaz
+70  2026-10-21 08:17:08.515590+00:00                         Bouteilles             propane vs butane bouteille gaz 2026-09-26 08:15:06.393409+00:00             propane vs butane bouteille gaz
+71  2026-10-20 08:28:13.804395+00:00                Contrat Électricité                    installation électricité 2026-10-17 07:45:41.991911+00:00                    installation électricité
+72  2026-10-20 08:25:39.369358+00:00                      MaPrimeRénov'               MaPrimeRénov' vs autres aides 2026-10-17 07:44:04.442439+00:00               MaPrimeRénov' vs autres aides
+73  2026-10-20 08:25:39.369358+00:00                      MaPrimeRénov'               MaPrimeRénov' vs autres aides 2026-10-20 08:24:16.633469+00:00               MaPrimeRénov' vs autres aides
+74  2026-10-20 08:25:39.369358+00:00                      MaPrimeRénov'               MaPrimeRénov' vs autres aides 2026-10-13 21:28:03.272109+00:00               MaPrimeRénov' vs autres aides
+75  2026-10-20 08:24:16.633469+00:00                      MaPrimeRénov'               MaPrimeRénov' vs autres aides 2026-10-17 07:44:04.442439+00:00               MaPrimeRénov' vs autres aides
+76  2026-10-20 08:24:16.633469+00:00                      MaPrimeRénov'               MaPrimeRénov' vs autres aides 2026-10-13 21:28:03.272109+00:00               MaPrimeRénov' vs autres aides
+77  2026-10-20 08:22:41.671445+00:00                     Chèque énergie     chèque énergie MaPrimeRénov' différence 2026-10-20 08:21:08.663332+00:00     chèque énergie MaPrimeRénov' différence
+78  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-09-27 09:00:48.752307+00:00    installation chauffe-eau thermodynamique
+79  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-20 08:18:01.599547+00:00    installation chauffe-eau thermodynamique
+80  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-18 07:53:05.898021+00:00    installation chauffe-eau thermodynamique
+81  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-03 08:59:34.432981+00:00    installation chauffe-eau thermodynamique
+82  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-09-27 09:02:29.820732+00:00    installation chauffe-eau thermodynamique
+83  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-14 08:26:34.151122+00:00    installation chauffe-eau thermodynamique
+84  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-08-12 03:06:17.136689+00:00    installation chauffe-eau thermodynamique
+85  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-07-25 03:06:34.810395+00:00    installation chauffe-eau thermodynamique
+86  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-14 08:28:24.928085+00:00    installation chauffe-eau thermodynamique
+87  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-09-29 09:35:16.909224+00:00    installation chauffe-eau thermodynamique
+88  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-08-29 03:11:47.040805+00:00    installation chauffe-eau thermodynamique
+89  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-08-14 08:15:08.794325+00:00    installation chauffe-eau thermodynamique
+90  2026-10-20 08:19:32.357315+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-03 09:00:53.568259+00:00    installation chauffe-eau thermodynamique
+91  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-09-27 09:00:48.752307+00:00    installation chauffe-eau thermodynamique
+92  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-18 07:53:05.898021+00:00    installation chauffe-eau thermodynamique
+93  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-03 08:59:34.432981+00:00    installation chauffe-eau thermodynamique
+94  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-09-27 09:02:29.820732+00:00    installation chauffe-eau thermodynamique
+95  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-14 08:26:34.151122+00:00    installation chauffe-eau thermodynamique
+96  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-08-12 03:06:17.136689+00:00    installation chauffe-eau thermodynamique
+97  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-07-25 03:06:34.810395+00:00    installation chauffe-eau thermodynamique
+98  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-14 08:28:24.928085+00:00    installation chauffe-eau thermodynamique
+99  2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-09-29 09:35:16.909224+00:00    installation chauffe-eau thermodynamique
+100 2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-08-29 03:11:47.040805+00:00    installation chauffe-eau thermodynamique
+101 2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-08-14 08:15:08.794325+00:00    installation chauffe-eau thermodynamique
+102 2026-10-20 08:18:01.599547+00:00  Aides chauffe-eau thermodynamique    installation chauffe-eau thermodynamique 2026-10-03 09:00:53.568259+00:00    installation chauffe-eau thermodynamique
+103 2026-10-20 08:16:28.433231+00:00                        Facture Gaz                    comment lire facture gaz 2026-07-29 03:04:03.094574+00:00                    comment lire facture gaz
+104 2026-10-20 08:13:11.863354+00:00                         Bouteilles                   recharge bouteille de gaz 2026-08-04 03:04:35.031942+00:00                   recharge bouteille de gaz
+105 2026-10-20 08:11:57.917632+00:00                         Bouteilles                  recharger bouteille de gaz 2026-10-16 07:53:38.771323+00:00                  recharger bouteille de gaz
+106 2026-10-20 08:11:57.917632+00:00                         Bouteilles                  recharger bouteille de gaz 2026-10-01 09:49:48.164953+00:00                  recharger bouteille de gaz
+107 2026-10-20 08:11:57.917632+00:00                         Bouteilles                  recharger bouteille de gaz 2026-10-16 07:52:16.669814+00:00                  recharger bouteille de gaz/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+
+======================================================================
+3. Volume publie depuis le 20/10 (pour contexte -- confirme que le
+   pipeline a bien continue a publier, pas juste qu'il n'y a rien)
+======================================================================
+         jour  nb_articles
+0  2026-10-20           14
+1  2026-10-21           14
+2  2026-10-22           14
