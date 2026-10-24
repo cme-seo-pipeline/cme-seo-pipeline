@@ -1,0 +1,12 @@
+# Execution du 2026-10-24T20:00:42Z
+# Script    : scripts-maintenance/verifier_leads_formulaire_inline.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Leads 'contact-expert-inline' -- 48 dernieres heures
+======================================================================
+   (0 ligne -- soit aucun test recent, soit le relais Cloud Run ne recoit plus rien)
