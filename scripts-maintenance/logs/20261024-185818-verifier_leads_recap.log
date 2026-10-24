@@ -1,0 +1,46 @@
+# Execution du 2026-10-24T18:58:18Z
+# Script    : scripts-maintenance/verifier_leads_recap.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1) Volume par outil et par jour -- 14 derniers jours
+======================================================================
+      jour                   tool  nb
+2026-10-22        appel-telephone   1
+2026-10-22  contact-expert-inline   4
+2026-10-20        appel-telephone   2
+2026-10-19 diagnostic-relais-test   2
+
+======================================================================
+2) Dernieres 15 lignes toutes sources confondues
+======================================================================
+                       timestamp                   tool    telephone                    email                                                                                                         source_page source_post_id
+2026-10-22 15:20:57.889202+00:00  contact-expert-inline   0694374991 o.blal@decodetheself.com      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/          11258
+2026-10-22 15:12:20.848477+00:00  contact-expert-inline   0694374991 o.blal@decodetheself.com      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/          11258
+2026-10-22 14:39:56.466114+00:00  contact-expert-inline   0607112671    lionel.nore@gmail.com                                                                                                                               5502
+2026-10-22 14:23:09.737303+00:00  contact-expert-inline   0695410020 o.blal@decodetheself.com                                                                                                                              11262
+2026-10-22 12:19:31.722000+00:00        appel-telephone +33189713648                                                                                 https://www.comprendre-mon-energie.fr/devis-panneau-solaire/               
+2026-10-20 16:14:38.255000+00:00        appel-telephone +33189713648                                   https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/               
+2026-10-20 05:50:28.417000+00:00        appel-telephone +33189713648                          https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/               
+2026-10-19 22:36:47.035691+00:00 diagnostic-relais-test                                                                                                                                                                         
+2026-10-19 22:36:28.786979+00:00 diagnostic-relais-test                                                                                                https://www.comprendre-mon-energie.fr/contactez-un-expert/               
+2026-08-01 11:36:15.787111+00:00       aides-renovation   0707070707       blal3154@gmail.com                                                                             simulateur-aides-renovation-energetique               
+2026-08-01 11:35:00.908215+00:00    comparateur-energie   0707070707       blal3154@gmail.com                                                                                 comparateur-energie-electricite-gaz               
+2026-08-01 11:24:57.164718+00:00                solaire   0707070707       blal3154@gmail.com                                                                                               devis-panneau-solaire               
+2026-08-01 11:23:42.970172+00:00    comparateur-energie   0707070707       blal3154@gmail.com                                                                                 comparateur-energie-electricite-gaz               
+2026-07-31 14:30:24.470249+00:00                solaire   0707070707       blal3154@gmail.com                                                                                               devis-panneau-solaire               
+2026-07-31 14:26:06.074758+00:00       aides-renovation   0707070707        blal3154@gmail.fr                                                                             simulateur-aides-renovation-energetique               
+
+======================================================================
+3) Qualite des champs -- contact-expert-inline, 7 derniers jours
+======================================================================
+ nb_total  nb_source_page_ok  nb_source_post_id_ok                         premiere                         derniere
+        4                  2                     4 2026-10-22 14:23:09.737303+00:00 2026-10-22 15:20:57.889202+00:00
