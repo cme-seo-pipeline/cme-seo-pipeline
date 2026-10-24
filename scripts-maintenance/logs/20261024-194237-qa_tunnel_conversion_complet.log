@@ -1,0 +1,65 @@
+# Execution du 2026-10-24T19:42:37Z
+# Script    : scripts-maintenance/qa_tunnel_conversion_complet.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+======================================================================
+1. Liveness des pages de conversion (HTTP GET)
+======================================================================
+   Page de contact (/contactez-un-expert/)  -> 200  (https://www.comprendre-mon-energie.fr/contactez-un-expert/)
+   Simulateur aides renovation              -> 200  (https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/)
+   Comparateur energie gaz/elec             -> 200  (https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/)
+   Devis panneau solaire                    -> 200  (https://www.comprendre-mon-energie.fr/devis-panneau-solaire/)
+
+======================================================================
+2. Relais central WordPress -> Cloud Run -> BigQuery (formulaire inline / formulaire contact / appel)
+======================================================================
+   POST https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead -> 200 '{"status":"ok"}'
+   Marqueur 'qa-cb6de9e0c103' retrouve dans BigQuery : ✅ OUI
+
+======================================================================
+3. POST direct sur Cloud Run /api/log-clic (meme service, utilise par les anciens simulateurs cote client)
+======================================================================
+   Code HTTP : 200 -- Corps : '{"status":"ok"}\n'
+
+======================================================================
+4. Relais Google Sheets -- formulaire inline (cme-formulaire-article-leads.gs)
+======================================================================
+   GET Apps Script (formulaire inline) -> 200
+   Corps : '{"status":"ok","rows":5}'
+   NB : une reponse {"status":"ok"} ici confirme que l'Apps Script est deploye, accessible et execute sans erreur -- pas une preuve visuelle de la ligne dans le Sheet (a confirmer par toi dans l'onglet "Leads Formulaire Article", ligne prefixee QA-TEST-).
+
+======================================================================
+5. Relais Google Sheets -- ancien simulateur solaire (URL en dur dans le repo)
+======================================================================
+   GET Apps Script (simulateur solaire) -> 200
+   Corps : '{"status":"ok","rows":2,"lead":" "}'
+
+======================================================================
+6. Limite connue : comparateur-energie et simulateur-aides stockent leur URL GAS en wp_options
+======================================================================
+   (configure via l'admin WordPress, pas dans le repo) -- non testable depuis ce sandbox/runner.
+   Seule verification possible ici : la page est-elle live (section 1) et des lignes recentes
+   existent-elles dans leads_convertis pour tool='comparateur-energie'/'aides-renovation' (section 7).
+
+======================================================================
+7. Derniere activite par outil, toutes sources confondues (rappel)
+======================================================================
+                  tool  nb_total                derniere_activite
+diagnostic-relais-test         5 2026-10-24 19:42:44.374961+00:00
+ contact-expert-inline         4 2026-10-22 15:20:57.889202+00:00
+       appel-telephone         3 2026-10-22 12:19:31.722000+00:00
+      aides-renovation         5 2026-08-01 11:36:15.787111+00:00
+   comparateur-energie         7 2026-08-01 11:35:00.908215+00:00
+               solaire         5 2026-08-01 11:24:57.164718+00:00
+
+======================================================================
+8. IAM Cloud Run -- rappel de l'incident du 19/10 (acces anonyme toujours actif ?)
+======================================================================
+   POST direct Cloud Run (sans WordPress) -> 200 '{"status":"ok"}\n'
