@@ -1,0 +1,32 @@
+# Execution du 2026-10-24T19:28:28Z
+# Script    : scripts-maintenance/analyser_lead_parcours.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. Historique complet pour telephone='0607112671' OU email='lionel.nore@gmail.com'
+======================================================================
+                       timestamp                  tool prenom  telephone                 email code_postal source_page source_post_id                                 details
+2026-10-22 14:39:56.466114+00:00 contact-expert-inline lionel 0607112671 lionel.nore@gmail.com       76160                       5502 "{\"position\":5,\"silo\":\"solaire\"}"
+
+======================================================================
+2. Identification de l'article (post_id=5502) via l'API REST WordPress
+======================================================================
+   Code HTTP : 200
+   Titre     : Obtenez vos aidez sur les batteries solaires
+   Lien      : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2025/
+   Slug      : aides-batterie-solaire-2025
+   Publie le : 2026-08-10T03:07:45
+   Categories (IDs) : [34]
+
+======================================================================
+3. Trafic GA4 sur cette page -- si synchronise
+======================================================================
+      date  sessions  page_views  bounce_rate  conversions
+2026-10-22         1           2          0.0            0
+2026-10-22         1           2          0.0            0
