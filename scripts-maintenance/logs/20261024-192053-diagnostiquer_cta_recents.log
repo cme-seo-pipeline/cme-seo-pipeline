@@ -1,0 +1,75 @@
+# Execution du 2026-10-24T19:20:53Z
+# Script    : scripts-maintenance/diagnostiquer_cta_recents.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. Fraicheur du sync GA4 -- derniere date disponible dans ga4_pages
+======================================================================
+derniere_date_synchronisee
+                2026-10-23
+
+======================================================================
+2. Trafic + conversions GA4 site entier -- 10 derniers jours synchronises
+======================================================================
+      date  sessions_totales  conversions_ga4
+2026-10-23               332               14
+2026-10-22               234                0
+2026-10-21               112                0
+2026-10-20                32                0
+2026-10-19                13                0
+2026-10-18                51                0
+2026-10-17                40                0
+2026-10-16                19                0
+2026-10-15               200                0
+2026-10-14               144                0
+
+======================================================================
+3. Trafic + conversions GA4 -- /contactez-un-expert/ seulement, 10 derniers jours
+======================================================================
+      date  sessions  conversions
+2026-10-22         4            0
+2026-10-21         3            0
+2026-10-18         1            0
+2026-10-17         1            0
+2026-10-15         2            0
+2026-10-01         1            0
+2026-07-21         1            0
+2026-07-10         1            0
+2026-07-09         1            0
+2026-07-06         1            0
+
+======================================================================
+4. Top pages par conversions GA4 -- 10 derniers jours synchronises
+======================================================================
+                                                                 page_path  sessions  conversions
+/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-remplacement-2025/        10            4
+     /aide-energetique/maprimerenov/maprimerenov-montants-conditions-2026/         4            2
+                             /gaz/bouteilles/propane-vs-butane-quel-choix/         4            2
+                  /gaz/bouteilles/bouteille-gaz-butane-propane-difference/         6            2
+     /electricite/contrat-electricite/comparateur-tarifs-electricite-2026/         2            2
+                    /gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015-2/        21            2
+
+======================================================================
+5. leads_convertis -- rappel detail depuis le 20/10 (toutes sources)
+======================================================================
+                       timestamp                  tool                                                                                                         source_page
+2026-10-22 15:20:57.889202+00:00 contact-expert-inline      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+2026-10-22 15:12:20.848477+00:00 contact-expert-inline      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+2026-10-22 14:39:56.466114+00:00 contact-expert-inline                                                                                                                    
+2026-10-22 14:23:09.737303+00:00 contact-expert-inline                                                                                                                    
+2026-10-22 12:19:31.722000+00:00       appel-telephone                                                        https://www.comprendre-mon-energie.fr/devis-panneau-solaire/
+2026-10-20 16:14:38.255000+00:00       appel-telephone          https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+2026-10-20 05:50:28.417000+00:00       appel-telephone https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/
+
