@@ -359,6 +359,15 @@ et extraction du bloc JS (`node --check`) après modification.
 caches LiteSpeed requis après ce commit pour que le changement soit visible
 en prod.
 
+**Déployé et validé en conditions réelles le 24/10** : l'opérateur a
+redéployé le fichier en cPanel et confirmé visuellement le formulaire à 2
+étapes (nom et prénom, puis téléphone) sur un article réel. Soumission de
+test confirmée côté BigQuery (`scripts-maintenance/verifier_leads_formulaire_inline.py`,
+ligne du 24/10 20:02:27 UTC) : `prenom="Oussama Blal"`, `telephone` rempli,
+**`email` et `code_postal` bien vides** comme attendu, `source_page`/
+`source_post_id`/`details` (position + silo) correctement renseignés —
+réduction à 2 questions entièrement validée de bout en bout.
+
 ## Incident — lead réel non retrouvé dans Sheets (24/10/2026)
 
 **Constat** : le lead "Lionel" (contact-expert-inline, 22/10 14:39:56 UTC,
@@ -384,6 +393,9 @@ confirmé fonctionnel depuis, cf. section précédente "RGPD, Google Sheets
 et finitions UX") — seulement un rattrapage manuel à faire par l'opérateur
 si ce lead doit être suivi comme les autres (l'ajouter à la main dans
 l'onglet Sheets, ou travailler directement depuis BigQuery pour celui-ci).
+**Fait le 24/10** : l'opérateur a ajouté la ligne de Lionel manuellement
+dans l'onglet Sheets, et a supprimé la ligne de test `QA-TEST-...` ajoutée
+par la QA du tunnel (section suivante) — incident clos.
 
 **QA complète du tunnel de conversion effectuée le 24/10** (lecture seule,
 `scripts-maintenance/qa_tunnel_conversion_complet.py`, exécuté via le pont
