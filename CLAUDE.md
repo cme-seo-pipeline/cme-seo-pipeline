@@ -328,6 +328,81 @@ ajout). Les deux destinations (BigQuery + Sheets) reçoivent bien la même
 soumission — chantier formulaire progressif entièrement clos et en
 production à cette date.
 
+## Formulaire progressif — réduction à 2 questions (24/10/2026)
+
+Suite à l'analyse d'un vrai lead ("Lionel", 22/10 14:39:56, voir incident
+Sheets ci-dessous) et à la demande explicite de l'opérateur : le
+mini-formulaire inline (`cme-cta-progressifs.php`) passe de 4 questions
+(prénom, téléphone, email, code postal) à **2 questions** (nom et prénom
+— un seul champ, clé technique `prenom` inchangée pour rester compatible
+sans migration —, puis téléphone), pour minimiser la friction au
+remplissage. La case CGU/RGPD reste sur la **dernière étape de saisie**,
+désormais "téléphone" (le code l'attache dynamiquement à `ETAPES[ETAPES.length-1]`,
+donc aucun branchement supplémentaire nécessaire). Email et code postal
+ont été explicitement écartés par l'opérateur (trade-off assumé : on perd
+l'email comme canal de recontact, le téléphone suffit pour le rappel sous
+24h annoncé dans le formulaire) — une proposition intermédiaire à 3
+questions (en gardant un champ adresse) a été proposée puis refusée par
+l'opérateur, qui a tranché pour 2 questions seulement.
+
+Aucun changement côté `cme-tracking-conversion.php` (le relais republie le
+payload brut, sans supposer la présence d'un champ) ni côté
+`apps-scripts/cme-formulaire-article-leads.gs` (`ecrireSheet()` utilise déjà
+`d.email || ''` / `d.code_postal || ''`, donc ces deux colonnes restent
+simplement vides pour les nouvelles soumissions — pas de migration de
+schéma nécessaire, ni côté BigQuery ni côté Sheets). Validé via `php -l`
+et extraction du bloc JS (`node --check`) après modification.
+
+**Même contrainte de déploiement que d'habitude** pour
+`cme-cta-progressifs.php` : non versionné automatiquement sur le serveur,
+`cloudshell download` + `.bak` horodaté + upload cPanel + purge des 2
+caches LiteSpeed requis après ce commit pour que le changement soit visible
+en prod.
+
+## Incident — lead réel non retrouvé dans Sheets (24/10/2026)
+
+**Constat** : le lead "Lionel" (contact-expert-inline, 22/10 14:39:56 UTC,
+`source_post_id=5502`, article sur les aides batterie solaire) n'apparaît
+pas dans l'onglet Sheets "Leads Formulaire Article", alors qu'il est bien
+présent dans BigQuery (`leads_convertis`). Diagnostic (lecture seule,
+`scripts-maintenance/analyser_lead_parcours.py` + historique git) : **pas
+un bug, un problème de séquencement**. Le commit `dea97ad` (22/10 14:35:32
+UTC) a ajouté le code du relais Sheets dans `cme-tracking-conversion.php`
+avec la constante `CME_APPS_SCRIPT_LEADS_INLINE_URL` encore **vide** ; la
+vraie URL n'a été câblée que par le commit `0d7496f` (22/10 15:17:46 UTC),
+soit **38 minutes après** la soumission de Lionel à 14:39:56. Même en
+supposant un déploiement cPanel quasi instantané après le premier commit,
+le relais Sheets ne pouvait physiquement pas fonctionner pour cette
+soumission précise — ses coordonnées (prénom, téléphone, email, code
+postal, article) restent donc **uniquement dans BigQuery**, pas dans le
+Sheet de suivi quotidien. Confirmé par ailleurs via le parcours GA4 : 1
+session, 2 pages vues, 0% de rebond sur l'article ce jour-là — cohérent
+avec une vraie conversion, pas un artefact de test.
+
+**Pas d'action corrective nécessaire sur le code** (le relais Sheets est
+confirmé fonctionnel depuis, cf. section précédente "RGPD, Google Sheets
+et finitions UX") — seulement un rattrapage manuel à faire par l'opérateur
+si ce lead doit être suivi comme les autres (l'ajouter à la main dans
+l'onglet Sheets, ou travailler directement depuis BigQuery pour celui-ci).
+
+**QA complète du tunnel de conversion effectuée le 24/10** (lecture seule,
+`scripts-maintenance/qa_tunnel_conversion_complet.py`, exécuté via le pont
+GitHub Actions) : relais central WordPress → Cloud Run → BigQuery toujours
+sain (confirmé deux fois le même jour), accès anonyme Cloud Run toujours
+actif (pas de régression IAM type 19/10). **Limite documentée** : les URLs
+Apps Script des anciens simulateurs `comparateur-energie` et
+`simulateur-aides` sont stockées en `wp_options` (configurées via
+l'admin WordPress), pas dans le repo — non testables depuis ce sandbox ni
+depuis le runner GitHub Actions. Seul `simulateur-solaire` a son URL GAS
+en dur dans le code (`simulateur-solaire.php` ligne 124), donc testable.
+Noté au passage : `simulateur-solaire.php` envoie son `log-clic` en
+`fetch()` cross-origin côté client directement vers Cloud Run, avec un
+`.catch(function(){})` qui avale silencieusement tout échec (même famille
+de fragilité que le bug cross-origin corrigé le 19/10 pour le tracking du
+formulaire de contact/téléphone, mais jamais appliquée à cet ancien
+simulateur) — à surveiller si une amélioration de ce simulateur est
+demandée un jour, hors scope de cette session.
+
 ## Tracking de conversion (chantier oct. 2026, suite du chantier CTA)
 
 Depuis la migration des CTA vers `/contactez-un-expert/`, plus aucun systeme

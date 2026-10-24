@@ -28,12 +28,13 @@
  *    contenu stocke de chaque article un par un : le cote "retroactif"
  *    demande par l'operateur est couvert par construction, puisque ce
  *    script tourne deja sur chaque page article existante.
- *  - Champs repris de la base de donnees existante (table leads_convertis /
- *    API Cloud Run deja en place) : prenom, telephone, email, code_postal.
- *    HYPOTHESE A CONFIRMER : ce n'est pas forcement exactement la liste de
- *    champs du vrai formulaire WPForms #472 sur /contactez-un-expert/, que
- *    ce sandbox ne peut pas inspecter (pas d'acces au site live). A ajuster
- *    si l'operateur confirme une liste differente.
+ *  - Champs : nom et prenom, telephone -- reduit de 4 a 2 questions le
+ *    24/10/2026 a la demande explicite de l'operateur (email et code postal
+ *    retires), pour minimiser la friction au remplissage. La case CGU/RGPD
+ *    reste sur la derniere etape de saisie (desormais "telephone"). Les
+ *    colonnes email/code_postal de leads_convertis et de l'onglet Sheets
+ *    restent vides pour ces soumissions (gerees cote serveur sans erreur,
+ *    aucune migration necessaire).
  *  - Soumission : poste directement vers le relais deja deploye et deja
  *    valide en prod, /wp-json/cme/v1/log-lead (voir cme-tracking-conversion.php),
  *    qui republie vers l'API Cloud Run -> table leads_convertis. Aucun
@@ -96,11 +97,13 @@ add_action('wp_footer', function () {
   // retire reste dans l'historique git si l'un ou l'autre devait reprendre un jour.
   var PAR_PREFIXE = { 'gaz': [GAZ], 'electricite': [ELEC], 'aide-energetique': [AIDES], 'renovation-energetique': [AIDES], 'solaire': [SOLAIRE] };
 
+  // Reduit a 2 questions le 24/10/2026 (demande operateur : minimiser la
+  // friction) -- email et code_postal retires. "prenom" porte desormais le
+  // nom ET le prenom en un seul champ (cle technique inchangee pour rester
+  // compatible avec le schema BigQuery/Sheets existant sans migration).
   var ETAPES = [
-    { champ: 'prenom', icone: '👋', label: 'Quel est votre prénom ?', type: 'text', placeholder: 'Votre prénom' },
-    { champ: 'telephone', icone: '📱', label: 'Votre numéro de téléphone ?', type: 'tel', placeholder: '06 12 34 56 78' },
-    { champ: 'email', icone: '✉️', label: 'Votre adresse email ?', type: 'email', placeholder: 'vous@exemple.fr' },
-    { champ: 'code_postal', icone: '📍', label: 'Votre code postal ?', type: 'text', placeholder: '75001' }
+    { champ: 'prenom', icone: '👋', label: 'Vos nom et prénom ?', type: 'text', placeholder: 'Nom et prénom' },
+    { champ: 'telephone', icone: '📱', label: 'Votre numéro de téléphone ?', type: 'tel', placeholder: '06 12 34 56 78' }
   ];
   // Lien vers la vraie page legale du site, meme URL et meme esprit de formule
   // que les cases RGPD des anciens simulateurs (wordpress-plugins/simulateur-*),
@@ -141,8 +144,6 @@ add_action('wp_footer', function () {
         tool: 'contact-expert-inline',
         prenom: valeurs.prenom || '',
         telephone: valeurs.telephone || '',
-        email: valeurs.email || '',
-        code_postal: valeurs.code_postal || '',
         details: JSON.stringify({ position: position, silo: silo }),
         source_post_id: String(window.CME_POST_ID || ''),
         source_page: window.location.href
@@ -243,10 +244,8 @@ add_action('wp_footer', function () {
         }
         function valider(champ, valeur) {
           valeur = (valeur || '').trim();
-          if (champ === 'prenom') { return valeur.length >= 2 ? '' : 'Entrez votre prénom.'; }
+          if (champ === 'prenom') { return valeur.length >= 2 ? '' : 'Entrez vos nom et prénom.'; }
           if (champ === 'telephone') { return valeur.replace(/\D/g, '').length >= 8 ? '' : 'Numéro invalide.'; }
-          if (champ === 'email') { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valeur) ? '' : 'Email invalide.'; }
-          if (champ === 'code_postal') { return /^\d{5}$/.test(valeur) ? '' : 'Code postal invalide.'; }
           return '';
         }
         function afficherErreur(msg) {
