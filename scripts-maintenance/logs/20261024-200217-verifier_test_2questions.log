@@ -1,0 +1,30 @@
+# Execution du 2026-10-24T20:02:17Z
+# Script    : scripts-maintenance/verifier_test_2questions.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. leads_convertis -- TOUTES les lignes des 2 dernieres heures, tout outil
+======================================================================
+                       timestamp                   tool prenom telephone                                                source_page source_post_id
+2026-10-24 19:43:08.691557+00:00 diagnostic-relais-test                                                                                           
+2026-10-24 19:42:44.374961+00:00 diagnostic-relais-test                  https://www.comprendre-mon-energie.fr/contactez-un-expert/               
+2026-10-24 19:22:21.781122+00:00 diagnostic-relais-test                                                                                           
+2026-10-24 19:22:03.363753+00:00 diagnostic-relais-test                  https://www.comprendre-mon-energie.fr/contactez-un-expert/               
+
+======================================================================
+2. Dernier essai de relais vu cote WordPress (https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead-debug)
+======================================================================
+   Code HTTP : 200
+   Corps : {"dernier_essai":"OK @ 2026-10-24 19:42:49 -- {\"status\":\"ok\"}\n"}
+
+======================================================================
+3. Nouveau test de bout en bout, maintenant
+======================================================================
+   POST https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead -> 200 '{"status":"ok"}'
+   Marqueur 'verif2q-17c73ca11c30' retrouve dans BigQuery : ✅ OUI -- relais toujours sain
