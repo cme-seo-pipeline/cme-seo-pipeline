@@ -1,0 +1,34 @@
+# Execution du 2026-10-24T19:22:02Z
+# Script    : scripts-maintenance/diagnostiquer_relais_tracking.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1. POST direct sur https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead
+   Marqueur de ce test : diag-df700c5b93ad
+======================================================================
+   Code HTTP : 200
+   Corps de reponse (500 premiers caracteres) : '{"status":"ok"}'
+
+======================================================================
+2. Attente 10s puis recherche du marqueur dans leads_convertis...
+======================================================================
+✅ Ligne trouvee avec le marqueur diag-df700c5b93ad -- le relais WordPress -> Cloud Run -> BigQuery fonctionne bout en bout. Le probleme (si le test navigateur echoue encore) est donc cote navigateur/JS, pas cote serveur.
+
+======================================================================
+3. Lecture de https://www.comprendre-mon-energie.fr/wp-json/cme/v1/log-lead-debug (dernier essai de relais vu cote WordPress)
+======================================================================
+   Code HTTP : 200
+   Corps : {"dernier_essai":"OK @ 2026-10-24 19:22:09 -- {\"status\":\"ok\"}\n"}
+
+======================================================================
+4. POST DIRECT sur Cloud Run (sans passer par WordPress) : https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead
+   -> Si ca echoue aussi d'ici (runner GitHub, IP totalement differente du
+      cPanel de l'hebergeur) : restriction d'ingress globale sur le service
+      Cloud Run, pas un blocage specifique a l'IP de l'hebergement WordPress.
+======================================================================
+   Code HTTP : 200
+   Corps (300 premiers caracteres) : '{"status":"ok"}\n'
