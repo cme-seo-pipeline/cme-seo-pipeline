@@ -1,0 +1,15 @@
+# Execution du 2026-10-24T20:03:27Z
+# Script    : scripts-maintenance/verifier_leads_formulaire_inline.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Leads 'contact-expert-inline' -- 48 dernieres heures
+======================================================================
+                         timestamp        prenom   telephone email code_postal                                                                                                 source_page source_post_id                                      details
+0 2026-10-24 20:02:27.354180+00:00  Oussama Blal  0694374991                    https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-kwh-consommation-facture/          11466  "{\"position\":3,\"silo\":\"electricite\"}"
+
+   1 ligne(s) trouvee(s).
