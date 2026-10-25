@@ -1,0 +1,11 @@
+# Execution du 2026-10-25T19:13:05Z
+# Script    : scripts-maintenance/inspecter_css_btn_cta.py
+# Arguments : 
+
+1 feuille(s) de style trouvee(s) sur la page d'accueil.
+
+======================================================================
+MATCH dans : https://www.comprendre-mon-energie.fr/wp-content/litespeed/css/d425e74f66c8017c743ec72570baf68b.css?ver=8f84b
+======================================================================
+.btn-cta{display:block;width:100%;box-sizing:border-box;background-color:#2ecc71;color:#ffffff!important;padding:15px 10px;text-decoration:none!important;border-radius:5px;font-weight:700;text-align:center;font-size:16px;margin-bottom:20px;white-space:nowrap}
+
