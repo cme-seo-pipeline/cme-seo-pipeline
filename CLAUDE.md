@@ -415,6 +415,43 @@ formulaire de contact/téléphone, mais jamais appliquée à cet ancien
 simulateur) — à surveiller si une amélioration de ce simulateur est
 demandée un jour, hors scope de cette session.
 
+## Bouton téléphone du header — 4ᵉ emplacement natif WordPress découvert (25/10/2026)
+
+Demande opérateur : réduire la taille du bouton téléphone affiché en
+header (visible au scroll). Diagnostic (lecture seule, via le pont GitHub
+Actions — `scripts-maintenance/inspecter_bouton_telephone_header.py` puis
+`inspecter_css_btn_cta.py`) : ce bouton **n'est géré par aucun fichier de
+ce repo**. C'est un **4ᵉ emplacement natif WordPress** à ajouter à la liste
+des "TROIS emplacements CTA" documentée plus haut — en réalité il y en a
+au moins quatre, celui-ci vit dans une zone de widget `header-widget`
+(`<aside id="block-58" class="widget inner-padding widget_block">`),
+structurellement identique au widget du footer déjà documenté
+(édité à la main dans wp-admin → Apparence → Widgets ou l'éditeur de site
+si FSE) :
+```html
+<a href="tel:+33189713648" class="btn-cta" style="font-size: 20px;">📞 01 89 71 36 48</a>
+```
+**Piège confirmé** : `.btn-cta` est une classe de **thème générique/partagée**
+(`padding:15px 10px;font-size:16px;...`, trouvée dans la feuille de style
+LiteSpeed minifiée) — exactement le piège déjà documenté dans "Vérifier un
+changement live depuis Cloud Shell" (une classe CSS partagée peut avoir
+plusieurs occurrences sur une page/le site). D'où le choix de ne **jamais**
+toucher `.btn-cta` globalement.
+
+**Solution retenue** : un nouveau mu-plugin dédié,
+`wordpress-mu-plugins/cme-header-tel-style.php`, injecte un `<style>` dans
+`wp_head` scopé strictement à `.header-widget .btn-cta` (jamais `.btn-cta`
+seul) — `font-size:14px!important` (depuis 20px inline) et
+`padding:8px 10px!important` (depuis 15px 10px), le `!important` étant
+nécessaire pour surpasser le `style=""` inline existant sur l'élément.
+Valeurs ajustables en une seule ligne si le rendu visuel ne convient pas
+(ce sandbox n'a pas d'accès navigateur au site live pour prévisualiser).
+
+**Même contrainte de déploiement que les autres mu-plugins** : non
+versionné automatiquement sur le serveur — `cloudshell download`, upload
+cPanel dans `/wp-content/mu-plugins/`, purge des 2 caches LiteSpeed,
+vérifier avec `?t=$RANDOM`.
+
 ## Tracking de conversion (chantier oct. 2026, suite du chantier CTA)
 
 Depuis la migration des CTA vers `/contactez-un-expert/`, plus aucun systeme
