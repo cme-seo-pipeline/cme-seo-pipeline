@@ -1,0 +1,32 @@
+# Execution du 2026-10-26T15:54:37Z
+# Script    : scripts-maintenance/publier_articles_transactionnels_solaire.py
+# Arguments : --limite=1
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Mode : DRY-RUN (lecture/génération seule, rien n’est publié)
+Limité aux 1 premier(s) sujet(s) sur 10
+======================================================================
+
+======================================================================
+📂 4. Solaire | Kit solaire — mot-clé imposé : prix kit solaire autoconsommation installation comprise
+======================================================================
+  📝 Titre SEO : Prix kit solaire autoconsommation installation comprise
+  🔑 Mot-clé retenu par le brief : prix kit solaire autoconsommation installation comprise
+  ⚠️ Recuperation articles meme sous-silo impossible (400 ORDER BY clause expression references column date_publication which is not visible after SELECT DISTINCT at [4:22]; reason: invalidQuery, location: query, message: ORDER BY clause expression references column date_publication which is not visible after SELECT DISTINCT at [4:22]
+
+Location: EU
+Job ID: 7fb3925b-22f8-4fc2-ab1c-36ef317e1296
+)
+  🔎 Donnees officielles pour 4. Solaire | Kit solaire : aucune
+  📊 2791 mots | 5 lien(s) interne(s) | lien pilier présent : ✅
+  🔍 [DRY-RUN] Article généré mais NON publié -- relancer avec --apply pour publier.
+  Aperçu texte : Pour aller plus loin, consultez notre guide complet sur le dimensionnement d'un kit solaire autonome . Prix kit solaire autoconsommation installation comprise : quel budget prévoir en 2026 Vous envisagez d'installer des panneaux solaires pour réduire votre facture électrique ? La question qui revient systématiquement est la même : quel est le vrai coût d'un kit solaire posé par un professionnel , ...
+
+======================================================================
+BILAN : 1/1 article(s) généré(s) avec succès (dry-run, rien publié)
+======================================================================
+  - Prix kit solaire autoconsommation installation comprise [prix kit solaire autoconsommation installation comprise] (non publié)
