@@ -129,10 +129,10 @@ def main():
       SELECT
         a.*,
         ROUND(
-          35.0 * SAFE_DIVIDE(a.impressions, b.max_impr)
-          + 20.0 * SAFE_DIVIDE(a.ctr_pct, b.max_ctr)
+          35.0 * COALESCE(SAFE_DIVIDE(a.impressions, b.max_impr), 0)
+          + 20.0 * COALESCE(SAFE_DIVIDE(a.ctr_pct, b.max_ctr), 0)
           + 15.0 * (1.0 - LEAST(COALESCE(a.position_moyenne, 100), 100) / 100.0)
-          + 20.0 * SAFE_DIVIDE(a.sessions, b.max_sess)
+          + 20.0 * COALESCE(SAFE_DIVIDE(a.sessions, b.max_sess), 0)
           + IF(a.nb_leads > 0, 10.0, 0.0)
         , 1) AS score_pilier
       FROM avec_silo a
@@ -143,7 +143,10 @@ def main():
       silo, url, impressions, clics, ctr_pct, ROUND(position_moyenne, 1) AS position_moyenne,
       sessions, nb_leads, bounce_rate_pct, scroll_depth_moyen, rage_click_sessions,
       score_pilier,
-      RANK() OVER (PARTITION BY silo ORDER BY score_pilier DESC) AS rang
+      ROW_NUMBER() OVER (
+        PARTITION BY silo
+        ORDER BY score_pilier DESC, nb_leads DESC, impressions DESC, sessions DESC
+      ) AS rang
     FROM score
     QUALIFY rang <= 8
     ORDER BY silo, rang
