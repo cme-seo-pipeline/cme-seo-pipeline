@@ -3990,7 +3990,7 @@ def recuperer_articles_meme_sous_silo(silo_name, sous_silo, client_bq):
     sous_silo_safe = sous_silo_base.replace("'", "''")
     try:
         df = client_bq.query(f"""
-            SELECT DISTINCT titre, url FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+            SELECT DISTINCT titre, url_wp AS url FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
             WHERE silo = '{silo_safe}' AND sous_silo_strategique = '{sous_silo_safe}'
             ORDER BY date_publication DESC LIMIT 5
         """).to_dataframe()
