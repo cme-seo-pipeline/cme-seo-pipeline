@@ -1,0 +1,35 @@
+# Execution du 2026-10-26T16:59:08Z
+# Script    : scripts-maintenance/ajouter_images_articles_solaire_transactionnels.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Mode : DRY-RUN (lecture seule, rien n’est publié)
+======================================================================
+
+10/10 article(s) trouvés :
+  - post_id=12352 | Kit solaire | Prix kit solaire autoconsommation installation comprise
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/prix-kit-solaire-autoconsommation-installation-comprise/
+  - post_id=12353 | Kit solaire | Rentabilité kit solaire : en combien d'années amorti
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/rentabilite-kit-solaire-temps-retour-investissement/
+  - post_id=12354 | Batterie panneaux solaires | Prix batterie solaire installation : coût réel 2026
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/prix-batterie-solaire-installation-cout/
+  - post_id=12355 | Batterie panneaux solaires | Quelle capacité batterie solaire choisir pour sa maison
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/quelle-capacite-batterie-solaire-choisir-maison/
+  - post_id=12356 | Système solaire combiné | Système solaire combiné vs chaudière gaz : quel est le plus
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-rentabilite/
+  - post_id=12357 | Système solaire combiné | Système solaire combiné : en combien d'années rentable ?
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-temps-retour-investissement/
+  - post_id=12358 | Chauffe-eau solaire | Chauffe-eau solaire rentabilité : économies réelles par an
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-rentabilite-economies-par-an/
+  - post_id=12359 | Chauffe-eau solaire | Chauffe-eau solaire vs électrique : quel est le plus
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-economique/
+  - post_id=12360 | Panneaux solaires | Combien de panneaux solaires faut-il pour une maison budget
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/
+  - post_id=12361 | Panneaux solaires | Rentabilité panneaux solaires : temps de retour réel
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/
+
+🔍 [DRY-RUN] Rien n'est publié. Relancer avec --apply pour générer et poser réellement les 10 images.
