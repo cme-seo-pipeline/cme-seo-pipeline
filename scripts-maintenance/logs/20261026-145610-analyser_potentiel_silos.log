@@ -1,0 +1,84 @@
+# Execution du 2026-10-26T14:56:10Z
+# Script    : scripts-maintenance/analyser_potentiel_silos.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+==============================================================================
+0. Fraicheur / perimetre -- articles mappes dans la vue, par silo
+==============================================================================
+                  silo  nb_articles
+           Électricité          134
+    Aides énergétiques          126
+                   Gaz          126
+Rénovation énergétique           50
+               Solaire           42
+     Autre / hors silo           17
+
+==============================================================================
+1. Trafic organique SEO par silo (30 derniers jours, GSC)
+==============================================================================
+                  silo  impressions  clics  ctr_pct  position_moyenne
+     Autre / hors silo         1142      1     0.09              46.7
+           Électricité          558      0     0.00              41.2
+                   Gaz          516      0     0.00              51.7
+    Aides énergétiques          452      0     0.00              50.2
+Rénovation énergétique          310      0     0.00              57.2
+               Solaire          162      0     0.00              37.8
+
+==============================================================================
+2. Potentiel de conversion par silo (sessions GA4 -> leads attribues a un article, 30j trafic / tous leads historiques)
+==============================================================================
+                  silo  sessions_30j  leads_totaux  taux_conversion_pct
+               Solaire            76             2                2.632
+    Aides énergétiques           174             2                1.149
+                   Gaz           474             2                0.422
+     Autre / hors silo           174             0                0.000
+Rénovation énergétique            69             0                0.000
+           Électricité           421             0                0.000
+
+==============================================================================
+3. Match cote a cote -- rang trafic SEO vs rang potentiel de conversion
+==============================================================================
+                  silo  impressions  clics  sessions  leads  taux_conversion_pct  rang_trafic_seo  rang_conversion
+           Électricité          558      0       421      0                0.000                1                4
+                   Gaz          516      0       474      2                0.422                2                3
+    Aides énergétiques          452      0       174      2                1.149                3                2
+Rénovation énergétique          310      0        69      0                0.000                4                4
+               Solaire          162      0        76      2                2.632                5                1
+
+==============================================================================
+4. Top 10 requetes GSC a fort volume / faible CTR, PAR SILO (opportunite de trafic organique supplementaire)
+==============================================================================
+               silo                                      query  impressions  clics  ctr_pct  position_moyenne
+             1. Gaz                 prix du gaz bouteille 2026          122      0     0.00               6.5
+             1. Gaz   prix bouteille de gaz leclerc 13 kg 2026          104      2     1.92               7.4
+             1. Gaz              changer de fournisseur de gaz           69      0     0.00              75.9
+3. Aide Energetique      academiedubricolage.fr budget chauffe          202      0     0.00               6.2
+3. Aide Energetique ma prime rénov chauffe-eau thermodynamique          156      0     0.00              75.7
+3. Aide Energetique                       maprimerenov travaux          109      0     0.00              34.1
+     5. Electricite                 attestation de contrat edf           59      0     0.00              14.1
+
+==============================================================================
+5. [CORRECTIF] Trafic organique SEO par silo NATIF GSC (direct, sans jointure url_mapping -- plus fiable que section 1)
+==============================================================================
+                     silo  impressions  clics  ctr_pct  position_moyenne  rang_trafic_seo_fiable
+      3. Aide Energetique         3151      0     0.00              55.5                       1
+           5. Electricite         2983      3     0.10              41.9                       2
+                   1. Gaz         2528      7     0.28              40.2                       3
+2. Renovation Energetique          377      0     0.00              58.0                       4
+               4. Solaire          307      0     0.00              53.2                       5
+                                    71      0     0.00              49.9                       6
