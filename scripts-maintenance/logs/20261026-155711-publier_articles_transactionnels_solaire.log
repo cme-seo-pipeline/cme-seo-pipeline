@@ -1,0 +1,29 @@
+# Execution du 2026-10-26T15:57:11Z
+# Script    : scripts-maintenance/publier_articles_transactionnels_solaire.py
+# Arguments : --limite=1
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Mode : DRY-RUN (lecture/génération seule, rien n’est publié)
+Limité aux 1 premier(s) sujet(s) sur 10
+======================================================================
+
+======================================================================
+📂 4. Solaire | Kit solaire — mot-clé imposé : prix kit solaire autoconsommation installation comprise
+======================================================================
+  📝 Titre SEO : Prix kit solaire autoconsommation installation comprise
+  🔑 Mot-clé retenu par le brief : prix kit solaire autoconsommation installation comprise
+  🔎 Donnees officielles pour 4. Solaire | Kit solaire : aucune
+  📊 3608 mots | 3 lien(s) interne(s) | lien pilier présent : ✅
+  🔍 [DRY-RUN] Article généré mais NON publié -- relancer avec --apply pour publier.
+  Aperçu texte : Pour aller plus loin, consultez notre guide complet sur le dimensionnement d'un kit solaire autonome . Prix kit solaire autoconsommation installation comprise : budget réel 2026 Vous envisagez d'installer un kit solaire en autoconsommation chez vous ? La question du prix est légitime. Entre les panneaux, l'onduleur, la pose professionnelle et les démarches administratives, le coût réel d'une insta...
+
+======================================================================
+BILAN : 1/1 article(s) généré(s) avec succès (dry-run, rien publié)
+======================================================================
+  - Prix kit solaire autoconsommation installation comprise [prix kit solaire autoconsommation installation comprise] (non publié)
