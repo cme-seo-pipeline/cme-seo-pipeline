@@ -894,7 +894,7 @@ def nettoyer_texte_ia(texte, annee_courante=None):
     return texte
 
 
-def generer_brief_silo(contexte, config, titres_existants=None):
+def generer_brief_silo(contexte, config, titres_existants=None, mot_cle_force=None, angle_force=None):
     silo = contexte.get('silo', '')
     sous_silo = contexte.get('sous_silo', '')
     silo_propre = silo.split('. ')[-1] if '. ' in silo else silo
@@ -909,6 +909,33 @@ def generer_brief_silo(contexte, config, titres_existants=None):
             titres_str += f"- \"{t['titre']}\" (mot-clé : {t['mot_cle']})\n"
         titres_str += "\nIMPORTANT : angle COMPLÈTEMENT DIFFÉRENT."
 
+    # mot_cle_force / angle_force (ajoute le 26/10/2026, chantier "Pages
+    # pilier Solaire + maillage interne") : permet d'imposer un mot-cle et
+    # un angle precis au lieu de laisser le modele les deduire seul du
+    # contexte silo/sous-silo -- utilise par
+    # scripts-maintenance/publier_articles_transactionnels_solaire.py pour
+    # cibler des mots-cles a intention transactionnelle (prix, devis,
+    # rentabilite...) plutot que de laisser le tirage habituel (pilote par
+    # les donnees GSC du run quotidien) choisir un angle informationnel. Si
+    # absent (cas normal du run quotidien), comportement strictement
+    # inchange.
+    contrainte_force_str = ""
+    if mot_cle_force:
+        contrainte_force_str = f"""
+
+⚠️ CONTRAINTE SUPPLÉMENTAIRE, PRIORITAIRE SUR TOUT LE RESTE :
+Le mot-clé principal de cet article EST IMPOSÉ, ne le remplace ni ne le reformule :
+→ MOT-CLÉ PRINCIPAL IMPOSÉ : "{mot_cle_force}"
+"""
+        if angle_force:
+            contrainte_force_str += f"→ ANGLE IMPOSÉ : {angle_force}\n"
+        contrainte_force_str += (
+            "Construis le titre_seo, la meta_description, la structure et la FAQ "
+            "AUTOUR de ce mot-clé et de cet angle imposés -- intention de recherche "
+            "TRANSACTIONNELLE (le lecteur compare avant d'acheter/demander un devis, "
+            "pas simplement curieux de comprendre comment ça marche)."
+        )
+
     prompt = f"""Tu es un expert SEO éditorial senior spécialisé dans l'énergie en France.
 ⚠️ CONTRAINTE ABSOLUE : brief EXCLUSIVEMENT sur :
 → SILO : {silo}
@@ -916,6 +943,7 @@ def generer_brief_silo(contexte, config, titres_existants=None):
 
 STRUCTURE URL : /{slug_silo}/{slug_sous_silo}/[slug-article]/
 {titres_str}
+{contrainte_force_str}
 
 Génère un brief en JSON STRICT :
 {{
@@ -3936,6 +3964,16 @@ LIENS_PILIERS_SOUS_SILO = {
     ("3. Aide Énergétique", "MaPrimeRénov'"): ("/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/", "notre guide complet sur MaPrimeRénov'"),
     ("3. Aide Énergétique", "Chèque énergie"): ("/aide-energetique/cheque-energie/cheque-energie-refuse-causes-solutions/", "notre guide sur le chèque énergie"),
     ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique"): ("/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-gaz/", "notre guide sur le chauffe-eau thermodynamique"),
+    # Ajoute le 26/10/2026 : extension du maillage pilier au silo Solaire,
+    # jusque-la absent de cette table. Pages pilier choisies par score
+    # composite (impressions/CTR/position GSC + sessions/leads GA4), voir
+    # scripts-maintenance/cartographie_pilier_sous_silos_solaire.py et
+    # CLAUDE.md -- chantier "Pages pilier Solaire + maillage interne".
+    ("4. Solaire", "Kit solaire"): ("/solaire/kit-solaire/kit-solaire-autonome-dimensionnement/", "notre guide complet sur le dimensionnement d'un kit solaire autonome"),
+    ("4. Solaire", "Batterie panneaux solaires"): ("/solaire/batterie-panneaux-solaires/installer-batterie-solaire-guide-complet/", "notre guide complet sur l'installation d'une batterie solaire"),
+    ("4. Solaire", "Système solaire combiné"): ("/solaire/systeme-solaire-combine/fonctionnement-systeme-solaire-combine/", "notre guide sur le fonctionnement du système solaire combiné"),
+    ("4. Solaire", "Chauffe-eau solaire"): ("/solaire/chauffe-eau-solaire/entretien-chauffe-eau-solaire/", "notre guide sur l'entretien du chauffe-eau solaire"),
+    ("4. Solaire", "Panneaux solaires"): ("/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins/", "notre guide comparatif sur les panneaux solaires"),
 }
 
 
