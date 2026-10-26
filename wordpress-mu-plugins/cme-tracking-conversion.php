@@ -45,6 +45,17 @@
  * telecharger (cloudshell download), renommer l'ancien en .bak horodate en
  * cPanel, uploader le nouveau dans /wp-content/mu-plugins/, purger les deux
  * caches LiteSpeed (cPanel + wp-admin), verifier avec ?t=$RANDOM.
+ *
+ * AJOUT DU 26/10/2026 (cartographie des clics -- demande operateur) : relais
+ * + tracker generique de clics a l'interieur du contenu des articles (liens
+ * internes/externes, images), distinct du tracking lead/tel: ci-dessus.
+ * Voir CLAUDE.md section "Cartographie des clics et progression du
+ * formulaire" pour le detail complet (schema BigQuery, raison du choix
+ * d'un lot bufferise plutot qu'un appel par clic, etc.). Necessite le
+ * redeploiement de tracking-api (nouvelle route /api/log-interaction) ET
+ * la creation prealable de la table interactions_contenu
+ * (scripts-maintenance/creer_table_interactions_contenu.py, DDL -- a
+ * executer une seule fois avant le premier deploiement de ce fichier).
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -123,6 +134,37 @@ function cme_relayer_log_lead(WP_REST_Request $request) {
         }
     }
 
+    return new WP_REST_Response(['status' => 'ok'], 200);
+}
+
+// ── Relais pour le nouveau tracker de clics/contenu (26/10/2026) : meme
+// principe que log-lead (same-origin -> republication server-side vers
+// Cloud Run), mais recoit un LOT d'evenements (tableau JSON) en un seul
+// appel, pas un evenement a la fois -- le JS bufferise cote navigateur.
+add_action('rest_api_init', function () {
+    register_rest_route('cme/v1', '/log-interaction', [
+        'methods'             => 'POST',
+        'callback'            => 'cme_relayer_log_interaction',
+        'permission_callback' => '__return_true',
+    ]);
+});
+
+define('CME_TRACKING_API_INTERACTION_URL', 'https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-interaction');
+
+function cme_relayer_log_interaction(WP_REST_Request $request) {
+    wp_remote_post(CME_TRACKING_API_INTERACTION_URL, [
+        'headers'  => ['Content-Type' => 'application/json'],
+        'body'     => $request->get_body(),
+        'timeout'  => 8,
+        // Volume potentiellement plus eleve que log-lead (plusieurs
+        // evenements par visite d'article, pas uniquement a la conversion) --
+        // non-bloquant ici pour ne pas ralentir la reponse au navigateur,
+        // a la difference de log-lead qui avait besoin du mode bloquant
+        // pour diagnostiquer l'incident du 19/10. Pas de donnee personnelle
+        // en jeu dans ce flux (pas de nom/telephone), impact limite si une
+        // requete se perd silencieusement.
+        'blocking' => false,
+    ]);
     return new WP_REST_Response(['status' => 'ok'], 200);
 }
 
@@ -248,6 +290,146 @@ add_action('wp_footer', function () {
       }
     }
   } catch (e) {}
+})();
+JS;
+    echo "\n</script>\n";
+});
+
+// ── CARTOGRAPHIE DES CLICS DANS LE CONTENU DES ARTICLES (26/10/2026) ───────
+// Scope volontairement limite a is_singular('post') : la notion de "zone de
+// contenu" (section, mots avant le clic) n'a de sens que dans un article,
+// pas sur les pages outils/accueil. Buffer + envoi en lot (sendBeacon) sur
+// masquage/fermeture de la page plutot qu'un appel par clic, pour rester a
+// un volume de requetes raisonnable sur une visite qui peut cliquer sur
+// plusieurs liens internes dans le meme article.
+add_action('wp_footer', function () {
+    if (!is_singular('post')) {
+        return;
+    }
+    echo "<script id=\"cme-tracking-clics-contenu\">\n";
+    echo <<<'JS'
+(function () {
+  'use strict';
+  var API_INTERACTION = '/wp-json/cme/v1/log-interaction';
+  var FILE = [];
+  // Identifiant anonyme de CETTE visite de page (pas de cookie, pas de
+  // persistance entre pages) -- sert uniquement a regrouper les evenements
+  // d'un meme lot, pas a suivre un visiteur dans le temps.
+  var SESSION_ID = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+  function pourcentageScroll() {
+    try {
+      var h = document.documentElement;
+      var total = h.scrollHeight - h.clientHeight;
+      return total > 0 ? Math.round((h.scrollTop || window.scrollY || 0) / total * 100) : 0;
+    } catch (e) { return 0; }
+  }
+
+  function empiler(evt) {
+    try {
+      evt.timestamp = new Date().toISOString();
+      evt.session_id = SESSION_ID;
+      evt.source_page = window.location.href;
+      evt.source_post_id = String(window.CME_POST_ID || '');
+      evt.user_agent = (navigator.userAgent || '').slice(0, 120);
+      FILE.push(evt);
+      if (FILE.length >= 20) { vider(); }   // garde-fou taille de lot
+    } catch (e) {}
+  }
+
+  function vider() {
+    try {
+      if (!FILE.length) { return; }
+      var lot = FILE.slice();
+      FILE.length = 0;
+      var body = JSON.stringify(lot);
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(API_INTERACTION, new Blob([body], { type: 'application/json' }));
+      } else if (window.fetch) {
+        fetch(API_INTERACTION, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }).catch(function () {});
+      }
+    } catch (e) {}
+  }
+
+  // Filet de securite : vide le buffer meme sur une tres longue lecture
+  // sans changement de visibilite (rare, mais le volume reste negligeable).
+  window.setInterval(vider, 15000);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') { vider(); }
+  });
+  window.addEventListener('pagehide', vider);
+
+  function texteTronque(el, max) {
+    var t = (el && (el.textContent || el.getAttribute('alt') || '') || '').trim().replace(/\s+/g, ' ');
+    return t.length > max ? t.slice(0, max) + '…' : t;
+  }
+
+  // Section = texte du dernier titre h2/h3 rencontre avant l'element, en
+  // parcourant les freres precedents puis en remontant -- approximation
+  // simple, suffisante pour savoir "dans quelle partie de l'article".
+  function sectionDe(el) {
+    try {
+      var zone = el.closest ? el.closest('.entry-content') : null;
+      if (!zone) { return ''; }
+      var courant = el;
+      while (courant && courant !== zone) {
+        var frere = courant.previousElementSibling;
+        while (frere) {
+          if (/^H[23]$/.test(frere.tagName)) { return texteTronque(frere, 100); }
+          frere = frere.previousElementSibling;
+        }
+        courant = courant.parentElement;
+      }
+      return '';
+    } catch (e) { return ''; }
+  }
+
+  // Mots avant = taille approximative (en mots) du texte de .entry-content
+  // precedant l'element clique -- proxy de "position dans l'article".
+  function motsAvant(el) {
+    try {
+      var zone = el.closest ? el.closest('.entry-content') : null;
+      if (!zone) { return 0; }
+      var range = document.createRange();
+      range.setStart(zone, 0);
+      range.setEndBefore(el);
+      var texte = range.toString().trim();
+      return texte ? texte.split(/\s+/).length : 0;
+    } catch (e) { return 0; }
+  }
+
+  function prefixeSilo() {
+    return window.location.pathname.split('/').filter(Boolean)[0] || '';
+  }
+
+  document.addEventListener('click', function (evt) {
+    try {
+      var cible = evt.target.closest ? evt.target.closest('.entry-content a[href], .entry-content img') : null;
+      if (!cible) { return; }
+      var zone = cible.closest('.entry-content');
+      if (!zone) { return; }
+
+      var type, texte;
+      if (cible.tagName === 'IMG') {
+        type = 'image';
+        texte = texteTronque(cible, 150) || (cible.getAttribute('alt') || '').slice(0, 150);
+      } else {
+        var href = cible.getAttribute('href') || '';
+        type = /^https?:\/\//i.test(href) && href.indexOf(window.location.hostname) === -1 ? 'lien_externe' : 'lien_interne';
+        texte = texteTronque(cible, 150);
+      }
+
+      empiler({
+        type_evenement: 'clic_contenu',
+        cible: type,
+        section: sectionDe(cible),
+        texte: texte,
+        position_contenu: motsAvant(cible),
+        scroll_pct: pourcentageScroll(),
+        silo: prefixeSilo()
+      });
+    } catch (e) {}
+  }, true);
 })();
 JS;
     echo "\n</script>\n";

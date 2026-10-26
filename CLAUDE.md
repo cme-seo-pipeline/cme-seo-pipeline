@@ -877,6 +877,96 @@ Si un futur mécanisme anti-doublon est ajouté ailleurs dans le pipeline et
 reçoit potentiellement un sous-silo suffixé, vérifier systématiquement
 qu'il fait de même.
 
+## Cartographie des clics et progression du formulaire (26/10/2026)
+
+Suite à la synthèse comportement-visiteurs du 25/10 (voir section précédente
+sur l'objectif 1% de conversion), l'opérateur a demandé d'approfondir avec
+une vraie **cartographie des zones de clic à l'intérieur des articles** et
+le **détail des clics par session/article/silo**, avant d'ajuster quoi que
+ce soit (ex. réduction à 150 mots du 1er formulaire).
+
+**Constat préalable, important à garder en tête** : cette donnée n'existait
+**nulle part** dans le projet. Vérifié avant d'écrire du code :
+- L'API Data Export Clarity qu'on synchronise (`rafraichir_clarity_insights`/
+  `rafraichir_clarity_par_page`, `pipeline/pipeline.py`) n'expose qu'un
+  ensemble **fixe** de métriques agrégées (Browser/Country/Device/
+  EngagementTime/RageClickCount/ScrollDepth/PopularPages/...) — aucune
+  métrique de position ou de zone de clic.
+- Les vraies heatmaps de clic existent **uniquement dans le tableau de bord
+  Clarity** (interface web), pas dans l'API publique — donc invisibles
+  depuis ce sandbox/le pont GitHub Actions.
+- Aucune table BigQuery existante ne capture de clic généraliste par
+  article (`ga4_pages` = agrégat de trafic, pas d'événements ;
+  `historique_clics_comparateur` = spécifique aux clics d'offre du
+  comparateur, pas généralisable).
+
+**D'où une nouvelle instrumentation**, construite pour répondre à la fois à
+la cartographie des clics ET à la question "faut-il fusionner les 2
+questions du mini-formulaire / auto-avancer sans bouton" (qui nécessitait
+elle aussi une donnée absente : le taux d'abandon entre l'étape nom/prénom
+et l'étape téléphone) :
+
+1. **Nouvelle table BigQuery `04_pipeline_seo.interactions_contenu`**
+   (partitionnée par jour sur `timestamp`), créée par
+   `scripts-maintenance/creer_table_interactions_contenu.py` —
+   **script d'ÉCRITURE/DDL, pas lecture seule** (exception documentée),
+   idempotent (`exists_ok=True`), à exécuter une seule fois via le pont
+   GitHub Actions avant tout déploiement des fichiers ci-dessous. Schéma
+   unifié (un seul type_evenement par ligne parmi `clic_contenu` /
+   `form_vu` / `form_etape` / `form_abandon`) plutôt que plusieurs tables,
+   pour rester simple au volume de données modeste du site.
+2. **`tracking-api/server.py`** — nouvelle route `/api/log-interaction`
+   (insertion en LOT, pas un événement à la fois) vers cette table.
+3. **`wordpress-mu-plugins/cme-tracking-conversion.php`** :
+   - nouveau relais same-origin `/wp-json/cme/v1/log-interaction` (même
+     principe que `/log-lead`, mais non-bloquant côté `wp_remote_post` —
+     volume potentiellement plus élevé qu'une conversion, et aucune
+     donnée personnelle dans ce flux, donc impact limité si une requête
+     se perd) ;
+   - nouveau tracker JS, scope `is_singular('post')` uniquement : capture
+     chaque clic sur un lien (interne/externe) ou une image **à
+     l'intérieur de `.entry-content`**, avec la section (texte du dernier
+     `<h2>`/`<h3>` avant le clic), le texte de l'élément, une position
+     approximative (nombre de mots de contenu avant le clic) et le
+     scroll% au moment du clic. Bufferisé côté client, envoyé en un seul
+     `sendBeacon` au masquage/fermeture de la page (+ filet de sécurité
+     toutes les 15s), pour ne pas multiplier les requêtes par visite.
+4. **`wordpress-mu-plugins/cme-cta-progressifs.php`** — buffer
+   indépendant (pas de dépendance d'ordre de chargement entre les deux
+   mu-plugins), trois nouveaux événements par instance de mini-formulaire :
+   - `form_etape` à '0' (rendu initial) et à chaque `allerA()` ('1' =
+     étape téléphone atteinte, 'termine' = soumis) ;
+   - `form_vu` via `IntersectionObserver` (seuil 50%) — distinct de "rendu
+     dans le DOM" (le formulaire est inséré par JS dès le chargement,
+     avant d'être forcément scrollé en vue) ;
+   - `form_abandon`, déclenché une seule fois au masquage de la page si
+     le dernier état connu (toutes instances confondues sur la page) est
+     "étape téléphone atteinte" (`idx>0`) sans avoir atteint "terminé".
+
+**Déploiement, dans cet ordre précis** (la table doit exister avant que le
+relais Cloud Run n'essaie d'y insérer, sinon les lignes sont silencieusement
+perdues côté `insert_rows_json`) :
+1. Exécuter `creer_table_interactions_contenu.py` via le pont GitHub
+   Actions (fait le 26/10, voir log).
+2. Redéployer le service Cloud Run `cme-tracking-api` (nouvelle route
+   `/api/log-interaction`) — **action opérateur**, pas de CI/CD Cloud Run
+   dans ce repo (`gcloud run deploy cme-tracking-api --source tracking-api/
+   --region=europe-west1 --project=seo-data-hub-cme`, ou la commande
+   habituelle de l'opérateur si différente).
+3. Déployer les deux mu-plugins modifiés en cPanel — même contrainte
+   habituelle (`cloudshell download`, `.bak` horodaté, upload, purge des 2
+   caches LiteSpeed, vérifier avec `?t=$RANDOM`).
+
+**Pas encore exploitable** : la cartographie et les taux d'abandon par
+étape nécessitent quelques jours de trafic réel pour être statistiquement
+lisibles (~44 sessions/jour en moyenne au 25/10). Prochaine étape une fois
+les données accumulées : écrire le script de synthèse lecture-seule sur
+`interactions_contenu` (zones les plus cliquées par silo, clics/session par
+article, taux d'abandon étape 1→2) et **seulement ensuite** trancher les
+ajustements (seuil de mots du 1er formulaire, fusion des 2 champs,
+auto-avance sur le téléphone) sur la base de cette donnée plutôt qu'à
+l'intuition — c'est la séquence explicitement demandée par l'opérateur.
+
 ## Divergence connue, non résolue
 
 `pipeline.py` à la racine du repo (~85 Ko, legacy, **non exécuté** par les

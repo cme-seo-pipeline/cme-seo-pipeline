@@ -47,6 +47,17 @@
  *    ET le nouveau formulaire dynamique sur le meme article. Voir
  *    CLAUDE.md pour le detail et le script de nettoyage retroactif des
  *    anciens boutons deja publies.
+ *
+ * AJOUT DU 26/10/2026 (progression du formulaire -- demande operateur) :
+ * journalise, pour chaque occurrence du formulaire, sa visibilite reelle
+ * (IntersectionObserver), la progression etape par etape, et l'abandon
+ * eventuel entre l'etape "nom/prenom" et l'etape "telephone" -- donnee
+ * absente jusqu'ici (seules les soumissions COMPLETES etaient journalisees,
+ * via envoyerLead/log-lead). Meme relais que le nouveau tracker de clics de
+ * cme-tracking-conversion.php (/wp-json/cme/v1/log-interaction), buffer
+ * local independant (pas de dependance d'ordre de chargement entre les deux
+ * fichiers). Voir CLAUDE.md, section "Cartographie des clics et progression
+ * du formulaire".
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -136,6 +147,64 @@ add_action('wp_footer', function () {
       '.cme-mf-rgpd-case{accent-color:' + FORMULAIRE_FOND2 + ';width:16px;height:16px;}';
     document.head.appendChild(style);
   }
+
+  // ── CARTOGRAPHIE : progression etape par etape + abandon (26/10/2026) ───
+  // Buffer local independant de celui de cme-tracking-conversion.php (pas de
+  // dependance d'ordre de chargement entre mu-plugins) -- meme principe,
+  // meme relais.
+  var API_INTERACTION = '/wp-json/cme/v1/log-interaction';
+  var FILE_INTERACTIONS = [];
+  var SESSION_ID = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  // Dernier etat connu, mis a jour par CHAQUE instance de formulaire sur la
+  // page -- sert uniquement a detecter un abandon au moment ou le visiteur
+  // quitte/masque la page (on ne sait pas a l'avance lequel des formulaires
+  // de la page il a utilise, donc on retient le plus recent).
+  var DERNIER_ETAT = null;
+
+  function viderInteractions() {
+    try {
+      if (!FILE_INTERACTIONS.length) { return; }
+      var lot = FILE_INTERACTIONS.slice();
+      FILE_INTERACTIONS.length = 0;
+      var body = JSON.stringify(lot);
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(API_INTERACTION, new Blob([body], { type: 'application/json' }));
+      } else if (window.fetch) {
+        fetch(API_INTERACTION, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }).catch(function () {});
+      }
+    } catch (e) {}
+  }
+  function journaliserInteraction(evt) {
+    try {
+      evt.timestamp = new Date().toISOString();
+      evt.session_id = SESSION_ID;
+      evt.source_page = window.location.href;
+      evt.source_post_id = String(window.CME_POST_ID || '');
+      evt.user_agent = (navigator.userAgent || '').slice(0, 120);
+      FILE_INTERACTIONS.push(evt);
+      if (FILE_INTERACTIONS.length >= 20) { viderInteractions(); }
+    } catch (e) {}
+  }
+  // Enregistre une seule fois (pas par instance de formulaire) : abandon =
+  // la derniere etape atteinte etait "telephone" (idx>=1) sans avoir
+  // complete (idx < ETAPES.length, donc pas encore arrive a "merci").
+  window.setInterval(viderInteractions, 15000);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState !== 'hidden') { return; }
+    if (DERNIER_ETAT && DERNIER_ETAT.idx > 0 && DERNIER_ETAT.idx < ETAPES.length) {
+      journaliserInteraction({
+        type_evenement: 'form_abandon',
+        position_contenu: DERNIER_ETAT.position,
+        etape: String(DERNIER_ETAT.idx),
+        silo: DERNIER_ETAT.silo
+      });
+      viderInteractions();
+      DERNIER_ETAT = null;   // evite un double comptage si la page redevient visible puis se cache encore
+    } else {
+      viderInteractions();
+    }
+  });
+  window.addEventListener('pagehide', viderInteractions);
 
   // ── ENVOI DU LEAD (reutilise le relais deja deploye et deja valide en prod) ──
   function envoyerLead(valeurs, position, silo) {
@@ -268,12 +337,16 @@ add_action('wp_footer', function () {
         function allerA(nouvelIdx) {
           noeudsEtapes[idx].style.display = 'none';
           idx = nouvelIdx;
+          DERNIER_ETAT = { position: n, idx: idx, silo: prefixe };
           if (idx >= ETAPES.length) {
+            journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: 'termine', silo: prefixe });
+            DERNIER_ETAT = null;   // termine : plus rien a detecter comme abandon pour cette instance
             afficherEtape(noeudsEtapes[ETAPES.length]);   // etape "merci"
             btnNav.style.display = 'none';
             barreProgres.style.width = '100%';
             return;
           }
+          journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: String(idx), silo: prefixe });
           afficherEtape(noeudsEtapes[idx]);
           btnPrec.style.visibility = idx === 0 ? 'hidden' : 'visible';
           btnSuiv.textContent = idx === ETAPES.length - 1 ? 'Envoyer →' : 'Suivant →';
@@ -312,6 +385,24 @@ add_action('wp_footer', function () {
         });
 
         majProgres();
+        journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: '0', silo: prefixe });
+
+        // Visibilite reelle (pas juste "present dans le DOM" -- insere via
+        // JS, le formulaire existe souvent avant d'etre scrolle en vue) :
+        // une seule fois par instance, seuil 50% visible.
+        if (window.IntersectionObserver) {
+          var observateurVue = new IntersectionObserver(function (entrees) {
+            for (var k = 0; k < entrees.length; k++) {
+              if (entrees[k].isIntersecting) {
+                journaliserInteraction({ type_evenement: 'form_vu', position_contenu: n, silo: prefixe });
+                observateurVue.disconnect();
+                break;
+              }
+            }
+          }, { threshold: 0.5 });
+          window.setTimeout(function () { observateurVue.observe(d); }, 0);   // apres insertion dans le DOM
+        }
+
         return d;
       }
 

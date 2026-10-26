@@ -92,6 +92,67 @@ def log_lead():
         return _cors(jsonify({"status": "error", "detail": str(e)})), 500
 
 
+@app.route('/api/log-interaction', methods=['POST', 'OPTIONS'])
+def log_interaction():
+    """
+    Journalise des evenements d'interaction fine (clics sur des zones de
+    contenu dans les articles, progression/abandon du mini-formulaire)
+    pour la cartographie demandee par l'operateur le 26/10/2026 -- table
+    dediee interactions_contenu, distincte de leads_convertis (ce ne sont
+    pas des leads, pas de coordonnees de contact ici).
+
+    Recoit un LOT d'evenements en une seule requete (tableau JSON), pas un
+    evenement a la fois -- le JS cote navigateur bufferise et envoie en
+    sendBeacon au moment ou la page se cache/se quitte (voir
+    cme-tracking-conversion.php et cme-cta-progressifs.php), pour limiter
+    le nombre de requetes a un volume raisonnable par visite.
+
+    Meme contrat que /api/log-lead : appele server-side depuis le relais
+    PHP WordPress (/wp-json/cme/v1/log-interaction), jamais directement
+    depuis le JS du navigateur -- aucun risque CORS.
+    """
+    if request.method == 'OPTIONS':
+        return _cors(jsonify({})), 200
+    try:
+        data = request.get_json(silent=True)
+        evenements = data if isinstance(data, list) else [data] if data else []
+        if not evenements:
+            return _cors(jsonify({"status": "ok", "inserted": 0})), 200
+
+        client_bq = bigquery.Client()
+        lignes = []
+        for e in evenements:
+            if not isinstance(e, dict):
+                continue
+            lignes.append({
+                "timestamp":        e.get("timestamp", datetime.utcnow().isoformat()),
+                "type_evenement":   str(e.get("type_evenement", ""))[:30],
+                "cible":            str(e.get("cible", ""))[:30],
+                "section":          str(e.get("section", ""))[:150],
+                "texte":            str(e.get("texte", ""))[:150],
+                "position_contenu": int(e.get("position_contenu", 0) or 0),
+                "etape":            str(e.get("etape", ""))[:20],
+                "scroll_pct":       float(e.get("scroll_pct", 0) or 0),
+                "silo":             str(e.get("silo", ""))[:50],
+                "session_id":       str(e.get("session_id", ""))[:60],
+                "source_page":      str(e.get("source_page", ""))[:250],
+                "source_post_id":   str(e.get("source_post_id", ""))[:20],
+                "user_agent":       str(e.get("user_agent", ""))[:120],
+            })
+
+        if not lignes:
+            return _cors(jsonify({"status": "ok", "inserted": 0})), 200
+
+        errors = client_bq.insert_rows_json(
+            "seo-data-hub-cme.04_pipeline_seo.interactions_contenu", lignes
+        )
+        resp = jsonify({"status": "error", "detail": str(errors)} if errors else {"status": "ok", "inserted": len(lignes)})
+        return _cors(resp), (500 if errors else 200)
+    except Exception as e:
+        print(f"log-interaction error: {e}")
+        return _cors(jsonify({"status": "error", "detail": str(e)})), 500
+
+
 @app.route('/api/tarifs', methods=['GET'])
 def get_tarifs():
     resp = jsonify({"status": "ok", "derniere_maj": "2026-06-29", "source": "CRE"})
