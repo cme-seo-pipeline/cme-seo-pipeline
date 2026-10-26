@@ -216,10 +216,20 @@ tout chemin qui ne commence pas par `scripts-maintenance/`) — un premier
 essai avec juste le nom de fichier a échoué silencieusement (aucun log
 committé, le job échoue avant même d'atteindre l'étape qui écrit le log).
 
-**Pas encore appliqué (`--apply`) sur le site réel** — volume important
-(803 articles déjà publiés et indexés) : relecture humaine recommandée
-avant d'écrire, par exemple en testant d'abord avec `--limite=5 --apply`
-comme pour les scripts précédents du même type.
+**Appliqué en conditions réelles le 26/10/2026** : test `--limite=5 --apply`
+validé par l'opérateur (5 articles, 15 blocs, 0 erreur), puis `--apply`
+sans limite sur le reste. **Piège rencontré** : le premier run complet
+(646 articles restants) s'est fait annuler par une limite de temps du
+workflow GitHub Actions (~30 min, `timeout-minutes` du job, pas une action
+volontaire) après avoir déjà traité 645 articles avec succès (0 erreur) —
+le script étant idempotent (ne retouche que les articles ayant encore
+l'ancien bloc), un simple second `gh workflow run` avec les mêmes arguments
+a repris automatiquement là où ça s'était arrêté et traité les 142
+restants, cette fois sans dépasser le délai. **Total : 792 articles
+nettoyés, 0 erreur sur l'ensemble**. Si un futur nettoyage de masse de ce
+type dépasse la limite de temps du workflow, relancer simplement la même
+commande plutôt que chercher à augmenter le timeout — plus simple et sans
+risque de double-traitement grâce à l'idempotence du script.
 
 **Déploiement — même contrainte que d'habitude** pour
 `cme-cta-progressifs.php` : non versionné automatiquement sur le serveur.
