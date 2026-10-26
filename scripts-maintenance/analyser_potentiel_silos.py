@@ -147,5 +147,30 @@ def main():
     """)
 
 
+def section_5(client):
+    # Section 1/3 passent par la vue tunnel_conversion_unifie (jointure sur
+    # wp_url_mapping) -- en comparant avec la section 4 (lue directement dans
+    # 01_raw.gsc_queries, sans cette jointure), les volumes d'impressions/clics
+    # de la section 1 sont visiblement sous-comptes (jointure incomplete cote
+    # vue). On recalcule donc le trafic organique directement depuis la
+    # colonne `silo` NATIVE de gsc_queries (fiable, deja utilisee par
+    # detecter_cannibalisation_gsc.py), sans passer par la vue.
+    run(client, "5. [CORRECTIF] Trafic organique SEO par silo NATIF GSC (direct, sans jointure url_mapping -- plus fiable que section 1)", f"""
+        SELECT
+          COALESCE(silo, 'Non classe') AS silo,
+          SUM(impressions) AS impressions,
+          SUM(clics) AS clics,
+          ROUND(100.0 * SUM(clics) / GREATEST(SUM(impressions), 1), 2) AS ctr_pct,
+          ROUND(AVG(position), 1) AS position_moyenne,
+          RANK() OVER (ORDER BY SUM(impressions) DESC) AS rang_trafic_seo_fiable
+        FROM `{PROJECT_ID}.01_raw.gsc_queries`
+        WHERE date >= DATE_SUB((SELECT MAX(date) FROM `{PROJECT_ID}.01_raw.gsc_queries`), INTERVAL 30 DAY)
+        GROUP BY silo
+        ORDER BY impressions DESC
+    """)
+
+
 if __name__ == "__main__":
+    client = bigquery.Client(project=PROJECT_ID)
     main()
+    section_5(client)
