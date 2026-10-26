@@ -1,0 +1,32 @@
+# Execution du 2026-10-26T16:36:27Z
+# Script    : scripts-maintenance/publier_articles_transactionnels_solaire.py
+# Arguments : --apply --sujet=9
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Mode : PUBLICATION RÉELLE (--apply)
+======================================================================
+✅ Table historique existante
+
+======================================================================
+📂 4. Solaire | Panneaux solaires — mot-clé imposé : rentabilité panneaux solaires temps de retour sur investissement
+======================================================================
+  📝 Titre SEO : Rentabilité panneaux solaires : temps de retour réel
+  🔑 Mot-clé retenu par le brief : rentabilité panneaux solaires temps de retour sur investissement
+  🔎 Donnees officielles pour 4. Solaire | Panneaux solaires : aucune
+  📊 3116 mots | 7 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/
+  🆔 Post ID : 12361
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/ (post_id=12361)
+
+======================================================================
+BILAN : 1/1 article(s) généré(s) avec succès, 1 publié(s)
+======================================================================
+  - Rentabilité panneaux solaires : temps de retour réel [rentabilité panneaux solaires temps de retour sur investissement] → https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/
