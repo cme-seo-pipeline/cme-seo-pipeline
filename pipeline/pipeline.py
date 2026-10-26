@@ -5148,14 +5148,83 @@ JSON : {{"prompt_dalle":"prompt anglais 50-100 mots","description_fr":"descripti
         }
 
 
+def dessiner_icone_sous_silo(ax, sous_silo, couleur, cx=1010, cy=515):
+    """Dessine, en formes vectorielles matplotlib (sans fichier ni
+    dependance externe -- coherent avec le reste de generer_carte_titre(),
+    aucun appel reseau), une icone fixe illustrant le sujet du sous-silo,
+    centree en (cx, cy) dans le repere 1200x630 de la carte titre. Icone
+    CONSTANTE pour un sous-silo donne : seul le titre de l'article varie
+    sur la carte, l'icone est toujours rigoureusement la meme -- decision
+    operateur du 26/10/2026 ("image constante pour chaque sous-silo"),
+    appliquee au silo Solaire pour l'instant (les 5 noms ci-dessous sont
+    ceux de LIENS_PILIERS_SOUS_SILO). Pour tout autre sous-silo (tous les
+    autres silos du site), ne dessine rien -- zero effet sur leurs cartes.
+    Placee en haut a droite de la carte : verifie pour ne jamais recouvrir
+    le titre (qui s'arrete toujours avant x≈750, cf. le wrap width de
+    generer_carte_titre()) ni le libelle du sous-silo (court, en haut a
+    gauche)."""
+    from matplotlib.patches import Rectangle, FancyBboxPatch, Polygon
+
+    def panneau(x, y, largeur, hauteur, lignes=3, colonnes=3):
+        ax.add_patch(Rectangle((x, y), largeur, hauteur, fill=False,
+                                edgecolor=couleur, linewidth=4))
+        for i in range(1, colonnes):
+            xi = x + largeur * i / colonnes
+            ax.plot([xi, xi], [y, y + hauteur], color=couleur, linewidth=2.5)
+        for j in range(1, lignes):
+            yj = y + hauteur * j / lignes
+            ax.plot([x, x + largeur], [yj, yj], color=couleur, linewidth=2.5)
+
+    if sous_silo == "Panneaux solaires":
+        panneau(cx - 85, cy - 55, 170, 110, lignes=3, colonnes=3)
+
+    elif sous_silo == "Kit solaire":
+        panneau(cx - 90, cy - 20, 130, 85, lignes=2, colonnes=2)
+        ax.add_patch(FancyBboxPatch((cx + 35, cy - 70), 55, 45,
+                     boxstyle="round,pad=2,rounding_size=6",
+                     fill=False, edgecolor=couleur, linewidth=4))
+        ax.plot([cx - 25, cx - 25, cx + 62], [cy - 20, cy - 45, cy - 45],
+                color=couleur, linewidth=2.5)
+
+    elif sous_silo == "Batterie panneaux solaires":
+        ax.add_patch(FancyBboxPatch((cx - 55, cy - 75), 110, 150,
+                     boxstyle="round,pad=2,rounding_size=10",
+                     fill=False, edgecolor=couleur, linewidth=4))
+        ax.add_patch(Rectangle((cx - 20, cy + 75), 40, 14, color=couleur, lw=0))
+        ax.add_patch(Polygon([
+            (cx + 12, cy + 45), (cx - 18, cy - 5), (cx + 2, cy - 5),
+            (cx - 12, cy - 55), (cx + 22, cy + 5), (cx + 2, cy + 5),
+        ], closed=True, color=couleur))
+
+    elif sous_silo == "Système solaire combiné":
+        panneau(cx - 95, cy - 10, 100, 70, lignes=2, colonnes=2)
+        ax.add_patch(FancyBboxPatch((cx + 30, cy - 70), 55, 110,
+                     boxstyle="round,pad=2,rounding_size=22",
+                     fill=False, edgecolor=couleur, linewidth=4))
+        ax.plot([cx + 5, cx + 5, cx + 30], [cy + 25, cy + 48, cy + 48],
+                color=couleur, linewidth=2.5)
+
+    elif sous_silo == "Chauffe-eau solaire":
+        panneau(cx - 75, cy + 35, 150, 55, lignes=2, colonnes=3)
+        ax.add_patch(FancyBboxPatch((cx - 35, cy - 75), 70, 95,
+                     boxstyle="round,pad=2,rounding_size=18",
+                     fill=False, edgecolor=couleur, linewidth=4))
+        for dy in (-45, -25):
+            ax.plot([cx - 20, cx - 8, cx + 4, cx + 16],
+                    [cy + dy, cy + dy + 8, cy + dy - 8, cy + dy],
+                    color=couleur, linewidth=2)
+
+
 def generer_carte_titre(titre, sous_silo, mot_cle, couleur_fond, couleur_accent):
     """Genere la carte titre (PNG 1200x630) servant d'image a la une :
     libelle du sous-silo, titre de l'article, mot-cle, nom du site, sur les
-    couleurs du silo (celles des CTA). Aucun appel externe, aucune cle, et
-    aucun chiffre : le rendu est deterministe, donc l'empreinte retournee
-    (sha256 tronque) permet de detecter deux cartes strictement identiques
-    avant publication. Leve une exception si le titre est vide (l'appelant
-    laisse alors l'article sans image plutot que de publier une carte vide)."""
+    couleurs du silo (celles des CTA) -- et, pour les 5 sous-silos Solaire
+    (voir dessiner_icone_sous_silo()), une icone vectorielle fixe du sujet
+    en haut a droite. Aucun appel externe, aucune cle, et aucun chiffre : le
+    rendu est deterministe, donc l'empreinte retournee (sha256 tronque)
+    permet de detecter deux cartes strictement identiques avant publication.
+    Leve une exception si le titre est vide (l'appelant laisse alors
+    l'article sans image plutot que de publier une carte vide)."""
     import io as io_local
     import hashlib
     import textwrap
@@ -5194,6 +5263,7 @@ def generer_carte_titre(titre, sous_silo, mot_cle, couleur_fond, couleur_accent)
         ax.text(80, 70, mot_cle, color=(1, 1, 1, 0.8), fontsize=20, va='bottom')
     ax.text(1140, 70, "Comprendre Mon Énergie", color=(1, 1, 1, 0.8),
             fontsize=18, fontweight='bold', va='bottom', ha='right')
+    dessiner_icone_sous_silo(ax, sous_silo, couleur_accent)
 
     buffer = io_local.BytesIO()
     fig.savefig(buffer, format='png', facecolor=couleur_fond,
