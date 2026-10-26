@@ -1,0 +1,165 @@
+# Execution du 2026-10-26T16:18:16Z
+# Script    : scripts-maintenance/publier_articles_transactionnels_solaire.py
+# Arguments : --apply
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Mode : PUBLICATION RÉELLE (--apply)
+======================================================================
+✅ Table historique existante
+
+======================================================================
+📂 4. Solaire | Kit solaire — mot-clé imposé : prix kit solaire autoconsommation installation comprise
+======================================================================
+  📝 Titre SEO : Prix kit solaire autoconsommation installation comprise
+  🔑 Mot-clé retenu par le brief : prix kit solaire autoconsommation installation comprise
+  🔎 Donnees officielles pour 4. Solaire | Kit solaire : aucune
+  📊 3540 mots | 7 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/prix-kit-solaire-autoconsommation-installation-comprise/
+  🆔 Post ID : 12352
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/prix-kit-solaire-autoconsommation-installation-comprise/ (post_id=12352)
+
+======================================================================
+📂 4. Solaire | Kit solaire — mot-clé imposé : rentabilité kit solaire temps de retour sur investissement
+======================================================================
+  📝 Titre SEO : Rentabilité kit solaire : en combien d'années amorti
+  🔑 Mot-clé retenu par le brief : rentabilité kit solaire temps de retour sur investissement
+  🔎 Donnees officielles pour 4. Solaire | Kit solaire : aucune
+  📊 3694 mots | 6 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/rentabilite-kit-solaire-temps-retour-investissement/
+  🆔 Post ID : 12353
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/rentabilite-kit-solaire-temps-retour-investissement/ (post_id=12353)
+
+======================================================================
+📂 4. Solaire | Batterie panneaux solaires — mot-clé imposé : prix batterie solaire installation coût
+======================================================================
+  📝 Titre SEO : Prix batterie solaire installation : coût réel 2026
+  🔑 Mot-clé retenu par le brief : prix batterie solaire installation coût
+  🔎 Donnees officielles pour 4. Solaire | Batterie panneaux solaires : aucune
+  📊 4558 mots | 7 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/prix-batterie-solaire-installation-cout/
+  🆔 Post ID : 12354
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/prix-batterie-solaire-installation-cout/ (post_id=12354)
+
+======================================================================
+📂 4. Solaire | Batterie panneaux solaires — mot-clé imposé : quelle capacité batterie solaire choisir pour sa maison
+======================================================================
+  📝 Titre SEO : Quelle capacité batterie solaire choisir pour sa maison
+  🔑 Mot-clé retenu par le brief : quelle capacité batterie solaire choisir pour sa maison
+  🔎 Donnees officielles pour 4. Solaire | Batterie panneaux solaires : aucune
+  📊 3044 mots | 5 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/quelle-capacite-batterie-solaire-choisir-maison/
+  🆔 Post ID : 12355
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/quelle-capacite-batterie-solaire-choisir-maison/ (post_id=12355)
+
+======================================================================
+📂 4. Solaire | Système solaire combiné — mot-clé imposé : système solaire combiné vs chaudière gaz quel est le plus rentable
+======================================================================
+  📝 Titre SEO : Système solaire combiné vs chaudière gaz : quel est le plus rentable ?
+  🔑 Mot-clé retenu par le brief : système solaire combiné vs chaudière gaz quel est le plus rentable
+  🔎 Donnees officielles pour 4. Solaire | Système solaire combiné : aucune
+  📊 3143 mots | 5 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-rentabilite/
+  🆔 Post ID : 12356
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-rentabilite/ (post_id=12356)
+
+======================================================================
+📂 4. Solaire | Système solaire combiné — mot-clé imposé : système solaire combiné temps de retour sur investissement rentabilité
+======================================================================
+  📝 Titre SEO : Système solaire combiné : en combien d'années rentable ?
+  🔑 Mot-clé retenu par le brief : système solaire combiné temps de retour sur investissement rentabilité
+  🔎 Donnees officielles pour 4. Solaire | Système solaire combiné : aucune
+  📊 3158 mots | 6 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-temps-retour-investissement/
+  🆔 Post ID : 12357
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-temps-retour-investissement/ (post_id=12357)
+
+======================================================================
+📂 4. Solaire | Chauffe-eau solaire — mot-clé imposé : chauffe-eau solaire rentabilité économies par an
+======================================================================
+  📝 Titre SEO : Chauffe-eau solaire rentabilité : économies réelles par an
+  🔑 Mot-clé retenu par le brief : chauffe-eau solaire rentabilité économies par an
+  🔎 Donnees officielles pour 4. Solaire | Chauffe-eau solaire : aucune
+  📊 3086 mots | 9 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-rentabilite-economies-par-an/
+  🆔 Post ID : 12358
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-rentabilite-economies-par-an/ (post_id=12358)
+
+======================================================================
+📂 4. Solaire | Chauffe-eau solaire — mot-clé imposé : chauffe-eau solaire vs chauffe-eau électrique classique quel est le plus économique
+======================================================================
+  📝 Titre SEO : Chauffe-eau solaire vs électrique : quel est le plus économique
+  🔑 Mot-clé retenu par le brief : chauffe-eau solaire vs chauffe-eau électrique classique quel est le plus économique
+  🔎 Donnees officielles pour 4. Solaire | Chauffe-eau solaire : aucune
+  📊 2625 mots | 6 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-economique/
+  🆔 Post ID : 12359
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-economique/ (post_id=12359)
+
+======================================================================
+📂 4. Solaire | Panneaux solaires — mot-clé imposé : rentabilité panneaux solaires temps de retour sur investissement
+======================================================================
+  ❌ Brief : ❌ Erreur : Expecting ',' delimiter: line 86 column 17 (char 3665)
+
+======================================================================
+📂 4. Solaire | Panneaux solaires — mot-clé imposé : combien de panneaux solaires faut-il pour une maison budget
+======================================================================
+  📝 Titre SEO : Combien de panneaux solaires faut-il pour une maison budget
+  🔑 Mot-clé retenu par le brief : combien de panneaux solaires faut-il pour une maison budget
+  🔎 Donnees officielles pour 4. Solaire | Panneaux solaires : aucune/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+  📊 2704 mots | 6 lien(s) interne(s) | lien pilier présent : ✅
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/
+  🆔 Post ID : 12360
+  ✅ Publié : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/ (post_id=12360)
+
+======================================================================
+BILAN : 9/10 article(s) généré(s) avec succès, 9 publié(s)
+======================================================================
+  - Prix kit solaire autoconsommation installation comprise [prix kit solaire autoconsommation installation comprise] → https://www.comprendre-mon-energie.fr/solaire/kit-solaire/prix-kit-solaire-autoconsommation-installation-comprise/
+  - Rentabilité kit solaire : en combien d'années amorti [rentabilité kit solaire temps de retour sur investissement] → https://www.comprendre-mon-energie.fr/solaire/kit-solaire/rentabilite-kit-solaire-temps-retour-investissement/
+  - Prix batterie solaire installation : coût réel 2026 [prix batterie solaire installation coût] → https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/prix-batterie-solaire-installation-cout/
+  - Quelle capacité batterie solaire choisir pour sa maison [quelle capacité batterie solaire choisir pour sa maison] → https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/quelle-capacite-batterie-solaire-choisir-maison/
+  - Système solaire combiné vs chaudière gaz : quel est le plus rentable ? [système solaire combiné vs chaudière gaz quel est le plus rentable] → https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-rentabilite/
+  - Système solaire combiné : en combien d'années rentable ? [système solaire combiné temps de retour sur investissement rentabilité] → https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-temps-retour-investissement/
+  - Chauffe-eau solaire rentabilité : économies réelles par an [chauffe-eau solaire rentabilité économies par an] → https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-rentabilite-economies-par-an/
+  - Chauffe-eau solaire vs électrique : quel est le plus économique [chauffe-eau solaire vs chauffe-eau électrique classique quel est le plus économique] → https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-economique/
+  - Combien de panneaux solaires faut-il pour une maison budget [combien de panneaux solaires faut-il pour une maison budget] → https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/
