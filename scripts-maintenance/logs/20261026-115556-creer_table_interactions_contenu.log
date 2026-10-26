@@ -1,0 +1,22 @@
+# Execution du 2026-10-26T11:55:57Z
+# Script    : scripts-maintenance/creer_table_interactions_contenu.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+✅ Table prete : seo-data-hub-cme:04_pipeline_seo.interactions_contenu (partitionnee par jour sur 'timestamp')
+
+Schema effectif :
+  - timestamp (TIMESTAMP)
+  - type_evenement (STRING)
+  - cible (STRING)
+  - section (STRING)
+  - texte (STRING)
+  - position_contenu (INTEGER)
+  - etape (STRING)
+  - scroll_pct (FLOAT)
+  - silo (STRING)
+  - session_id (STRING)
+  - source_page (STRING)
+  - source_post_id (STRING)
+  - user_agent (STRING)
