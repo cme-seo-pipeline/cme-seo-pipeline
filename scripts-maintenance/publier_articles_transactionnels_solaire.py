@@ -165,9 +165,12 @@ def traiter_un_sujet(sujet, client_bq, apply_mode, run_id):
 def main():
     apply_mode = "--apply" in sys.argv
     limite = None
+    sujet_unique = None
     for arg in sys.argv:
         if arg.startswith("--limite="):
             limite = int(arg.split("=", 1)[1])
+        if arg.startswith("--sujet="):
+            sujet_unique = int(arg.split("=", 1)[1])  # 1-indexe
 
     print(f"{'='*70}")
     print(f"Mode : {'PUBLICATION RÉELLE (--apply)' if apply_mode else 'DRY-RUN (lecture/génération seule, rien n’est publié)'}")
@@ -181,7 +184,10 @@ def main():
 
     run_id = "solaire_transac_" + datetime.now().strftime("%Y%m%d_%H%M")
 
-    sujets_a_traiter = SUJETS[:limite] if limite else SUJETS
+    if sujet_unique:
+        sujets_a_traiter = [SUJETS[sujet_unique - 1]]
+    else:
+        sujets_a_traiter = SUJETS[:limite] if limite else SUJETS
     resultats = []
     for sujet in sujets_a_traiter:
         r = traiter_un_sujet(sujet, client_bq, apply_mode, run_id)
