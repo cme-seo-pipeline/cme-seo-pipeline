@@ -977,18 +977,35 @@ ajustements (seuil de mots du 1er formulaire, fusion des 2 champs,
 auto-avance sur le téléphone) sur la base de cette donnée plutôt qu'à
 l'intuition — c'est la séquence explicitement demandée par l'opérateur.
 
-## Divergence connue, non résolue
+## Nettoyage du code legacy (26/10/2026)
 
-`pipeline.py` à la racine du repo (~85 Ko, legacy, **non exécuté** par les
-GitHub Actions — le pipeline actif est `pipeline/pipeline.py`) contient
-potentiellement les mêmes `CTA_TOOLS`/`generer_cta_html()` mais n'a pas été
-vérifié pour cohérence avec les changements CTA d'octobre 2026. Faible
-priorité (fichier inutilisé par l'automatisation), mais à nettoyer ou
-supprimer un jour pour éviter toute confusion future.
+Les deux points de la section "Divergence connue" ci-dessous ont été
+traités à la demande de l'opérateur, une fois le chantier cartographie des
+clics lancé et en attente d'accumuler des données :
 
-`/wp-json/cme/v1/log-lead-debug` (endpoint de diagnostic ajouté dans
-`cme-tracking-conversion.php` pendant l'incident IAM du 19/10, voir
-ci-dessus) est resté en place après résolution — il n'expose qu'un
-statut HTTP générique (aucune donnée personnelle), risque faible, mais à
-retirer à la prochaine modification de ce fichier pour ne pas laisser un
-endpoint public inutile.
+- **`pipeline.py` racine (~85 Ko, legacy) supprimé** (`git rm`). Confirmé
+  sans risque avant suppression : aucune référence dans les workflows
+  GitHub Actions (`grep` sur `.github/workflows/`), dernier commit le
+  touchant remonte au 18/07/2026 (bien avant le chantier CTA d'octobre),
+  et le pipeline réellement exécuté par `publication-quotidienne.yml` est
+  `pipeline/pipeline.py`. Les anciens scripts `scripts-maintenance/fix_*.py`
+  qui font `open('pipeline.py', ...)` (fix_cta_accents, fix_cta_injection,
+  fix_attribution_cta, fix_collision_slug, fix_retry_searchapi,
+  fix_5_silos_par_run, fix_elimination_general, fix_planning_7j7,
+  fix_logger_bq_parametrized) sont des patchs ponctuels **déjà appliqués
+  historiquement** (ils opéraient par chemin relatif depuis la racine du
+  repo, à l'époque où c'était encore le fichier actif) — ce ne sont pas des
+  dépendances vivantes, laissés tels quels comme trace historique, sans
+  lien avec le fichier supprimé.
+- **Endpoint `/wp-json/cme/v1/log-lead-debug` retiré** de
+  `cme-tracking-conversion.php` (ajouté pendant l'incident IAM du 19/10,
+  inutile depuis la résolution de cet incident). Le transient interne
+  `cme_tracking_last_error` continue d'être écrit par `cme_relayer_log_lead()`
+  (bookkeeping sans impact), seule la route REST publique qui l'exposait a
+  été retirée. `php -l` validé, aucune référence orpheline au nom de la
+  route restante dans le code (uniquement dans les commentaires
+  explicatifs de ce retrait).
+
+**Déploiement** : comme toute modification de `cme-tracking-conversion.php`,
+non versionné automatiquement sur le serveur — `cloudshell download`, `.bak`
+horodaté, upload cPanel, purge des 2 caches LiteSpeed.

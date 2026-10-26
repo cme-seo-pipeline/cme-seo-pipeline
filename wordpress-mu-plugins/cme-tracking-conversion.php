@@ -95,8 +95,9 @@ function cme_relayer_log_lead(WP_REST_Request $request) {
     // car 'blocking' => false avalait silencieusement toute erreur. Passe en
     // bloquant (sans impact visiteur : c'est un appel serveur-a-serveur en
     // arriere-plan, pas le JS du navigateur) et journalise le resultat dans
-    // un transient consultable via /wp-json/cme/v1/log-lead-debug,
-    // en l'absence d'acces aux logs serveur (SSH/cPanel) depuis Claude Code.
+    // un transient interne (plus expose par aucune route REST depuis le
+    // 26/10/2026 -- voir plus bas, l'endpoint public /log-lead-debug qui le
+    // lisait a ete retire une fois l'incident du 19/10 reellement resolu).
     $reponse = wp_remote_post(CME_TRACKING_API_URL, [
         'headers'  => ['Content-Type' => 'application/json'],
         'body'     => $payload,
@@ -168,21 +169,12 @@ function cme_relayer_log_interaction(WP_REST_Request $request) {
     return new WP_REST_Response(['status' => 'ok'], 200);
 }
 
-// Route de diagnostic en lecture seule : etat du dernier appel sortant
-// tente vers Cloud Run (voir correctif v3 ci-dessus). A retirer une fois le
-// probleme reellement identifie et corrige -- n'expose aucune donnee
-// personnelle, uniquement un statut technique.
-add_action('rest_api_init', function () {
-    register_rest_route('cme/v1', '/log-lead-debug', [
-        'methods'             => 'GET',
-        'callback'            => function () {
-            return new WP_REST_Response([
-                'dernier_essai' => get_transient('cme_tracking_last_error') ?: '(aucun test recent)',
-            ], 200);
-        },
-        'permission_callback' => '__return_true',
-    ]);
-});
+// L'endpoint public de diagnostic /wp-json/cme/v1/log-lead-debug (ajoute
+// pendant l'incident IAM du 19/10, voir CLAUDE.md) a ete retire le
+// 26/10/2026 -- l'incident est resolu depuis longtemps et un endpoint
+// public inutile, meme sans donnee personnelle, n'a plus de raison de
+// rester expose. Le transient cme_tracking_last_error continue d'etre
+// ecrit ci-dessus (bookkeeping interne, plus aucune route ne le lit).
 
 add_action('wp_footer', function () {
     echo "<script id=\"cme-tracking-conversion\">\n";
