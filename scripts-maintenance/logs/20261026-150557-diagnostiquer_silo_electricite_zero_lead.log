@@ -1,0 +1,57 @@
+# Execution du 2026-10-26T15:05:57Z
+# Script    : scripts-maintenance/diagnostiquer_silo_electricite_zero_lead.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+==============================================================================
+1. Pages Electricite -- fort trafic (>=5 sessions/30j), 0 lead -- triees par trafic
+==============================================================================
+                                                                                                                                            url  sessions  bounce_rate_pct  rage_click_sessions  scroll_depth_moyen
+https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-2026-comparatif-tarifs/        42             17.1                    9                48.3
+                                           https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/        29             29.2                    4                97.0
+                                       https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/        23             41.8                    3                53.0
+                                                https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/        22             43.3                 <NA>                 NaN
+                             https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-social-electricite-conditions-demande/        21              6.9                    6               100.0
+                                                                https://www.comprendre-mon-energie.fr/electricite/compteur/coupure-electricite/        17             17.9                    7                57.1
+                         https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-normes-cout/        15              0.0                    2                96.0
+                                     https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/        15             21.7                    1                37.0
+                                           https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electricite-tarifs/        14              8.3                    1                94.0
+                                   https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/fonctionnement-chauffage-electrique/        13             45.5                    2                82.5
+                                                             https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/        12             21.4                    1                34.0
+                                https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-communicant-fonctionnement-0814/        10             33.3                    2                68.0
+                                  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-demarches/        10             16.7                    3                33.0
+                                                https://www.comprendre-mon-energie.fr/electricite/compteur/installer-compteur-electrique-guide/         9             31.3                    2                90.0
+                         https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-chauffage-electrique-normes-cout/         9             12.5                    2                82.5
+                                      https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts/         9             13.9                    3                37.0
+                      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-vs-pompe-chaleur-comparatif/         8             28.6                    3                48.7
+                                   https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-fonctionnement/         8              0.0                    1                32.0
+                           https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduction-facture-electricite-aides-2026-0814/         7             20.0                    3                76.0
+                        https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-etapes-couts/         7             28.6                    1                 3.0
+
+==============================================================================
+2. Comparaison -- pages Electricite qui ONT converti (s'il y en a, pour comprendre la difference)
+==============================================================================
+   (0 ligne)
+
+==============================================================================
+3. Totaux Electricite -- concentre ou diffus ? (nb pages concernees, repartition sessions)
+==============================================================================
+ nb_pages_avec_trafic  sessions_totales  nb_pages_grosses_20plus  sessions_sur_grosses_pages
+                   64               421                        5                         137
+
+==============================================================================
+4. Bounce rate moyen Electricite vs autres silos -- indice de desalignement intention de recherche
+==============================================================================
+      groupe  bounce_rate_moyen_pct  scroll_moyen  rage_clicks_totaux  nb_pages
+Autres silos                   25.1          57.5                 190       161
+ Electricite                   21.7          45.1                  89        64
