@@ -1,0 +1,39 @@
+# Execution du 2026-10-26T13:37:05Z
+# Script    : scripts-maintenance/nettoyer_anciens_cta_statiques.py
+# Arguments : --limite=5 --apply
+
+📥 Recuperation de tous les articles publies...
+   846 articles trouves au total
+
+   (limite : on s'arrete apres 5 article(s) AVEC un vieux CTA a retirer —
+    pas les 5 premiers articles de la liste)
+
+  ✅ post_id=11262 — 3 bloc(s) retire(s) — Comment fonctionne la facturation de l&rsquo;électricité
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/fonctionnement-facturation-electricite/
+  ✅ post_id=11260 — 3 bloc(s) retire(s) — Facture électricité : structure tarifaire et frais cachés
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/composantes-facture-electricite/
+  ✅ post_id=11258 — 3 bloc(s) retire(s) — Comment fonctionne un contrat d&rsquo;électricité en France
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+  ✅ post_id=11256 — 3 bloc(s) retire(s) — Changer de fournisseur électricité : économies réelles et
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-guide-1022/
+  ✅ post_id=11254 — 3 bloc(s) retire(s) — MaPrimeRénov&rsquo; : qui peut vraiment installer les travau
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-artisans-installation-conditions/
+
+============================================================
+Articles scannes (total sur le site) : 846
+Articles avec vieux CTA a retirer     : 5 (limite atteinte)
+Blocs CTA statiques retires au total  : 15
+Erreurs                               : 0
+============================================================
+
+Echantillon (jusqu'a 5 articles concernes) :
+  post_id=11262 (3 bloc(s)) — Comment fonctionne la facturation de l&rsquo;électricité
+    https://www.comprendre-mon-energie.fr/electricite/facture-electricite/fonctionnement-facturation-electricite/
+  post_id=11260 (3 bloc(s)) — Facture électricité : structure tarifaire et frais cachés
+    https://www.comprendre-mon-energie.fr/electricite/facture-electricite/composantes-facture-electricite/
+  post_id=11258 (3 bloc(s)) — Comment fonctionne un contrat d&rsquo;électricité en France
+    https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+  post_id=11256 (3 bloc(s)) — Changer de fournisseur électricité : économies réelles et
+    https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-guide-1022/
+  post_id=11254 (3 bloc(s)) — MaPrimeRénov&rsquo; : qui peut vraiment installer les travau
+    https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-artisans-installation-conditions/
