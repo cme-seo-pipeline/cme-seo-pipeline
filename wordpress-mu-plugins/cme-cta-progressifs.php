@@ -282,7 +282,7 @@ add_action('wp_footer', function () {
               '<div class="cme-mf-progres" style="height:100%;width:25%;background:#fff;transition:width .25s;"></div>' +
             '</div>' +
           '</div>' +
-          '<div style="background:#fff;padding:20px;">' +
+          '<div style="background:#eff6ff;padding:20px;">' +
             '<div class="cme-mf-etapes">' + etapesHtml +
               '<div class="cme-mf-etape" data-champ="merci" style="display:none;text-align:center;padding:6px 0;">' +
                 '<div style="font-size:28px;">✅</div>' +
