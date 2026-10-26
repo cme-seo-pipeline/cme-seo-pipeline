@@ -1,0 +1,31 @@
+# Execution du 2026-10-26T13:36:23Z
+# Script    : scripts-maintenance/verifier_tracking_conversion_recent.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+Evenements 'contact-expert-formulaire' / 'appel-telephone' -- 7 derniers jours
+======================================================================
+✅ 6 evenement(s) trouve(s) :
+                         timestamp             tool                                                                                                          source_page     telephone email
+0 2026-10-26 08:53:22.467000+00:00  appel-telephone               https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/  +33189713648      
+1 2026-10-26 05:01:28.908000+00:00  appel-telephone               https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/  +33189713648      
+2 2026-10-26 02:20:09.230000+00:00  appel-telephone               https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/  +33189713648      
+3 2026-10-22 12:19:31.722000+00:00  appel-telephone                                                         https://www.comprendre-mon-energie.fr/devis-panneau-solaire/  +33189713648      
+4 2026-10-20 16:14:38.255000+00:00  appel-telephone           https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/  +33189713648      
+5 2026-10-20 05:50:28.417000+00:00  appel-telephone  https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/  +33189713648      
+
+======================================================================
+Pour comparaison -- dernieres lignes toutes sources confondues (verifie que la table repond)
+======================================================================
+                         timestamp                   tool
+0 2026-10-26 08:53:22.467000+00:00        appel-telephone
+1 2026-10-26 05:01:28.908000+00:00        appel-telephone
+2 2026-10-26 02:20:09.230000+00:00        appel-telephone
+3 2026-10-25 18:52:05.793893+00:00  contact-expert-inline
+4 2026-10-24 20:02:27.354180+00:00  contact-expert-inline
