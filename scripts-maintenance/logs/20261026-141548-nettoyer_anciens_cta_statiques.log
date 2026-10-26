@@ -1,0 +1,310 @@
+# Execution du 2026-10-26T14:15:48Z
+# Script    : scripts-maintenance/nettoyer_anciens_cta_statiques.py
+# Arguments : --apply
+
+📥 Recuperation de tous les articles publies...
+   846 articles trouves au total
+
+  ✅ post_id=4895 — 1 bloc(s) retire(s) — Batterie solaire : comment ça marche et pourquoi l&rsquo;ado
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-fonctionnement-avantages/
+  ✅ post_id=4893 — 1 bloc(s) retire(s) — Éco-PTZ vs MaPrimeRénov&rsquo; : quel financement choisir ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif/
+  ✅ post_id=4891 — 1 bloc(s) retire(s) — Installation chaudière : étapes, normes et coûts 2024
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere-etapes-normes/
+  ✅ post_id=4889 — 1 bloc(s) retire(s) — Bouteille de gaz : types, capacités et utilisation
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/types-bouteilles-gaz-capacites/
+  ✅ post_id=4859 — 1 bloc(s) retire(s) — Coût installation compteur électrique : votre demande en 2 m
+      https://www.comprendre-mon-energie.fr/electricite/compteur/cout-installation-compteur-electricite/
+  ✅ post_id=4857 — 1 bloc(s) retire(s) — Panneaux solaires monocristallins vs polycristallins : leque
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins/
+  ✅ post_id=4855 — 1 bloc(s) retire(s) — Installation chauffe-eau thermodynamique : étapes et coûts 2
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts/
+  ✅ post_id=4853 — 1 bloc(s) retire(s) — Coût isolation thermique maison : tarifs 2024 et devis
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/cout-isolation-thermique-prix-devis-2024/
+  ✅ post_id=4851 — 1 bloc(s) retire(s) — Gaz naturel vs propane : quel fournisseur choisir ?
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-comparaison/
+  ✅ post_id=4821 — 1 bloc(s) retire(s) — Heures pleines creuses : comment ça marche vraiment ?
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0724/
+  ✅ post_id=4819 — 1 bloc(s) retire(s) — Kit solaire plug and play : installation sans électricien
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-plug-and-play-installation-simple/
+  ✅ post_id=4817 — 1 bloc(s) retire(s) — Combles perdus : quel isolant choisir en 2025 ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/quel-isolant-combles-perdus-comparatif-2025/
+  ✅ post_id=4815 — 1 bloc(s) retire(s) — MaPrimeRénov&rsquo; rénovation globale : montants et conditi
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/maprimerenov-renovation-globale-2024/
+  ✅ post_id=4813 — 1 bloc(s) retire(s) — Facture gaz trop élevée : causes et solutions
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-causes-solutions/
+  ✅ post_id=4781 — 1 bloc(s) retire(s) — Aides électricité déménagement : MaPrimeRénov et subventions
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/aides-electricite-demenagement/
+  ✅ post_id=4777 — 1 bloc(s) retire(s) — Prime énergie CEE : comment ça marche en 2025 ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement/
+  ✅ post_id=4775 — 1 bloc(s) retire(s) — DPE maison : interpréter votre diagnostic énergétique
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/dpe-maison-interprete-diagnostic-energetique/
+  ✅ post_id=4773 — 1 bloc(s) retire(s) — Chaudière gaz condensation vs classique : comparaison
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chaudiere-gaz-condensation-vs-classique/
+  ✅ post_id=4745 — 1 bloc(s) retire(s) — Meilleur fournisseur électricité 2026 : comparatif tarifs ré
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-2026-comparatif-tarifs/
+  ✅ post_id=4743 — 1 bloc(s) retire(s) — Système solaire combiné vs panneaux seuls : lequel choisir ?
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-panneaux-seuls/
+  ✅ post_id=4741 — 1 bloc(s) retire(s) — Diagnostic toiture avant rénovation : checklist aide 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/diagnostic-toiture-avant-renovation-aide-2025/
+  ✅ post_id=4739 — 1 bloc(s) retire(s) — Audit énergétique maison : étapes et interprétation
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-etapes-interpretation/
+  ✅ post_id=4737 — 1 bloc(s) retire(s) — Changement fournisseur gaz : démarches et économies 2024
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changement-fournisseur-gaz/
+  ✅ post_id=4701 — 1 bloc(s) retire(s) — Installation radiateur électrique : étapes, normes et coûts
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-normes-cout/
+  ✅ post_id=4699 — 1 bloc(s) retire(s) — Batterie LiFePO4 vs lithium : quel type pour panneaux
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-lifepo4-vs-lithium-panneaux-solaires/
+  ✅ post_id=4697 — 1 bloc(s) retire(s) — Chaudière fioul : aides 2025 et solutions de remplacement
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-remplacement-2025/
+  ✅ post_id=4695 — 1 bloc(s) retire(s) — Chauffe-eau thermodynamique : comment ça marche ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement/
+  ✅ post_id=4693 — 1 bloc(s) retire(s) — Prix bouteille gaz 2024 : tarifs propane butane
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024-0721/
+  ✅ post_id=4669 — 1 bloc(s) retire(s) — Comprendre sa facture électricité : détail ligne par ligne
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite-detail/
+  ✅ post_id=4667 — 1 bloc(s) retire(s) — Orientation panneaux solaires : optimiser votre production
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/orientation-panneaux-solaires-azimut-inclinaison/
+  ✅ post_id=4665 — 1 bloc(s) retire(s) — Chèque énergie refusé : causes et solutions
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-refuse-causes-solutions/
+  ✅ post_id=4663 — 1 bloc(s) retire(s) — Poêle bois vs poêle granulés : quel chauffage choisir ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/poele-bois-vs-granules-comparatif/
+  ✅ post_id=4661 — 1 bloc(s) retire(s) — Fournisseurs gaz sans engagement : prix et conditions 2024
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-sans-engagement/
+  ✅ post_id=4632 — 1 bloc(s) retire(s) — Résiliation contrat électricité : délais, frais et procédure
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-frais/
+  ✅ post_id=4630 — 1 bloc(s) retire(s) — Aides kit solaire 2025 : subventions et crédits d&rsquo;impô
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/aides-kit-solaire-subventions-2025/
+  ✅ post_id=4628 — 1 bloc(s) retire(s) — TVA réduite 5,5% : qui peut en bénéficier en 2025 ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-conditions-eligibilite-2025/
+  ✅ post_id=4624 — 1 bloc(s) retire(s) — Aides réduction facture gaz 2024 : tous les dispositifs
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-reduction-facture-gaz-2024/
+  ✅ post_id=4589 — 1 bloc(s) retire(s) — Compteur électrique communicant Linky : fonctionnement réel
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky-fonctionnement/
+  ✅ post_id=4587 — 1 bloc(s) retire(s) — Chauffe-eau solaire thermosiphon : fonctionnement simplifié
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-thermosiphon-fonctionnement/
+  ✅ post_id=4585 — 1 bloc(s) retire(s) — Dossier MaPrimeRénov&rsquo; : délais traitement et versement
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/
+  ✅ post_id=4581 — 1 bloc(s) retire(s) — Radiateur gaz : fonctionnement, types et entretien
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/radiateur-gaz-fonctionnement-entretien/
+  ✅ post_id=4537 — 1 bloc(s) retire(s) — Diagnostic système solaire combiné : évaluer votre installat
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/diagnostic-systeme-solaire-combine/
+  ✅ post_id=4535 — 1 bloc(s) retire(s) — Éco-PTZ : comment fonctionne le mécanisme de remboursement ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/mecanisme-remboursement-eco-ptz/
+  ✅ post_id=4533 — 1 bloc(s) retire(s) — Isolation combles vs murs : quel choix prioritaire ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-combles-vs-murs-priorite/
+  ✅ post_id=4531 — 1 bloc(s) retire(s) — Résiliation contrat gaz : procédure, délais et frais 2024
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz-0717/
+  ✅ post_id=4497 — 1 bloc(s) retire(s) — Électricité en déménagement : checklist complète
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist/
+  ✅ post_id=4493 — 1 bloc(s) retire(s) — Éco-PTZ : comment ça marche et qui peut l&rsquo;obtenir ?
+      https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/comment-fonctionne-eco-ptz/
+  ✅ post_id=4491 — 1 bloc(s) retire(s) — Rénovation globale maison : étapes et planification 2024
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/renovation-globale-etapes-planification/
+  ✅ post_id=4489 — 1 bloc(s) retire(s) — Comment fonctionne une bouteille de gaz : guide complet
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteille-gaz/
+  ✅ post_id=4458 — 1 bloc(s) retire(s) — Électricité verte vs électricité classique : quel fournisseu
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/electricite-verte-vs-classique-comparatif/
+  ✅ post_id=4456 — 1 bloc(s) retire(s) — Comment fonctionnent les panneaux solaires photovoltaïques
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/fonctionnement-panneaux-solaires-photovoltaiques/
+  ✅ post_id=4454 — 1 bloc(s) retire(s) — Aides chauffe-eau thermodynamique 2025 : montants et critère
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2025/
+  ✅ post_id=4452 — 1 bloc(s) retire(s) — Bilan thermique maison : demande d&rsquo;audit en 2 minutes
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/bilan-thermique-maison-methode-interpretation/
+  ✅ post_id=4424 — 1 bloc(s) retire(s) — Radiateur électrique vs pompe à chaleur : quel chauffage cho
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-vs-pompe-a-chaleur/
+  ✅ post_id=4423 — 1 bloc(s) retire(s) — Kit solaire autonome : dimensionnement et rentabilité
+      https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-dimensionnement/
+  ✅ post_id=4422 — 1 bloc(s) retire(s) — Audit énergétique obligatoire : qui est concerné en 2024 ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-obligatoire-2024/
+  ✅ post_id=4421 — 1 bloc(s) retire(s) — Lire votre facture gaz : explications ligne par ligne
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-explications/
+  ✅ post_id=4394 — 1 bloc(s) retire(s) — Entretien chauffe-eau solaire : maintenance et durée de vie
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/entretien-chauffe-eau-solaire/
+  ✅ post_id=4393 — 1 bloc(s) retire(s) — Isolation combles perdus : étapes et techniques 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isolation-combles-perdus-etapes-techniques/
+  ✅ post_id=4392 — 1 bloc(s) retire(s) — Aides chauffe-eau thermodynamique 2024 : financer votre proj
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2024-0713/
+  ✅ post_id=4391 — 1 bloc(s) retire(s) — Installation chaudière gaz : étapes, coûts et normes 2024
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-couts/
+  ✅ post_id=4364 — 1 bloc(s) retire(s) — Consommation électrique : comment mesurer et optimiser
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/consommation-electrique-mesure-optimisation-0713/
+  ✅ post_id=4363 — 1 bloc(s) retire(s) — Coût système solaire combiné : budget réel 2025
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-prix-systeme-solaire-combine/
+  ✅ post_id=4362 — 1 bloc(s) retire(s) — Cumul des aides énergétiques 2025 : ce que vous pouvez vraim
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2025/
+  ✅ post_id=4361 — 1 bloc(s) retire(s) — Aides chauffe-eau thermodynamique 2024 : MaPrimeRénov&rsquo;
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2024/
+  ✅ post_id=4360 — 1 bloc(s) retire(s) — Consommation gaz naturel : comment calculer et optimiser
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/consommation-gaz-naturel-calcul/
+  ✅ post_id=4234 — 1 bloc(s) retire(s) — Installation poêle : Étapes, normes de sécurité, conduit, ra
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/installation-poele-etapes-normes-couts/
+  ✅ post_id=4233 — 1 bloc(s) retire(s) — Installer une pompe à chaleur : Devis Installateur RGE, duré
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/installation-pompe-a-chaleur-guide-etapes/
+  ✅ post_id=4187 — 1 bloc(s) retire(s) — Comparez prime énergie vs MaPrimeRenov : cumul possible, mon
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov-comparatif/
+  ✅ post_id=4183 — 1 bloc(s) retire(s) — Découvrez les étapes concrètes d&rsquo;installation isolatio
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/etapes-installation-isolation-combles-perdus/
+  ✅ post_id=4176 — 1 bloc(s) retire(s) — Batterie solaire vs groupe électrogène ? Découvrez les diffé
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-groupe-electrogene/
+  ✅ post_id=4150 — 1 bloc(s) retire(s) — Chauffe-eau solaire vs thermodynamique : quel système choisi
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique/
+  ✅ post_id=4143 — 1 bloc(s) retire(s) — Offres gaz variable vs fixe : comment choisir en 2 minutes
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/offres-gaz-variable-vs-fixe/
+  ✅ post_id=4137 — 1 bloc(s) retire(s) — Changer de fournisseur gaz : démarches et économies
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/changer-fournisseur-gaz-demarches/
+  ✅ post_id=4130 — 1 bloc(s) retire(s) — Chaudière gaz condensation : fonctionnement et avantages
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chaudiere-gaz-condensation-fonctionnement/
+  ✅ post_id=4123 — 1 bloc(s) retire(s) — Prix bouteille gaz : les aides, tarifs et demande en ligne
+      https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024/
+  ✅ post_id=4117 — 1 bloc(s) retire(s) — Aides gaz 2024 : MaPrimeRénov et subventions fournisseurs
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/aides-subventions-gaz-2024/
+  ✅ post_id=4101 — 1 bloc(s) retire(s) — Pourquoi votre facture d&rsquo;électricité a augmenté en 202
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-facture-electricite-2026/
+  ✅ post_id=4095 — 1 bloc(s) retire(s) — Aides électricité 2026 : réductions et subventions
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026/
+  ✅ post_id=4032 — 1 bloc(s) retire(s) — Prix isolation maison : coûts et devis 2026
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/prix-isolation-maison-devis-2024/
+  ✅ post_id=4025 — 1 bloc(s) retire(s) — Coût installation chaudière gaz : tarifs 2025
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/cout-installation-chaudiere-gaz-tarifs-2025/
+  ✅ post_id=4019 — 1 bloc(s) retire(s) — Chèque énergie 2025 : montants, conditions et utilisation
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2025-montants-conditions-utilisation/
+  ✅ post_id=4005 — 1 bloc(s) retire(s) — MaPrimeRénov&rsquo; 2025 : barèmes et plafonds par revenus
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-baremes-plafonds-revenus-2025/
+  ✅ post_id=3998 — 1 bloc(s) retire(s) — MaPrimeRénov&rsquo; : Tout savoir sur l&rsquo;éligibilité 20
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-eligibilite-2025-2/
+  ✅ post_id=3990 — 1 bloc(s) retire(s) — MaPrimeRénov&rsquo; 2025 : plafonds de revenus et calcul
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-2025/
+  ✅ post_id=3960 — 1 bloc(s) retire(s) — MaPrimeRénov&rsquo; 2025 : plafonds de revenus et éligibilit
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-eligibilite-2025/
+  ✅ post_id=3947 — 1 bloc(s) retire(s) — MaPrimeRénov&rsquo; 2026 : barèmes de revenus et plafonds
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-baremes-revenus-plafonds-2025/
+  ✅ post_id=3946 — 1 bloc(s) retire(s) — DPE : diagnostic de performance énergétique expliqué
+      https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/dpe-diagnostic-performance-energetique/
+  ✅ post_id=3944 — 1 bloc(s) retire(s) — Installer compteur électrique : votre demande en 2 minutes
+      https://www.comprendre-mon-energie.fr/electricite/compteur/installer-compteur-electrique-demarches-couts/
+  ✅ post_id=3942 — 1 bloc(s) retire(s) — Audit énergétique : étapes clés et interprétation
+      https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/deroulement-audit-energetique-interpretation/
+  ✅ post_id=3903 — 1 bloc(s) retire(s) — Heures pleines creuses : comment ça marche vraiment
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement/
+  ✅ post_id=3902 — 1 bloc(s) retire(s) — Chauffe-eau thermodynamique : fonctionnement et économies
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/fonctionnement-chauffe-eau-thermodynamique/
+  ✅ post_id=3901 — 1 bloc(s) retire(s) — Chauffe-eau thermodynamique vs électrique : quel choix ?
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-vs-electrique/
+  ✅ post_id=3818 — 1 bloc(s) retire(s) — Prime énergie 2025 : comment ça marche et qui peut en bénéfi
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/fonctionnement-prime-energie/
+  ✅ post_id=3817 — 1 bloc(s) retire(s) — Installation chaudière : étapes et démarches expliquées
+      https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere/
+  ✅ post_id=3816 — 1 bloc(s) retire(s) — Facture gaz : comprendre vos frais et réduire vos coûts
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comprendre-et-reduire-facture-gaz/
+  ✅ post_id=3778 — 1 bloc(s) retire(s) — Avantages et inconvénients des fournisseurs d&rsquo;électric
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/avantages-inconvenients-fournisseurs-electricite/
+  ✅ post_id=3775 — 1 bloc(s) retire(s) — Quel poêle choisir ? Comparatif des meilleurs modèles 2024
+      https://www.comprendre-mon-energie.fr/renovation-energetique/poele/meilleur-poele-comparatif/
+  ✅ post_id=3774 — 1 bloc(s) retire(s) — Résilier son contrat gaz : démarches et délais 2024
+      https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz/
+  ✅ post_id=3665 — 1 bloc(s) retire(s) — Chauffage électrique : fonctionnement et rendement
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/fonctionnement-chauffage-electrique/
+  ✅ post_id=3664 — 1 bloc(s) retire(s) — Système solaire combiné : fonctionnement et avantages
+      https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/fonctionnement-systeme-solaire-combine/
+  ✅ post_id=3663 — 1 bloc(s) retire(s) — Aides combles perdus : avantages et inconvénients
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/avantages-inconvenients-aides-combles-perdus/
+  ✅ post_id=3662 — 1 bloc(s) retire(s) — Pompe à chaleur : fonctionnement et avantages expliqués
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/fonctionnement-pompe-a-chaleur/
+  ✅ post_id=3557 — 1 bloc(s) retire(s) — Comparatif fournisseurs gaz 2026 : qualité vs prix
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs/
+  ✅ post_id=3558 — 1 bloc(s) retire(s) — Isolation thermique : guide complet des matériaux et techniq
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-thermique/
+  ✅ post_id=3559 — 1 bloc(s) retire(s) — Aides chaudière : comparatif complet par type de chauffage
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/comparatifs-aides-chaudieres/
+  ✅ post_id=3560 — 1 bloc(s) retire(s) — Batterie panneaux solaires : guide complet 2026
+      https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/installation-batterie-panneaux-solaires/
+  ✅ post_id=3561 — 1 bloc(s) retire(s) — Lire sa facture d&rsquo;électricité : guide complet 2025
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/
+  ✅ post_id=3489 — 1 bloc(s) retire(s) — Rénovation énergétique : conformité et devis personnalisé
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/renovation-energetique/
+  ✅ post_id=3488 — 1 bloc(s) retire(s) — Entretien chaudière gaz : votre demande en ligne en 2 minute
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz/
+  ✅ post_id=3492 — 1 bloc(s) retire(s) — Normes électriques 2026 : obligations légales et risques
+      https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/
+  ✅ post_id=3491 — 1 bloc(s) retire(s) — Panneaux solaires : erreurs à éviter lors de l&rsquo;install
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-solaires/
+  ✅ post_id=3490 — 1 bloc(s) retire(s) — Erreurs à éviter pour obtenir ses aides énergétiques
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aides-energetiques-guide/
+  ✅ post_id=3384 — 1 bloc(s) retire(s) — Aides rénovation énergétique 2026 : guide complet des financ
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/aides-renovation-energetique/
+  ✅ post_id=3387 — 1 bloc(s) retire(s) — Comparateur d&rsquo;électricité : trouvez l&rsquo;offre la m
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-electricite/
+  ✅ post_id=3386 — 1 bloc(s) retire(s) — Panneau solaire : simulation en ligne et devis personnalisé
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/devis-panneau-solaire/
+  ✅ post_id=3385 — 1 bloc(s) retire(s) — Aides énergétiques 2026 : guide complet pour financer vos tr
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/aides-energetiques-guide-2/
+  ✅ post_id=3047 — 1 bloc(s) retire(s) — Isolation extérieure (ITE) : Profitez des subventions de l&r
+      https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-exterieure/
+  ✅ post_id=2218 — 1 bloc(s) retire(s) — Attestation Contrat Électricité : Copie en 2 min (2026)
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  ✅ post_id=2039 — 1 bloc(s) retire(s) — Pompe à chaleur air-eau : Pourquoi est-elle le choix n°1 pou
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-eau/
+  ✅ post_id=1333 — 1 bloc(s) retire(s) — Réduire sa Facture d’Électricité en 2026 : Économiser jusqu&
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+  ✅ post_id=1150 — 1 bloc(s) retire(s) — Heures Creuses 2026 : Le Guide Complet pour Maîtriser votre 
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+  ✅ post_id=1006 — 1 bloc(s) retire(s) — Tarif de Base de l&rsquo;électricité et quelle est la différ
+      https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-de-base/
+  ✅ post_id=908 — 1 bloc(s) retire(s) — Production solaire
+      https://www.comprendre-mon-energie.fr/solaire/production-solaire/
+  ✅ post_id=906 — 1 bloc(s) retire(s) — Pompe à chaleur air air : pourquoi choisir une pour climatis
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air/
+  ✅ post_id=904 — 1 bloc(s) retire(s) — La Transition Énergétique : pourquoi c&rsquo;est la meilleur
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/transition-energetique/
+  ✅ post_id=856 — 1 bloc(s) retire(s) — Pompe à chaleur piscine : comment choisir une  pour prolonge
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-piscine/
+  ✅ post_id=851 — 1 bloc(s) retire(s) — Comprendre sa facture d&rsquo;électricité 2026 : comment déc
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+  ✅ post_id=847 — 1 bloc(s) retire(s) — Thermostat Connecté Gratuit : demande en ligne en 2 minutes
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aide-etat-thermostat-connecte/
+  ✅ post_id=844 — 1 bloc(s) retire(s) — Rénovation énergétique 2026 : par où commencer et quelles so
+      https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/
+  ✅ post_id=842 — 1 bloc(s) retire(s) — Est ce que l&rsquo;entretient de la chaudière est-il obligat
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz-2/
+  ✅ post_id=840 — 1 bloc(s) retire(s) — Panneaux Photovoltaïques : comment trouver un installateur e
+      https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-photovoltaiques/
+  ✅ post_id=825 — 1 bloc(s) retire(s) — Sèche linge pompe à chaleur : pourquoi choisir un  pour opti
+      https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/seche-linge-pompe-a-chaleur/
+  ✅ post_id=821 — 1 bloc(s) retire(s) — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Écon
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+  ✅ post_id=709 — 1 bloc(s) retire(s) — Coupure électricité : comment faire si je n&rsquo;ai plus de
+      https://www.comprendre-mon-energie.fr/electricite/compteur/coupure-electricite/
+  ✅ post_id=663 — 1 bloc(s) retire(s) — Comment fonctionne le compteur Linky et quel est son impact 
+      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky/
+  ✅ post_id=661 — 1 bloc(s) retire(s) — Résiliation contrat électricité : quelles démarches et est c
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite/
+  ✅ post_id=659 — 1 bloc(s) retire(s) — Chèque Énergie 2026 : Guide pour Obtenir votre Aide
+      https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+  ✅ post_id=563 — 1 bloc(s) retire(s) — Changer de fournisseur d&rsquo;électricité : est ce que cela
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/changer-fournisseur-electricite/
+  ✅ post_id=561 — 1 bloc(s) retire(s) — Prix de électricité : pourquoi varie-t-il ? Comprendre les m
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/prix-electricite/
+  ✅ post_id=557 — 1 bloc(s) retire(s) — Droits Électricité : quels sont vos droits sur un contrat d&
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/droits-electricite/
+  ✅ post_id=538 — 1 bloc(s) retire(s) — Comprendre le marché de l&rsquo;électricité : comprendre les
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/marche-electricite/
+
+============================================================
+Articles scannes (total sur le site) : 846
+Articles avec vieux CTA a retirer     : 142
+Blocs CTA statiques retires au total  : 142
+Erreurs                               : 0
+============================================================
+
+Echantillon (jusqu'a 5 articles concernes) :
+  post_id=4895 (1 bloc(s)) — Batterie solaire : comment ça marche et pourquoi l&rsquo;ado
+    https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-fonctionnement-avantages/
+  post_id=4893 (1 bloc(s)) — Éco-PTZ vs MaPrimeRénov&rsquo; : quel financement choisir ?
+    https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif/
+  post_id=4891 (1 bloc(s)) — Installation chaudière : étapes, normes et coûts 2024
+    https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere-etapes-normes/
+  post_id=4889 (1 bloc(s)) — Bouteille de gaz : types, capacités et utilisation
+    https://www.comprendre-mon-energie.fr/gaz/bouteilles/types-bouteilles-gaz-capacites/
+  post_id=4859 (1 bloc(s)) — Coût installation compteur électrique : votre demande en 2 m
+    https://www.comprendre-mon-energie.fr/electricite/compteur/cout-installation-compteur-electricite/
