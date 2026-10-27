@@ -4005,7 +4005,7 @@ def logger_publication_bq(client_bq, post_id, silo, titre,
 
 
 LIENS_PILIERS_SOUS_SILO = {
-    ("1. Gaz", "Bouteilles"): ("/gaz/bouteilles/prix-bouteille-gaz-2024/", "notre guide complet sur les bouteilles de gaz"),
+    ("1. Gaz", "Bouteilles"): ("/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015-2/", "notre guide complet sur les bouteilles de gaz"),
     ("1. Gaz", "Facture Gaz"): ("/gaz/facture-gaz/delai-paiement-facture-gaz/", "notre guide sur la facture de gaz"),
     ("5. Électricité", "Contrat Électricité"): ("/electricite/contrat-electricite/attestation-de-contrat-delectricite/", "notre guide sur le contrat d'électricité"),
     ("5. Électricité", "Facture Électricité"): ("/electricite/facture-electricite/tarif-social-electricite-conditions-demande/", "notre guide sur la facture d'électricité"),
