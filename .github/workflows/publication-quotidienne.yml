@@ -13,7 +13,13 @@ on:
 jobs:
   publier:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Porte a 120 min le 27/10/2026 (quota quotidien passe de 14 a 24
+    # articles/jour, ajout du Solaire recurrent -- voir QUOTAS_SOUS_SILO
+    # dans pipeline.py). Le run du 27/10 a 14 articles a pris 37m48s
+    # (~2m42/article) ; extrapole a 24 articles ca donnerait ~65 min, deja
+    # au-dessus de l'ancienne limite de 60 min -- marge ajoutee pour eviter
+    # un timeout qui couperait le run en plein milieu de publication.
+    timeout-minutes: 120
     steps:
       - name: Recuperer le code
         uses: actions/checkout@v4

@@ -311,6 +311,22 @@ def selectionner_silos_a_traiter(client_bq, config):
     sous-silo (quota > 1), un suffixe ' (2)', ' (3)'... est ajoute pour
     eviter que generer_tous_briefs (qui groupe par Silo+Sous-Silo) ne les
     fusionne en un seul brief.
+
+    Etendu au Solaire le 27/10/2026 (decision operateur : rendre
+    recurrent/quotidien l'ajout qui etait jusque-la un lot ponctuel du
+    26/10, cf. publier_articles_transactionnels_solaire.py) : +10/jour (2
+    par sous-silo x 5 sous-silos), meme mecanisme de selection dynamique
+    (GSC en priorite, fallback anciennete) que les sous-silos existants --
+    AUCUNE liste figee de sujets, contrairement au lot ponctuel du 26/10
+    qui est desormais epuise. Le ciblage transactionnel (tout l'objectif
+    du chantier -- Solaire a le meilleur taux de conversion du site mais
+    le trafic organique le plus faible) est preserve via angle_force dans
+    generer_tous_briefs(), PAS via un mot-cle impose : le mot-cle reste
+    choisi dynamiquement comme pour les autres sous-silos du quota (peu de
+    requetes GSC transactionnelles disponibles pour Solaire vu son faible
+    trafic actuel -- imposer un mot-cle figé aurait vite tourne en rond).
+    Total vise desormais 24 articles/jour (14 existants, inchanges + 10
+    Solaire).
     """
     QUOTAS_SOUS_SILO = [
         ("1. Gaz", "Bouteilles", 3),
@@ -320,6 +336,11 @@ def selectionner_silos_a_traiter(client_bq, config):
         ("3. Aide Énergétique", "MaPrimeRénov'", 2),
         ("3. Aide Énergétique", "Chèque énergie", 2),
         ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 2),
+        ("4. Solaire", "Kit solaire", 2),
+        ("4. Solaire", "Panneaux solaires", 2),
+        ("4. Solaire", "Batterie panneaux solaires", 2),
+        ("4. Solaire", "Système solaire combiné", 2),
+        ("4. Solaire", "Chauffe-eau solaire", 2),
     ]
     total_vise = sum(q for _, _, q in QUOTAS_SOUS_SILO)
     print(f"📅 Run par sous-silo cible → {total_vise} articles vises sur {len(QUOTAS_SOUS_SILO)} sous-silos")
@@ -919,22 +940,31 @@ def generer_brief_silo(contexte, config, titres_existants=None, mot_cle_force=No
     # les donnees GSC du run quotidien) choisir un angle informationnel. Si
     # absent (cas normal du run quotidien), comportement strictement
     # inchange.
+    # 27/10/2026 : angle_force desormais utilisable SEUL (sans mot_cle_force)
+    # -- cas du quota quotidien recurrent Solaire (QUOTAS_SOUS_SILO) qui
+    # laisse le mot-cle se choisir dynamiquement (GSC/anciennete, comme les
+    # autres sous-silos quotas) mais impose quand meme un angle
+    # transactionnel generique. Avant ce correctif, angle_force etait
+    # silencieusement ignore si mot_cle_force etait absent (bloc entier
+    # gate sur `if mot_cle_force`) -- sans consequence jusqu'ici car les
+    # deux etaient toujours passes ensemble par
+    # publier_articles_transactionnels_solaire.py.
     contrainte_force_str = ""
-    if mot_cle_force:
-        contrainte_force_str = f"""
-
-⚠️ CONTRAINTE SUPPLÉMENTAIRE, PRIORITAIRE SUR TOUT LE RESTE :
-Le mot-clé principal de cet article EST IMPOSÉ, ne le remplace ni ne le reformule :
-→ MOT-CLÉ PRINCIPAL IMPOSÉ : "{mot_cle_force}"
-"""
+    if mot_cle_force or angle_force:
+        lignes_force = ["\n\n⚠️ CONTRAINTE SUPPLÉMENTAIRE, PRIORITAIRE SUR TOUT LE RESTE :"]
+        if mot_cle_force:
+            lignes_force.append("Le mot-clé principal de cet article EST IMPOSÉ, ne le remplace ni ne le reformule :")
+            lignes_force.append(f'→ MOT-CLÉ PRINCIPAL IMPOSÉ : "{mot_cle_force}"')
         if angle_force:
-            contrainte_force_str += f"→ ANGLE IMPOSÉ : {angle_force}\n"
-        contrainte_force_str += (
-            "Construis le titre_seo, la meta_description, la structure et la FAQ "
-            "AUTOUR de ce mot-clé et de cet angle imposés -- intention de recherche "
-            "TRANSACTIONNELLE (le lecteur compare avant d'acheter/demander un devis, "
-            "pas simplement curieux de comprendre comment ça marche)."
+            lignes_force.append(f"→ ANGLE IMPOSÉ : {angle_force}")
+        cible_force = "ce mot-clé et cet angle imposés" if mot_cle_force else "cet angle imposé"
+        lignes_force.append(
+            f"Construis le titre_seo, la meta_description, la structure et la FAQ "
+            f"AUTOUR de {cible_force} -- intention de recherche "
+            f"TRANSACTIONNELLE (le lecteur compare avant d'acheter/demander un devis, "
+            f"pas simplement curieux de comprendre comment ça marche)."
         )
+        contrainte_force_str = "\n".join(lignes_force) + "\n"
 
     prompt = f"""Tu es un expert SEO éditorial senior spécialisé dans l'énergie en France.
 ⚠️ CONTRAINTE ABSOLUE : brief EXCLUSIVEMENT sur :
@@ -1011,6 +1041,23 @@ JSON uniquement."""
         return None, f"❌ Erreur : {e}"
 
 
+# Angle transactionnel generique impose aux articles Solaire du quota
+# quotidien recurrent (QUOTAS_SOUS_SILO, 27/10/2026) -- le mot-cle lui
+# reste choisi dynamiquement (GSC/anciennete), seul l'angle de traitement
+# est force, quel que soit le mot-cle retenu ce jour-la. Objectif :
+# reproduire l'intention transactionnelle du lot ponctuel du 26/10 sans
+# dependre d'une liste figee de mots-cles (epuisable) -- voir le
+# commentaire de QUOTAS_SOUS_SILO pour le contexte complet.
+ANGLE_TRANSACTIONNEL_SOLAIRE = (
+    "Quel que soit le mot-clé retenu, traite-le sous un angle TRANSACTIONNEL : "
+    "prix/devis, rentabilité et temps de retour sur investissement, "
+    "dimensionnement/budget, ou comparatif avec l'alternative la plus pertinente "
+    "pour ce sujet précis -- choisis l'angle le plus naturel parmi ceux-ci selon "
+    "le mot-clé. Écris pour un lecteur prêt à passer à l'action et à remplir le "
+    "formulaire de contact, pas pour un article purement informationnel/pédagogique."
+)
+
+
 def generer_tous_briefs(df_final, client_bq, config):
     all_briefs_finaux = {}
     print("✍️ GÉNÉRATION DES BRIEFS...")
@@ -1026,7 +1073,8 @@ def generer_tous_briefs(df_final, client_bq, config):
             continue
         contexte = preparer_contexte_silo(df_silo_clean, silo_name)
         titres_existants = recuperer_titres_existants(silo_name, client_bq)
-        brief, erreur = generer_brief_silo(contexte, config, titres_existants)
+        angle_force = ANGLE_TRANSACTIONNEL_SOLAIRE if silo_name == "4. Solaire" else None
+        brief, erreur = generer_brief_silo(contexte, config, titres_existants, angle_force=angle_force)
         if erreur:
             print(f"  ❌ {silo_name} : {erreur}")
         else:
