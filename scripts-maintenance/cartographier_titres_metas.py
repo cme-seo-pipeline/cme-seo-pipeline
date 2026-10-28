@@ -38,8 +38,20 @@ pas un jugement esthetique) :
                               apparait nulle part dans le titre/la meta --
                               incoherence entre l'intention de ciblage et
                               ce que l'internaute voit reellement
-  - titre_tronque / meta_tronque : signe de troncature (finit par "..."
-                              ou "…")
+  - titre_tronque / meta_tronque : finit par "..."/"…" OU par une virgule,
+                              OU par un mot-outil (preposition/conjonction/
+                              article : "et", "de", "pour", "des"...) qui
+                              ne peut pas terminer une phrase francaise --
+                              confirme en test (voir rapport) comme le vrai
+                              signal dominant, bien plus frequent que "...".
+                              Root cause identifiee dans pipeline.py :
+                              tronquer_proprement() (ligne ~4163) coupe au
+                              dernier espace avant la limite de caracteres
+                              pour ne jamais couper un MOT, mais n'a aucune
+                              notion de PHRASE grammaticalement complete --
+                              quand le titre genere par l'IA depasse 60
+                              caracteres, le filet de securite produit un
+                              titre tronque en plein milieu d'une phrase.
   - titre_duplique_ailleurs : le meme titre SERP exact est utilise sur au
                               moins une autre page du site
 
@@ -70,6 +82,20 @@ except ImportError:
 
 PROJECT_ID = "seo-data-hub-cme"
 DATASET_ID = "04_pipeline_seo"
+
+# Mots-outils qui ne peuvent jamais terminer une phrase francaise complete
+# -- si le dernier mot d'un titre/meta en fait partie, c'est le signe
+# d'une troncature en plein milieu de phrase (cf. tronquer_proprement()
+# dans pipeline.py, qui coupe au dernier espace sans notion grammaticale).
+MOTS_OUTILS_FIN_INCOMPLETE = {
+    "et", "ou", "de", "du", "des", "d", "a", "à", "au", "aux", "en",
+    "dans", "sur", "sous", "par", "pour", "avec", "sans", "selon", "chez",
+    "vers", "entre", "contre", "le", "la", "les", "un", "une", "que",
+    "qui", "dont", "où", "ou", "mais", "donc", "car", "ni", "son", "sa",
+    "ses", "leur", "leurs", "votre", "vos", "notre", "nos", "plus",
+    "moins", "très", "bien", "aussi", "comme", "ce", "cet", "cette",
+    "ces", "l", "n", "s", "c", "y",
+}
 
 VERBES_ACTION = [
     "decouvrez", "découvrez", "calculez", "comparez",
@@ -105,6 +131,20 @@ def a_promesse_action(meta):
         return True
     # accroche chiffree concrete : un chiffre dans les 40 premiers caracteres
     return bool(re.search(r"\d", debut))
+
+
+def finit_en_phrase_incomplete(texte):
+    """Detecte une troncature en plein milieu de phrase : finit par une
+    virgule, ou le dernier mot est un mot-outil qui ne peut pas conclure
+    une phrase francaise (preposition/conjonction/article)."""
+    t = (texte or "").strip()
+    if not t:
+        return False
+    if t.endswith(","):
+        return True
+    dernier_mot = re.split(r"[\s'’]+", t.rstrip(".!?:;"))[-1] if t else ""
+    dernier_mot = re.sub(r"[^\wàâéèêëîïôûùüçÀÂÉÈÊËÎÏÔÛÙÜÇ]", "", dernier_mot).lower()
+    return dernier_mot in MOTS_OUTILS_FIN_INCOMPLETE
 
 
 def tokens_significatifs(texte):
@@ -190,9 +230,9 @@ def main():
             flags.append("mot_cle_absent_titre")
         if mc_tokens and not (mc_tokens & meta_tokens):
             flags.append("mot_cle_absent_meta")
-        if titre.endswith("...") or titre.endswith("…"):
+        if titre.endswith("...") or titre.endswith("…") or finit_en_phrase_incomplete(titre):
             flags.append("titre_tronque")
-        if meta.endswith("...") or meta.endswith("…"):
+        if meta.endswith("...") or meta.endswith("…") or finit_en_phrase_incomplete(meta):
             flags.append("meta_tronque")
 
         resultats.append({
