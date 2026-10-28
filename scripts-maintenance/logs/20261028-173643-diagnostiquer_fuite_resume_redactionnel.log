@@ -1,0 +1,22 @@
+# Execution du 2026-10-28T17:36:43Z
+# Script    : scripts-maintenance/diagnostiquer_fuite_resume_redactionnel.py
+# Arguments : 
+
+📥 Recuperation des articles publies (API REST WordPress)...
+  ✅ 894 articles
+
+======================================================================
+RAPPORT — FUITE 'RESUME REDACTIONNEL' (4/894 articles)
+======================================================================
+
+  post_id=12505 | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-cumul-autres-aides-regles/
+    ...étaillés avec solutions<br /> ✅ **Maillage interne** : 5 liens naturels vers pages partenaires<br /> ✅ **HTML valide** : Sans CTA commercial, dates 2026-2027 uniquement, apostrophe...
+
+  post_id=7838 | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-2026/
+    ... rigueur administrative et le respect des règles : constituer un dossier complet, vérifier la certification RGE de l’artisan, attendre l’approbation avant de commencer, et déclarer...
+
+  post_id=6357 | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite-droits-procedure/
+    ... recommandée suffit.</li> <li>✅ Droit de rétractation : 14 jours après signature sans frais.</li> <li>✅ Cas particuliers : déménagement et décès sans préavis.</li> </ul> <p>Si vous...
+
+  post_id=4025 | https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/cout-installation-chaudiere-gaz-tarifs-2025/
+    ... 5 questions récurrentes<br/> ✅ **Pas de CTA commercial** (conforme aux règles)<br/> ✅ **HTML propre et valide** sans balises dangereuses<br/> ✅ **Dates 2026** uniquement (conforme...
