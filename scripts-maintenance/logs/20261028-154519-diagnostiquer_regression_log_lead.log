@@ -1,0 +1,27 @@
+# Execution du 2026-10-28T15:45:19Z
+# Script    : scripts-maintenance/diagnostiquer_regression_log_lead.py
+# Arguments : 
+
+======================================================================
+1. Le coeur de l'API REST WordPress fonctionne-t-il ?
+======================================================================
+  GET /wp-json/wp/v2/posts?per_page=1 -> HTTP 200
+  ✅ API REST core OK
+
+======================================================================
+2. En-tetes de la page article testee pour le maillon 1
+======================================================================
+  GET https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-vs-panneau-solaire-seul-comparatif/ -> HTTP 200
+
+======================================================================
+3. POST direct sur /log-lead (corps vide -- teste juste l'EXISTENCE de la route)
+======================================================================
+  POST /wp-json/cme/v1/log-lead (corps vide) -> HTTP 200
+  Corps : {"status":"ok"}
+  ✅ Route presente (erreur de validation attendue sur un corps vide, pas 404)
+
+======================================================================
+4. POST direct sur /log-interaction (meme logique)
+======================================================================
+  POST /wp-json/cme/v1/log-interaction (liste vide) -> HTTP 200
+  Corps : {"status":"ok"}
