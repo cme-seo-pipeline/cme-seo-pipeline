@@ -1,0 +1,17 @@
+# Execution du 2026-10-28T17:19:47Z
+# Script    : scripts-maintenance/identifier_articles_sans_formulaire.py
+# Arguments : --limite=30
+
+📥 Recuperation des articles publies (API REST WordPress)...
+  ✅ 30 articles
+
+
+======================================================================
+RAPPORT — COUVERTURE DU MINI-FORMULAIRE (30 articles)
+======================================================================
+
+⚠️ Prefixe d'URL non reconnu par PAR_PREFIXE (0) -- PAR_PREFIXE ne couvre que gaz/electricite/aide-energetique/renovation-energetique/solaire :
+
+⚠️ Formulaire non insere -- contenu trop court ou mal structure pour atteindre 230 mots cumules + 120 mots restants (0) :
+
+📊 TOTAL sans formulaire : 0/30 (0.0%)
