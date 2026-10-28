@@ -1,0 +1,29 @@
+# Execution du 2026-10-28T12:47:27Z
+# Script    : scripts-maintenance/identifier_pages_bonne_position_faible_ctr.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+🔎 Fenetre : 90 derniers jours — position moyenne <= 10 — ctr < 1.0% — impressions >= 20 — on affiche les 5 au volume d'impressions le plus eleve
+
+======================================================================
+TOP 5 — bonne position, CTR anormalement faible
+======================================================================
+
+  1. https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur-0905/
+     silo=1. Gaz / sous_silo=comparatifs-fournisseurs-gaz
+     impressions=86  clics=0  ctr=0.00%  position_moyenne=8.3
+
+  2. https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs/
+     silo=1. Gaz / sous_silo=bouteilles
+     impressions=51  clics=0  ctr=0.00%  position_moyenne=6.2
+
+  3. https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/mecanisme-remboursement-eco-ptz/
+     silo=3. Aide Energetique / sous_silo=eco-pret-a-taux-zero
+     impressions=37  clics=0  ctr=0.00%  position_moyenne=9.8
+
+  4. https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/certificat-conformite-gaz-demenagement/
+     silo=1. Gaz / sous_silo=demenagement-gaz
+     impressions=27  clics=0  ctr=0.00%  position_moyenne=8.1
