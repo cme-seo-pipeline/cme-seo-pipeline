@@ -1,0 +1,154 @@
+# Execution du 2026-10-28T14:08:29Z
+# Script    : scripts-maintenance/cartographier_titres_metas.py
+# Arguments : --limite=30
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Recuperation des articles publies (historique_publications)...
+  ✅ 30 pages a auditer
+
+📥 Recuperation des impressions GSC (90 jours, pour prioriser)...
+🌐 Lecture des titres/meta reellement en ligne...
+
+
+========================================================================
+RAPPORT — CARTOGRAPHIE TITRES/META (30 pages lues, 0 erreurs)
+========================================================================
+
+📊 METRIQUES GLOBALES (part des pages concernees)
+  meta_hors_longueur           :   13/30 (43.3%)
+  mot_cle_absent_titre         :    1/30 (3.3%)
+  pas_de_promesse_action       :    3/30 (10.0%)
+  titre_hors_longueur          :    2/30 (6.7%)
+
+📊 METRIQUES PAR SILO
+
+  — 1. Gaz (4 pages) —
+      meta_hors_longueur           :    3/4 (75.0%)
+
+  — 3. Aide Énergétique (8 pages) —
+      meta_hors_longueur           :    3/8 (37.5%)
+      mot_cle_absent_titre         :    1/8 (12.5%)
+      titre_hors_longueur          :    1/8 (12.5%)
+
+  — 4. Solaire (10 pages) —
+      meta_hors_longueur           :    5/10 (50.0%)
+
+  — 5. Électricité (8 pages) —
+      meta_hors_longueur           :    2/8 (25.0%)
+      pas_de_promesse_action       :    3/8 (37.5%)
+      titre_hors_longueur          :    1/8 (12.5%)
+
+========================================================================
+TOP 18 PIRES CAS (le plus de failles, priorite aux pages a fort volume)
+========================================================================
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-cumul-autres-aides-regles/
+     3. Aide Énergétique / MaPrimeRénov' — impressions(90j)=0
+     titre (55c) : MaPrimeRénov' + CEE + éco-PTZ : guide pratique du cumul
+     meta  (143c) : Découvrez comment cumuler MaPrimeRénov' avec le chèque énergie et les aides locales : règles, limites et cas concrets pour maximiser vos gains.
+     ⚠️ meta_hors_longueur, mot_cle_absent_titre
+
+  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/decrypter-facture-electricite-details/
+     5. Électricité / Facture Électricité — impressions(90j)=0
+     titre (50c) : Facture électricité : décoder les charges fixes et
+     meta  (155c) : Décryptez chaque ligne de votre facture électricité en 5 minutes. Identifiez les charges fixes, variables et taxes pour mieux maîtriser votre consommation.
+     ⚠️ pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-facture-electricite-decryptage/
+     5. Électricité / Facture Électricité — impressions(90j)=0
+     titre (53c) : Facture électricité : guide complet pour contester et
+     meta  (154c) : Décryptez chaque ligne de votre facture électricité en 5 minutes. Comprenez les tarifs, abonnement et taxes pour maîtriser votre consommation énergétique.
+     ⚠️ pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparer-contrats-electricite-tarifs-offres/
+     5. Électricité / Contrat Électricité — impressions(90j)=0
+     titre (54c) : Meilleure offre électricité : critères de sélection et
+     meta  (131c) : Comparez les meilleures offres d'électricité en 5 minutes : trouvez le contrat le moins cher adapté à votre profil de consommation.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-installation-systeme-solaire-combine/
+     4. Solaire / Système solaire combiné — impressions(90j)=0
+     titre (59c) : Système solaire combiné 2026 : évolutions technologiques et
+     meta  (125c) : Découvrez le prix réel d'un système solaire combiné clés en main : devis détaillé, aides applicables et ROI estimé en France.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/installation-systeme-solaire-combine-etapes-couts/
+     4. Solaire / Système solaire combiné — impressions(90j)=0
+     titre (52c) : Coût installation système solaire combiné : devis et
+     meta  (124c) : Découvrez comment installer un système solaire combiné étape par étape et les coûts réels à prévoir. Devis gratuit en ligne.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-vs-electricite-classique-economies/
+     4. Solaire / Kit solaire — impressions(90j)=0
+     titre (52c) : Électricité classique vs kit solaire : comparatif de
+     meta  (148c) : Comparez kit solaire et électricité classique : découvrez vos économies exactes, le temps d'amortissement et quel système choisir pour votre budget.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-couts/
+     4. Solaire / Chauffe-eau solaire — impressions(90j)=0
+     titre (59c) : Chauffe-eau solaire : guide complet d'installation DIY pour
+     meta  (145c) : Découvrez comment installer un chauffe-eau solaire chez vous : étapes clés, budget réel et économies d'énergie garanties. Devis gratuit en 2 min.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-groupe-electrogene-1028/
+     4. Solaire / Batterie panneaux solaires — impressions(90j)=0
+     titre (57c) : Groupe électrogène ou batterie solaire : coûts, autonomie
+     meta  (140c) : Comparez batterie solaire vs groupe électrogène : coûts, autonomie et rentabilité réels. Choisissez la meilleure solution pour votre maison.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-fonctionnement-comment-ca-marche/
+     3. Aide Énergétique / Chèque énergie — impressions(90j)=0
+     titre (50c) : Chèque énergie : les pièges à éviter et les bonnes
+     meta  (135c) : Découvrez le fonctionnement exact du chèque énergie : versement, utilisation, montants et conditions d'éligibilité en 5 étapes simples.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-comparatif-choix-1028/
+     1. Gaz / Bouteilles — impressions(90j)=0
+     titre (50c) : Propane vs butane : tableau comparatif complet des
+     meta  (142c) : Comparez propane et butane : température, prix, autonomie. Découvrez le gaz idéal pour votre usage et économisez jusqu'à 30% sur vos factures.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-comparatif-complet/
+     1. Gaz / Bouteilles — impressions(90j)=0
+     titre (57c) : Propane ou butane en bouteille : avantages, inconvénients
+     meta  (136c) : Comparez propane et butane : rendement, coût, climat, sécurité. Choisissez la bouteille de gaz adaptée à vos besoins en 5 critères clés.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-comparatif-choix/
+     1. Gaz / Bouteilles — impressions(90j)=0
+     titre (51c) : Propane vs butane : guide d'achat selon vos besoins
+     meta  (137c) : Comparez propane et butane : performance, prix, climat et usage. Choisissez la bouteille de gaz adaptée à vos besoins en 5 critères clés.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-decryptage-1027/
+     5. Électricité / Facture Électricité — impressions(90j)=0
+     titre (52c) : Facture électricité : checklist de vérification pour
+     meta  (157c) : Déchiffrez chaque ligne de votre facture électricité en 5 minutes. Comprendre vos frais, identifier les anomalies et maîtriser votre consommation simplement.
+     ⚠️ pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-demarches-delais/
+     5. Électricité / Contrat Électricité — impressions(90j)=0
+     titre (49c) : Changement de fournisseur électricité : checklist
+     meta  (156c) : Changez de fournisseur électricité en 3 étapes simples sans coupure. Découvrez les délais réels, les démarches administratives et économisez jusqu'à 15% sur
+     ⚠️ titre_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/types-contrats-electricite-conditions/
+     5. Électricité / Contrat Électricité — impressions(90j)=0
+     titre (54c) : Types de contrats électricité : fixe, variable, heures
+     meta  (142c) : Découvrez les différents types de contrats électricité disponibles en France : tarif bleu, offres marché et conditions adaptées à vos besoins.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-revenus-regions/
+     3. Aide Énergétique / MaPrimeRénov' — impressions(90j)=0
+     titre (60c) : MaPrimeRénov' : barèmes d'aide par tranche de revenus (2026)
+     meta  (144c) : Découvrez les montants précis de MaPrimeRénov' selon votre profil de revenus et votre région. Calculez votre aide en 2 minutes pour vos travaux.
+     ⚠️ meta_hors_longueur
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/plafonds-revenus-montants-aide-maprimerenov/
+     3. Aide Énergétique / MaPrimeRénov' — impressions(90j)=0
+     titre (47c) : MaPrimeRénov' : plafonds de revenus et montants
+     meta  (160c) : Découvrez les plafonds de revenus MaPrimeRénov' et les montants d'aide selon votre profil. Calculez votre éligibilité en fonction de vos revenus dès maintenant.
+     ⚠️ titre_hors_longueur
