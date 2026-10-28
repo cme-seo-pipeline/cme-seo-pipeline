@@ -1,0 +1,11 @@
+# Execution du 2026-10-28T17:18:58Z
+# Script    : scripts-maintenance/supprimer_ligne_test_leads_convertis.py
+# Arguments : --apply
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+🔎 1 ligne(s) correspondant exactement au filtre :
+  {'timestamp': Timestamp('2026-10-28 15:45:23.088977+0000', tz='UTC'), 'tool': '', 'prenom': '', 'nom': '', 'email': '', 'telephone': '', 'adresse': '', 'code_postal': '', 'montant_estime': 0, 'economie_estimee': 0, 'details': '{}', 'user_agent': '', 'source_page': '', 'source_post_id': ''}
+✅ Ligne supprimee (1 ligne(s) affectee(s)).
