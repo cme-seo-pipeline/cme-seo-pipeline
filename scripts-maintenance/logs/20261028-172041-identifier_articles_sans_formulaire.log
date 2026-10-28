@@ -1,0 +1,48 @@
+# Execution du 2026-10-28T17:20:41Z
+# Script    : scripts-maintenance/identifier_articles_sans_formulaire.py
+# Arguments : 
+
+📥 Recuperation des articles publies (API REST WordPress)...
+  ✅ 894 articles
+
+  ... 100/894 analyses
+  ... 200/894 analyses
+  ... 300/894 analyses
+  ... 400/894 analyses
+  ... 500/894 analyses
+  ... 600/894 analyses
+  ... 700/894 analyses
+  ... 800/894 analyses
+
+======================================================================
+RAPPORT — COUVERTURE DU MINI-FORMULAIRE (894 articles)
+======================================================================
+
+⚠️ Prefixe d'URL non reconnu par PAR_PREFIXE (0) -- PAR_PREFIXE ne couvre que gaz/electricite/aide-energetique/renovation-energetique/solaire :
+
+⚠️ Formulaire non insere -- contenu trop court ou mal structure pour atteindre 230 mots cumules + 120 mots restants (23) :
+  post_id=908 | ~0 mots au total | https://www.comprendre-mon-energie.fr/solaire/production-solaire/
+  post_id=709 | ~358 mots au total | https://www.comprendre-mon-energie.fr/electricite/compteur/coupure-electricite/
+  post_id=661 | ~606 mots au total | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite/
+  post_id=663 | ~681 mots au total | https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky/
+  post_id=557 | ~710 mots au total | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/droits-electricite/
+  post_id=842 | ~716 mots au total | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz-2/
+  post_id=561 | ~748 mots au total | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/prix-electricite/
+  post_id=844 | ~953 mots au total | https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/
+  post_id=1006 | ~955 mots au total | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-de-base/
+  post_id=904 | ~1011 mots au total | https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/transition-energetique/
+  post_id=538 | ~1021 mots au total | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/marche-electricite/
+  post_id=851 | ~1475 mots au total | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+  post_id=1333 | ~1610 mots au total | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+  post_id=3384 | ~1989 mots au total | https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/aides-renovation-energetique/
+  post_id=3385 | ~2223 mots au total | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/aides-energetiques-guide-2/
+  post_id=9555 | ~2495 mots au total | https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-fonctionnement-guide-usage/
+  post_id=3491 | ~2555 mots au total | https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-solaires/
+  post_id=3490 | ~2706 mots au total | https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aides-energetiques-guide/
+  post_id=3489 | ~2725 mots au total | https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/renovation-energetique/
+  post_id=3387 | ~2800 mots au total | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-electricite/
+  post_id=3488 | ~2840 mots au total | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz/
+  post_id=11035 | ~3054 mots au total | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-maprimer-nov-comparatif-aides/
+  post_id=2218 | ~4125 mots au total | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+
+📊 TOTAL sans formulaire : 23/894 (2.6%)
