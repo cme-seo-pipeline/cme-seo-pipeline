@@ -1,0 +1,39 @@
+# Execution du 2026-10-28T17:24:03Z
+# Script    : scripts-maintenance/inspecter_structure_articles_sans_formulaire.py
+# Arguments : 
+
+post_id=908 | https://www.comprendre-mon-energie.fr/solaire/production-solaire/
+  longueur contenu brut : 2 caracteres
+  nb enfants de 1er niveau : 0
+  tags de 1er niveau : {}
+
+post_id=2218 | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  longueur contenu brut : 82807 caracteres
+  nb enfants de 1er niveau : 6
+  tags de 1er niveau : {'DIV': 3, 'P': 3}
+  premier enfant : <div> "\n\n\nBesoin d'un\xa0justificatif de domicile\xa0officiel pour vos\xa0démarches administrati"
+
+post_id=3387 | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-electricite/
+  longueur contenu brut : 24225 caracteres
+  nb enfants de 1er niveau : 2
+  tags de 1er niveau : {'ARTICLE': 1, 'P': 1}
+  premier enfant : <article> "\nComparateur d'électricité : comparez et économisez sur votre facture\nVotre fact"
+
+post_id=3490 | https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aides-energetiques-guide/
+  longueur contenu brut : 23153 caracteres
+  nb enfants de 1er niveau : 1
+  tags de 1er niveau : {'HTML': 1}
+  premier enfant : <html> '\n\n\n\nErreurs à éviter pour obtenir ses aides énergétiques en 2025\n\n\nErreurs à évi'
+
+post_id=11035 | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-maprimer-nov-comparatif-aides/
+  longueur contenu brut : 24191 caracteres
+  nb enfants de 1er niveau : 8
+  tags de 1er niveau : {'P': 5, 'H1': 1, 'H2': 1, 'FIGURE': 1}
+  premier enfant : <p> 'Pour aller plus loin, consultez notre guide sur le chèque énergie.'
+
+post_id=709 | https://www.comprendre-mon-energie.fr/electricite/compteur/coupure-electricite/
+  longueur contenu brut : 8779 caracteres
+  nb enfants de 1er niveau : 14
+  tags de 1er niveau : {'DIV': 9, 'H2': 2, 'P': 3}
+  premier enfant : <div> ''
+
