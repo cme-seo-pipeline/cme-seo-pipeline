@@ -981,7 +981,7 @@ Génère un brief en JSON STRICT :
   "sous_silo": "{sous_silo}",
   "angle_choisi": "prix | installation | comparatif | aides | fonctionnement | guide",
   "titre_seo": "titre SEO percutant, ENTRE 50 ET 60 CARACTERES pile (jamais plus, jamais moins de 50), phrase ou expression complete, ne JAMAIS couper un mot en cours de generation",
-  "meta_description": "Meta description ORIENTEE ACTION pour maximiser le taux de clic. Commence par un verbe d'action a l'imperatif (Decouvrez, Calculez, Comparez, Economisez, Profitez de, Obtenez...) ou une accroche chiffree concrete (montant, pourcentage, delai). Inclut un benefice clair et tangible pour le lecteur, pas une simple description du contenu. ENTRE 150 ET 160 CARACTERES pile (jamais plus, jamais moins de 150), phrase complete se terminant par un point, ne JAMAIS couper un mot en cours de generation. Exemples de structure (a adapter, ne jamais copier tel quel) : 'Decouvrez [benefice concret] en [nombre] etapes simples.' ou 'Economisez jusqu'a [X] sur [sujet] : [benefice].'",
+  "meta_description": "Meta description ORIENTEE ACTION pour maximiser le taux de clic, ET fidele a ce que l'article tient reellement -- la promesse doit etre une vraie aide au lecteur, jamais un clickbait que le contenu ne delivre pas. Commence par un verbe d'action a l'imperatif (Decouvrez, Calculez, Comparez, Economisez, Profitez de, Obtenez...) ou une accroche chiffree concrete (montant, pourcentage, delai). Inclut un benefice clair et tangible pour le lecteur, REELLEMENT traite dans le corps de l'article (pas une simple description du contenu, et jamais un benefice exagere ou non couvert). ENTRE 140 ET 160 CARACTERES (viser le plus proche possible de 160, tolerance a partir de 140 -- jamais plus de 160), phrase complete se terminant par un point, ne JAMAIS couper un mot en cours de generation. Exemples de structure (a adapter, ne jamais copier tel quel) : 'Decouvrez [benefice concret] en [nombre] etapes simples.' ou 'Economisez jusqu'a [X] sur [sujet] : [benefice].'",
   "slug_article": "slug-article-uniquement",
   "slug_complet": "/{slug_silo}/{slug_sous_silo}/[slug-article]/",
   "mot_cle_principal": "mot-clé principal",
@@ -3839,7 +3839,7 @@ def rediger_article(brief, config, articles_silo=None, client_bq=None):
 Rédige un article complet basé sur ce brief :
 
 BRIEF :
-- Titre H1 : {brief.get('titre_seo')}
+- Titre de la page (deja publie comme H1 par WordPress, NE LE REPETE PAS en <h1> dans le contenu) : {brief.get('titre_seo')}
 - Mot-clé : {brief.get('mot_cle_principal')}
 - Mots-clés secondaires : {', '.join(brief.get('mots_cles_secondaires', []))}
 - Volume : {brief.get('volume_recommande')} mots
@@ -3871,7 +3871,7 @@ RÈGLES :
 3. Dates : {annee_courante} ou {annee_suivante} UNIQUEMENT — INTERDIT TOUTE année antérieure ({annee_interdite}, {annee_interdite - 1}, etc.), même si le contexte concurrent scrapé en mentionne une
 4. Apostrophes : uniquement l'apostrophe droite simple (') — jamais d'entité HTML (&rsquo; interdit)
 5. Chiffres précis (prix, taux, tarifs) : SI la section DONNÉES OFFICIELLES ACTUELLES est présente ci-dessus, tu DOIS OBLIGATOIREMENT reprendre ces valeurs exactes dans au moins un exemple chiffré concret de l'article — ne construis JAMAIS un exemple "simplifié" ou fictif avec un prix inventé si une donnée officielle existe pour ce sujet. INTERDIT d'inventer un prix, un taux ou une offre commerciale attribuée à une marque réelle (EDF, Engie, TotalEnergies...). Si aucune donnée officielle n'est fournie pour un point précis, reste général (ex: "les tarifs varient selon les fournisseurs") plutôt que d'inventer un chiffre.
-6. Commence DIRECTEMENT par <h1>...</h1>
+6. NE GENERE JAMAIS de balise <h1> : le titre H1 de la page est deja le champ title_seo ci-dessus, publie separement par WordPress -- en generer un second dans le contenu cree une incoherence (deux titres differents sur la meme page, dont un tronque differemment) ou une duplication de balise H1, mauvais pour le SEO et pour la promesse tenue au visiteur. Ignore toute ligne "H1" presente dans la STRUCTURE ci-dessus (reference informative uniquement) et commence DIRECTEMENT par le premier <h2>...</h2>
 7. INTERDIT : ```html, <!DOCTYPE>, <html>, <head>, <body>
 8. Profondeur et style (calqués sur nos pages de référence les plus performantes) :
    — Au moins un exemple concret et chiffré par section majeure (jamais un "cela dépend" seul sans illustration chiffrée)
@@ -4160,17 +4160,47 @@ CTA_TOOLS = {
         "couleur1": "#78350f", "couleur2": "#f59e0b"
     },
 }
+# Mots-outils qui ne peuvent jamais terminer une phrase francaise complete.
+# Decouvert le 28/10/2026 via la cartographie titres/meta : tronquer au
+# dernier espace (seul garde-fou avant ce correctif) ne coupe jamais un
+# MOT, mais produit regulierement des titres qui finissent sur "...et",
+# "...de", "...pour" -- grammaticalement incomplets, mauvais pour la
+# coherence et la promesse d'action percue au clic.
+MOTS_OUTILS_FIN_INCOMPLETE = {
+    "et", "ou", "de", "du", "des", "d", "a", "à", "au", "aux", "en",
+    "dans", "sur", "sous", "par", "pour", "avec", "sans", "selon", "chez",
+    "vers", "entre", "contre", "le", "la", "les", "un", "une", "que",
+    "qui", "dont", "où", "mais", "donc", "car", "ni", "son", "sa",
+    "ses", "leur", "leurs", "votre", "vos", "notre", "nos", "plus",
+    "moins", "très", "bien", "aussi", "comme", "ce", "cet", "cette",
+    "ces", "l", "n", "s", "c", "y",
+}
+
+
 def tronquer_proprement(texte, limite):
     """Tronque un texte a la limite de caracteres donnee sans jamais
-    couper un mot en deux. Filet de securite si l'IA depasse malgre
-    les instructions du prompt. Retourne le texte tel quel s'il est
-    deja dans la limite."""
+    couper un mot en deux, ET sans jamais finir sur un mot-outil qui
+    laisserait une phrase grammaticalement incomplete (recule mot par mot
+    jusqu'a un mot "terminal" valide, garde-fou sur le nombre de reculs).
+    Filet de securite si l'IA depasse malgre les instructions du prompt.
+    Retourne le texte tel quel s'il est deja dans la limite."""
     if not texte or len(texte) <= limite:
         return texte
     tronque = texte[:limite]
     dernier_espace = tronque.rfind(' ')
-    if dernier_espace > 0:
-        return tronque[:dernier_espace].rstrip('.,;:!?-')
+    if dernier_espace <= 0:
+        return tronque
+    tronque = tronque[:dernier_espace].rstrip('.,;:!?-')
+    reculs = 0
+    while reculs < 6:
+        mots = tronque.split(' ')
+        if len(mots) <= 2:
+            break
+        dernier_mot = re.sub(r"[^\wàâéèêëîïôûùüç]", "", mots[-1].lower())
+        if dernier_mot not in MOTS_OUTILS_FIN_INCOMPLETE:
+            break
+        tronque = ' '.join(mots[:-1]).rstrip('.,;:!?-')
+        reculs += 1
     return tronque
 
 
