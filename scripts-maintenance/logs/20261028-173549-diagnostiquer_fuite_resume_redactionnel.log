@@ -1,0 +1,13 @@
+# Execution du 2026-10-28T17:35:49Z
+# Script    : scripts-maintenance/diagnostiquer_fuite_resume_redactionnel.py
+# Arguments : --limite=100
+
+📥 Recuperation des articles publies (API REST WordPress)...
+  ✅ 100 articles
+
+======================================================================
+RAPPORT — FUITE 'RESUME REDACTIONNEL' (1/100 articles)
+======================================================================
+
+  post_id=12505 | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-cumul-autres-aides-regles/
+    ...étaillés avec solutions<br /> ✅ **Maillage interne** : 5 liens naturels vers pages partenaires<br /> ✅ **HTML valide** : Sans CTA commercial, dates 2026-2027 uniquement, apostrophe...
