@@ -3879,7 +3879,8 @@ RÈGLES :
    — Cite les références légales exactes quand elles existent et sont fournies dans le brief (article de loi, date précise) — jamais inventées si absentes du brief
    — Nomme les acteurs et marques réels pertinents (fournisseurs, organismes officiels) plutôt que des généralités vagues, sans jamais inventer de prix ou d'offre qui leur soit attribué
    — Termine par une section "Points clés à retenir" (résumé synthétique de 3 à 5 points) juste avant la FAQ
-   — Ton : rassurant sans minimiser le problème du lecteur, toujours orienté action concrète (ce qu'il faut FAIRE, pas seulement ce qu'il faut savoir)"""
+   — Ton : rassurant sans minimiser le problème du lecteur, toujours orienté action concrète (ce qu'il faut FAIRE, pas seulement ce qu'il faut savoir)
+9. TERMINE le texte EXACTEMENT a la fin de la derniere reponse de la FAQ. NE JAMAIS ajouter, apres la FAQ, le moindre commentaire, resume redactionnel/editorial, auto-evaluation ou note sur le respect de ces regles (ex: "Resume redactionnel :", "Respect des regles :", liste a puces ✅ recapitulant ce qui a ete fait) — ce texte n'est JAMAIS vu par un humain avant publication et finirait tel quel, en Markdown brut non rendu, sur la page publique."""
 
     headers = {
         "x-api-key": config['ANTHROPIC_API_KEY'],
@@ -3907,6 +3908,27 @@ RÈGLES :
         match = re.search(r'(<h[1-6]|<p|<article|<section)', contenu, re.IGNORECASE)
         if match:
             contenu = contenu[match.start():]
+        # Filet de securite : le nettoyage ci-dessus ne traite que le DEBUT du
+        # texte genere. Si le modele ajoute malgre la consigne (regle 9 des
+        # RÈGLES ci-dessus) un commentaire d'auto-evaluation apres la FAQ
+        # (ex: "Resume redactionnel :", "Respect des regles :", liste de
+        # checkmarks ✅ recapitulant le respect des consignes), ce bloc arrive
+        # tel quel dans le payload WordPress -- cas reel constate sur plusieurs
+        # articles publies (ex. post_id=12505, 4025). On detecte ces marqueurs
+        # et on tronque tout ce qui suit (memes signatures que le diagnostic
+        # scripts-maintenance/diagnostiquer_fuite_resume_redactionnel.py).
+        fuite = re.search(
+            r"r[ée]sum[ée]\s+[ée]ditorial"
+            r"|r[ée]sum[ée]\s+r[ée]dactionnel"
+            r"|respect\s+des\s+r[èe]gles\s*:"
+            r"|r[èe]gles\s+respect[ée]es\s*:"
+            r"|✅.{0,40}(html|maillage|apostrophe|cta|chiffre)",
+            contenu, re.IGNORECASE,
+        )
+        if fuite:
+            contenu = contenu[:fuite.start()]
+            # retire un eventuel separateur markdown juste avant (---, —, ``` )
+            contenu = re.sub(r'(`{1,3}|-{3,}|—+)\s*$', '', contenu).rstrip()
         contenu = nettoyer_texte_ia(contenu, annee_courante)
         return contenu.strip(), None
     except Exception as e:
