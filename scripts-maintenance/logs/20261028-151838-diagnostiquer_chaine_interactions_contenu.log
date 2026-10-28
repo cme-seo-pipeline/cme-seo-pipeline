@@ -1,0 +1,35 @@
+# Execution du 2026-10-28T15:18:38Z
+# Script    : scripts-maintenance/diagnostiquer_chaine_interactions_contenu.py
+# Arguments : 
+
+======================================================================
+MAILLON 1 — Code JS live sur un article (mu-plugin cPanel a jour ?)
+======================================================================
+  ✅ 'journaliserInteraction' trouve dans le HTML live
+  ✅ 'prefixeSilo' trouve dans le HTML live
+  ✅ 'viderInteractions' trouve dans le HTML live
+  ✅ 'CME_POST_ID' trouve dans le HTML live
+
+======================================================================
+MAILLON 2 — Relais WordPress /wp-json/cme/v1/log-interaction
+======================================================================
+  GET -> HTTP 404
+  ❌ Route absente -- le mu-plugin cPanel ne contient probablement pas ce relais
+  Corps (200 premiers caracteres) : {"code":"rest_no_route","message":"Aucune route correspondante \u00e0 l\u2019URL et \u00e0 la m\u00e9thode de requ\u00eate n\u2019a \u00e9t\u00e9 trouv\u00e9e.","data":{"status":404}}
+
+======================================================================
+MAILLON 3 — Endpoint Cloud Run /api/log-interaction
+======================================================================
+  GET -> HTTP 405
+  ✅ Route presente (404 attendu uniquement si absente)
+  Corps (200 premiers caracteres) : <!doctype html>
+<html lang=en>
+<title>405 Method Not Allowed</title>
+<h1>Method Not Allowed</h1>
+<p>The method is not allowed for the requested URL.</p>
+
+
+======================================================================
+MAILLON 3bis — Comparaison avec une route Cloud Run connue fonctionnelle
+======================================================================
+  GET https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead -> HTTP 405 (reference, route confirmee en prod)
