@@ -1,0 +1,212 @@
+# Execution du 2026-10-28T14:11:12Z
+# Script    : scripts-maintenance/cartographier_titres_metas.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Recuperation des articles publies (historique_publications)...
+  ✅ 847 pages a auditer
+
+📥 Recuperation des impressions GSC (90 jours, pour prioriser)...
+🌐 Lecture des titres/meta reellement en ligne...
+
+  ... 50/847 pages lues
+  ... 100/847 pages lues
+  ... 150/847 pages lues
+  ... 200/847 pages lues
+  ... 250/847 pages lues
+  ... 300/847 pages lues
+  ... 350/847 pages lues
+  ... 400/847 pages lues
+  ... 450/847 pages lues
+  ... 500/847 pages lues
+  ... 550/847 pages lues
+  ... 600/847 pages lues
+  ... 650/847 pages lues
+  ... 700/847 pages lues
+  ... 750/847 pages lues
+  ... 800/847 pages lues
+
+========================================================================
+RAPPORT — CARTOGRAPHIE TITRES/META (847 pages lues, 0 erreurs)
+========================================================================
+
+📊 METRIQUES GLOBALES (part des pages concernees)
+  meta_hors_longueur           :  651/847 (76.9%)
+  meta_tronque                 :   21/847 (2.5%)
+  mot_cle_absent_meta          :   18/847 (2.1%)
+  mot_cle_absent_titre         :   15/847 (1.8%)
+  pas_de_promesse_action       :  176/847 (20.8%)
+  titre_duplique_ailleurs      :   52/847 (6.1%)
+  titre_hors_longueur          :  178/847 (21.0%)
+  titre_tronque                :   36/847 (4.3%)
+
+📊 METRIQUES PAR SILO
+
+  — 1. Gaz (234 pages) —
+      meta_hors_longueur           :  192/234 (82.1%)
+      meta_tronque                 :    6/234 (2.6%)
+      mot_cle_absent_meta          :   12/234 (5.1%)
+      mot_cle_absent_titre         :    7/234 (3.0%)
+      pas_de_promesse_action       :   41/234 (17.5%)
+      titre_duplique_ailleurs      :   12/234 (5.1%)
+      titre_hors_longueur          :   57/234 (24.4%)
+      titre_tronque                :    7/234 (3.0%)
+
+  — 2. Rénovation Énergétique (50 pages) —
+      meta_hors_longueur           :   33/50 (66.0%)
+      meta_tronque                 :    5/50 (10.0%)
+      mot_cle_absent_meta          :    2/50 (4.0%)
+      pas_de_promesse_action       :   21/50 (42.0%)
+      titre_hors_longueur          :   11/50 (22.0%)
+
+  — 3. Aide Énergétique (260 pages) —
+      meta_hors_longueur           :  204/260 (78.5%)
+      meta_tronque                 :    4/260 (1.5%)
+      mot_cle_absent_meta          :    4/260 (1.5%)
+      mot_cle_absent_titre         :    8/260 (3.1%)
+      pas_de_promesse_action       :   43/260 (16.5%)
+      titre_duplique_ailleurs      :   23/260 (8.8%)
+      titre_hors_longueur          :   72/260 (27.7%)
+      titre_tronque                :   10/260 (3.8%)
+
+  — 4. Solaire (58 pages) —
+      meta_hors_longueur           :   41/58 (70.7%)
+      meta_tronque                 :    2/58 (3.4%)
+      pas_de_promesse_action       :   15/58 (25.9%)
+      titre_hors_longueur          :    6/58 (10.3%)
+      titre_tronque                :    8/58 (13.8%)
+
+  — 5. Électricité (245 pages) —
+      meta_hors_longueur           :  181/245 (73.9%)
+      meta_tronque                 :    4/245 (1.6%)
+      pas_de_promesse_action       :   56/245 (22.9%)
+      titre_duplique_ailleurs      :   17/245 (6.9%)
+      titre_hors_longueur          :   32/245 (13.1%)
+      titre_tronque                :   11/245 (4.5%)
+
+========================================================================
+TOP 20 PIRES CAS (le plus de failles, priorite aux pages a fort volume)
+========================================================================
+
+  https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/comparatif-contrats-gaz-offres/
+     1. Gaz / Contrat Gaz — impressions(90j)=51
+     titre (64c) : Audit gaz 2026 : 7 dysfonctionnements cachés qui coûtent 300€/an
+     meta  (160c) : Votre facture gaz explose sans raison ? Diagnostiquez les 7 anomalies invisibles (détecteur, radiateur, tuyauterie) que aucun changement de contrat ne résoudra.
+     ⚠️ titre_hors_longueur, pas_de_promesse_action, mot_cle_absent_titre, mot_cle_absent_meta
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/
+     3. Aide Énergétique / MaPrimeRénov' — impressions(90j)=39
+     titre (54c) : Dossier MaPrimeRénov' : délais traitement et versement
+     meta  (131c) : Combien de temps pour recevoir MaPrimeRénov' ? Guide complet des délais de traitement, versement et conditions d'accélération 2025.
+     ⚠️ meta_hors_longueur, pas_de_promesse_action, mot_cle_absent_titre, mot_cle_absent_meta
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-guide-complet/
+     3. Aide Énergétique / MaPrimeRénov' — impressions(90j)=4
+     titre (48c) : Comment fonctionne MaPrimeRénov' : guide complet
+     meta  (123c) : MaPrimeRénov' étape par étape : conditions, montants, demande et versement. Maximisez votre aide rénovation dès maintenant.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action, titre_duplique_ailleurs
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-conditions-montants-demarches/
+     3. Aide Énergétique / Eco-prêt à taux zéro — impressions(90j)=2
+     titre (79c) : Éco-PTZ et fiscalité : les erreurs de déclaration qui déclenchent des contrôles
+     meta  (121c) : Éco-PTZ 2026 : erreurs fiscales courantes, pièges déclaratifs et stratégies pour éviter les redressements. Guide complet.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, mot_cle_absent_titre, mot_cle_absent_meta
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-fonctionnement-1021/
+     3. Aide Énergétique / Aides chauffe-eau thermodynamique — impressions(90j)=1
+     titre (47c) : Chauffe-eau thermodynamique : comment ça marche
+     meta  (125c) : Chauffe-eau thermodynamique et comment cette technologie vous permet d'économiser jusqu'à 70 % sur vos factures d'eau chaude.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action, titre_duplique_ailleurs
+
+  https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-tarifs-bons-plans/
+     1. Gaz / Bouteilles — impressions(90j)=227
+     titre (49c) : Prix bouteille de gaz : tarifs 2026 et bons plans
+     meta  (144c) : Découvrez les tarifs actuels des bouteilles de gaz et économisez jusqu'à 30% en comparant les fournisseurs. Guide complet pour payer moins cher.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, mot_cle_absent_meta
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-eligibilite-conditions-1001/
+     3. Aide Énergétique / Chèque énergie — impressions(90j)=177
+     titre (47c) : Chèque énergie : qui peut en bénéficier en 2026
+     meta  (132c) : Découvrez si vous êtes éligible au chèque énergie : revenus, conditions et démarches pour percevoir cette aide jusqu'à 277€ en 2026.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, titre_duplique_ailleurs
+
+  https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/installation-chaudiere-gaz-condensation/
+     2. Rénovation Énergétique / Chaudière — impressions(90j)=62
+     titre (65c) : Installez votre chaudière gaz et obtenez votre devis en 2 minutes
+     meta  (144c) : On vous accompagne pour installer une chaudière gaz condensation. Normes, durée, prix installation et erreurs à éviter pour réussir vos travaux.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/ch-que-energie-qui-peut-beneficier-eligibilite/
+     3. Aide Énergétique / Chèque énergie — impressions(90j)=44
+     titre (47c) : Chèque énergie : qui peut en bénéficier en 2026
+     meta  (149c) : Découvrez qui a droit au chèque énergie en 2026 : conditions de revenus, plafonds et critères d'éligibilité. Vérifiez votre admissibilité maintenant.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, titre_duplique_ailleurs
+
+  https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharge-bouteille-gaz-guide-tarifs/
+     1. Gaz / Bouteilles — impressions(90j)=39
+     titre (51c) : Recharge bouteille de gaz : guide complet et tarifs
+     meta  (145c) : Comment recharger votre bouteille de gaz efficacement et économiser jusqu'à 30 % sur vos frais. Guide complet avec tarifs actualisés et points de
+     ⚠️ meta_hors_longueur, pas_de_promesse_action, meta_tronque
+
+  https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-gaz-securite-1016/
+     1. Gaz / Bouteilles — impressions(90j)=38
+     titre (56c) : Comment recharger une bouteille de gaz en toute sécurité
+     meta  (129c) : Les étapes essentielles pour recharger votre bouteille de gaz propane ou butane sans risque. Conseils de sécurité indispensables.
+     ⚠️ meta_hors_longueur, pas_de_promesse_action, titre_duplique_ailleurs
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/mecanisme-remboursement-eco-ptz/
+     3. Aide Énergétique / Eco-prêt à taux zéro — impressions(90j)=37
+     titre (43c) : Éco-PTZ : aides, mécanisme et remboursement
+     meta  (140c) : Est-ce que je peux financer mes travaux grâce à l'éco-PTZ ? Quels sont la durée, le remboursement, le taux zéro et les modalités pratiques ?
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-trop-elevee-causes-solutions/
+     1. Gaz / Facture Gaz — impressions(90j)=34
+     titre (45c) : Facture gaz trop élevée : causes et solutions
+     meta  (119c) : Facture gaz anormalement haute ? Découvrez les 7 causes principales et comment réduire votre consommation efficacement.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-1018/
+     3. Aide Énergétique / MaPrimeRénov' — impressions(90j)=33
+     titre (48c) : MaPrimeRénov' : comment fonctionne le dispositif
+     meta  (139c) : Comment fonctionne MaPrimeRénov' étape par étape : dépôt du dossier, instruction, versement et modalités de paiement expliquées simplement.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide/
+     5. Électricité / Facture Électricité — impressions(90j)=32
+     titre (54c) : Comment lire sa facture d'électricité : guide pratique
+     meta  (116c) : Déchiffrez votre facture d'électricité en 5 minutes : comprendre les lignes, les charges et les économies possibles.
+     ⚠️ meta_hors_longueur, pas_de_promesse_action, titre_duplique_ailleurs
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/fonctionnement-chauffe-eau-thermodynamique-0930-2/
+     3. Aide Énergétique / Aides chauffe-eau thermodynamique — impressions(90j)=25
+     titre (49c) : Comment fonctionne un chauffe-eau thermodynamique
+     meta  (137c) : Fonctionnement complet d'un chauffe-eau thermodynamique et comment il vous permet d'économiser jusqu'à 70% sur vos factures d'eau chaude.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-vs-dpe-differences/
+     2. Rénovation Énergétique / Audit énergétique — impressions(90j)=24
+     titre (49c) : Audit énergétique vs DPE : différences et utilité
+     meta  (143c) : Comprendre les différences entre audit énergétique et DPE. Lequel choisir pour votre rénovation ? Explications complètes et conseils pratiques.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1020-2/
+     3. Aide Énergétique / Aides chauffe-eau thermodynamique — impressions(90j)=23
+     titre (58c) : Installation chauffe-eau thermodynamique : étapes et coûts
+     meta  (142c) : Les étapes d'installation d'un chauffe-eau thermodynamique et les coûts réels à prévoir. Guide complet pour réussir votre projet de rénovation
+     ⚠️ meta_hors_longueur, pas_de_promesse_action, titre_duplique_ailleurs
+
+  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais/
+     5. Électricité / Contrat Électricité — impressions(90j)=22
+     titre (39c) : Résilier électricité : délais et étapes
+     meta  (140c) : Résiliez votre contrat électricité rapidement. Procédure en 3 étapes, délais garantis et économies assurées. Agissez maintenant sans frais !
+     ⚠️ titre_hors_longueur, meta_hors_longueur, pas_de_promesse_action
+
+  https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-conditions-acces/
+     3. Aide Énergétique / Eco-prêt à taux zéro — impressions(90j)=16
+     titre (49c) : Éco-PTZ : comment ça marche et qui peut l'obtenir
+     meta  (144c) : Découvrez le fonctionnement de l'éco-prêt à taux zéro : conditions d'accès, modalités de remboursement et travaux éligibles. Guide complet 2025.
+     ⚠️ titre_hors_longueur, meta_hors_longueur, mot_cle_absent_titre
