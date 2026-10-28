@@ -1,0 +1,33 @@
+# Execution du 2026-10-28T12:06:46Z
+# Script    : scripts-maintenance/identifier_pages_fort_volume_faible_ctr.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+🔎 Fenetre : 90 derniers jours — pool fort volume : top 30 pages par impressions — on affiche les 5 au CTR le plus faible dans ce pool
+
+======================================================================
+TOP 5 — fort volume d'impressions, CTR le plus faible
+======================================================================
+
+  1. https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/
+     silo=1. Gaz / sous_silo=comparatifs-fournisseurs-gaz
+     impressions=308  clics=0  ctr=0.00%  position_moyenne=70.5
+
+  2. https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs-1001/
+     silo=3. Aide Energetique / sous_silo=aides-chauffe-eau-thermodynamique
+     impressions=246  clics=0  ctr=0.00%  position_moyenne=21.2
+
+  3. https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024/
+     silo=1. Gaz / sous_silo=bouteilles
+     impressions=276  clics=0  ctr=0.00%  position_moyenne=31.4
+
+  4. https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleur-fournisseur-gaz-2024-comparatif/
+     silo=1. Gaz / sous_silo=comparatifs-fournisseurs-gaz
+     impressions=293  clics=0  ctr=0.00%  position_moyenne=55.2
+
+  5. https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-travaux-eligibles-non-eligibles/
+     silo=3. Aide Energetique / sous_silo=maprimerenov
+     impressions=300  clics=0  ctr=0.00%  position_moyenne=39.5
