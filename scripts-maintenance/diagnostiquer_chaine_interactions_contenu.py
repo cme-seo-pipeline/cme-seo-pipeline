@@ -1,8 +1,8 @@
 """
-CME — Diagnostic ponctuel (lecture seule) : pourquoi interactions_contenu
-est vide (0 ligne) alors que le mecanisme a ete documente comme "deploye
-et valide" le 26/10/2026. Verifie les 3 maillons de la chaine, dans
-l'ordre, sans rien ecrire :
+CME — Diagnostic ponctuel (lecture seule, aucune ligne inseree en base) :
+pourquoi interactions_contenu est vide (0 ligne) alors que le mecanisme a
+ete documente comme "deploye et valide" le 26/10/2026. Verifie les 3
+maillons de la chaine, dans l'ordre, sans rien ecrire :
 
   1. Le code JS live sur le site contient-il bien les nouveaux trackers
      (journaliserInteraction/prefixeSilo) -- confirme ou infirme que le
@@ -15,12 +15,23 @@ l'ordre, sans rien ecrire :
      service deploye -- rappel : pas de CI/CD Cloud Run dans ce repo,
      gcloud run deploy est une action operateur manuelle).
 
-Lecture seule -- aucune ecriture, aucune donnee de test envoyee.
+CORRECTIF du 29/10/2026 : les maillons 2 et 3 testaient l'existence de la
+route avec un GET, en supposant qu'un code autre que 404 confirmerait sa
+presence (comportement Flask : 405 sur mismatch de methode). Mais
+WordPress renvoie 404 "rest_no_route" pour N'IMPORTE QUEL mismatch de
+methode (pas 405) -- un GET sur une route POST-only y est indistinguable
+d'une route reellement absente. Cela avait produit une fausse alerte sur
+/log-interaction ET, plus grave, sur /log-lead (route de production
+critique, en realite fonctionnelle) -- voir
+diagnostiquer_regression_log_lead.py. Les deux maillons testent desormais
+en POST, avec un corps JSON vide ({}), que les deux endpoints (verifie par
+lecture de code : cme_relayer_log_interaction() cote PHP, log_interaction()
+cote Flask) traitent comme "0 evenement" sans ecrire la moindre ligne en
+base -- donc toujours lecture seule au sens propre (pas d'INSERT declenche).
 
 USAGE :
   python3 diagnostiquer_chaine_interactions_contenu.py
 """
-import re
 import sys
 
 import requests
@@ -47,14 +58,20 @@ def main():
     print("MAILLON 2 — Relais WordPress /wp-json/cme/v1/log-interaction")
     print(f"{'='*70}")
     try:
-        # GET volontaire (la route n'accepte que POST) : on veut juste savoir
-        # si la route EXISTE (404 = absente, autre code = presente).
-        r = requests.get(f"{WP_URL}/wp-json/cme/v1/log-interaction", timeout=20)
-        print(f"  GET -> HTTP {r.status_code}")
+        # POST avec corps JSON vide : traite comme "0 evenement" par le
+        # relais (cme_relayer_log_interaction() republie tel quel, et
+        # l'endpoint Cloud Run en aval renvoie inserted=0 sans ecrire --
+        # voir le commentaire de tete). Un 404 ici reste un vrai "route
+        # absente" (WordPress le renvoie aussi sur methode invalide, mais
+        # POST est justement la bonne methode) ; un 200 confirme la presence.
+        r = requests.post(f"{WP_URL}/wp-json/cme/v1/log-interaction", json={}, timeout=20)
+        print(f"  POST {{}} -> HTTP {r.status_code}")
         if r.status_code == 404:
             print("  ❌ Route absente -- le mu-plugin cPanel ne contient probablement pas ce relais")
+        elif r.status_code == 200:
+            print("  ✅ Route presente et fonctionnelle")
         else:
-            print("  ✅ Route presente (404 attendu uniquement si absente)")
+            print("  ⚠️ Route presente mais reponse inattendue")
         print(f"  Corps (200 premiers caracteres) : {r.text[:200]}")
     except Exception as e:
         print(f"  ⚠️ Erreur : {e}")
@@ -63,13 +80,18 @@ def main():
     print("MAILLON 3 — Endpoint Cloud Run /api/log-interaction")
     print(f"{'='*70}")
     try:
-        r = requests.get(f"{CLOUD_RUN_URL}/api/log-interaction", timeout=20)
-        print(f"  GET -> HTTP {r.status_code}")
+        # Meme logique : POST corps vide, traite comme 0 evenement par
+        # log_interaction() (verifie par lecture de code, aucune ligne
+        # inseree dans interactions_contenu).
+        r = requests.post(f"{CLOUD_RUN_URL}/api/log-interaction", json={}, timeout=20)
+        print(f"  POST {{}} -> HTTP {r.status_code}")
         if r.status_code == 404:
             print("  ❌ Route absente sur le service Cloud Run deploye -- /api/log-interaction")
             print("     n'a probablement jamais ete redeploye (gcloud run deploy, action operateur)")
+        elif r.status_code == 200:
+            print("  ✅ Route presente et fonctionnelle")
         else:
-            print("  ✅ Route presente (404 attendu uniquement si absente)")
+            print("  ⚠️ Route presente mais reponse inattendue")
         print(f"  Corps (200 premiers caracteres) : {r.text[:200]}")
     except Exception as e:
         print(f"  ⚠️ Erreur : {e}")
@@ -78,8 +100,13 @@ def main():
     print("MAILLON 3bis — Comparaison avec une route Cloud Run connue fonctionnelle")
     print(f"{'='*70}")
     try:
-        r = requests.get(f"{CLOUD_RUN_URL}/api/log-lead", timeout=20)
-        print(f"  GET {CLOUD_RUN_URL}/api/log-lead -> HTTP {r.status_code} (reference, route confirmee en prod)")
+        # log-lead EXIGE des champs pour etre utile, mais un corps vide est
+        # accepte sans erreur par son propre contrat (voir CLAUDE.md,
+        # incident du 28/10) -- insere neanmoins une ligne vide en prod,
+        # donc on se contente ici d'une requete OPTIONS (jamais 404 si la
+        # route existe, et aucune ecriture declenchee) plutot que POST.
+        r = requests.options(f"{CLOUD_RUN_URL}/api/log-lead", timeout=20)
+        print(f"  OPTIONS {CLOUD_RUN_URL}/api/log-lead -> HTTP {r.status_code} (reference, route confirmee en prod)")
     except Exception as e:
         print(f"  ⚠️ Erreur : {e}")
 
