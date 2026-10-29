@@ -1,0 +1,51 @@
+# Execution du 2026-10-29T22:23:23Z
+# Script    : scripts-maintenance/verifier_sequencement_deploiement_tracking.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+1) Premier evenement par type_evenement (MIN timestamp) :
+type_evenement                         premiere   nb
+    form_etape 2026-10-28 15:19:09.824000+00:00 2499
+       form_vu 2026-10-28 15:19:10.628000+00:00  809
+  clic_contenu 2026-10-28 15:27:17.882000+00:00   21
+  form_abandon 2026-10-28 19:42:42.292000+00:00    1
+
+2) Toute ligne interactions_contenu pour post_id=5274 (Hamila) entre 28/10 10:00 et 12:00 UTC :
+  ⚠️ AUCUNE ligne -- la tracking n'etait probablement pas encore live a ce moment.
+
+3) Toute ligne interactions_contenu pour post_id=5274, toutes dates :
+                       timestamp type_evenement etape     session_id
+2026-10-29 09:07:40.253000+00:00     form_etape     0 mvtblhsrbe5njv
+2026-10-29 09:07:40.254000+00:00     form_etape     0 mvtblhsrbe5njv
+2026-10-29 09:07:40.254000+00:00     form_etape     0 mvtblhsrbe5njv
+2026-10-29 09:07:40.254000+00:00     form_etape     0 mvtblhsrbe5njv
+2026-10-29 09:07:40.254000+00:00     form_etape     0 mvtblhsrbe5njv
+2026-10-29 09:07:40.254000+00:00     form_etape     0 mvtblhsrbe5njv
+2026-10-29 09:07:40.254000+00:00     form_etape     0 mvtblhsrbe5njv
+2026-10-29 09:07:40.255000+00:00     form_etape     0 mvtblhsrbe5njv
+2026-10-29 09:07:41.052000+00:00     form_etape     0 mvtbliciufteoc
+2026-10-29 09:07:41.052000+00:00     form_etape     0 mvtbliciufteoc
+2026-10-29 09:07:41.053000+00:00     form_etape     0 mvtbliciufteoc
+2026-10-29 09:07:41.053000+00:00     form_etape     0 mvtbliciufteoc
+2026-10-29 09:07:41.053000+00:00     form_etape     0 mvtbliciufteoc
+2026-10-29 09:07:41.053000+00:00     form_etape     0 mvtbliciufteoc
+2026-10-29 09:07:41.053000+00:00     form_etape     0 mvtbliciufteoc
+2026-10-29 09:07:41.053000+00:00     form_etape     0 mvtbliciufteoc
+2026-10-29 09:08:24.088000+00:00   clic_contenu       mvtblicntmo87u
+2026-10-29 09:08:28.343000+00:00   clic_contenu       mvtblicntmo87u
+2026-10-29 09:08:31.423000+00:00   clic_contenu       mvtblicntmo87u
+2026-10-29 09:08:33.011000+00:00   clic_contenu       mvtblicntmo87u
+2026-10-29 09:08:59.545000+00:00        form_vu       mvtbliciufteoc
+2026-10-29 09:09:08.588000+00:00        form_vu       mvtbliciufteoc
+2026-10-29 09:09:29.123000+00:00        form_vu       mvtbliciufteoc
+2026-10-29 09:10:35.230000+00:00        form_vu       mvtbliciufteoc
+2026-10-29 09:11:10.699000+00:00        form_vu       mvtbliciufteoc
+2026-10-29 09:11:55.040000+00:00        form_vu       mvtbliciufteoc
+2026-10-29 09:12:40.060000+00:00        form_vu       mvtbliciufteoc
