@@ -1,0 +1,44 @@
+# Execution du 2026-10-29T22:43:12Z
+# Script    : scripts-maintenance/inspecter_pages_orphelines_legacy.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+CIBLE 1 : consommation-electrique-mesure-optimisation (post_id=4354)
+====================================================================================================
+ post_id                                                       titre                                                                                                           url_wp                 date_publication sous_silo_strategique
+    8371 Relevé compteur électrique : erreurs à éviter et validation                   https://www.comprendre-mon-energie.fr/electricite/compteur/releve-compteur-electrique-methode/ 2026-09-26 08:24:16.624934+00:00              Compteur
+    8289              Compteur électrique : barème complet des frais       https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-tarifs-delais/ 2026-09-25 08:37:44.691474+00:00              Compteur
+    8213    Compteur électrique intelligent : avantages et économies       https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-intelligent-fonctionnement/ 2026-09-24 10:39:57.913881+00:00              Compteur
+    7846   Compteur électrique : fonctionnement et lecture expliqués           https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/ 2026-09-08 08:01:31.172369+00:00              Compteur
+    7844      Compteur électrique : comment fonctionne-t-il vraiment                   https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement/ 2026-09-08 08:00:01.342863+00:00              Compteur
+    7842       Compteur électrique communicant Linky : mode d'emploi                   https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky-fonctionnement-0908/ 2026-09-08 07:58:34.482977+00:00              Compteur
+    7278    Installation compteur électrique : étapes et tarifs 2026       https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-tarifs/ 2026-08-31 09:32:46.785929+00:00              Compteur
+    7276      Installation compteur électrique : tarifs et démarches                                                                    https://www.comprendre-mon-energie.fr/?p=7276 2026-08-31 09:31:15.786382+00:00              Compteur
+    6744          Installation compteur électrique : étapes et coûts https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823-3/ 2026-08-23 03:17:48.569549+00:00              Compteur
+    6742          Installation compteur électrique : étapes et coûts https://www.comprendre-mon-energie.fr/electricite/compteur/installation-compteur-electrique-etapes-couts-0823-2/ 2026-08-23 03:16:53.363057+00:00              Compteur
+
+====================================================================================================
+CIBLE 2 : justificatif-de-domicile (post_id=699)
+====================================================================================================
+
+  → Sous-silo 'Facture Électricité' (recents) :
+ post_id                                                       titre                                                                                                                 url_wp                 date_publication
+   12694  Facture électricité : modèle annoté pour comprendre chaque https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide-detaille/ 2026-10-29 10:02:55.220555+00:00
+   12693      Facture électricité : guide interactif pour identifier        https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-decryptage-1029/ 2026-10-29 10:01:23.971589+00:00
+   12519          Facture électricité : décoder les charges fixes et           https://www.comprendre-mon-energie.fr/electricite/facture-electricite/decrypter-facture-electricite-details/ 2026-10-28 10:00:50.709344+00:00
+   12518       Facture électricité : guide complet pour contester et       https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-facture-electricite-decryptage/ 2026-10-28 09:59:27.788261+00:00
+   12396 Facture électricité : guide pratique pour les locataires et     https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-guide-complet-1027/ 2026-10-27 08:57:59.583046+00:00
+   12395        Facture électricité : checklist de vérification pour        https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-decryptage-1027/ 2026-10-27 08:56:37.068424+00:00
+   11467 Augmentation électricité 2024-2025 : facteurs tarifaires et             https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-augmente-causes/ 2026-10-24 08:14:18.461636+00:00
+   11466     Comprendre les kWh : unité de mesure et calcul de votre             https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-kwh-consommation-facture/ 2026-10-24 08:12:47.967974+00:00
+
+  → Titres contenant 'attestation' ou 'justificatif' (tous silos) :
+  (aucun resultat)
