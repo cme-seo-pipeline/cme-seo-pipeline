@@ -45,6 +45,15 @@ SILO_PAGES_LEGACY = {
 PREFIXES_CONNUS = {"gaz", "electricite", "aide-energetique", "renovation-energetique", "solaire"}
 
 
+def normaliser_silo_ga4(silo_ga4):
+    """GA4_SILO_MAP (cme-ga4-to-bq.gs) stocke des libelles numerotes et
+    accentues-ASCII ('1. Gaz', '3. Aide Energetique', '5. Electricite') --
+    a normaliser vers le meme format que les silos deduits des leads
+    ('gaz', 'aide-energetique', 'electricite')."""
+    sans_numero = re.sub(r"^\d+\.\s*", "", silo_ga4 or "")
+    return sans_numero.strip().lower().replace(" ", "-")
+
+
 def deduire_silo(tool, source_page, details_json):
     if tool == "contact-expert-inline" and details_json:
         try:
@@ -80,7 +89,7 @@ def main():
         leads_par_silo[silo] = leads_par_silo.get(silo, 0) + 1
 
     print("📥 Trafic organique du mois en cours (01_raw.ga4_pages)...")
-    df_trafic = client.query(f"""
+    df_trafic_brut = client.query(f"""
         SELECT silo, SUM(sessions) AS sessions
         FROM `{PROJECT_ID}.01_raw.ga4_pages`
         WHERE date >= DATE_TRUNC(CURRENT_DATE(), MONTH)
@@ -88,17 +97,20 @@ def main():
         GROUP BY silo
         ORDER BY sessions DESC
     """).to_dataframe()
+    sessions_par_silo = {}
+    for _, row in df_trafic_brut.iterrows():
+        silo_norm = normaliser_silo_ga4(row["silo"])
+        sessions_par_silo[silo_norm] = sessions_par_silo.get(silo_norm, 0) + int(row["sessions"])
 
     print("\n" + "=" * 80)
     print("COMPARATIF TRAFIC vs CONVERSION PAR SILO -- mois en cours")
     print("=" * 80)
     print(f"{'Silo':<25}{'Sessions GA4':>15}{'Leads':>10}{'Taux conv.':>15}")
     print("-" * 80)
-    tous_silos = set(df_trafic["silo"]) | set(leads_par_silo.keys())
+    tous_silos = set(sessions_par_silo.keys()) | set(leads_par_silo.keys())
     lignes = []
     for silo in tous_silos:
-        sessions_row = df_trafic[df_trafic["silo"] == silo]["sessions"]
-        sessions = int(sessions_row.iloc[0]) if not sessions_row.empty else 0
+        sessions = sessions_par_silo.get(silo, 0)
         leads = leads_par_silo.get(silo, 0)
         taux = (leads / sessions * 100) if sessions else 0
         lignes.append((silo, sessions, leads, taux))
