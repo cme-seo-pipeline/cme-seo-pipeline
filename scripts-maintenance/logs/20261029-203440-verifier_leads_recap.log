@@ -1,0 +1,53 @@
+# Execution du 2026-10-29T20:34:40Z
+# Script    : scripts-maintenance/verifier_leads_recap.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+1) Volume par outil et par jour -- 14 derniers jours
+======================================================================
+      jour                   tool  nb
+2026-10-29        appel-telephone   3
+2026-10-28  contact-expert-inline   2
+2026-10-27  contact-expert-inline   1
+2026-10-26        appel-telephone   3
+2026-10-25  contact-expert-inline   1
+2026-10-24  contact-expert-inline   1
+2026-10-24 diagnostic-relais-test   5
+2026-10-22        appel-telephone   1
+2026-10-22  contact-expert-inline   4
+2026-10-20        appel-telephone   2
+2026-10-19 diagnostic-relais-test   2
+
+======================================================================
+2) Dernieres 15 lignes toutes sources confondues
+======================================================================
+                       timestamp                   tool    telephone                    email                                                                                                        source_page source_post_id
+2026-10-29 16:46:59.339000+00:00        appel-telephone +33189713648                                                                  https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/               
+2026-10-29 16:46:59.125000+00:00        appel-telephone +33189713648                                                                  https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/               
+2026-10-29 10:07:48.068000+00:00        appel-telephone +33189713648                                                           https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/maprimerenov-gaz-aide-2026/               
+2026-10-28 10:56:30.675131+00:00  contact-expert-inline   0613451982                                    https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/           5274
+2026-10-28 10:55:43.717838+00:00  contact-expert-inline   0613451982                                    https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/           5274
+2026-10-27 10:08:22.114470+00:00  contact-expert-inline   0621560474 corinneharmand@orange.fr https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-social-electricite-conditions-demande/           5235
+2026-10-26 08:53:22.467000+00:00        appel-telephone +33189713648                                      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/               
+2026-10-26 05:01:28.908000+00:00        appel-telephone +33189713648                                      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/               
+2026-10-26 02:20:09.230000+00:00        appel-telephone +33189713648                                      https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/               
+2026-10-25 18:52:05.793893+00:00  contact-expert-inline   0621798792                                             https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-dimensionnement/           4423
+2026-10-24 20:02:27.354180+00:00  contact-expert-inline   0694374991                                  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-kwh-consommation-facture/          11466
+2026-10-24 20:02:21.176888+00:00 diagnostic-relais-test                                                                                                                                                                        
+2026-10-24 19:43:08.691557+00:00 diagnostic-relais-test                                                                                                                                                                        
+2026-10-24 19:42:44.374961+00:00 diagnostic-relais-test                                                                                               https://www.comprendre-mon-energie.fr/contactez-un-expert/               
+2026-10-24 19:22:21.781122+00:00 diagnostic-relais-test                                                                                                                                                                        
+
+======================================================================
+3) Qualite des champs -- contact-expert-inline, 7 derniers jours
+======================================================================
+ nb_total  nb_source_page_ok  nb_source_post_id_ok                         premiere                         derniere
+        5                  5                     5 2026-10-24 20:02:27.354180+00:00 2026-10-28 10:56:30.675131+00:00
