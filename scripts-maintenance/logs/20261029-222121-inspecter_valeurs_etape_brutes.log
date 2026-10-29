@@ -1,0 +1,38 @@
+# Execution du 2026-10-29T22:21:21Z
+# Script    : scripts-maintenance/inspecter_valeurs_etape_brutes.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+1) Valeurs brutes de 'etape' pour type_evenement='form_etape' :
+etape   nb
+    0 2498
+    1    1
+
+2) Dernieres 15 lignes form_etape (tous champs utiles) :
+                       timestamp etape        silo  position_contenu     session_id source_post_id
+2026-10-29 22:08:30.994000+00:00     0 electricite                 7 mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     0 electricite                 1 mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     0 electricite                 2 mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     0 electricite                 6 mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     0 electricite                 4 mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     0 electricite                 3 mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     0 electricite                 8 mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     0 electricite                 5 mvu3ho014k22cj           4539
+2026-10-29 21:48:46.301000+00:00     0 electricite                 9 mvu2s9v89shzzq           6069
+2026-10-29 21:48:46.300000+00:00     0 electricite                 7 mvu2s9v89shzzq           6069
+2026-10-29 21:48:46.300000+00:00     0 electricite                 8 mvu2s9v89shzzq           6069
+2026-10-29 21:48:46.299000+00:00     0 electricite                 6 mvu2s9v89shzzq           6069
+2026-10-29 21:48:46.299000+00:00     0 electricite                 5 mvu2s9v89shzzq           6069
+2026-10-29 21:48:46.298000+00:00     0 electricite                 4 mvu2s9v89shzzq           6069
+2026-10-29 21:48:46.298000+00:00     0 electricite                 3 mvu2s9v89shzzq           6069
+
+3) Sessions ayant au moins un etape='0' MAIS aucun etape<>'0' pour la meme session_id :
+ nb_sessions_bloquees_etape0  nb_sessions_total
+                         267                268
