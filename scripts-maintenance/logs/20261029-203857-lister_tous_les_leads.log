@@ -1,0 +1,392 @@
+# Execution du 2026-10-29T20:38:57Z
+# Script    : scripts-maintenance/lister_tous_les_leads.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+LISTE COMPLETE DES LIGNES -- leads_convertis (table entiere)
+====================================================================================================
+
+Total : 42 lignes
+
+----------------------------------------------------------------------------------------------------
+Repartition par outil (table entiere consultee) :
+tool
+appel-telephone           9
+contact-expert-inline     9
+diagnostic-relais-test    7
+comparateur-energie       7
+aides-renovation          5
+solaire                   5
+----------------------------------------------------------------------------------------------------
+
+[2026-10-29 16:46:59.339000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+  source_post_id : (vide)
+
+[2026-10-29 16:46:59.125000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+  source_post_id : (vide)
+
+[2026-10-29 10:07:48.068000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/maprimerenov-gaz-aide-2026/
+  source_post_id : (vide)
+
+[2026-10-28 10:56:30.675131+00:00] outil=contact-expert-inline
+  nom/prenom     : HAMILA FATHI
+  telephone      : 0613451982
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/
+  source_post_id : 5274
+  details        : "{\"position\":3,\"silo\":\"electricite\"}"
+
+[2026-10-28 10:55:43.717838+00:00] outil=contact-expert-inline
+  nom/prenom     : HAMILA FATHI
+  telephone      : 0613451982
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/
+  source_post_id : 5274
+  details        : "{\"position\":2,\"silo\":\"electricite\"}"
+
+[2026-10-27 10:08:22.114470+00:00] outil=contact-expert-inline
+  nom/prenom     : Corinne
+  telephone      : 0621560474
+  email          : corinneharmand@orange.fr
+  code_postal    : 64210  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-social-electricite-conditions-demande/
+  source_post_id : 5235
+  details        : "{\"position\":1,\"silo\":\"electricite\"}"
+
+[2026-10-26 08:53:22.467000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/
+  source_post_id : (vide)
+
+[2026-10-26 05:01:28.908000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/
+  source_post_id : (vide)
+
+[2026-10-26 02:20:09.230000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-electrique-fonctionnement-lecture/
+  source_post_id : (vide)
+
+[2026-10-25 18:52:05.793893+00:00] outil=contact-expert-inline
+  nom/prenom     : Nomi
+  telephone      : 0621798792
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-dimensionnement/
+  source_post_id : 4423
+  details        : "{\"position\":1,\"silo\":\"solaire\"}"
+
+[2026-10-24 20:02:27.354180+00:00] outil=contact-expert-inline
+  nom/prenom     : Oussama Blal
+  telephone      : 0694374991
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-kwh-consommation-facture/
+  source_post_id : 11466
+  details        : "{\"position\":3,\"silo\":\"electricite\"}"
+
+[2026-10-24 20:02:21.176888+00:00] outil=diagnostic-relais-test
+  nom/prenom     : (vide)
+  telephone      : (vide)
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : (vide)
+  source_post_id : (vide)
+  details        : {"marqueur": "verif2q-17c73ca11c30", "origine": "verifier_test_2questions"}
+
+[2026-10-24 19:43:08.691557+00:00] outil=diagnostic-relais-test
+  nom/prenom     : (vide)
+  telephone      : (vide)
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : (vide)
+  source_post_id : (vide)
+
+[2026-10-24 19:42:44.374961+00:00] outil=diagnostic-relais-test
+  nom/prenom     : (vide)
+  telephone      : (vide)
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/contactez-un-expert/
+  source_post_id : (vide)
+  details        : {"marqueur": "qa-cb6de9e0c103", "origine": "qa_tunnel_conversion_complet"}
+
+[2026-10-24 19:22:21.781122+00:00] outil=diagnostic-relais-test
+  nom/prenom     : (vide)
+  telephone      : (vide)
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : (vide)
+  source_post_id : (vide)
+  details        : {"marqueur": "diag-df700c5b93ad-direct"}
+
+[2026-10-24 19:22:03.363753+00:00] outil=diagnostic-relais-test
+  nom/prenom     : (vide)
+  telephone      : (vide)
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/contactez-un-expert/
+  source_post_id : (vide)
+  details        : {"marqueur": "diag-df700c5b93ad"}
+
+[2026-10-22 15:20:57.889202+00:00] outil=contact-expert-inline
+  nom/prenom     : Oussama Blal
+  telephone      : 0694374991
+  email          : o.blal@decodetheself.com
+  code_postal    : 75012  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+  source_post_id : 11258
+  details        : "{\"position\":1,\"silo\":\"electricite\"}"
+
+[2026-10-22 15:12:20.848477+00:00] outil=contact-expert-inline
+  nom/prenom     : oussama
+  telephone      : 0694374991
+  email          : o.blal@decodetheself.com
+  code_postal    : 75012  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+  source_post_id : 11258
+  details        : "{\"position\":1,\"silo\":\"electricite\"}"
+
+[2026-10-22 14:39:56.466114+00:00] outil=contact-expert-inline
+  nom/prenom     : lionel
+  telephone      : 0607112671
+  email          : lionel.nore@gmail.com
+  code_postal    : 76160  | adresse : (vide)
+  source_page    : (vide)
+  source_post_id : 5502
+  details        : "{\"position\":5,\"silo\":\"solaire\"}"
+
+[2026-10-22 14:23:09.737303+00:00] outil=contact-expert-inline
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : o.blal@decodetheself.com
+  code_postal    : 75012  | adresse : (vide)
+  source_page    : (vide)
+  source_post_id : 11262
+  details        : "{\"position\":1,\"silo\":\"electricite\"}"
+
+[2026-10-22 12:19:31.722000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/devis-panneau-solaire/
+  source_post_id : (vide)
+
+[2026-10-20 16:14:38.255000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  source_post_id : (vide)
+
+[2026-10-20 05:50:28.417000+00:00] outil=appel-telephone
+  nom/prenom     : (vide)
+  telephone      : +33189713648
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/
+  source_post_id : (vide)
+
+[2026-10-19 22:36:47.035691+00:00] outil=diagnostic-relais-test
+  nom/prenom     : (vide)
+  telephone      : (vide)
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : (vide)
+  source_post_id : (vide)
+  details        : {"marqueur": "diag-74a34a879d09-direct"}
+
+[2026-10-19 22:36:28.786979+00:00] outil=diagnostic-relais-test
+  nom/prenom     : (vide)
+  telephone      : (vide)
+  email          : (vide)
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : https://www.comprendre-mon-energie.fr/contactez-un-expert/
+  source_post_id : (vide)
+  details        : {"marqueur": "diag-74a34a879d09"}
+
+[2026-08-01 11:36:15.787111+00:00] outil=aides-renovation
+  nom/prenom     : Blal 3154
+  telephone      : 0707070707
+  email          : blal3154@gmail.com
+  code_postal    : (vide)  | adresse : Banlieue 67210 Obernai
+  source_page    : simulateur-aides-renovation-energetique
+  source_post_id : (vide)
+  details        : {"profil": "Intermédiaire (Violet)", "travaux": "pac_air_eau", "montant_mpr": 3000, "montant_cee": 2000, "reste_a_charge": 4900}
+
+[2026-08-01 11:35:00.908215+00:00] outil=comparateur-energie
+  nom/prenom     : 3154 Blal
+  telephone      : 0707070707
+  email          : blal3154@gmail.com
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : comparateur-energie-electricite-gaz
+  source_post_id : (vide)
+  details        : {"energie": "elec", "fournisseur": "Ekwateur", "offre": "Électricité Verte", "kwh": 4025, "option_tarifaire": "base", "lien_offre": "https://ekwateur.fr/electricite-verte/?utm_source=cme&utm_medium=comparateur&utm_campaign=ekwa-elec"}
+
+[2026-08-01 11:24:57.164718+00:00] outil=solaire
+  nom/prenom     : 3154 Blal
+  telephone      : 0707070707
+  email          : blal3154@gmail.com
+  code_postal    : (vide)  | adresse : Banlieue 67210 Obernai
+  source_page    : devis-panneau-solaire
+  source_post_id : (vide)
+  details        : {"surface": 100, "orientation": "Plein Sud", "chauffage": "Électrique", "nb_panneaux": 17, "kwc": "6.80", "production": 7331, "roi": 16, "co2": 1745}
+
+[2026-08-01 11:23:42.970172+00:00] outil=comparateur-energie
+  nom/prenom     : 3154 Blal
+  telephone      : 0707070707
+  email          : blal3154@gmail.com
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : comparateur-energie-electricite-gaz
+  source_post_id : (vide)
+  details        : {"energie": "elec", "fournisseur": "Primeo Énergie", "offre": "Fix Confort+", "kwh": 4025, "option_tarifaire": "base", "lien_offre": "https://souscription.primeo-energie.fr/mesCoordonnees?utm_source=cme&utm_medium=comparateur&utm_campaign=primeo-elec"}
+
+[2026-07-31 14:30:24.470249+00:00] outil=solaire
+  nom/prenom     : 3154 Blal
+  telephone      : 0707070707
+  email          : blal3154@gmail.com
+  code_postal    : (vide)  | adresse : 10 Rue 67130 Wisches
+  source_page    : devis-panneau-solaire
+  source_post_id : (vide)
+  details        : {"surface": 100, "orientation": "Plein Sud", "chauffage": "Électrique", "nb_panneaux": 17, "kwc": "6.80", "production": 7027, "roi": 17, "co2": 1672}
+
+[2026-07-31 14:26:06.074758+00:00] outil=aides-renovation
+  nom/prenom     : 3154 Blal
+  telephone      : 0707070707
+  email          : blal3154@gmail.fr
+  code_postal    : (vide)  | adresse : Banlieue 67210 Obernai
+  source_page    : simulateur-aides-renovation-energetique
+  source_post_id : (vide)
+  details        : {"profil": "Intermédiaire (Violet)", "travaux": "pac_air_eau", "montant_mpr": 3000, "montant_cee": 2000, "reste_a_charge": 4900}
+
+[2026-07-31 14:07:43.516972+00:00] outil=solaire
+  nom/prenom     : Blal 3154
+  telephone      : 060606060
+  email          : blal3154@gmail.com
+  code_postal    : (vide)  | adresse : Ban 56350 Allaire
+  source_page    : devis-panneau-solaire
+  source_post_id : (vide)
+  details        : {"surface": 100, "orientation": "Plein Sud", "chauffage": "Électrique", "nb_panneaux": 17, "kwc": "6.80", "production": 7873, "roi": 15, "co2": 1874}
+
+[2026-07-19 06:45:35.280143+00:00] outil=aides-renovation
+  nom/prenom     : Oussama Blal
+  telephone      : 0000000000
+  email          : blal3154@gmail.com
+  code_postal    : (vide)  | adresse : Banlieue Vers Ruesnes 59530 Le Quesnoy
+  source_page    : simulateur-aides-renovation-energetique
+  source_post_id : 4628
+  details        : {"profil": "Intermédiaire (Violet)", "travaux": "pac_air_eau", "montant_mpr": 3000, "montant_cee": 2000, "reste_a_charge": 4750}
+
+[2026-07-18 09:10:45.178040+00:00] outil=solaire
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : Banlieue Vers Ruesnes 59530 Le Quesnoy
+  source_page    : devis-panneau-solaire
+  source_post_id : (vide)
+  details        : {"surface": 100, "orientation": "Plein Sud", "chauffage": "Électrique", "nb_panneaux": 17, "kwc": "6.80", "production": 6995, "roi": 17, "co2": 1665}
+
+[2026-07-18 09:09:31.699825+00:00] outil=aides-renovation
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : Avenue de Fronton 31200 Toulouse
+  source_page    : simulateur-aides-renovation-energetique
+  source_post_id : (vide)
+  details        : {"profil": "Intermédiaire (Violet)", "travaux": "pac_air_eau", "montant_mpr": 3000, "montant_cee": 2000, "reste_a_charge": 4300}
+
+[2026-07-18 09:07:25.701827+00:00] outil=comparateur-energie
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : comparateur-energie-electricite-gaz
+  source_post_id : (vide)
+  details        : {"energie": "elec", "fournisseur": "Primeo Énergie", "offre": "Fix Confort+", "kwh": 4025, "option_tarifaire": "base", "lien_offre": "https://souscription.primeo-energie.fr/mesCoordonnees?utm_source=cme&utm_medium=comparateur&utm_campaign=primeo-elec"}
+
+[2026-07-14 08:36:54.450061+00:00] outil=comparateur-energie
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : comparateur-energie-electricite-gaz
+  source_post_id : 4421
+  details        : {"energie": "elec", "fournisseur": "Vattenfall", "offre": "Elec Fixe", "kwh": 4025, "option_tarifaire": "base", "lien_offre": "https://www.vattenfall.fr/electricite-et-gaz/offres-electricite-moins-chere?utm_source=cme&utm_medium=comparateur&utm_campaign=vattenfall"}
+
+[2026-07-14 08:33:57.531980+00:00] outil=comparateur-energie
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : comparateur-energie-electricite-gaz
+  source_post_id : (vide)
+  details        : {"energie": "elec", "fournisseur": "Alpiq", "offre": "Elec Fixe Confort", "kwh": 4025, "option_tarifaire": "base", "lien_offre": "https://particuliers.alpiq.fr/electricite/notre-offre?utm_source=cme&utm_medium=comparateur&utm_campaign=alpiq-elec"}
+
+[2026-07-14 08:20:42.324553+00:00] outil=comparateur-energie
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : comparateur-energie-electricite-gaz
+  source_post_id : (vide)
+  details        : {"energie": "elec", "fournisseur": "Ohm Énergie", "offre": "Prix Fixe Élec", "kwh": 5040, "option_tarifaire": "base", "lien_offre": "https://ohm-energie.com/offre/electricite?utm_source=cme&utm_medium=comparateur&utm_campaign=ohm-elec"}
+
+[2026-07-12 15:38:42.745887+00:00] outil=aides-renovation
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : Ban 56350 Saint-Gorgon
+  source_page    : simulateur-aides-renovation-energetique
+  source_post_id : (vide)
+  details        : {"profil": "Intermédiaire (Violet)", "travaux": "pac_air_eau", "montant_mpr": 3000, "montant_cee": 2000, "reste_a_charge": 4550}
+
+[2026-07-12 15:38:07.268481+00:00] outil=solaire
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : Ban 56350 Allaire
+  source_page    : devis-panneau-solaire
+  source_post_id : (vide)
+  details        : {"surface": 100, "orientation": "Plein Sud", "chauffage": "Électrique", "nb_panneaux": 17, "kwc": "6.80", "production": 7873, "roi": 15, "co2": 1874}
+
+[2026-07-12 15:35:13.668008+00:00] outil=comparateur-energie
+  nom/prenom     : Oussama Blal
+  telephone      : 0695410020
+  email          : contact@comprendre-mon-energie.fr
+  code_postal    : (vide)  | adresse : (vide)
+  source_page    : comparateur-energie-electricite-gaz
+  source_post_id : (vide)
+  details        : {"energie": "elec", "fournisseur": "Ohm Énergie", "offre": "Prix Fixe Élec", "kwh": 4025, "option_tarifaire": "hphc", "lien_offre": "https://ohm-energie.com/offre/electricite?utm_source=cme&utm_medium=comparateur&utm_campaign=ohm-elec"}
