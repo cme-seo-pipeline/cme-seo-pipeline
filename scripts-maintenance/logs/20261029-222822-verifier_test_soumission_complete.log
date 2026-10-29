@@ -1,0 +1,53 @@
+# Execution du 2026-10-29T22:28:22Z
+# Script    : scripts-maintenance/verifier_test_soumission_complete.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+================================================================================
+1) Dernieres lignes leads_convertis (20 dernieres minutes)
+================================================================================
+                       timestamp                  tool          prenom nom  telephone                                                                                                            source_page source_post_id                                     details
+2026-10-29 22:26:53.724890+00:00 contact-expert-inline test diagnostic     0695410020 https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide-detaille/          12694 "{\"position\":1,\"silo\":\"electricite\"}"
+
+================================================================================
+2) Dernieres lignes interactions_contenu (20 dernieres minutes)
+================================================================================
+                       timestamp type_evenement   etape        silo     session_id source_post_id
+2026-10-29 22:08:30.994000+00:00     form_etape       0 electricite mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     form_etape       0 electricite mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     form_etape       0 electricite mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     form_etape       0 electricite mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     form_etape       0 electricite mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     form_etape       0 electricite mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     form_etape       0 electricite mvu3ho014k22cj           4539
+2026-10-29 22:08:30.994000+00:00     form_etape       0 electricite mvu3ho014k22cj           4539
+2026-10-29 22:08:36.849000+00:00        form_vu         electricite mvu3ho014k22cj           4539
+2026-10-29 22:26:26.094000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.095000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.095000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.095000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.095000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.095000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.096000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.096000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.096000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.096000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.096000+00:00     form_etape       0 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:26.475000+00:00        form_vu         electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:42.980000+00:00     form_etape       1 electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:53.101000+00:00     form_etape termine electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:54.472000+00:00        form_vu         electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:54.522000+00:00        form_vu         electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:54.556000+00:00        form_vu         electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:54.904000+00:00        form_vu         electricite mvu44pcwrpbvze          12694
+2026-10-29 22:26:54.944000+00:00        form_vu         electricite mvu44pcwrpbvze          12694
+
+================================================================================
+3) Verdict
+================================================================================
+✅ 'termine' detecte -- l'instrumentation fonctionne bien de bout en bout.
