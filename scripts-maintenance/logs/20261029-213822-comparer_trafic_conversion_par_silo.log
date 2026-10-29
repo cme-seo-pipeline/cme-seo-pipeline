@@ -1,0 +1,29 @@
+# Execution du 2026-10-29T21:38:22Z
+# Script    : scripts-maintenance/comparer_trafic_conversion_par_silo.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Leads du mois en cours (leads_convertis)...
+📥 Trafic organique du mois en cours (01_raw.ga4_pages)...
+
+================================================================================
+COMPARATIF TRAFIC vs CONVERSION PAR SILO -- mois en cours
+================================================================================
+Silo                        Sessions GA4     Leads     Taux conv.
+--------------------------------------------------------------------------------
+gaz                                  780         1         0.128%
+electricite                          675        10         1.481%
+aide-energetique                     349         0         0.000%
+renovation-energetique               110         0         0.000%
+solaire                               71         2         2.817%
+contactez-un-expert                   13         0         0.000%
+contact                                4         0         0.000%
+about-us                               1         0         0.000%
+cadre-legal-et-confidentialite              1         0         0.000%
+plan-du-site                           1         0         0.000%
+politique-de-cookies-ue                1         0         0.000%
+contact-us                             1         0         0.000%
+inconnu                                0         1         0.000%
