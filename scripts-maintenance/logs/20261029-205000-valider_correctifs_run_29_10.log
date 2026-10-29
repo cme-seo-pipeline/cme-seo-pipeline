@@ -1,0 +1,138 @@
+# Execution du 2026-10-29T20:50:00Z
+# Script    : scripts-maintenance/valider_correctifs_run_29_10.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📅 24 article(s) publie(s) aujourd'hui (date_publication = CURRENT_DATE)
+
+==========================================================================================
+1) Doublons de mot_cle_principal au sein du run d'aujourd'hui
+==========================================================================================
+  ✅ Aucun mot_cle_principal duplique dans le run d'aujourd'hui
+
+==========================================================================================
+2) Verification par article (H1 en double, fuite resume, longueur meta)
+==========================================================================================
+
+  post_id=12671 | Raccordement bouteille de gaz : branchements, tuyauterie | https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-gaz-etapes-normes-securite/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 150 caracteres
+
+  post_id=12672 | Installer une bouteille de gaz : checklist de sécurité | https://www.comprendre-mon-energie.fr/gaz/bouteilles/installer-bouteille-gaz-etapes-normes/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ⚠️ Longueur meta_description : 131 caracteres
+
+  post_id=12673 | Normes de sécurité bouteille de gaz : obligations légales | https://www.comprendre-mon-energie.fr/gaz/bouteilles/installer-bouteille-gaz-etapes-normes-1029/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ⚠️ Longueur meta_description : 133 caracteres
+
+  post_id=12674 | Réductions d'impôt gaz 2026 : MaPrimeRénov' et éco-PTZ | https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-gaz-2026-reductions-credits/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ⚠️ Longueur meta_description : 138 caracteres
+
+  post_id=12675 | Chauffe-eau thermodynamique : guide d'achat par budget | https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs-couts/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 149 caracteres
+
+  post_id=12676 | Chauffe-eau thermodynamique : tarifs 2026 et devis | https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-cout-installation-chauffe-eau-thermodynamique/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ⚠️ Longueur meta_description : 138 caracteres
+
+  post_id=12677 | Chèque énergie pour les travaux de rénovation : conditions | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/utiliser-cheque-energie-travaux-renovation/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ⚠️ Longueur meta_description : 138 caracteres
+
+  post_id=12678 | Chèque énergie : mode d'emploi pour le utiliser auprès | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/utiliser-cheque-energie-fournisseur-modalites/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 141 caracteres
+
+  post_id=12679 | MaPrimeRénov' : combien de temps avant d'obtenir | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-obtention-maprimerenov-calendrier/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 140 caracteres
+
+  post_id=12680 | MaPrimeRénov' 2026 : calendrier complet mois par mois | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-delais-obtention-calendrier-2026/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ⚠️ Longueur meta_description : 131 caracteres
+
+  post_id=12681 | Batterie solaire : rentabilité réelle et temps | https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-prix-installation-roi/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 147 caracteres
+
+  post_id=12682 | Batterie solaire moins de 500€ : modèles d'entrée de gamme | https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-pas-cher-prix-rentabilite/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 150 caracteres
+
+  post_id=12683 | Chauffe-eau solaire vs électrique : comparatif détaillé | https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-prix-economies/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 156 caracteres
+
+  post_id=12684 | Chauffe-eau gaz : coûts d'installation et consommation | https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-comparatif-investissement/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 141 caracteres
+
+  post_id=12685 | Coût réel kit solaire 2026 : comparatif détaillé | https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-prix-budget-roi/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ⚠️ Longueur meta_description : 128 caracteres
+
+  post_id=12686 | Budget kit solaire autoconsommation : calculateur ROI | https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autoconsommation-budget-rentabilite-roi/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 154 caracteres
+
+  post_id=12687 | Panneaux solaires 400W : comparatif marques, modèles | https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 155 caracteres
+
+  post_id=12688 | Panneaux solaires : calculer votre ROI en fonction | https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-prix-budget-roi/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 150 caracteres
+
+  post_id=12689 | Chauffe-eau gaz vs système solaire combiné : analyse | https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chauffe-eau-gaz-roi/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 141 caracteres
+
+  post_id=12690 | Système solaire combiné vs chaudière gaz : comparatif | https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-comparatif-economie/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 144 caracteres
+
+  post_id=12691 | Délais de résiliation électricité : préavis légaux | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilition-contrat-electricite-delais-legaux/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 142 caracteres
+
+  post_id=12692 | Résiliation électricité : délais spécifiques par type | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-procedures/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 153 caracteres
+
+  post_id=12693 | Facture électricité : guide interactif pour identifier | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-decryptage-1029/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 145 caracteres
+
+  post_id=12694 | Facture électricité : modèle annoté pour comprendre chaque | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide-detaille/
+    ✅ <h1> dans le contenu : absent (attendu)
+    ✅ Fuite 'Resume redactionnel' : absente
+    ✅ Longueur meta_description : 145 caracteres
