@@ -37,9 +37,11 @@ def main():
     for _, row in df.iterrows():
         try:
             d = json.loads(row["details"]) if row["details"] else {}
+            if isinstance(d, str):  # details est parfois double-encode en JSON
+                d = json.loads(d)
         except Exception:
             d = {}
-        pos = d.get("position")
+        pos = d.get("position") if isinstance(d, dict) else None
         if pos is not None:
             positions.append(int(pos))
 
