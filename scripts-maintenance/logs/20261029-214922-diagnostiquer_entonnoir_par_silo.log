@@ -1,0 +1,26 @@
+# Execution du 2026-10-29T21:49:22Z
+# Script    : scripts-maintenance/diagnostiquer_entonnoir_par_silo.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+==========================================================================================
+Entonnoir du mini-formulaire par silo (depuis le debut de la collecte, 28/10)
+==========================================================================================
+                  silo  vus  etape_0_nom  etape_1_tel  soumis  abandons  sessions_distinctes
+                   gaz  313          899            0       0         0                  107
+           electricite  248          741            0       0         0                   86
+      aide-energetique  179          453            1       0         1                   49
+renovation-energetique   33           92            0       0         0                   10
+               solaire   33          305            0       0         0                   27
+
+==========================================================================================
+Taux d'engagement relatifs (sur la base des 'vus')
+==========================================================================================
+  gaz                       : vu=  313 | atteint etape tel=  0.0% | soumis=  0.0% | abandons=0
+  electricite               : vu=  248 | atteint etape tel=  0.0% | soumis=  0.0% | abandons=0
+  aide-energetique          : vu=  179 | atteint etape tel=  0.6% | soumis=  0.0% | abandons=1
+  renovation-energetique    : vu=   33 | atteint etape tel=  0.0% | soumis=  0.0% | abandons=0
+  solaire                   : vu=   33 | atteint etape tel=  0.0% | soumis=  0.0% | abandons=0
