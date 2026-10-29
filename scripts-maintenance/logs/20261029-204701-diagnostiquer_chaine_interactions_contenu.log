@@ -1,0 +1,31 @@
+# Execution du 2026-10-29T20:47:01Z
+# Script    : scripts-maintenance/diagnostiquer_chaine_interactions_contenu.py
+# Arguments : 
+
+======================================================================
+MAILLON 1 — Code JS live sur un article (mu-plugin cPanel a jour ?)
+======================================================================
+  ✅ 'journaliserInteraction' trouve dans le HTML live
+  ✅ 'prefixeSilo' trouve dans le HTML live
+  ✅ 'viderInteractions' trouve dans le HTML live
+  ✅ 'CME_POST_ID' trouve dans le HTML live
+
+======================================================================
+MAILLON 2 — Relais WordPress /wp-json/cme/v1/log-interaction
+======================================================================
+  POST {} -> HTTP 200
+  ✅ Route presente et fonctionnelle
+  Corps (200 premiers caracteres) : {"status":"ok"}
+
+======================================================================
+MAILLON 3 — Endpoint Cloud Run /api/log-interaction
+======================================================================
+  POST {} -> HTTP 200
+  ✅ Route presente et fonctionnelle
+  Corps (200 premiers caracteres) : {"inserted":0,"status":"ok"}
+
+
+======================================================================
+MAILLON 3bis — Comparaison avec une route Cloud Run connue fonctionnelle
+======================================================================
+  OPTIONS https://cme-tracking-api-217943559750.europe-west1.run.app/api/log-lead -> HTTP 200 (reference, route confirmee en prod)
