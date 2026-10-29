@@ -1,0 +1,34 @@
+# Execution du 2026-10-29T22:45:00Z
+# Script    : scripts-maintenance/ajouter_liens_pages_orphelines.py
+# Arguments : 
+
+====================================================================================================
+Source post_id=8215  →  cible https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement/
+====================================================================================================
+  Titre source : Changer de fournisseur électricité après un déménagement
+  ✏️  Insertion juste avant le H2 : 'FAQ : Questions fréquentes'
+      Phrase : « Pour aller plus loin, consultez notre guide complet pour changer de fournisseur électricité. »
+  (dry-run -- aucune ecriture)
+====================================================================================================
+Source post_id=8209  →  cible https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/demarches-conditions-aides-renovation-toiture/
+====================================================================================================
+  Titre source : Budget rénovation toiture par type de matériau : comparatif
+  ✏️  Insertion juste avant le H2 : 'Questions fréquemment posées'
+      Phrase : « Pour aller plus loin, consultez les démarches et conditions d'éligibilité pour les aides toiture. »
+  (dry-run -- aucune ecriture)
+====================================================================================================
+Source post_id=7846  →  cible https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electrique-mesure-optimisation/
+====================================================================================================
+  Titre source : Compteur électrique : fonctionnement et lecture expliqués
+  ✏️  Insertion juste avant le H2 : 'FAQ – Questions fréquemment posées'
+      Phrase : « Pour aller plus loin, consultez comment mesurer et réduire votre consommation électrique. »
+  (dry-run -- aucune ecriture)
+====================================================================================================
+Source post_id=12694  →  cible https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+====================================================================================================
+  Titre source : Facture électricité : modèle annoté pour comprendre chaque
+  ✏️  Insertion juste avant le H2 : 'FAQ : réponses à vos questions sur la facture électricité'
+      Phrase : « Pour aller plus loin, consultez comment obtenir un justificatif de domicile grâce à votre facture. »
+  (dry-run -- aucune ecriture)
+
+(dry-run global -- relancer avec --apply pour ecrire reellement.)
