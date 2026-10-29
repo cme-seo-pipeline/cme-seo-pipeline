@@ -27,7 +27,7 @@ TABLE = f"{PROJECT_ID}.04_pipeline_seo.leads_convertis"
 def main():
     client = bigquery.Client(project=PROJECT_ID)
     df = client.query(f"""
-        SELECT timestamp, telephone, silo, details
+        SELECT timestamp, telephone, details
         FROM `{TABLE}`
         WHERE tool = 'contact-expert-inline'
         ORDER BY timestamp DESC
