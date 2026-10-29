@@ -82,11 +82,13 @@ def main():
         print(f"  Silo : {silo} | Sous-silo : {sous_silo}")
 
         print(f"\n  → Candidats recents du meme sous-silo (pour y ajouter un lien entrant) :")
+        silo_sql = silo.replace("'", "\\'")
+        sous_silo_sql = sous_silo.replace("'", "\\'")
         df_candidats = client.query(f"""
             SELECT post_id, titre, url_wp, date_publication
             FROM `{PROJECT_ID}.04_pipeline_seo.historique_publications`
-            WHERE silo = '{silo.replace("'", "\\'")}'
-              AND sous_silo_strategique LIKE '{sous_silo.replace("'", "\\'")}%'
+            WHERE silo = '{silo_sql}'
+              AND sous_silo_strategique LIKE '{sous_silo_sql}%'
               AND post_id != {post_id}
             ORDER BY date_publication DESC
             LIMIT 8
