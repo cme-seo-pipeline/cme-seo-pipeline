@@ -1,0 +1,60 @@
+# Execution du 2026-10-29T22:41:44Z
+# Script    : scripts-maintenance/inspecter_pages_orphelines.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+PAGE ORPHELINE : https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement/
+====================================================================================================
+  post_id=3820 | Changer de fournisseur électricité : démarches et délais
+  H2 : ['Pourquoi les fournisseurs structurent deux offres tarifaires parallèles', 'Les trois signaux qui indiquent une véritable flexibilité tarifaire', 'Chronologie précise : quand intervenir pour accéder aux offres non-standard', 'Cas pratique : deux déménagements identiques, deux tarifs différents de 28 %', 'Ce que vous devriez savoir mais que les articles génériques ne disent pas', 'Résumé actionnable : trois étapes pour ne pas payer le tarif standard']
+  Silo : 5. Électricité | Sous-silo : Déménagement
+
+  → Candidats recents du meme sous-silo (pour y ajouter un lien entrant) :
+    post_id=8373 | Délais de mise en service électricité : pourquoi ça traîne | https://www.comprendre-mon-energie.fr/electricite/demenagement/delai-mise-en-service-electricite-demenagement/
+    post_id=8291 | Mise en service électricité déménagement : erreurs à éviter | https://www.comprendre-mon-energie.fr/electricite/demenagement/mise-en-service-electricite-demenagement-delais/
+    post_id=8215 | Changer de fournisseur électricité après un déménagement  | https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0924/
+    post_id=7666 | Électricité lors d'un déménagement : guide complet | https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet-0904/
+    post_id=7662 | Changer de fournisseur électricité lors d'un déménagement | https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0904/
+    post_id=7138 | Électricité et déménagement : les étapes clés | https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-etapes-cles/
+    post_id=7136 | Changer de fournisseur électricité lors d'un déménagement | https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0828/
+    post_id=7134 | Électricité déménagement : guide complet 2026 | https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet/
+
+====================================================================================================
+PAGE ORPHELINE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/demarches-conditions-aides-renovation-toiture/
+====================================================================================================
+  post_id=3776 | Aides rénovation toiture : démarches et conditions 2025
+  H2 : ['Quelles sont les aides disponibles pour rénover sa toiture ?', 'Conditions d&rsquo;éligibilité pour les aides toiture en 2026', 'Les 7 pièges majeurs des aides toiture : erreurs qui coûtent 3 000 à 8 000 € et comment les éviter', 'Démarches étape par étape : le plan d&rsquo;action complet', 'Questions fréquemment posées (FAQ)']
+  Silo : 3. Aide Énergétique | Sous-silo : Aides rénovation toiture
+
+  → Candidats recents du meme sous-silo (pour y ajouter un lien entrant) :
+    post_id=8209 | Budget rénovation toiture par type de matériau : comparatif | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cout-renovation-toiture-tarifs-aides/
+    post_id=7731 | Cumul aides toiture : MaPrimeRénov' + CEE + Éco-PTZ | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cumul-aides-toiture-maprimerenovcee-ecoptz/
+    post_id=7402 | Coût rénovation toiture : combien coûte vraiment ? | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cout-renovation-toiture-prix-exact/
+    post_id=7201 | Étapes pour obtenir une aide toiture sans erreur | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/obtenir-aide-toiture-etapes-sans-erreur/
+    post_id=6961 | Aides toiture 2026 : cumuler MaPrimeRénov' et prime énergie | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-cumulables-toiture-2026/
+    post_id=6738 | Refaire sa toiture : étapes, matériaux et devis gratuit | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/refaire-toiture-etapes-materiaux-devis/
+    post_id=6543 | Aides toiture 2026 : quelles primes pour votre rénovation | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-toiture-2026-primes-renovation/
+    post_id=6282 | Installer une toiture végétalisée : aides et étapes | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/toiture-vegetalisee-installation-aides/
+
+====================================================================================================
+PAGE ORPHELINE : https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electrique-mesure-optimisation/
+====================================================================================================
+  post_id=4354 | Consommation électrique : Réduisez vos factures jusqu&rsquo;à 40%
+  H2 : ['Qu&rsquo;est-ce que la consommation électrique et comment fonctionne-t-elle ?', 'Quels appareils consomment le plus d&rsquo;électricité dans une maison ?', 'Comment mesurer précisément sa consommation électrique ?', 'Stratégies simples pour réduire sa consommation électrique', 'FAQ &#8211; Réponses aux questions fréquentes', 'Conclusion : reprendre le contrôle de votre consommation']
+  ⚠️ Pas de ligne dans historique_publications pour ce post_id (article legacy ?)
+====================================================================================================
+PAGE ORPHELINE : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+====================================================================================================
+  post_id=699 | Justificatif de domicile : Quelle est la procédure pour l&rsquo;obtenir en ligne ou en contactant son fournisseur?
+  H2 : ['Obtenir mon justificatif de domicile', "Pourquoi obtenir votre attestation lors d'un déménagement ?", "Pourquoi la facture d'électricité est le meilleur justificatif de domicile ?", 'Quels sont les documents acceptés comme justificatif de domicile ?', "Comment réduire votre facture d'électricité de 15 à 25% en quelques semaines"]
+  ⚠️ Pas de ligne dans historique_publications pour ce post_id (article legacy ?)
