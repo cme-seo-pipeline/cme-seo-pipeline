@@ -1,0 +1,8 @@
+# Execution du 2026-10-29T22:40:42Z
+# Script    : scripts-maintenance/inspecter_pages_orphelines.py
+# Arguments : 
+
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/inspecter_pages_orphelines.py", line 93
+    """).to_dataframe()
+       ^
+SyntaxError: f-string expression part cannot include a backslash
