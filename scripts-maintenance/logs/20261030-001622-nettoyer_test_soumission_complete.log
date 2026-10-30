@@ -1,0 +1,42 @@
+# Execution du 2026-10-30T00:16:22Z
+# Script    : scripts-maintenance/nettoyer_test_soumission_complete.py
+# Arguments : --apply --attendu-leads=1 --attendu-interactions=19
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📋 1) Ligne candidate dans leads_convertis :
+                       timestamp          prenom  telephone source_post_id
+2026-10-29 22:26:53.724890+00:00 test diagnostic 0695410020          12694
+
+📋 2) Lignes candidates dans interactions_contenu (session_id='mvu44pcwrpbvze') :
+                       timestamp type_evenement   etape
+2026-10-29 22:26:26.094000+00:00     form_etape       0
+2026-10-29 22:26:26.095000+00:00     form_etape       0
+2026-10-29 22:26:26.095000+00:00     form_etape       0
+2026-10-29 22:26:26.095000+00:00     form_etape       0
+2026-10-29 22:26:26.095000+00:00     form_etape       0
+2026-10-29 22:26:26.095000+00:00     form_etape       0
+2026-10-29 22:26:26.096000+00:00     form_etape       0
+2026-10-29 22:26:26.096000+00:00     form_etape       0
+2026-10-29 22:26:26.096000+00:00     form_etape       0
+2026-10-29 22:26:26.096000+00:00     form_etape       0
+2026-10-29 22:26:26.096000+00:00     form_etape       0
+2026-10-29 22:26:26.475000+00:00        form_vu        
+2026-10-29 22:26:42.980000+00:00     form_etape       1
+2026-10-29 22:26:53.101000+00:00     form_etape termine
+2026-10-29 22:26:54.472000+00:00        form_vu        
+2026-10-29 22:26:54.522000+00:00        form_vu        
+2026-10-29 22:26:54.556000+00:00        form_vu        
+2026-10-29 22:26:54.904000+00:00        form_vu        
+2026-10-29 22:26:54.944000+00:00        form_vu        
+
+Total : 1 ligne(s) leads_convertis, 19 ligne(s) interactions_contenu
+
+✍️ Suppression de 1 ligne(s) leads_convertis...
+✅ 1 ligne(s) supprimee(s) dans leads_convertis.
+✍️ Suppression de 19 ligne(s) interactions_contenu...
+✅ 19 ligne(s) supprimee(s) dans interactions_contenu.
