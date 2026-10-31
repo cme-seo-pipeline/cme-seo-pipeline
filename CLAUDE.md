@@ -592,7 +592,7 @@ partagé par plusieurs blocs différents.
 | Fichier | Déclencheur | Rôle |
 |---|---|---|
 | `publication-quotidienne.yml` | cron quotidien | Publie les nouveaux articles (pipeline.py) |
-| `audit-mensuel.yml` | cron mensuel (1er du mois, 3h UTC) + `workflow_dispatch` | Audit factuel des valeurs réglementaires citées dans les articles (`auditer_articles_action.py`) — **sans rapport avec les CTA** |
+| `audit-mensuel.yml` | cron mensuel (5 du mois, 3h UTC — décalé du 1er le 31/10/2026) + `workflow_dispatch` | Audit factuel des valeurs réglementaires citées dans les articles (`auditer_articles_action.py`) — **sans rapport avec les CTA** |
 | `sync-clarity.yml`, `sync-clarity-par-page.yml` | — | Sync Microsoft Clarity |
 | `sync-indicateurs.yml` | — | Rafraîchit les indicateurs réglementaires |
 | `sync-leads-app.yml` | — | Sync leads vers l'app |
@@ -1148,9 +1148,11 @@ Audite les articles des sous-silos a `pertinence='directe'` (table
 `mapping_indicateur_sous_silo`) contre les dernieres valeurs connues
 (`indicateurs_reglementaires`), et **corrige automatiquement, sans
 validation humaine**, tout article citant une valeur reglementaire
-devenue obsolete. Dernier run : 1/10/2026, succes. Prochain run : 1/11/2026
-(demain). Sans rapport avec le chantier CTA/formulaire — c'est le seul
-mecanisme de correction retroactive de contenu existant dans ce repo.
+devenue obsolete. Dernier run : 1/10/2026, succes. **Decale au 5 du mois
+le 31/10/2026** (voir section "Audit mensuel — appel a l'API Claude, et
+volume" plus bas) : prochain run desormais le 5/11/2026, plus le 1/11.
+Sans rapport avec le chantier CTA/formulaire — c'est le seul mecanisme de
+correction retroactive de contenu existant dans ce repo.
 
 **Volet 2 — bilan de sante general** : tous les workflows recurrents sont
 verts sur leurs derniers runs (`sync-clarity`, `sync-clarity-par-page`,
@@ -1319,3 +1321,10 @@ Claude ? Les deux workflows du 1er du mois n'ont pas le meme profil :
   **non**, aucun appel a l'API Claude — purement SQL/seuils sur les
   donnees GSC (`01_raw.gsc_queries`), verifie par grep (zero occurrence de
   `anthropic`/`claude` dans ce fichier).
+
+**Decale au 5 du mois (31/10/2026)** : `audit-mensuel.yml` passe du 1er au
+5 du mois (`cron: '0 3 1 * *'` → `'0 3 5 * *'`, toujours 3h UTC), demande
+explicite de l'operateur. `audit-cannibalisation-mensuel.yml` n'est **pas**
+concerne par ce changement (reste au 1er, 5h10 UTC) — seul l'audit
+reglementaire (celui qui appelle l'API Claude, voir ci-dessus) a ete
+decale.
