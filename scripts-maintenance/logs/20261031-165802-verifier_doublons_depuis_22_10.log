@@ -1,0 +1,290 @@
+# Execution du 2026-10-31T16:58:02Z
+# Script    : scripts-maintenance/verifier_doublons_depuis_22_10.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+================================================================================
+1. Mots-cles EXACTEMENT identiques republies pour le meme sous-silo
+   (base, suffixe retire) depuis 2026-10-22T00:00:00Z, fenetre de 90j glissante
+   -- signature directe des 3 root causes corrigees en octobre
+================================================================================
+   ⚠️ 17 cas trouves :
+                   date_nouvelle  post_id_nouveau                    sous_silo_base                                mot_cle                  date_precedente  post_id_precedent  ecart_minutes
+2026-10-23 08:31:31.434718+00:00            11366               Contrat Électricité                 aides électricité 2026 2026-08-31 11:51:46.431875+00:00               7342          76119
+2026-10-23 08:31:31.434718+00:00            11366               Contrat Électricité                 aides électricité 2026 2026-10-02 09:37:09.969966+00:00               9365          30174
+2026-10-23 08:31:31.434718+00:00            11366               Contrat Électricité                 aides électricité 2026 2026-08-31 11:52:44.533131+00:00               7344          76118
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-19 08:40:19.856927+00:00              10930           4310
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-16 08:05:46.838880+00:00              10622           8664
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-16 08:07:35.171469+00:00              10624           8663
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-13 21:31:53.585142+00:00               9573          12178
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-19 08:41:21.264411+00:00               9571           4309
+2026-10-22 08:29:17.581748+00:00            11256               Contrat Électricité        changer fournisseur électricité 2026-09-28 09:32:18.950905+00:00               8578          34496
+2026-10-22 08:29:17.581748+00:00            11256               Contrat Électricité        changer fournisseur électricité 2026-10-18 08:02:53.546295+00:00              10832           5786
+2026-10-22 08:29:17.581748+00:00            11256               Contrat Électricité        changer fournisseur électricité 2026-10-18 08:01:27.031779+00:00              10830           5787
+2026-10-22 08:25:00.688441+00:00            11250                    Chèque énergie           chèque énergie montants 2026 2026-09-27 09:04:57.492738+00:00               8454          35960
+2026-10-22 08:22:53.638394+00:00            11246 Aides chauffe-eau thermodynamique aides chauffe-eau thermodynamique 2026 2026-08-15 13:49:03.341280+00:00               6135          97593
+2026-10-22 08:21:30.686732+00:00            11244 Aides chauffe-eau thermodynamique       prix chauffe-eau thermodynamique 2026-09-25 08:33:57.696108+00:00               8283          38867
+2026-10-22 08:21:30.686732+00:00            11244 Aides chauffe-eau thermodynamique       prix chauffe-eau thermodynamique 2026-10-01 09:54:01.331683+00:00               9245          30147
+2026-10-22 08:21:30.686732+00:00            11244 Aides chauffe-eau thermodynamique       prix chauffe-eau thermodynamique 2026-10-01 09:52:42.534548+00:00               9243          30148
+2026-10-22 08:17:49.068772+00:00            11238                        Bouteilles            butane vs propane bouteille 2026-08-19 03:54:59.443720+00:00               6475          92422
+
+================================================================================
+2. Meme jour, meme sous-silo (base), DEUX articles partageant au moins
+   3 mots de plus de 3 lettres dans leur mot-cle -- signature precise
+   du bug #3/#4 ('jumeaux' publies a quelques minutes d'ecart DANS LE
+   MEME RUN, occurrence >=2 d'un sous-silo a quota > 1)
+================================================================================
+   ⚠️ 17 paire(s) suspecte(s) -- a relire manuellement (faux positifs possibles) :
+                          date_a  post_id_a                                                                                 mot_cle_a                           date_b  post_id_b                                                                              mot_cle_b             sous_silo_base
+2026-10-31 09:51:31.292160+00:00      13026              économies d'énergie réelles système solaire combiné bilan énergétique annuel 2026-10-31 09:52:53.899955+00:00      13027     système solaire combiné chaudière gaz retour investissement situation famille type    Système solaire combiné
+2026-10-31 09:48:07.575043+00:00      13024 panneaux solaires 400W consommation électrique dimensionnement installation résidentielle 2026-10-31 09:49:50.035198+00:00      13025                    calculateur ROI panneaux solaires 400W régions France amortissement          Panneaux solaires
+2026-10-31 09:39:46.574720+00:00      13020                      temps amortissement chauffe-eau solaire vs électrique payback period 2026-10-31 09:41:44.205274+00:00      13021               coût chauffe-eau gaz vs solaire amortissement maison individuelle France        Chauffe-eau solaire
+2026-10-31 09:36:27.070324+00:00      13018                              batterie solaire 5 kWh achat guide profil foyer consommation 2026-10-31 09:37:57.103969+00:00      13019        panneau solaire batterie rentabilité profil consommateur comparaison économique Batterie panneaux solaires
+2026-10-30 10:05:23.892826+00:00      12850                        simulateur devis système solaire combiné comparateur installateurs 2026-10-30 10:06:52.386631+00:00      12851          prix installation système solaire combiné par région comparaison géographique    Système solaire combiné
+2026-10-29 09:59:00.096210+00:00      12691                                 préavis résiliation électricité délais légaux fournisseur 2026-10-29 10:00:06.160939+00:00      12692                       délais résiliation électricité contrat fixe variable fournisseur        Contrat Électricité
+2026-10-29 09:55:54.234516+00:00      12689                              chauffe-eau gaz coût exploitation vs système solaire combiné 2026-10-29 09:57:19.328241+00:00      12690                 économies système solaire combiné vs chaudière gaz comparatif chiffres    Système solaire combiné
+2026-10-29 09:28:45.585077+00:00      12672                       sécurité installation bouteille gaz normes conformité mise en place 2026-10-29 09:30:12.873259+00:00      12673            normes légales sécurité bouteille gaz obligations réglementaires conformité                 Bouteilles
+2026-10-28 09:53:01.232849+00:00      12514                                  devis installation système solaire combiné facteurs prix 2026-10-28 09:54:53.879117+00:00      12515               système solaire combiné 2026 innovations technologiques nouveaux modèles    Système solaire combiné
+2026-10-28 09:49:58.170841+00:00      12512                        coût panneaux solaires monocristallins polycristallins rentabilité 2026-10-28 09:51:22.347440+00:00      12513                 rendement durabilité panneaux solaires monocristallins polycristallins          Panneaux solaires
+2026-10-28 09:44:01.814667+00:00      12508                                       chauffe-eau solaire installation soi-même bricolage 2026-10-28 09:45:52.038521+00:00      12509                                   tarif installation chauffe-eau solaire professionnel        Chauffe-eau solaire
+2026-10-28 09:40:22.192842+00:00      12506                            groupe électrogène batterie solaire coût autonomie comparaison 2026-10-28 09:42:01.445934+00:00      12507 batterie solaire groupe électrogène autonomie fiabilité écologie comparaison détaillée Batterie panneaux solaires
+2026-10-28 09:36:34.510459+00:00      12504                      cumuler MaPrimeRénov' CEE éco-PTZ TVA réduite financement rénovation 2026-10-28 09:38:36.037507+00:00      12505                      cumuler plusieurs aides rénovation stratégie maximale financement              MaPrimeRénov'
+2026-10-27 08:49:01.833189+00:00      12389                                 chèque énergie 2026 demande délais attribution calendrier 2026-10-27 08:50:02.643776+00:00      12390                                   chèque énergie barème revenu seuils éligibilité 2026             Chèque énergie
+2026-10-26 16:28:03.244368+00:00      12356                        système solaire combiné vs chaudière gaz quel est le plus rentable 2026-10-26 16:29:49.157562+00:00      12357                 système solaire combiné temps de retour sur investissement rentabilité    Système solaire combiné
+2026-10-24 08:03:36.550145+00:00      11460                                            chèque énergie présentation fournisseur étapes 2026-10-24 08:04:53.133833+00:00      11461                                  chèque énergie usages autorisés interdits fournisseur             Chèque énergie
+2026-10-23 08:24:11.484885+00:00      11361                                        MaPrimeRénov' travaux rénovation vs chèque énergie 2026-10-23 08:25:42.881527+00:00      11362                                        MaPrimeRénov' chèque énergie choix selon profil             Chèque énergie/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+
+================================================================================
+2bis. Diagnostic de la fenetre de comparaison de verifier_et_differencier_sujet()
+      (LIMIT 15 ORDER BY date DESC) : pour chaque sous-silo a quota > 1,
+      jusqu'a quand remonte le 15e article le plus recent AU MOMENT de
+      chaque publication depuis le 22/10 -- si < 90 jours, un doublon
+      plus ancien que cette fenetre echappe totalement a la verification,
+      meme si verifier_doublons()/le filtre SQL amont le voyaient.
+================================================================================
+                                   min  max      mean  count
+sous_silo_base                                              
+Aides chauffe-eau thermodynamique    7   10  8.666667     15
+Batterie panneaux solaires         107  131     125.7     10
+Bouteilles                           4    7  6.291667     24
+Chauffe-eau solaire                105  110     107.3     10
+Chèque énergie                       7   10    8.6875     16
+Contrat Électricité                  7   10    8.6875     16
+Facture Électricité                  7   10    8.6875     16
+Kit solaire                        104  109     106.3     10
+MaPrimeRénov'                        7   10    8.6875     16
+Panneaux solaires                  132  136     134.1     10
+Système solaire combiné            106  129     123.0     10
+
+   → 'min'/'max'/'mean' = nombre de jours couverts par les 15 articles
+     les plus recents vus par verifier_et_differencier_sujet() au moment
+     de chaque publication. A comparer a la fenetre anti-doublon de 90j.
+
+================================================================================
+3. Detail complet de tous les articles publies depuis le 22/10 sur les
+   sous-silos a QUOTA > 1 (le cas precis que le bug #3/#4 cassait) --
+   pour relecture manuelle titre par titre, au-dela de ce qu'un script
+   de correspondance exacte/approchee peut detecter
+================================================================================
+   153 article(s) -- groupes par sous-silo :
+
+   --- Aides chauffe-eau thermodynamique (15 articles) ---
+     2026-10-22 08:21:30.686732+00:00 | 'Chauffe-eau thermodynamique : ROI et économies réalisées' | mot-cle: 'prix chauffe-eau thermodynamique'
+     2026-10-22 08:22:53.638394+00:00 | 'Aides chauffe-eau thermodynamique 2026 : montants et' | mot-cle: 'aides chauffe-eau thermodynamique 2026'
+     2026-10-23 08:21:14.866336+00:00 | 'Chauffe-eau thermodynamique vs gaz : consommation' | mot-cle: 'consommation énergétique chauffe-eau thermodynamique gaz'
+     2026-10-23 08:22:47.721102+00:00 | 'Chauffe-eau thermodynamique vs gaz : quel système choisir' | mot-cle: 'choisir chauffe-eau thermodynamique ou gaz habitat'
+     2026-10-24 08:01:01.371666+00:00 | 'Chauffe-eau thermodynamique : schéma et étapes du cycle' | mot-cle: 'cycle thermodynamique chauffe-eau fonctionnement détaillé'
+     2026-10-24 08:02:22.013965+00:00 | 'Chauffe-eau thermodynamique : les erreurs courantes' | mot-cle: 'erreurs installation chauffe-eau thermodynamique'
+     2026-10-27 08:45:55.802215+00:00 | 'Chauffe-eau thermodynamique : comparateur de prix et' | mot-cle: 'simulateur prix chauffe-eau thermodynamique économies année'
+     2026-10-27 08:47:56.939993+00:00 | 'Installation chauffe-eau thermodynamique : checklist et' | mot-cle: 'matériel installation chauffe-eau thermodynamique checklist'
+     2026-10-28 09:31:18.877262+00:00 | 'Chauffe-eau thermodynamique : guide visuel du cycle de' | mot-cle: 'cycle compression chauffe-eau thermodynamique évaporation condensation'
+     2026-10-28 09:32:37.289208+00:00 | 'Chauffe-eau thermodynamique : comprendre les défaillances' | mot-cle: 'diagnostic panne chauffe-eau thermodynamique troubleshooting'
+     2026-10-29 09:33:07.774985+00:00 | "Chauffe-eau thermodynamique : guide d'achat par budget" | mot-cle: 'chauffe-eau thermodynamique marques modèles budget achat'
+     2026-10-29 09:34:27.361072+00:00 | 'Chauffe-eau thermodynamique : tarifs 2026 et devis' | mot-cle: 'devis installation chauffe-eau thermodynamique tarif 2026 professionnel'
+     2026-10-30 09:42:40.613738+00:00 | 'Chauffe-eau thermodynamique : guide complet' | mot-cle: 'chauffe-eau thermodynamique expliqué débutant comprendre technologie'
+     2026-10-30 09:44:31.231116+00:00 | 'Aides chauffe-eau thermodynamique 2026 : dossier' | mot-cle: 'dossier demande aides chauffe-eau thermodynamique démarches administratives'
+     2026-10-31 09:30:08.937720+00:00 | 'Chauffe-eau thermodynamique : coût total de possession' | mot-cle: 'coût possession chauffe-eau thermodynamique amortissement investissement long terme'
+
+   --- Batterie panneaux solaires (10 articles) ---
+     2026-10-26 16:24:39.584403+00:00 | 'Prix batterie solaire installation : coût réel 2026' | mot-cle: 'prix batterie solaire installation coût'
+     2026-10-26 16:26:16.856611+00:00 | 'Quelle capacité batterie solaire choisir pour sa maison' | mot-cle: 'quelle capacité batterie solaire choisir pour sa maison'
+     2026-10-28 09:40:22.192842+00:00 | 'Groupe électrogène ou batterie solaire : coûts, autonomie' | mot-cle: 'groupe électrogène batterie solaire coût autonomie comparaison'
+     2026-10-28 09:42:01.445934+00:00 | 'Batterie solaire vs groupe électrogène : autonomie' | mot-cle: 'batterie solaire groupe électrogène autonomie fiabilité écologie comparaison détaillée'
+     2026-10-29 09:42:10.087083+00:00 | 'Batterie solaire : rentabilité réelle et temps' | mot-cle: 'batterie solaire temps amortissement rentabilité économies'
+     2026-10-29 09:44:09.489001+00:00 | "Batterie solaire moins de 500€ : modèles d'entrée de gamme" | mot-cle: 'batterie solaire entrée de gamme budget serré petit budget'
+     2026-10-30 09:52:08.186023+00:00 | 'Batterie solaire 10 kWh : comparatif marques et modèles' | mot-cle: 'batterie solaire 10 kWh comparatif marques modèles premium haute capacité'
+     2026-10-30 09:53:40.356717+00:00 | 'Batterie solaire 10 kWh : dimensionnement exact' | mot-cle: 'batterie solaire 10 kWh dimensionnement économies foyer autonomie énergétique'
+     2026-10-31 09:36:27.070324+00:00 | "Batterie solaire 5 kWh : guide complet d'achat et ROI" | mot-cle: 'batterie solaire 5 kWh achat guide profil foyer consommation'
+     2026-10-31 09:37:57.103969+00:00 | 'Panneau solaire seul ou avec batterie : rentabilité réelle' | mot-cle: 'panneau solaire batterie rentabilité profil consommateur comparaison économique'
+
+   --- Bouteilles (24 articles) ---
+     2026-10-22 08:16:47.533511+00:00 | 'Bouteille de gaz portable : guide complet pour vos' | mot-cle: 'bouteille de gaz portable'
+     2026-10-22 08:17:49.068772+00:00 | 'Bouteille de gaz butane vs propane : quel choix' | mot-cle: 'butane vs propane bouteille'
+     2026-10-22 08:18:50.715234+00:00 | 'Bouteille de gaz 13 kg vs 5 kg : quel format choisir' | mot-cle: 'bouteille de gaz 13 kg vs 5 kg'
+     2026-10-23 08:15:04.108084+00:00 | 'Bouteille de gaz : comparatif des fournisseurs et meilleure' | mot-cle: 'fournisseur bouteille de gaz tarifs comparatif'
+     2026-10-23 08:16:49.543069+00:00 | 'Bouteille de gaz : évolution des prix 2026 et stratégies' | mot-cle: 'tarifs gaz bouteille 2026 évolution'
+     2026-10-23 08:18:21.582403+00:00 | 'Installer une bouteille de gaz : guide pratique pour' | mot-cle: 'installation bouteille gaz débutant erreurs'
+     2026-10-24 07:54:26.614947+00:00 | 'Bouteille de gaz : autonomie réelle et calcul de' | mot-cle: 'autonomie bouteille de gaz calcul consommation'
+     2026-10-24 07:56:00.210768+00:00 | 'Norme de stockage bouteille de gaz : obligations légales et' | mot-cle: 'norme légale stockage gaz conformité obligation'
+     2026-10-24 07:57:32.963919+00:00 | 'Bouteille de gaz : checklist de sécurité avant stockage et' | mot-cle: 'sécurité stockage gaz prévention risques checklist'
+     2026-10-27 08:40:16.449427+00:00 | 'Bouteille de gaz : anatomie et composants internes expliqués' | mot-cle: 'anatomie bouteille de gaz composants internes détails'
+     2026-10-27 08:41:29.878344+00:00 | 'Détendeur bouteille de gaz : rôle, entretien et dépannage' | mot-cle: 'détendeur gaz entretien maintenance dépannage panne'
+     2026-10-27 08:42:52.507003+00:00 | 'Bouteille de gaz : schéma de fonctionnement et cycle de' | mot-cle: 'schéma fonctionnement bouteille gaz pressurisation cycle'
+     2026-10-28 09:25:49.662684+00:00 | "Propane vs butane : guide d'achat selon vos besoins" | mot-cle: 'propane butane guide achat critères choix climat usage'
+     2026-10-28 09:27:07.823109+00:00 | 'Propane ou butane en bouteille : avantages, inconvénients' | mot-cle: 'propane butane différences avantages inconvénients utilisation'
+     2026-10-28 09:28:32.308359+00:00 | 'Propane vs butane : tableau comparatif complet des' | mot-cle: 'propane butane performance thermique rendement économique comparaison'
+     2026-10-29 09:27:30.354435+00:00 | 'Raccordement bouteille de gaz : branchements, tuyauterie' | mot-cle: 'raccordement tuyauterie bouteille gaz branchement mise en service'
+     2026-10-29 09:28:45.585077+00:00 | 'Installer une bouteille de gaz : checklist de sécurité' | mot-cle: 'sécurité installation bouteille gaz normes conformité mise en place'
+     2026-10-29 09:30:12.873259+00:00 | 'Normes de sécurité bouteille de gaz : obligations légales' | mot-cle: 'normes légales sécurité bouteille gaz obligations réglementaires conformité'
+     2026-10-30 09:37:25.069467+00:00 | 'Révision et contrôle technique bouteille de gaz ' | mot-cle: 'révision contrôle technique bouteille gaz calendrier obligatoire certification'
+     2026-10-30 09:38:46.223234+00:00 | "Quand remplacer une bouteille de gaz : signes d'usure" | mot-cle: 'remplacement bouteille gaz usure fin de vie signes'
+     2026-10-30 09:39:48.931939+00:00 | 'Entretien bouteille de gaz : protocole de maintenance' | mot-cle: 'maintenance préventive bouteille gaz protocole entretien régulier prolonger durée de vie'
+     2026-10-31 09:25:38.212870+00:00 | 'Mécanisme interne bouteille de gaz : pression, détente' | mot-cle: 'mécanisme pression détente flux gaz liquéfié évaporation'
+     2026-10-31 09:26:37.800668+00:00 | 'Fonctionnement bouteille de gaz : guide pratique' | mot-cle: 'utilisation quotidienne bouteille de gaz consommateur résidentiel domestique'
+     2026-10-31 09:27:41.109636+00:00 | 'Bouteille de gaz : guide complet pour les professionnels' | mot-cle: 'bouteille gaz professionnel entreprise utilisation industrielle commerciale'
+
+   --- Chauffe-eau solaire (10 articles) ---
+     2026-10-26 16:31:39.502697+00:00 | 'Chauffe-eau solaire rentabilité : économies réelles par an' | mot-cle: 'chauffe-eau solaire rentabilité économies par an'
+     2026-10-26 16:33:07.696593+00:00 | 'Chauffe-eau solaire vs électrique : quel est le plus' | mot-cle: 'chauffe-eau solaire vs chauffe-eau électrique classique quel est le plus économique'
+     2026-10-28 09:44:01.814667+00:00 | "Chauffe-eau solaire : guide complet d'installation DIY pour" | mot-cle: 'chauffe-eau solaire installation soi-même bricolage'
+     2026-10-28 09:45:52.038521+00:00 | "Chauffe-eau solaire : guide des tarifs d'installation par" | mot-cle: 'tarif installation chauffe-eau solaire professionnel'
+     2026-10-29 09:45:39.361133+00:00 | 'Chauffe-eau solaire vs électrique : comparatif détaillé' | mot-cle: 'coût exploitation chauffe-eau solaire électrique long terme'
+     2026-10-29 09:47:27.539588+00:00 | "Chauffe-eau gaz : coûts d'installation et consommation" | mot-cle: 'chauffe-eau gaz installation coût consommation vs énergies renouvelables'
+     2026-10-30 09:55:25.036304+00:00 | 'Chauffe-eau solaire : simulateur de devis gratuit et ROI' | mot-cle: 'simulateur devis chauffe-eau solaire gratuit calculer économies'
+     2026-10-30 09:57:42.721999+00:00 | 'Chauffe-eau solaire 2026 : évolution des aides' | mot-cle: 'aides gouvernementales chauffe-eau solaire 2026 éligibilité conditions MaPrimeRénov'
+     2026-10-31 09:39:46.574720+00:00 | 'Chauffe-eau solaire vs électrique : rentabilité année' | mot-cle: 'temps amortissement chauffe-eau solaire vs électrique payback period'
+     2026-10-31 09:41:44.205274+00:00 | 'Chauffe-eau solaire vs gaz : analyse des coûts réels' | mot-cle: 'coût chauffe-eau gaz vs solaire amortissement maison individuelle France'
+
+   --- Chèque énergie (16 articles) ---
+     2026-10-22 08:23:52.775651+00:00 | 'Chèque énergie 2026 : simulation personnalisée du montant' | mot-cle: 'chèque énergie 2025 éligibilité'
+     2026-10-22 08:25:00.688441+00:00 | "Chèque énergie : montants 2026 et conditions d'accès" | mot-cle: 'chèque énergie montants 2026'
+     2026-10-23 08:24:11.484885+00:00 | "MaPrimeRénov' : l'aide rénovation plus efficace que le" | mot-cle: "MaPrimeRénov' travaux rénovation vs chèque énergie"
+     2026-10-23 08:25:42.881527+00:00 | "MaPrimeRénov' vs Chèque énergie : lequel choisir selon vos" | mot-cle: "MaPrimeRénov' chèque énergie choix selon profil"
+     2026-10-24 08:03:36.550145+00:00 | 'Chèque énergie : les étapes concrètes pour le présenter' | mot-cle: 'chèque énergie présentation fournisseur étapes'
+     2026-10-24 08:04:53.133833+00:00 | 'Chèque énergie : les usages autorisés et interdits selon' | mot-cle: 'chèque énergie usages autorisés interdits fournisseur'
+     2026-10-27 08:49:01.833189+00:00 | 'Chèque énergie 2026 : demande en ligne, délais et' | mot-cle: 'chèque énergie 2026 demande délais attribution calendrier'
+     2026-10-27 08:50:02.643776+00:00 | 'Chèque énergie 2026 : barème de revenus et seuils' | mot-cle: 'chèque énergie barème revenu seuils éligibilité 2026'
+     2026-10-28 09:33:54.127145+00:00 | 'Chèque énergie : les pièges à éviter et les bonnes' | mot-cle: 'chèque énergie pièges erreurs bonnes pratiques utilisation efficace'
+     2026-10-28 09:35:15.883508+00:00 | 'Chèque énergie : calculer son montant personnel selon ses' | mot-cle: 'calculer montant chèque énergie revenus simulation personnalisée'
+     2026-10-29 09:35:37.307823+00:00 | 'Chèque énergie pour les travaux de rénovation : conditions' | mot-cle: 'chèque énergie travaux rénovation énergétique conditions éligibilité démarches'
+     2026-10-29 09:37:01.450290+00:00 | "Chèque énergie : mode d'emploi pour le utiliser auprès" | mot-cle: 'chèque énergie fournisseur électricité gaz procédure complète'
+     2026-10-30 09:45:49.019888+00:00 | 'Chèque énergie 2026 : liste complète des catégories' | mot-cle: 'chèque énergie bénéficiaires catégories critères situation familiale retraités'
+     2026-10-30 09:47:08.558860+00:00 | "Chèque énergie 2026 : test d'éligibilité rapide" | mot-cle: 'chèque énergie test éligibilité vérification rapide suis-je concerné'
+     2026-10-31 09:31:26.478426+00:00 | 'Chèque énergie : les erreurs courantes qui vous font perdre' | mot-cle: 'chèque énergie erreurs courantes perte argent maximiser utilisation'
+     2026-10-31 09:32:39.643362+00:00 | 'Chèque énergie : impact fiscal et obligations déclaratives' | mot-cle: 'chèque énergie fiscalité déclaration impôts revenus non imposables'
+
+   --- Contrat Électricité (16 articles) ---
+     2026-10-22 08:29:17.581748+00:00 | 'Changer de fournisseur électricité : économies réelles et' | mot-cle: 'changer fournisseur électricité'
+     2026-10-22 08:30:44.708512+00:00 | "Comment fonctionne un contrat d'électricité en France" | mot-cle: 'fonctionnement contrat électricité'
+     2026-10-23 08:30:05.500455+00:00 | "Comparateur électricité : trouvez l'offre la moins chère" | mot-cle: 'comparateur électricité'
+     2026-10-23 08:31:31.434718+00:00 | 'Aides électricité 2026 : réductions et chèques' | mot-cle: 'aides électricité 2026'
+     2026-10-24 08:09:49.270077+00:00 | 'Résilier son contrat électricité sans frais : guide' | mot-cle: 'résiliation électricité locataire gratuit'
+     2026-10-24 08:11:11.131243+00:00 | 'Résiliation électricité : modèles de lettre et étapes' | mot-cle: 'lettre résiliation électricité'
+     2026-10-27 08:54:08.812254+00:00 | 'Types de contrats électricité : fixe, variable, heures' | mot-cle: 'contrats électricité fixe variable heures creuses'
+     2026-10-27 08:55:17.821603+00:00 | 'Changement de fournisseur électricité : checklist' | mot-cle: 'checklist changement fournisseur électricité délais'
+     2026-10-28 09:56:27.910207+00:00 | 'Meilleure offre électricité : critères de sélection et' | mot-cle: 'meilleure offre électricité sélection critères'
+     2026-10-28 09:58:17.376346+00:00 | "Pièges des contrats électricité : ce qu'il faut vérifier" | mot-cle: 'pièges contrats électricité signature clauses'
+     2026-10-29 09:59:00.096210+00:00 | 'Délais de résiliation électricité : préavis légaux' | mot-cle: 'préavis résiliation électricité délais légaux fournisseur'
+     2026-10-29 10:00:06.160939+00:00 | 'Résiliation électricité : délais spécifiques par type' | mot-cle: 'délais résiliation électricité contrat fixe variable fournisseur'
+     2026-10-30 10:08:21.258043+00:00 | 'Comparer les offres électricité : tableau comparatif' | mot-cle: 'tableau comparatif offres électricité tarifs services fournisseur'
+     2026-10-30 10:09:29.960393+00:00 | 'Changement fournisseur électricité : guide complet pas' | mot-cle: 'guide étapes changement fournisseur électricité résidents locataires propriétaires'
+     2026-10-31 09:53:57.179133+00:00 | "Durée légale d'un contrat électricité : obligations" | mot-cle: 'durée légale engagement fournisseur électricité obligations'
+     2026-10-31 09:55:47.950633+00:00 | 'Droits du consommateur électricité : recours et protection' | mot-cle: 'droits consommateur électricité recours protection litige fournisseur'
+
+   --- Facture Électricité (16 articles) ---
+     2026-10-22 08:31:57.780400+00:00 | 'Facture électricité : structure tarifaire et frais cachés' | mot-cle: 'composantes facture électricité'
+     2026-10-22 08:33:24.815790+00:00 | "Comment fonctionne la facturation de l'électricité" | mot-cle: 'fonctionnement facture électricité'
+     2026-10-23 08:32:49.028399+00:00 | 'Aides électricité 2026 : guide complet des dispositifs' | mot-cle: 'dispositifs aide sociale électricité'
+     2026-10-23 08:34:16.527385+00:00 | "Chèque énergie 2026 : conditions d'éligibilité et montants" | mot-cle: 'chèque énergie 2026 conditions'
+     2026-10-24 08:12:47.967974+00:00 | 'Comprendre les kWh : unité de mesure et calcul de votre' | mot-cle: 'kwh définition calcul consommation'
+     2026-10-24 08:14:18.461636+00:00 | 'Augmentation électricité 2024-2025 : facteurs tarifaires et' | mot-cle: 'augmentation tarif électricité causes externes'
+     2026-10-27 08:56:37.068424+00:00 | 'Facture électricité : checklist de vérification pour' | mot-cle: 'vérifier facture électricité anomalies'
+     2026-10-27 08:57:59.583046+00:00 | 'Facture électricité : guide pratique pour les locataires et' | mot-cle: 'facture électricité guide locataires propriétaires responsabilités'
+     2026-10-28 09:59:27.788261+00:00 | 'Facture électricité : guide complet pour contester et' | mot-cle: 'contester facture électricité consommation'
+     2026-10-28 10:00:50.709344+00:00 | 'Facture électricité : décoder les charges fixes et' | mot-cle: 'charges fixes variables facture électricité'
+     2026-10-29 10:01:23.971589+00:00 | 'Facture électricité : guide interactif pour identifier' | mot-cle: 'identifier appareils consommation électricité'
+     2026-10-29 10:02:55.220555+00:00 | 'Facture électricité : modèle annoté pour comprendre chaque' | mot-cle: 'structure détaillée facture électricité explication complète'
+     2026-10-30 10:10:53.025654+00:00 | 'Tarifs électricité 2024-2025 : comparatif des offres' | mot-cle: 'comparaison tarifs électricité négociation contrat fournisseur'
+     2026-10-30 10:12:10.243468+00:00 | 'Tarification électricité : formule de calcul du prix' | mot-cle: 'formule tarification unitaire kWh électricité fournisseur'
+     2026-10-31 09:56:57.940875+00:00 | 'Pics de consommation électrique : comment éviter' | mot-cle: 'pics saisonniers consommation électrique hiver été tarification dynamique'
+     2026-10-31 09:58:21.188317+00:00 | 'Réduction facture électricité : stratégies et dispositifs' | mot-cle: 'réduction facture électricité économies pratiques stratégies'
+
+   --- Kit solaire (10 articles) ---
+     2026-10-26 16:20:17.672939+00:00 | 'Prix kit solaire autoconsommation installation comprise' | mot-cle: 'prix kit solaire autoconsommation installation comprise'
+     2026-10-26 16:22:17.598737+00:00 | "Rentabilité kit solaire : en combien d'années amorti" | mot-cle: 'rentabilité kit solaire temps de retour sur investissement'
+     2026-10-28 09:47:10.451167+00:00 | 'Kit solaire vs panneau solaire seul : quel choix pour votre' | mot-cle: 'kit solaire vs panneau solaire seul'
+     2026-10-28 09:48:36.440446+00:00 | 'Électricité classique vs kit solaire : comparatif de' | mot-cle: 'coût électricité classique vs énergie solaire long terme'
+     2026-10-29 09:49:16.110342+00:00 | 'Coût réel kit solaire 2026 : comparatif détaillé' | mot-cle: 'coût kit solaire par puissance marque comparatif'
+     2026-10-29 09:51:21.614420+00:00 | 'Budget kit solaire autoconsommation : calculateur ROI' | mot-cle: 'calculateur ROI kit solaire autoconsommation amortissement budget réel'
+     2026-10-30 09:59:26.565854+00:00 | 'Kit solaire 3kW : guide complet des marques et modèles' | mot-cle: 'meilleures marques kit solaire 3kW comparatif modèles'
+     2026-10-30 10:00:41.732832+00:00 | 'Kit solaire 6kW : dimensionner et configurer' | mot-cle: 'kit solaire 6kW dimensionnement configuration maison'
+     2026-10-31 09:43:29.528024+00:00 | "Kit solaire 9kW : guide d'achat par marque et modèle" | mot-cle: 'meilleures marques kit solaire 9kW modèles comparatif'
+     2026-10-31 09:46:11.716565+00:00 | 'Kit solaire 9kW : étude de cas réelle - consommation type' | mot-cle: 'kit solaire 9kW cas réel consommation électrique foyer famille'
+
+   --- MaPrimeRénov' (16 articles) ---
+     2026-10-22 08:26:12.114384+00:00 | "MaPrimeRénov' 2026 : conditions d'éligibilité mise à jour" | mot-cle: "conditions d'éligibilité MaPrimeRénov'"
+     2026-10-22 08:27:42.981725+00:00 | "MaPrimeRénov' : qui peut vraiment installer les travaux" | mot-cle: "MaPrimeRénov' installation artisan"
+     2026-10-23 08:27:18.853796+00:00 | "MaPrimeRénov' vs CEE vs éco-PTZ : comparatif complet des" | mot-cle: "comparatif aides rénovation MaPrimeRénov' CEE éco-PTZ"
+     2026-10-23 08:28:48.280237+00:00 | "MaPrimeRénov' vs MaPrimeRénov' Sérénité : quelle aide pour" | mot-cle: "MaPrimeRénov' Sérénité différences choix rénovation"
+     2026-10-24 08:06:49.618110+00:00 | "MaPrimeRénov' : étape par étape du dossier de demande" | mot-cle: "MaPrimeRénov' demande dossier constitution formulaire"
+     2026-10-24 08:08:24.404894+00:00 | "MaPrimeRénov' : calendrier détaillé et délais réels de" | mot-cle: "MaPrimeRénov' délai traitement calendrier dossier"
+     2026-10-27 08:51:04.950678+00:00 | "MaPrimeRénov' : plafonds de revenus et montants" | mot-cle: "MaPrimeRénov' plafonds revenus montants"
+     2026-10-27 08:52:38.841784+00:00 | "MaPrimeRénov' : barèmes d'aide par tranche de revenus (2026)" | mot-cle: "MaPrimeRénov' barème aide tranche revenu"
+     2026-10-28 09:36:34.510459+00:00 | "MaPrimeRénov' : quelles aides cumuler et dans quel ordre" | mot-cle: "cumuler MaPrimeRénov' CEE éco-PTZ TVA réduite financement rénovation"
+     2026-10-28 09:38:36.037507+00:00 | "MaPrimeRénov' + CEE + éco-PTZ : guide pratique du cumul" | mot-cle: 'cumuler plusieurs aides rénovation stratégie maximale financement'
+     2026-10-29 09:38:32.763129+00:00 | "MaPrimeRénov' : combien de temps avant d'obtenir" | mot-cle: "MaPrimeRénov' combien de temps attendre versement rapide délais réels"
+     2026-10-29 09:40:01.898741+00:00 | "MaPrimeRénov' 2026 : calendrier complet mois par mois" | mot-cle: "MaPrimeRénov' 2026 calendrier mois point clé échéance dossier"
+     2026-10-30 09:48:31.997037+00:00 | "MaPrimeRénov' : calculer son aide selon sa catégorie" | mot-cle: "MaPrimeRénov' calculer montant aide catégorie revenu simulation"
+     2026-10-30 09:50:15.078593+00:00 | "MaPrimeRénov' : les pièges cachés et erreurs courantes" | mot-cle: "MaPrimeRénov' erreurs pièges rejets dossier éviter problèmes courants"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+     2026-10-31 09:33:39.123976+00:00 | "MaPrimeRénov' : les 5 mécanismes clés à connaître avant" | mot-cle: "MaPrimeRénov' mécanismes système fonctionnement technique versement conditions"
+     2026-10-31 09:35:10.481313+00:00 | "MaPrimeRénov' : les 3 modes de versement" | mot-cle: "MaPrimeRénov' versement anticipé tiers-payant déblocage fonds modalités"
+
+   --- Panneaux solaires (10 articles) ---
+     2026-10-26 16:35:02.719557+00:00 | 'Combien de panneaux solaires faut-il pour une maison budget' | mot-cle: 'combien de panneaux solaires faut-il pour une maison budget'
+     2026-10-26 16:38:14.057391+00:00 | 'Rentabilité panneaux solaires : temps de retour réel' | mot-cle: 'rentabilité panneaux solaires temps de retour sur investissement'
+     2026-10-28 09:49:58.170841+00:00 | 'Panneaux solaires monocristallins vs polycristallins : coût' | mot-cle: 'coût panneaux solaires monocristallins polycristallins rentabilité'
+     2026-10-28 09:51:22.347440+00:00 | 'Panneaux solaires monocristallins vs polycristallins ' | mot-cle: 'rendement durabilité panneaux solaires monocristallins polycristallins'
+     2026-10-29 09:52:39.073928+00:00 | 'Panneaux solaires 400W : comparatif marques, modèles' | mot-cle: 'panneaux solaires 400W comparatif marques modèles performances'
+     2026-10-29 09:54:25.899345+00:00 | 'Panneaux solaires : calculer votre ROI en fonction' | mot-cle: 'ROI panneaux solaires simulation personnalisée régions France économies réelles'
+     2026-10-30 10:02:01.046803+00:00 | 'Panneaux solaires 300W : guide complet pour petit budget' | mot-cle: 'panneaux solaires 300W petit budget petite maison installation'
+     2026-10-30 10:03:39.553211+00:00 | 'Panneaux solaires monocristallins vs polycristallins : quel' | mot-cle: 'rendement panneaux solaires monocristallins polycristallins climat région performance réelle'
+     2026-10-31 09:48:07.575043+00:00 | 'Panneaux solaires 400W : consommation électrique réelle' | mot-cle: 'panneaux solaires 400W consommation électrique dimensionnement installation résidentielle'
+     2026-10-31 09:49:50.035198+00:00 | 'Panneaux solaires 400W : calculateur ROI personnalisé' | mot-cle: 'calculateur ROI panneaux solaires 400W régions France amortissement'
+
+   --- Système solaire combiné (10 articles) ---
+     2026-10-26 16:28:03.244368+00:00 | 'Système solaire combiné vs chaudière gaz : quel est le plus' | mot-cle: 'système solaire combiné vs chaudière gaz quel est le plus rentable'
+     2026-10-26 16:29:49.157562+00:00 | "Système solaire combiné : en combien d'années rentable ?" | mot-cle: 'système solaire combiné temps de retour sur investissement rentabilité'
+     2026-10-28 09:53:01.232849+00:00 | 'Coût installation système solaire combiné : devis et' | mot-cle: 'devis installation système solaire combiné facteurs prix'
+     2026-10-28 09:54:53.879117+00:00 | 'Système solaire combiné 2026 : évolutions technologiques et' | mot-cle: 'système solaire combiné 2026 innovations technologiques nouveaux modèles'
+     2026-10-29 09:55:54.234516+00:00 | 'Chauffe-eau gaz vs système solaire combiné : analyse' | mot-cle: 'chauffe-eau gaz coût exploitation vs système solaire combiné'
+     2026-10-29 09:57:19.328241+00:00 | 'Système solaire combiné vs chaudière gaz : comparatif' | mot-cle: 'économies système solaire combiné vs chaudière gaz comparatif chiffres'
+     2026-10-30 10:05:23.892826+00:00 | 'Système solaire combiné : simulateur de devis personnalisé' | mot-cle: 'simulateur devis système solaire combiné comparateur installateurs'
+     2026-10-30 10:06:52.386631+00:00 | 'Système solaire combiné : budget installation région' | mot-cle: 'prix installation système solaire combiné par région comparaison géographique'
+     2026-10-31 09:51:31.292160+00:00 | 'Système solaire combiné : rentabilité réelle et économies' | mot-cle: "économies d'énergie réelles système solaire combiné bilan énergétique annuel"
+     2026-10-31 09:52:53.899955+00:00 | 'Système solaire combiné vs chaudière gaz : ROI et payback' | mot-cle: 'système solaire combiné chaudière gaz retour investissement situation famille type'
+
+================================================================================
+4. Volume publie par jour depuis le 22/10 (contexte -- confirme que le
+   pipeline continue de tourner au volume attendu)
+================================================================================
+      jour  nb_articles
+2026-10-22           14
+2026-10-23           14
+2026-10-24           14
+2026-10-26           10
+2026-10-27           14
+2026-10-28           24
+2026-10-29           24
+2026-10-30           24
+2026-10-31           23
