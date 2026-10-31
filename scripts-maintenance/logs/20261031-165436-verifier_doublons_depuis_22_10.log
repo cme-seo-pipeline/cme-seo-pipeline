@@ -1,0 +1,72 @@
+# Execution du 2026-10-31T16:54:36Z
+# Script    : scripts-maintenance/verifier_doublons_depuis_22_10.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+================================================================================
+1. Mots-cles EXACTEMENT identiques republies pour le meme sous-silo
+   (base, suffixe retire) depuis 2026-10-22T00:00:00Z, fenetre de 90j glissante
+   -- signature directe des 3 root causes corrigees en octobre
+================================================================================
+   ⚠️ 17 cas trouves :
+                   date_nouvelle  post_id_nouveau                    sous_silo_base                                mot_cle                  date_precedente  post_id_precedent  ecart_minutes
+2026-10-23 08:31:31.434718+00:00            11366               Contrat Électricité                 aides électricité 2026 2026-08-31 11:51:46.431875+00:00               7342          76119
+2026-10-23 08:31:31.434718+00:00            11366               Contrat Électricité                 aides électricité 2026 2026-10-02 09:37:09.969966+00:00               9365          30174
+2026-10-23 08:31:31.434718+00:00            11366               Contrat Électricité                 aides électricité 2026 2026-08-31 11:52:44.533131+00:00               7344          76118
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-19 08:40:19.856927+00:00              10930           4310
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-16 08:05:46.838880+00:00              10622           8664
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-16 08:07:35.171469+00:00              10624           8663
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-13 21:31:53.585142+00:00               9573          12178
+2026-10-22 08:30:44.708512+00:00            11258               Contrat Électricité     fonctionnement contrat électricité 2026-10-19 08:41:21.264411+00:00               9571           4309
+2026-10-22 08:29:17.581748+00:00            11256               Contrat Électricité        changer fournisseur électricité 2026-09-28 09:32:18.950905+00:00               8578          34496
+2026-10-22 08:29:17.581748+00:00            11256               Contrat Électricité        changer fournisseur électricité 2026-10-18 08:02:53.546295+00:00              10832           5786
+2026-10-22 08:29:17.581748+00:00            11256               Contrat Électricité        changer fournisseur électricité 2026-10-18 08:01:27.031779+00:00              10830           5787
+2026-10-22 08:25:00.688441+00:00            11250                    Chèque énergie           chèque énergie montants 2026 2026-09-27 09:04:57.492738+00:00               8454          35960
+2026-10-22 08:22:53.638394+00:00            11246 Aides chauffe-eau thermodynamique aides chauffe-eau thermodynamique 2026 2026-08-15 13:49:03.341280+00:00               6135          97593
+2026-10-22 08:21:30.686732+00:00            11244 Aides chauffe-eau thermodynamique       prix chauffe-eau thermodynamique 2026-09-25 08:33:57.696108+00:00               8283          38867
+2026-10-22 08:21:30.686732+00:00            11244 Aides chauffe-eau thermodynamique       prix chauffe-eau thermodynamique 2026-10-01 09:54:01.331683+00:00               9245          30147
+2026-10-22 08:21:30.686732+00:00            11244 Aides chauffe-eau thermodynamique       prix chauffe-eau thermodynamique 2026-10-01 09:52:42.534548+00:00               9243          30148
+2026-10-22 08:17:49.068772+00:00            11238                        Bouteilles            butane vs propane bouteille 2026-08-19 03:54:59.443720+00:00               6475          92422
+
+================================================================================
+2. Meme jour, meme sous-silo (base), DEUX articles au mot-cle quasi
+   identique (memes 4 premiers mots, ordre indifferent) -- signature
+   precise du bug #3/#4 ('jumeaux' publies a quelques minutes d'ecart
+   DANS LE MEME RUN, occurrence >=2 d'un sous-silo a quota > 1)
+================================================================================
+Traceback (most recent call last):
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/verifier_doublons_depuis_22_10.py", line 161, in <module>
+    main()
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/verifier_doublons_depuis_22_10.py", line 114, in main
+    """).to_dataframe()
+         ^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/job/query.py", line 2052, in to_dataframe
+    query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/_tqdm_helpers.py", line 107, in wait_for_query
+    return query_job.result(max_results=max_results)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/job/query.py", line 1676, in result
+    while not is_job_done():
+              ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/job/query.py", line 1625, in is_job_done
+    raise job_failed_exception
+google.api_core.exceptions.BadRequest: 400 Subquery in join predicate should only depend on exactly one join side.; reason: invalidQuery, location: query, message: Subquery in join predicate should only depend on exactly one join side.
+
+Location: EU
+Job ID: c9b9d1f0-813c-4224-84d6-c7719d1b9a08
+
