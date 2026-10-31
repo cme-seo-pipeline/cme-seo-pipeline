@@ -3936,30 +3936,50 @@ RÈGLES :
 
 
 def get_ou_creer_categorie(sous_silo, parent_id, wp_config):
-    slug_cible = MAPPING_CATEGORIES_WP.get(sous_silo)
-    if not slug_cible:
-        slug_cible = sous_silo.lower()
-        for a, b in [('à','a'),('â','a'),('é','e'),('è','e'),('ê','e'),
-                     ('î','i'),('ô','o'),('ù','u'),('û','u'),('ç','c'),
-                     ("'",""),(' ','-')]:
-            slug_cible = slug_cible.replace(a, b)
-        slug_cible = re.sub(r'[^a-z0-9-]', '', slug_cible)
+    """Fail-safe (fix 31/10/2026, voir CLAUDE.md) : cette fonction n'avait
+    aucune gestion d'erreur (ni try/except, ni verification de status_code
+    avant .json()) alors qu'elle est appelee dans publier_article(), elle-
+    meme appelee dans la boucle par-brief de rediger_et_publier() qui n'a
+    pas son propre garde-fou -- un simple hoquet reseau/WordPress ici
+    pouvait faire planter tout le reste de la publication du jour. Renvoie
+    desormais None sur toute erreur ; l'appelant doit traiter ce cas
+    (categories_ids filtre les None dans publier_article())."""
+    try:
+        slug_cible = MAPPING_CATEGORIES_WP.get(sous_silo)
+        if not slug_cible:
+            slug_cible = sous_silo.lower()
+            for a, b in [('à','a'),('â','a'),('é','e'),('è','e'),('ê','e'),
+                         ('î','i'),('ô','o'),('ù','u'),('û','u'),('ç','c'),
+                         ("'",""),(' ','-')]:
+                slug_cible = slug_cible.replace(a, b)
+            slug_cible = re.sub(r'[^a-z0-9-]', '', slug_cible)
 
-    r = requests.get(
-        f"{wp_config['url']}/wp-json/wp/v2/categories",
-        params={"slug": slug_cible, "per_page": 1},
-        auth=(wp_config['username'], wp_config['app_password'])
-    )
-    cats = r.json()
-    if cats:
-        return cats[0]['id']
+        r = requests.get(
+            f"{wp_config['url']}/wp-json/wp/v2/categories",
+            params={"slug": slug_cible, "per_page": 1},
+            auth=(wp_config['username'], wp_config['app_password']),
+            timeout=15
+        )
+        if r.status_code != 200:
+            print(f"  ⚠️ Categorie '{sous_silo}' : lecture HTTP {r.status_code} -- article publie sans cette categorie")
+            return None
+        cats = r.json()
+        if cats:
+            return cats[0]['id']
 
-    r = requests.post(
-        f"{wp_config['url']}/wp-json/wp/v2/categories",
-        json={"name": sous_silo, "slug": slug_cible, "parent": parent_id},
-        auth=(wp_config['username'], wp_config['app_password'])
-    )
-    return r.json().get('id')
+        r = requests.post(
+            f"{wp_config['url']}/wp-json/wp/v2/categories",
+            json={"name": sous_silo, "slug": slug_cible, "parent": parent_id},
+            auth=(wp_config['username'], wp_config['app_password']),
+            timeout=15
+        )
+        if r.status_code not in (200, 201):
+            print(f"  ⚠️ Categorie '{sous_silo}' : creation HTTP {r.status_code} -- article publie sans cette categorie")
+            return None
+        return r.json().get('id')
+    except Exception as e:
+        print(f"  ⚠️ Categorie '{sous_silo}' indisponible ({e}) -- article publie sans cette categorie")
+        return None
 
 
 def logger_publication_bq(client_bq, post_id, silo, titre,
@@ -4089,36 +4109,50 @@ def inserer_lien_pilier(contenu_html, silo_name, sous_silo_val):
 
 
 def recuperer_articles_meme_silo(silo_name, wp_config):
-    silo_propre = silo_name.split('. ')[-1] if '. ' in silo_name else silo_name
-    r = requests.get(
-        f"{wp_config['url']}/wp-json/wp/v2/categories",
-        params={"per_page": 100},
-        auth=(wp_config['username'], wp_config['app_password'])
-    )
-    if r.status_code != 200:
+    """Repli (maillage interne) quand recuperer_articles_meme_sous_silo()
+    ne trouve rien en BigQuery. Fail-safe (fix 31/10/2026, voir CLAUDE.md) :
+    cette fonction n'avait aucun try/except autour de ses 2 appels WordPress
+    alors qu'elle est appelee dans la boucle par-brief de rediger_et_publier()
+    qui n'a pas son propre garde-fou -- un simple hoquet reseau/WordPress ici
+    pouvait faire planter tout le reste de la publication du jour, pour une
+    fonctionnalite purement optionnelle (maillage). Renvoie [] sur toute
+    erreur, exactement comme recuperer_articles_meme_sous_silo()."""
+    try:
+        silo_propre = silo_name.split('. ')[-1] if '. ' in silo_name else silo_name
+        r = requests.get(
+            f"{wp_config['url']}/wp-json/wp/v2/categories",
+            params={"per_page": 100},
+            auth=(wp_config['username'], wp_config['app_password']),
+            timeout=15
+        )
+        if r.status_code != 200:
+            return []
+        toutes_cats = r.json()
+        cat_silo = next(
+            (c for c in toutes_cats if c['name'].strip().lower() == silo_propre.lower()),
+            None
+        )
+        if not cat_silo:
+            return []
+        silo_id = cat_silo['id']
+        sous_ids = [c['id'] for c in toutes_cats if c['parent'] == silo_id]
+        cats_ids = [silo_id] + sous_ids
+        r_posts = requests.get(
+            f"{wp_config['url']}/wp-json/wp/v2/posts",
+            params={"categories": ",".join(map(str, cats_ids)), "per_page": 10, "status": "publish"},
+            auth=(wp_config['username'], wp_config['app_password']),
+            timeout=15
+        )
+        if r_posts.status_code != 200:
+            return []
+        return [
+            {"titre": p['title']['rendered'], "url": p['link'],
+             "mot_cle": p.get('slug', '').replace('-', ' ')}
+            for p in r_posts.json()
+        ][:5]
+    except Exception as e:
+        print(f"  ⚠️ recuperer_articles_meme_silo indisponible ({e}) -- maillage de repli ignore pour cet article")
         return []
-    toutes_cats = r.json()
-    cat_silo = next(
-        (c for c in toutes_cats if c['name'].strip().lower() == silo_propre.lower()),
-        None
-    )
-    if not cat_silo:
-        return []
-    silo_id = cat_silo['id']
-    sous_ids = [c['id'] for c in toutes_cats if c['parent'] == silo_id]
-    cats_ids = [silo_id] + sous_ids
-    r_posts = requests.get(
-        f"{wp_config['url']}/wp-json/wp/v2/posts",
-        params={"categories": ",".join(map(str, cats_ids)), "per_page": 10, "status": "publish"},
-        auth=(wp_config['username'], wp_config['app_password'])
-    )
-    if r_posts.status_code != 200:
-        return []
-    return [
-        {"titre": p['title']['rendered'], "url": p['link'],
-         "mot_cle": p.get('slug', '').replace('-', ' ')}
-        for p in r_posts.json()
-    ][:5]
 
 
 def verifier_article_wp_existe(slug, wp_config):
@@ -4611,6 +4645,10 @@ def publier_article(brief, silo_name, sous_silo_val, contenu_html,
         categories_ids = [cat_enfant_id]
     else:
         categories_ids = [cat_parent_id]
+    # get_ou_creer_categorie() peut renvoyer None depuis le fix du 31/10/2026
+    # (fail-safe) -- ne jamais envoyer un None a l'API WordPress, un article
+    # sans categorie vaut mieux qu'un article non publie.
+    categories_ids = [c for c in categories_ids if c is not None]
 
     # Vérification anti-doublon WordPress avant publication
     existe_wp, post_id_existant = verifier_article_wp_existe(slug, wp_config)
@@ -4908,63 +4946,75 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
     silos_df = pd.DataFrame(silos_a_traiter)
 
     for _cle, brief in all_briefs_finaux.items():
-        # split('||') sans limite : voir PATCH 1/2, meme raison.
-        parts = _cle.split('||')
-        silo_name = parts[0]
-        sous_silo_override = parts[1] if len(parts) > 1 else ''
-        sous_silo_verif = sous_silo_override or brief.get('sous_silo', brief.get('Sous-Silo', ''))
-        brief = verifier_et_differencier_sujet(brief, silo_name, sous_silo_verif, client_bq, config)
-        print(f"\n{'='*55}")
-        print(f"📂 {silo_name} — {brief.get('titre_seo')}")
-
-        sous_silo_pour_maillage = sous_silo_override or brief.get('sous_silo', brief.get('Sous-Silo', ''))
-        articles_silo = recuperer_articles_meme_sous_silo(silo_name, sous_silo_pour_maillage, client_bq)
-        if not articles_silo:
-            articles_silo = recuperer_articles_meme_silo(silo_name, wp_config)
-        contenu_html, erreur = rediger_article(brief, config, articles_silo, client_bq)
-        if erreur:
-            print(f"  {erreur}")
-            continue
-        contenu_html = inserer_lien_pilier(contenu_html, silo_name, sous_silo_pour_maillage)
-
-        liens = re.findall(
-            r'<a href="https://www\.comprendre-mon-energie\.fr[^"]*"', contenu_html
-        )
-        nb_mots = len(re.sub(r'<[^>]+>', '', contenu_html).split())
-        print(f"  🔗 {len(liens)} liens internes | {nb_mots} mots")
-
+        # Fix 31/10/2026 (voir CLAUDE.md) : cette boucle n'avait aucun
+        # garde-fou global, alors que plusieurs fonctions qu'elle appelle
+        # ont deja ete corrigees individuellement le meme jour
+        # (get_ou_creer_categorie, recuperer_articles_meme_silo). En
+        # defense en profondeur -- une erreur non prevue ici, aujourd'hui
+        # ou dans une evolution future -- un brief qui echoue ne doit
+        # jamais faire perdre les briefs restants du run (ex. le 25/10/2026,
+        # 0 article publie ce jour-la malgre 14 briefs generes).
         try:
-            if sous_silo_override:
-                sous_silo_val = sous_silo_override
-            else:
-                sous_silo_val = silos_df[silos_df['silo'] == silo_name]['sous_silo'].iloc[0]
-                if pd.isna(sous_silo_val): sous_silo_val = ''
-        except:
-            sous_silo_val = sous_silo_override or ''
-        # Retire le suffixe technique ' (2)', ' (3)'... ajoute a la selection
-        # pour distinguer plusieurs sujets industrialises partageant le meme
-        # sous-silo. La vraie categorisation WordPress/BigQuery doit garder
-        # le nom de sous-silo original.
-        sous_silo_val = re.sub(r' \(\d+\)$', '', sous_silo_val)
+            # split('||') sans limite : voir PATCH 1/2, meme raison.
+            parts = _cle.split('||')
+            silo_name = parts[0]
+            sous_silo_override = parts[1] if len(parts) > 1 else ''
+            sous_silo_verif = sous_silo_override or brief.get('sous_silo', brief.get('Sous-Silo', ''))
+            brief = verifier_et_differencier_sujet(brief, silo_name, sous_silo_verif, client_bq, config)
+            print(f"\n{'='*55}")
+            print(f"📂 {silo_name} — {brief.get('titre_seo')}")
 
-        resultat = publier_article(
-            brief, silo_name, sous_silo_val, contenu_html,
-            wp_config, client_bq, run_id, config
-        )
-        if resultat['success']:
-            df_publications.append({
-                "Silo": silo_name,
-                "Titre": brief.get('titre_seo'),
-                "Mot_cle": brief.get('mot_cle_principal'),
-                "Nb_mots": nb_mots,
-                "Post_ID": resultat['post_id'],
-                "URL_WP": resultat['url'],
-                "Statut": "publish",
-                "Contenu_HTML": contenu_html,
-                "sous_silo": sous_silo_val,
-            })
-        else:
-            print(f"  ❌ {resultat['erreur']}")
+            sous_silo_pour_maillage = sous_silo_override or brief.get('sous_silo', brief.get('Sous-Silo', ''))
+            articles_silo = recuperer_articles_meme_sous_silo(silo_name, sous_silo_pour_maillage, client_bq)
+            if not articles_silo:
+                articles_silo = recuperer_articles_meme_silo(silo_name, wp_config)
+            contenu_html, erreur = rediger_article(brief, config, articles_silo, client_bq)
+            if erreur:
+                print(f"  {erreur}")
+                continue
+            contenu_html = inserer_lien_pilier(contenu_html, silo_name, sous_silo_pour_maillage)
+
+            liens = re.findall(
+                r'<a href="https://www\.comprendre-mon-energie\.fr[^"]*"', contenu_html
+            )
+            nb_mots = len(re.sub(r'<[^>]+>', '', contenu_html).split())
+            print(f"  🔗 {len(liens)} liens internes | {nb_mots} mots")
+
+            try:
+                if sous_silo_override:
+                    sous_silo_val = sous_silo_override
+                else:
+                    sous_silo_val = silos_df[silos_df['silo'] == silo_name]['sous_silo'].iloc[0]
+                    if pd.isna(sous_silo_val): sous_silo_val = ''
+            except:
+                sous_silo_val = sous_silo_override or ''
+            # Retire le suffixe technique ' (2)', ' (3)'... ajoute a la selection
+            # pour distinguer plusieurs sujets industrialises partageant le meme
+            # sous-silo. La vraie categorisation WordPress/BigQuery doit garder
+            # le nom de sous-silo original.
+            sous_silo_val = re.sub(r' \(\d+\)$', '', sous_silo_val)
+
+            resultat = publier_article(
+                brief, silo_name, sous_silo_val, contenu_html,
+                wp_config, client_bq, run_id, config
+            )
+            if resultat['success']:
+                df_publications.append({
+                    "Silo": silo_name,
+                    "Titre": brief.get('titre_seo'),
+                    "Mot_cle": brief.get('mot_cle_principal'),
+                    "Nb_mots": nb_mots,
+                    "Post_ID": resultat['post_id'],
+                    "URL_WP": resultat['url'],
+                    "Statut": "publish",
+                    "Contenu_HTML": contenu_html,
+                    "sous_silo": sous_silo_val,
+                })
+            else:
+                print(f"  ❌ {resultat['erreur']}")
+        except Exception as e:
+            print(f"  ❌ Brief '{_cle}' abandonne apres erreur imprevue ({e}) -- run_pipeline poursuit avec les briefs restants")
+            continue
 
     return pd.DataFrame(df_publications)
 
@@ -5751,12 +5801,28 @@ def run_pipeline(force=False):
         return 0
 
     # ── SCHÉMAS SVG ────────────────────────────────────────
+    # Fix 31/10/2026 (voir CLAUDE.md) : cet appel n'etait pas protege ici,
+    # alors que le MEME appel l'est deja dans publier_actualites_reglementaires()
+    # (Mode Actualite, voir plus haut). Confirme comme la cause la plus
+    # probable du 24/10/2026 : les 14 articles du jour avaient bien ete
+    # publies (rediger_et_publier() avait termine), mais 0/14 avaient une
+    # image -- signature exacte d'un plantage ICI, avant meme que
+    # generer_featured_images() ne soit appelee. Une erreur dans les
+    # schemas SVG (optionnels, cosmetiques) ne doit jamais empecher les
+    # images a la une, Facebook/Instagram et la notification de tourner
+    # pour des articles deja publies.
     print("\n🎨 SCHÉMAS SVG...")
-    nettoyer_et_generer_schemas(df_publications, WP_CONFIG, CONFIG)
+    try:
+        nettoyer_et_generer_schemas(df_publications, WP_CONFIG, CONFIG)
+    except Exception as e:
+        print(f"  ⚠️ Erreur schemas SVG : {e} -- articles deja publies, on continue sans schemas")
 
     # ── FEATURED IMAGES ────────────────────────────────────
     print("\n🖼️ FEATURED IMAGES (cartes titre)...")
-    generer_featured_images(df_publications, client_bq, CONFIG, OPENAI_CONFIG, WP_CONFIG)
+    try:
+        generer_featured_images(df_publications, client_bq, CONFIG, OPENAI_CONFIG, WP_CONFIG)
+    except Exception as e:
+        print(f"  ⚠️ Erreur images a la une : {e} -- articles deja publies, on continue sans ces images")
     # ── PUBLICATION FACEBOOK ────────────────────────────────
     if CONFIG.get("FACEBOOK_INSTAGRAM_ACTIF", True):
         publier_tous_facebook(df_publications, client_bq, CONFIG, FACEBOOK_CONFIG)
