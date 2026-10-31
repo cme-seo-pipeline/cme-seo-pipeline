@@ -1,0 +1,23 @@
+# Execution du 2026-10-31T17:02:36Z
+# Script    : scripts-maintenance/tester_fix_limite_differenciation.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+Brief rejoue : {'titre_seo': 'Aides électricité 2026 : réductions et chèques', 'mot_cle_principal': 'aides électricité 2026'}
+Silo : 5. Électricité | Sous-silo : Contrat Électricité
+
+--- Appel de verifier_et_differencier_sujet() (code corrige) ---
+
+  ⛔ Mot-cle 'aides électricité 2026' deja publie pour ce sous-silo dans les 90 derniers jours (match exact, sans LLM) -- differenciation forcee
+  🔀 Chevauchement detecte avec un article existant -- angle differencie : 'Chèque énergie 2026 : montants et modalités de versement' / 'chèque énergie 2026 versement montants allocation' (au lieu de 'Aides électricité 2026 : réductions et chèques' / 'aides électricité 2026')
+
+--- Resultat ---
+Titre final     : Chèque énergie 2026 : montants et modalités de versement
+Mot-cle final   : chèque énergie 2026 versement montants allocation
+
+✅ SUCCES : le brief a bien ete differencie -- le doublon exact a ete detecte et un angle alternatif a ete propose. Le correctif fonctionne.
