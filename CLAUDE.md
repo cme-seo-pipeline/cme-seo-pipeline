@@ -1241,3 +1241,56 @@ a confirmer que `publication-quotidienne.yml` continue de publier ses 14
 articles/jour sans regression apres ce commit (le run est deja vert
 depuis le 27/10 independamment de ce fix, donc rien d'urgent a
 re-verifier avant le prochain run normal).
+
+## Audit — le slug d'un article deja publie peut-il etre modifie ? (31/10/2026)
+
+Question explicite de l'operateur suite au bilan de sante ci-dessus :
+est-ce qu'un mecanisme quelconque (en particulier la correction
+reglementaire automatique, mais plus largement tout l'ecosysteme) peut
+toucher au `slug` d'un article **deja publie** — risque direct de 404 et
+de perte du reference GSC/backlinks si une URL change sous le pied d'une
+page existante.
+
+**Audite, risque confirme nul, par lecture exhaustive du code** (pas par
+test en conditions reelles — pas necessaire, la reponse est structurelle) :
+toutes les occurrences de `slug` dans `pipeline/*.py`,
+`scripts-maintenance/*.py`, `tracking-api/*.py`, `wordpress-mu-plugins/*.php`
+et `apps-scripts/*.gs` ont ete recensees et classees.
+
+- **`appliquer_correction_article()`** (correction reglementaire
+  automatique, voir plus haut) : le payload envoye a l'API REST WordPress
+  est strictement `json={"content": nouveau_contenu}` — aucune cle
+  `slug`. L'API REST WordPress ne modifie que les champs presents dans la
+  requete : l'absence de la cle suffit a garantir qu'elle ne peut
+  structurellement pas toucher le slug.
+- **`publier_article()`** : le seul endroit de tout le repo ou une cle
+  `slug` est envoyee dans un payload d'ecriture WordPress pour un ARTICLE
+  (en dehors des categories, sans rapport avec l'URL des articles). Mais
+  cet envoi se fait uniquement lors d'un `POST` sur la collection
+  `/wp-json/wp/v2/posts` (creation d'un NOUVEL article, sans ID dans
+  l'URL) — jamais sur un `POST .../posts/{id}` visant un article
+  existant. La logique de collision de slug (`verifier_article_wp_existe`
+  + suffixe de date) ne fait que choisir le slug du NOUVEL article a
+  creer ; elle ne renomme jamais l'existant (reutilise son post_id tel
+  quel si meme titre, cree un second article avec un slug different sinon
+  — voir plus haut, section "Audit 404").
+- **Tous les autres scripts qui PATCHent du contenu existant**
+  (`nettoyer_anciens_cta_statiques.py`, `fix_cta_liens_retroactif.py`,
+  `patch_logo_entete.py`, etc.) : aucun ne touche `slug`, verifie par
+  grep exhaustif — ils n'envoient que `content` ou d'autres champs
+  explicitement vises.
+- **mu-plugins WordPress** (`cme-cta-progressifs.php`,
+  `cme-tracking-conversion.php`, `cme-header-tel-style.php`) : aucune
+  occurrence du mot `slug` dans ces fichiers — ils injectent du contenu
+  cote client (JS) ou journalisent des evenements, sans jamais toucher a
+  l'objet post WordPress lui-meme.
+- **Apps Script** (`cme-ga4-to-bq.gs`, `cme-gsc-to-bq.gs`) : le slug n'y
+  est que LU (extrait d'une URL GA4/GSC pour classer par silo), jamais
+  ecrit nulle part.
+
+**Conclusion** : aucun mecanisme de l'ecosysteme ne peut renommer l'URL
+d'un article deja publie. Complement direct a l'audit 404 du 31/10
+(section "Audit 404 / effet d'ecrasement" plus haut) — un changement de
+slug est la cause la plus classique de 404/perte de backlinks lors d'une
+mise a jour de contenu, et ce risque precis est structurellement exclu
+ici, pas seulement absent en pratique jusqu'ici.
