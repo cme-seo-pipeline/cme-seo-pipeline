@@ -1294,3 +1294,28 @@ d'un article deja publie. Complement direct a l'audit 404 du 31/10
 slug est la cause la plus classique de 404/perte de backlinks lors d'une
 mise a jour de contenu, et ce risque precis est structurellement exclu
 ici, pas seulement absent en pratique jusqu'ici.
+
+## Audit mensuel — appel a l'API Claude, et volume (31/10/2026)
+
+Question operateur : les correctifs du 1er du mois sollicitent-ils l'API
+Claude ? Les deux workflows du 1er du mois n'ont pas le meme profil :
+
+- **`audit-mensuel.yml`** (`auditer_et_corriger_articles()` →
+  `auditer_article()`, voir plus haut) : **oui**, un vrai appel
+  `api.anthropic.com/v1/messages` par article candidat (modele
+  `claude-haiku-4-5-20251001`, `max_tokens=1500`), pour juger si l'article
+  cite une valeur reglementaire perimee et generer le passage corrige.
+  Compte verifie en lecture seule le 31/10
+  (`scripts-maintenance/compter_candidats_audit_mensuel.py`, pont GitHub
+  Actions, meme requete que la fonction reelle) : **441 articles
+  candidats** actuellement (sous-silos a `pertinence='directe'` :
+  `TRVE_part_variable_TTC` et `TRVE_part_fixe_TTC` 152 chacun,
+  `PRVG_moyen_TTC` 75, `ampleur_pourcent_ecretement` 62) → ~441 appels
+  Haiku attendus au run du 1/11/2026. Ce nombre est cumulatif et ne peut
+  que croitre d'un mois a l'autre (aucun mecanisme ne retire un article de
+  ces sous-silos une fois publie) — a garder en tete vu la montee en
+  volume de publication anticipee par l'operateur.
+- **`audit-cannibalisation-mensuel.yml`** (`detecter_cannibalisation_gsc.py`) :
+  **non**, aucun appel a l'API Claude — purement SQL/seuils sur les
+  donnees GSC (`01_raw.gsc_queries`), verifie par grep (zero occurrence de
+  `anthropic`/`claude` dans ce fichier).
