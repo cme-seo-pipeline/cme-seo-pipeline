@@ -127,36 +127,25 @@ def main():
     print("=" * 80)
     sous_silos_sql2 = "', '".join(s.replace("'", "\\'") for s in SOUS_SILOS_QUOTA_SUP_1)
     df2bis = client_bq.query(f"""
-        WITH candidats AS (
-          SELECT post_id, date_publication,
-                 SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] AS sous_silo_base
-          FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
-          WHERE date_publication >= '{FENETRE_DEBUT}'
-            AND SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] IN ('{sous_silos_sql2}')
-        ),
-        historique AS (
+        WITH historique AS (
           SELECT post_id, date_publication,
                  SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] AS sous_silo_base
           FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
           WHERE SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] IN ('{sous_silos_sql2}')
+        ),
+        avec_portee AS (
+          SELECT post_id, date_publication, sous_silo_base,
+            MIN(date_publication) OVER (
+              PARTITION BY sous_silo_base ORDER BY date_publication
+              ROWS BETWEEN 15 PRECEDING AND 1 PRECEDING
+            ) AS portee_15e_article
+          FROM historique
         )
-        SELECT
-            c.post_id, c.date_publication, c.sous_silo_base,
-            (SELECT MIN(h.date_publication) FROM (
-                SELECT h2.date_publication FROM historique h2
-                WHERE h2.sous_silo_base = c.sous_silo_base
-                  AND h2.date_publication < c.date_publication
-                ORDER BY h2.date_publication DESC LIMIT 15
-             ) h) AS portee_15e_article,
-            TIMESTAMP_DIFF(c.date_publication,
-                (SELECT MIN(h.date_publication) FROM (
-                    SELECT h2.date_publication FROM historique h2
-                    WHERE h2.sous_silo_base = c.sous_silo_base
-                      AND h2.date_publication < c.date_publication
-                    ORDER BY h2.date_publication DESC LIMIT 15
-                 ) h), DAY) AS portee_en_jours
-        FROM candidats c
-        ORDER BY c.sous_silo_base, c.date_publication
+        SELECT post_id, date_publication, sous_silo_base, portee_15e_article,
+               TIMESTAMP_DIFF(date_publication, portee_15e_article, DAY) AS portee_en_jours
+        FROM avec_portee
+        WHERE date_publication >= '{FENETRE_DEBUT}'
+        ORDER BY sous_silo_base, date_publication
     """).to_dataframe()
     if df2bis.empty:
         print("   (aucune donnee)")
