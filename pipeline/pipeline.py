@@ -4719,7 +4719,14 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
     cas ou le risque de doublon est le plus eleve (meme contexte
     concurrentiel scrape, meme requete de niche). Corrige en comparant
     sur le sous-silo DEBASE (suffixe retire), comme le fait deja le filtre
-    SQL de selectionner_silos_a_traiter."""
+    SQL de selectionner_silos_a_traiter.
+
+    BUG CORRIGE LE 31/10/2026 : le LIMIT 15 (sans filtre de date) ne
+    couvrait plus que ~7-10 jours pour les sous-silos a quota > 1, bien en
+    dessous des 90 jours de la fenetre anti-doublon -- voir le commentaire
+    plus bas, pres de `date_limite_90j`, pour le detail et le correctif
+    (garde deterministe + echantillon LLM filtre par date plutot que par
+    rang)."""
     titre_propose = brief.get('titre_seo', '')
     if not titre_propose:
         return brief
@@ -4735,30 +4742,105 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
     silo_safe = str(silo_name).replace("\\", "\\\\").replace("'", "\\'")
     sous_silo_safe = sous_silo_base.replace("\\", "\\\\").replace("'", "\\'")
 
+    # BUG CORRIGE LE 31/10/2026 (audit demande par l'operateur, voir
+    # verifier_doublons_depuis_22_10.py) : le `LIMIT 15 ORDER BY date DESC`
+    # ci-dessous, sans filtre de date, ne couvrait QUE les ~7-10 derniers
+    # jours pour la plupart des sous-silos a quota > 1 (confirme en prod :
+    # moyenne 7-10 jours couverts par les 15 plus recents, au lieu des 90
+    # jours de la fenetre anti-doublon officielle) -- des que leur volume
+    # quotidien a augmente (20-27/10). Resultat mesure : 17 mots-cles
+    # STRICTEMENT identiques republies entre le 22/10 et le 31/10, a
+    # 20-53 jours d'intervalle, donc a l'INTERIEUR de la fenetre de 90
+    # jours mais EN DEHORS de ce que cette fonction pouvait voir. Plus le
+    # volume quotidien augmente (prevu les prochains mois), plus ce trou
+    # s'aggrave -- un LIMIT fixe sans filtre de date retrecit mecaniquement
+    # la portee temporelle reelle a mesure que le debit augmente.
+    #
+    # Corrige en deux temps :
+    #  1. Garde deterministe (SQL, pas de LLM) : un mot-cle EXACTEMENT
+    #     identique (apres normalisation espaces/casse) deja publie pour ce
+    #     sous-silo dans toute la fenetre anti-doublon (90 jours, pas de
+    #     LIMIT qui pourrait la tronquer) bloque directement, sans recourir
+    #     au jugement du LLM -- le cas le plus flagrant (et celui trouve en
+    #     prod) n'a pas besoin d'une analyse semantique.
+    #  2. L'echantillon envoye au LLM pour le jugement semantique (titres
+    #     formules differemment mais meme sujet) est desormais filtre sur
+    #     la MEME fenetre de 90 jours (pas uniquement "les 15 plus
+    #     recents") -- le LIMIT qui subsiste ne sert plus qu'a plafonner la
+    #     taille du prompt, jamais a tronquer silencieusement la periode
+    #     couverte.
+    date_limite_90j = (datetime.now() - timedelta(
+        days=config['fenetre_anti_doublon_jours']
+    )).strftime('%Y-%m-%d')
+    mot_cle_propose_safe = str(brief.get('mot_cle_principal', '')).strip().lower().replace("\\", "\\\\").replace("'", "\\'")
+
+    exact_force = False
+    exact_match_row = None
+    try:
+        if mot_cle_propose_safe:
+            df_exact = client_bq.query(f"""
+                SELECT titre, mot_cle, MAX(date_publication) AS derniere_date
+                FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+                WHERE silo = '{silo_safe}' AND sous_silo_strategique = '{sous_silo_safe}'
+                  AND LOWER(TRIM(mot_cle)) = '{mot_cle_propose_safe}'
+                  AND date_publication >= '{date_limite_90j}'
+                GROUP BY titre, mot_cle
+                ORDER BY derniere_date DESC LIMIT 1
+            """).to_dataframe()
+            if not df_exact.empty:
+                exact_force = True
+                exact_match_row = df_exact.to_dict('records')[0]
+                print(f"  ⛔ Mot-cle '{brief.get('mot_cle_principal')}' deja publie pour ce sous-silo "
+                      f"dans les {config['fenetre_anti_doublon_jours']} derniers jours (match exact, sans LLM) "
+                      f"-- differenciation forcee")
+    except Exception as e:
+        print(f"  ⚠️ Verification exacte impossible ({e}) -- poursuite avec la verification semantique")
+
     try:
         df_existants = client_bq.query(f"""
             SELECT titre, mot_cle, MAX(date_publication) AS derniere_date
             FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
             WHERE silo = '{silo_safe}' AND sous_silo_strategique = '{sous_silo_safe}'
+              AND date_publication >= '{date_limite_90j}'
             GROUP BY titre, mot_cle
-            ORDER BY derniere_date DESC LIMIT 15
+            ORDER BY derniere_date DESC LIMIT 40
         """).to_dataframe()
         existants = df_existants.to_dict('records') if not df_existants.empty else []
     except Exception as e:
         print(f"  ⚠️ Verification chevauchement impossible ({e}) -- sujet conserve tel quel")
-        return brief
+        # Le match exact (deterministe, hors de ce try) reste valable meme
+        # si l'echantillon pour le LLM echoue -- ne pas perdre cette garde.
+        if not exact_force:
+            return brief
+        existants = []
+
+    # Garantit que le doublon exact detecte ci-dessus est bien dans
+    # l'echantillon envoye au LLM, meme s'il est tombe hors du LIMIT 40
+    # (sous-silo a volume eleve, ex. Bouteilles a 3/jour peut depasser 40
+    # titres distincts sur 90 jours) -- sans ce rattrapage, le match exact
+    # serait detecte en SQL mais invisible dans le prompt, et le LLM
+    # pourrait repondre "non" faute de le voir.
+    if exact_force and exact_match_row and not any(
+        e['titre'] == exact_match_row['titre'] and e['mot_cle'] == exact_match_row['mot_cle']
+        for e in existants
+    ):
+        existants.insert(0, exact_match_row)
 
     if not existants:
         return brief
 
     mot_cle_propose = brief.get('mot_cle_principal', '')
-    prompt = (
-        f"Voici un article PROPOSE :\n"
-        f"- Titre : \"{titre_propose}\"\n"
-        f"- Mot-cle principal : \"{mot_cle_propose}\"\n\n"
-        "Voici les articles DEJA PUBLIES (ou en cours de publication dans "
-        "ce meme run) dans le meme sous-silo :\n"
-        + "\n".join(f"- \"{e['titre']}\" (mot-cle : {e['mot_cle']})" for e in existants) + "\n\n"
+    consigne_chevauchement = (
+        "Un mot-cle STRICTEMENT IDENTIQUE a deja ete publie pour ce sous-silo "
+        "il y a moins de 90 jours (verification exacte, confirmee hors de "
+        "ton jugement) -- le chevauchement est donc CERTAIN, inutile de le "
+        "re-evaluer. Propose directement un TITRE et un MOT-CLE PRINCIPAL "
+        "ALTERNATIFS avec un angle genuinement distinct sur le meme theme "
+        "general -- jamais une simple reformulation, un vrai angle different "
+        "(public different, aspect different du sujet, format different), et "
+        "un mot-cle qui cible reellement cet angle different (pas juste un "
+        "synonyme du mot-cle existant)."
+        if exact_force else
         "L'article propose couvre-t-il un sujet QUASI-IDENTIQUE a l'un de ceux "
         "deja publies (meme angle, meme intention de recherche, meme mot-cle "
         "ou variante triviale du meme mot-cle -- ex. ordre des mots inverse, "
@@ -4768,7 +4850,16 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
         "vrai angle different (public different, aspect different du sujet, "
         "format different), et un mot-cle qui cible reellement cet angle "
         "different (pas juste un synonyme du mot-cle existant). Si NON, "
-        "renvoie le titre et le mot-cle proposes tels quels.\n"
+        "renvoie le titre et le mot-cle proposes tels quels."
+    )
+    prompt = (
+        f"Voici un article PROPOSE :\n"
+        f"- Titre : \"{titre_propose}\"\n"
+        f"- Mot-cle principal : \"{mot_cle_propose}\"\n\n"
+        "Voici les articles DEJA PUBLIES (ou en cours de publication dans "
+        "ce meme run) dans le meme sous-silo :\n"
+        + "\n".join(f"- \"{e['titre']}\" (mot-cle : {e['mot_cle']})" for e in existants) + "\n\n"
+        + consigne_chevauchement + "\n"
         "Reponds EXACTEMENT dans ce format, avec ces delimiteurs exacts "
         "(PAS de JSON) :\n"
         "===CHEVAUCHEMENT===\n"
@@ -4795,7 +4886,7 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
         if not (match_chev and match_titre and match_mot_cle):
             print("  ⚠️ Reponse de verification malformee -- sujet conserve tel quel")
             return brief
-        chevauchement = 'oui' in match_chev.group(1).strip().lower()
+        chevauchement = exact_force or 'oui' in match_chev.group(1).strip().lower()
         nouveau_titre = match_titre.group(1).strip()
         nouveau_mot_cle = match_mot_cle.group(1).strip()
         if chevauchement and nouveau_titre:
