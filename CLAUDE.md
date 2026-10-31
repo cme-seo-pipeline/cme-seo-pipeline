@@ -1134,3 +1134,110 @@ l'option (a) est reprise un jour : le secret `SA_GTM_PRIVATE_KEY`
 (credentials du compte de service Search Console) n'est aujourd'hui cable
 que cote Cloud Run, pas dans les secrets GitHub Actions — a propager aux
 deux endroits si besoin (meme regle que tout autre secret, voir plus haut).
+
+## Bilan de sante du pipeline + echecs du 24-26/10 (31/10/2026)
+
+Demande explicite de l'operateur ("est-ce que le systeme tourne comme il
+faut, aucun probleme d'api ou correctif au niveau du code"), en deux
+volets.
+
+**Volet 1 — correction retroactive des articles selon les lois/valeurs
+reglementaires** : `audit-mensuel.yml` (cron mensuel, 1er du mois 3h UTC)
+→ `pipeline/auditer_articles_action.py` → `auditer_et_corriger_articles()`.
+Audite les articles des sous-silos a `pertinence='directe'` (table
+`mapping_indicateur_sous_silo`) contre les dernieres valeurs connues
+(`indicateurs_reglementaires`), et **corrige automatiquement, sans
+validation humaine**, tout article citant une valeur reglementaire
+devenue obsolete. Dernier run : 1/10/2026, succes. Prochain run : 1/11/2026
+(demain). Sans rapport avec le chantier CTA/formulaire — c'est le seul
+mecanisme de correction retroactive de contenu existant dans ce repo.
+
+**Volet 2 — bilan de sante general** : tous les workflows recurrents sont
+verts sur leurs derniers runs (`sync-clarity`, `sync-clarity-par-page`,
+`sync-leads-app`, `sync-indicateurs`, `audit-liens-hebdomadaire`,
+`audit-mensuel`) — SAUF `publication-quotidienne.yml`, en echec 3 jours
+consecutifs (24, 25, 26/10), vert sans interruption depuis le 27/10.
+`audit-cannibalisation-mensuel.yml` n'a encore jamais tourne — **normal,
+pas un bug** : ajoute le 19/10 avec un cron mensuel, son premier
+declenchement est prevu le 1/11/2026.
+
+**Diagnostic des 3 echecs** : les logs blob du run GitHub Actions restent
+illisibles depuis ce sandbox (limite documentee plus haut) — le point de
+panne a ete reconstitue a partir de l'empreinte laissee dans
+`historique_publications` (`image_id`, `run_id`) via
+`scripts-maintenance/diagnostiquer_echecs_24_26_10.py`,
+`diagnostiquer_origine_articles_26_10.py` et
+`diagnostiquer_run_ids_24_27_10.py` (les trois lecture seule, pont GitHub
+Actions). **Piege rencontre et corrige en cours de route** : le diagnostic
+initial sur le 26/10 (10 articles publies ce jour-la avec `image_id`
+renseignee) concluait a tort que l'echec etait survenu *apres*
+`generer_featured_images()` — en realite, le `run_id` de ces 10 articles
+(`solaire_transac_20261026_...`) ne correspond pas au format attendu d'un
+run `publication-quotidienne.yml` (`YYYYMMDD_HHMM`, confirme via le 24/10
+et le 27/10) : ce sont des articles d'un mecanisme Solaire distinct et
+ponctuel, publies a 16h20-16h38 UTC, sans rapport avec le run quotidien du
+jour (08h15 UTC, echoue) ni avec `sync-indicateurs.yml` (09h41 UTC) — ce
+dernier avait en realite publie **0 article** ce jour-la, exactement
+comme le 25/10. Toujours verifier le `run_id` avant d'attribuer des lignes
+`historique_publications` a un workflow donne, ne jamais se fier au seul
+horodatage/jour.
+
+**Deux causes distinctes identifiees et corrigees** (meme commit) :
+
+1. **24/10 (14/14 articles publies, 0/14 avec image)** : le run s'est
+   arrete entre `rediger_et_publier()` (termine avec succes, 14 articles)
+   et `generer_featured_images()` (jamais atteinte). Cause confirmee :
+   `nettoyer_et_generer_schemas()` (schemas SVG injectes dans le contenu,
+   appelee juste entre les deux dans `run_pipeline()`) n'avait **aucun
+   try/except** a son site d'appel — alors que le MEME appel est deja
+   protege dans `publier_actualites_reglementaires()` (Mode Actualite,
+   voir plus haut) : incoherence entre les deux chemins de publication.
+   La fonction elle-meme n'a aucune gestion d'erreur interne non plus (ni
+   sur ses appels WordPress, ni sur l'extraction/generation des schemas) —
+   une seule erreur sur un seul des 14 articles suffisait a faire perdre
+   les images, Facebook/Instagram et la notification pour les 14, alors
+   que les articles eux-memes etaient deja publies.
+2. **25/10 et 26/10 (0 article publie par le run quotidien)** : echec
+   survenu avant ou pendant `rediger_et_publier()`. Deux appels reseau non
+   proteges dans sa boucle par-brief en sont la cause la plus probable
+   (aucun des deux n'a de try/except, ni de verification de status avant
+   `.json()`) : `get_ou_creer_categorie()` (appelee dans
+   `publier_article()`, hors de son propre bloc try/except) et
+   `recuperer_articles_meme_silo()` (repli maillage interne, utilise
+   quand `recuperer_articles_meme_sous_silo()` ne trouve rien en
+   BigQuery). La boucle par-brief elle-meme n'avait, de plus, aucun
+   garde-fou global : une exception non prevue sur UN SEUL brief faisait
+   perdre tous les briefs restants du run (jusqu'a 14).
+
+**Corrige** (`pipeline/pipeline.py`) :
+- `get_ou_creer_categorie()` : try/except complet (+ `timeout=15` sur les
+  2 appels HTTP, + verification de `status_code` avant `.json()`),
+  renvoie `None` sur toute erreur au lieu de lever.
+- `publier_article()` : filtre les `None` de `categories_ids` avant
+  l'envoi a l'API WordPress (categories_ids peut desormais contenir un
+  `None` depuis le fix precedent) — un article publie sans categorie
+  plutot qu'un plantage de tout le run.
+- `recuperer_articles_meme_silo()` : try/except complet (+ `timeout=15`),
+  renvoie `[]` sur toute erreur, exactement comme sa fonction sœur
+  `recuperer_articles_meme_sous_silo()` l'a toujours fait.
+- `rediger_et_publier()` : la boucle par-brief est desormais enveloppee
+  dans un try/except (defense en profondeur, pas seulement les 2 points
+  deja identifies) — un brief qui echoue, connu aujourd'hui ou par une
+  cause future non prevue, ne fait plus perdre les briefs restants du
+  run.
+- `run_pipeline()` : `nettoyer_et_generer_schemas()` et
+  `generer_featured_images()` sont desormais appelees sous try/except —
+  memes garde-fous que leurs equivalents deja presents dans Mode
+  Actualite. Une erreur dans les schemas/images (cosmetiques, optionnels)
+  ne doit jamais empecher Facebook/Instagram et la notification de
+  tourner pour des articles deja publies.
+
+**Teste** : `python3 -m py_compile` (OK, seul le `SyntaxWarning`
+preexistant non lie, ligne 2006) + test local (mock, aucun appel reseau
+reel — `requests` stubbe pour lever systematiquement) confirmant que
+`get_ou_creer_categorie()` et `recuperer_articles_meme_silo()` renvoient
+bien `None`/`[]` sans lever. **Pas encore valide en conditions reelles** —
+a confirmer que `publication-quotidienne.yml` continue de publier ses 14
+articles/jour sans regression apres ce commit (le run est deja vert
+depuis le 27/10 independamment de ce fix, donc rien d'urgent a
+re-verifier avant le prochain run normal).
