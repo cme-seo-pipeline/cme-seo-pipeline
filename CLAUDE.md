@@ -1009,3 +1009,128 @@ clics lancé et en attente d'accumuler des données :
 **Déploiement** : comme toute modification de `cme-tracking-conversion.php`,
 non versionné automatiquement sur le serveur — `cloudshell download`, `.bak`
 horodaté, upload cPanel, purge des 2 caches LiteSpeed.
+
+## Cartes titre — chevauchement mot-clé / nom du site (31/10/2026)
+
+Signalé par l'opérateur : sur les images principales générées par
+`generer_carte_titre()` (`pipeline/pipeline.py`), le mot-clé (bas gauche) et
+"Comprendre Mon Énergie" (bas droit) partageaient la même ligne (`y=70`) —
+un mot-clé long chevauchait visuellement le nom du site.
+
+**Corrigé** : le mot-clé a désormais sa propre ligne (`y=130`), au-dessus du
+nom du site et en dessous du bloc titre — élimine le chevauchement quelle
+que soit sa longueur, plus une troncature défensive à 1 ligne (`textwrap`,
+filet de sécurité, les mots-clés réels sont courts). Testé localement avant
+déploiement (mot-clé court, mot-clé long, cas limite titre 4 lignes +
+mot-clé long) : rendu correct dans les 3 cas, aucune régression sur le cas
+court.
+
+## Garde anti-duplication — LIMIT 15 insuffisant à volume élevé (31/10/2026)
+
+Audit demandé par l'opérateur ("vu le volume qu'on va avoir les prochains
+mois, il faut être rigoureux sur ce point"), avant toute nouvelle montée en
+charge. `verifier_doublons_depuis_22_10.py` (lecture seule, pont GitHub
+Actions) a rejoué la validation que le correctif du 22/10 (voir plus haut,
+"Duplication éditoriale — suite") n'avait pas encore reçue en conditions
+réelles.
+
+**Bug confirmé, actif en prod depuis le 22/10** : `verifier_et_differencier_sujet()`
+comparait le sujet proposé aux **15 publications les plus récentes** du
+sous-silo (`ORDER BY date_publication DESC LIMIT 15`), sans filtre de date.
+Avant la montée en quota du 20-27/10 ce LIMIT couvrait largement les 90
+jours de la fenêtre anti-doublon ; depuis, pour la plupart des sous-silos à
+quota > 1, les 15 publications les plus récentes ne couvrent plus que
+**~7 à 10 jours en moyenne** (mesuré en prod, fonction `MIN(date_publication)
+OVER (... ROWS BETWEEN 15 PRECEDING AND 1 PRECEDING)`). Conséquence directe,
+mesurée : **17 mots-clés strictement identiques républiés entre le 22/10 et
+le 31/10**, à 20-53 jours d'intervalle — à l'intérieur de la fenêtre
+anti-doublon officielle de 90 jours, mais hors de ce que la fonction
+pouvait voir. Plus le volume quotidien augmente, plus ce trou s'aggrave
+mécaniquement (un LIMIT fixe sans filtre de date rétrécit la portée
+temporelle réelle à mesure que le débit monte) — exactement le risque que
+l'opérateur anticipait.
+
+**Corrigé** (`verifier_et_differencier_sujet()`) en deux temps :
+1. **Garde déterministe (SQL, pas de LLM)** : un mot-clé exactement
+   identique (normalisé espaces/casse) déjà publié pour ce sous-silo dans
+   les 90 jours bloque directement — pas besoin du jugement du LLM pour le
+   cas le plus flagrant, celui trouvé en prod. La ligne qui a déclenché ce
+   garde-fou est explicitement injectée dans l'échantillon envoyé au LLM
+   (même si elle tombe hors du `LIMIT 40` qui suit), et `chevauchement` est
+   forcé à `True` indépendamment de la réponse du LLM — en cas de LLM qui
+   répondrait "non" malgré un match exact confirmé en SQL, la
+   différenciation reste forcée.
+2. **Échantillon LLM filtré par date, pas par rang** : la requête qui
+   alimente le jugement sémantique (titres formulés différemment mais même
+   sujet) est désormais filtrée sur la fenêtre anti-doublon de 90 jours
+   (`LIMIT 40` qui ne sert plus qu'à plafonner la taille du prompt, jamais à
+   tronquer silencieusement la période couverte).
+
+Testé : smoke-test local (mock BigQuery + mock LLM, cas match exact et cas
+"LLM répond non malgré un match exact" — l'override fonctionne) ; puis
+rejoué en conditions réelles via `tester_fix_limite_differenciation.py`
+(pont GitHub Actions, vrai BigQuery + vrai Anthropic) sur le cas réel qui
+avait échappé (post_id=11366, "aides électricité 2026", sous-silo Contrat
+Électricité) : le correctif détecte bien le doublon et produit un angle
+différencié. **Validé en conditions réelles le 31/10.**
+
+**Hors scope, signalé mais volontairement non corrigé** : le même audit a
+trouvé 17 paires d'articles Solaire publiés le même jour, techniquement
+différenciés (titres/mots-clés distincts) mais sur un angle très proche
+(ex. deux articles "panneaux solaires 400W" le même jour, dimensionnement
+vs ROI) — risque de cannibalisation fine, pas un doublon au sens strict.
+Décision opérateur : **ne rien changer sur Solaire pour l'instant**, le
+silo est en phase de test de requêtes ; réévaluer une fois les premiers
+indicateurs GSC/Clarity (trafic organique, conversion) disponibles.
+
+## Audit 404 / "effet d'écrasement" (31/10/2026)
+
+Question opérateur, dans la continuité du point précédent : au vu du volume
+de pages à venir (potentiellement des milliers sur un même sujet/mot-clé
+avec des angles différents), deux risques identifiés explicitement par
+l'opérateur — pages 404, et "effet d'écrasement" (Google qui ne retient
+qu'une page parmi plusieurs proches).
+
+**404 — audité, risque nul côté pipeline** : revue de `publier_article()`
+et de l'ensemble du repo — aucun script ne supprime jamais un article
+WordPress, aucun chemin de code ne PATCH le contenu d'un article existant.
+Collision de slug toujours résolue par réutilisation de l'existant (même
+titre) ou suffixe de date (titre différent), avec en dernier recours la
+déduplication native de WordPress (jamais d'erreur). Seul vecteur de 404
+réel sur le site : des liens cassés dans le contenu des articles, déjà
+couvert par l'audit hebdomadaire `auditer_liens_internes.py`.
+
+**Effet d'écrasement — infrastructure de mesure déjà présente mais inactive**.
+Paysage identifié :
+- `detecter_cannibalisation_gsc.py` (GitHub Actions, mensuel, actif) : vraies
+  requêtes GSC en concurrence entre pages du site — signal tardif (nécessite
+  plusieurs semaines de trafic réel par requête).
+- `synchroniser_indexation()` + table `indexation_google` (`pipeline/pipeline.py`,
+  `pipeline/server.py`) : interroge l'API URL Inspection de Search Console
+  pour obtenir le `coverage_state` réel par URL (incluant les verdicts
+  directement liés a l'ecrasement : "Duplicate, Google chose different
+  canonical", "Crawled - currently not indexed", etc.) — le signal le plus
+  direct et le plus precoce possible, disponible des que Google crawle la
+  page, sans attendre du trafic de recherche. **Code present, jamais
+  planifie** : declenchement uniquement manuel via un endpoint `server.py`
+  (Cloud Run).
+- `agent_orcaas_analyser_chevauchement` : compare l'etat d'indexation de
+  pages voisines par prefixe d'URL. Marque "a l'abandon" depuis la decision
+  d'octobre de ne plus investir sur ce Cloud Run (voir plus haut, "SEO
+  technique delegue").
+
+Contrainte identifiee avant toute automatisation : l'API URL Inspection a
+un quota quotidien limite, incompatible avec une verification exhaustive a
+l'echelle de "milliers de pages".
+
+**Decision operateur (31/10)** : **aucune nouvelle automatisation pour
+l'instant** — s'appuyer uniquement sur le suivi mensuel de cannibalisation
+GSC deja actif (`detecter_cannibalisation_gsc.py`). Les options ecartees
+pour l'instant, a reconsiderer si le besoin se precise : (a) nouveau
+workflow GitHub Actions hebdomadaire limite aux articles recents (le plus
+coherent avec la decision d'octobre de ne plus investir sur Cloud Run), ou
+(b) reactiver/planifier l'outil existant sur Cloud Run. Point a noter si
+l'option (a) est reprise un jour : le secret `SA_GTM_PRIVATE_KEY`
+(credentials du compte de service Search Console) n'est aujourd'hui cable
+que cote Cloud Run, pas dans les secrets GitHub Actions — a propager aux
+deux endroits si besoin (meme regle que tout autre secret, voir plus haut).
