@@ -81,35 +81,34 @@ def main():
         print(df1.to_string(index=False))
 
     print("\n" + "=" * 80)
-    print("2. Meme jour, meme sous-silo (base), DEUX articles au mot-cle quasi")
-    print("   identique (memes 4 premiers mots, ordre indifferent) -- signature")
-    print("   precise du bug #3/#4 ('jumeaux' publies a quelques minutes d'ecart")
-    print("   DANS LE MEME RUN, occurrence >=2 d'un sous-silo a quota > 1)")
+    print("2. Meme jour, meme sous-silo (base), DEUX articles partageant au moins")
+    print("   3 mots de plus de 3 lettres dans leur mot-cle -- signature precise")
+    print("   du bug #3/#4 ('jumeaux' publies a quelques minutes d'ecart DANS LE")
+    print("   MEME RUN, occurrence >=2 d'un sous-silo a quota > 1)")
     print("=" * 80)
     df2 = client_bq.query(f"""
         WITH base AS (
           SELECT post_id, date_publication,
                  SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] AS sous_silo_base,
                  mot_cle,
-                 ARRAY(SELECT x FROM UNNEST(SPLIT(LOWER(mot_cle), ' ')) AS x ORDER BY x) AS mots_tries
+                 SPLIT(LOWER(mot_cle), ' ') AS mots
           FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
           WHERE date_publication >= '{FENETRE_DEBUT}'
             AND mot_cle IS NOT NULL AND mot_cle != ''
+        ),
+        paires AS (
+          SELECT
+              a.date_publication AS date_a, a.post_id AS post_id_a, a.mot_cle AS mot_cle_a,
+              b.date_publication AS date_b, b.post_id AS post_id_b, b.mot_cle AS mot_cle_b,
+              a.sous_silo_base,
+              (SELECT COUNT(*) FROM UNNEST(a.mots) m WHERE LENGTH(m) > 3 AND m IN UNNEST(b.mots)) AS mots_communs
+          FROM base a
+          JOIN base b
+            ON a.sous_silo_base = b.sous_silo_base
+            AND a.post_id < b.post_id
+            AND DATE(a.date_publication) = DATE(b.date_publication)
         )
-        SELECT
-            a.date_publication AS date_a, a.post_id AS post_id_a, a.mot_cle AS mot_cle_a,
-            b.date_publication AS date_b, b.post_id AS post_id_b, b.mot_cle AS mot_cle_b,
-            a.sous_silo_base,
-            TIMESTAMP_DIFF(b.date_publication, a.date_publication, MINUTE) AS ecart_minutes
-        FROM base a
-        JOIN base b
-          ON a.sous_silo_base = b.sous_silo_base
-          AND a.post_id < b.post_id
-          AND DATE(a.date_publication) = DATE(b.date_publication)
-          AND (
-            SELECT COUNT(*) FROM UNNEST(a.mots_tries) m
-            WHERE m IN UNNEST(b.mots_tries) AND LENGTH(m) > 3
-          ) >= 3
+        SELECT * EXCEPT(mots_communs) FROM paires WHERE mots_communs >= 3
         ORDER BY date_a DESC
     """).to_dataframe()
     if df2.empty:
@@ -117,6 +116,56 @@ def main():
     else:
         print(f"   ⚠️ {len(df2)} paire(s) suspecte(s) -- a relire manuellement (faux positifs possibles) :")
         print(df2.to_string(index=False))
+
+    print("\n" + "=" * 80)
+    print("2bis. Diagnostic de la fenetre de comparaison de verifier_et_differencier_sujet()")
+    print("      (LIMIT 15 ORDER BY date DESC) : pour chaque sous-silo a quota > 1,")
+    print("      jusqu'a quand remonte le 15e article le plus recent AU MOMENT de")
+    print("      chaque publication depuis le 22/10 -- si < 90 jours, un doublon")
+    print("      plus ancien que cette fenetre echappe totalement a la verification,")
+    print("      meme si verifier_doublons()/le filtre SQL amont le voyaient.")
+    print("=" * 80)
+    sous_silos_sql2 = "', '".join(s.replace("'", "\\'") for s in SOUS_SILOS_QUOTA_SUP_1)
+    df2bis = client_bq.query(f"""
+        WITH candidats AS (
+          SELECT post_id, date_publication,
+                 SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] AS sous_silo_base
+          FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+          WHERE date_publication >= '{FENETRE_DEBUT}'
+            AND SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] IN ('{sous_silos_sql2}')
+        ),
+        historique AS (
+          SELECT post_id, date_publication,
+                 SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] AS sous_silo_base
+          FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+          WHERE SPLIT(sous_silo_strategique, ' (')[OFFSET(0)] IN ('{sous_silos_sql2}')
+        )
+        SELECT
+            c.post_id, c.date_publication, c.sous_silo_base,
+            (SELECT MIN(h.date_publication) FROM (
+                SELECT h2.date_publication FROM historique h2
+                WHERE h2.sous_silo_base = c.sous_silo_base
+                  AND h2.date_publication < c.date_publication
+                ORDER BY h2.date_publication DESC LIMIT 15
+             ) h) AS portee_15e_article,
+            TIMESTAMP_DIFF(c.date_publication,
+                (SELECT MIN(h.date_publication) FROM (
+                    SELECT h2.date_publication FROM historique h2
+                    WHERE h2.sous_silo_base = c.sous_silo_base
+                      AND h2.date_publication < c.date_publication
+                    ORDER BY h2.date_publication DESC LIMIT 15
+                 ) h), DAY) AS portee_en_jours
+        FROM candidats c
+        ORDER BY c.sous_silo_base, c.date_publication
+    """).to_dataframe()
+    if df2bis.empty:
+        print("   (aucune donnee)")
+    else:
+        resume = df2bis.groupby("sous_silo_base")["portee_en_jours"].agg(["min", "max", "mean", "count"])
+        print(resume.to_string())
+        print("\n   → 'min'/'max'/'mean' = nombre de jours couverts par les 15 articles")
+        print("     les plus recents vus par verifier_et_differencier_sujet() au moment")
+        print("     de chaque publication. A comparer a la fenetre anti-doublon de 90j.")
 
     print("\n" + "=" * 80)
     print("3. Detail complet de tous les articles publies depuis le 22/10 sur les")
