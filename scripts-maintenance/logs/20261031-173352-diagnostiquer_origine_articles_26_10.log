@@ -1,0 +1,60 @@
+# Execution du 2026-10-31T17:33:52Z
+# Script    : scripts-maintenance/diagnostiquer_origine_articles_26_10.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+10 article(s) le 2026-10-26 :
+
+  post_id=12352 | 2026-10-26 16:20:17.672939+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre='Prix kit solaire autoconsommation installation comprise'
+      silo=4. Solaire | sous_silo=Kit solaire | mot_cle=prix kit solaire autoconsommation installation comprise
+
+  post_id=12353 | 2026-10-26 16:22:17.598737+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre="Rentabilité kit solaire : en combien d'années amorti"
+      silo=4. Solaire | sous_silo=Kit solaire | mot_cle=rentabilité kit solaire temps de retour sur investissement
+
+  post_id=12354 | 2026-10-26 16:24:39.584403+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre='Prix batterie solaire installation : coût réel 2026'
+      silo=4. Solaire | sous_silo=Batterie panneaux solaires | mot_cle=prix batterie solaire installation coût
+
+  post_id=12355 | 2026-10-26 16:26:16.856611+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre='Quelle capacité batterie solaire choisir pour sa maison'
+      silo=4. Solaire | sous_silo=Batterie panneaux solaires | mot_cle=quelle capacité batterie solaire choisir pour sa maison
+
+  post_id=12356 | 2026-10-26 16:28:03.244368+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre='Système solaire combiné vs chaudière gaz : quel est le plus'
+      silo=4. Solaire | sous_silo=Système solaire combiné | mot_cle=système solaire combiné vs chaudière gaz quel est le plus rentable
+
+  post_id=12357 | 2026-10-26 16:29:49.157562+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre="Système solaire combiné : en combien d'années rentable ?"
+      silo=4. Solaire | sous_silo=Système solaire combiné | mot_cle=système solaire combiné temps de retour sur investissement rentabilité
+
+  post_id=12358 | 2026-10-26 16:31:39.502697+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre='Chauffe-eau solaire rentabilité : économies réelles par an'
+      silo=4. Solaire | sous_silo=Chauffe-eau solaire | mot_cle=chauffe-eau solaire rentabilité économies par an
+
+  post_id=12359 | 2026-10-26 16:33:07.696593+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre='Chauffe-eau solaire vs électrique : quel est le plus'
+      silo=4. Solaire | sous_silo=Chauffe-eau solaire | mot_cle=chauffe-eau solaire vs chauffe-eau électrique classique quel est le plus économique
+
+  post_id=12360 | 2026-10-26 16:35:02.719557+00:00 | type_publication=None | run_id='solaire_transac_20261026_1618'
+      titre='Combien de panneaux solaires faut-il pour une maison budget'
+      silo=4. Solaire | sous_silo=Panneaux solaires | mot_cle=combien de panneaux solaires faut-il pour une maison budget
+
+  post_id=12361 | 2026-10-26 16:38:14.057391+00:00 | type_publication=None | run_id='solaire_transac_20261026_1636'
+      titre='Rentabilité panneaux solaires : temps de retour réel'
+      silo=4. Solaire | sous_silo=Panneaux solaires | mot_cle=rentabilité panneaux solaires temps de retour sur investissement
+
+Repartition par run_id :
+run_id
+solaire_transac_20261026_1618    9
+solaire_transac_20261026_1636    1
+Name: count, dtype: int64
+
+Repartition par type_publication :
+type_publication
+None    10
+Name: count, dtype: int64
