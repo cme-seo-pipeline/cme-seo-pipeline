@@ -1,0 +1,18 @@
+# Execution du 2026-10-31T21:53:51Z
+# Script    : scripts-maintenance/compter_candidats_audit_mensuel.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+Articles candidats a l'audit (pertinence='directe') : 441
+Repartition par indicateur :
+indicateur
+TRVE_part_variable_TTC         152
+TRVE_part_fixe_TTC             152
+PRVG_moyen_TTC                  75
+ampleur_pourcent_ecretement     62
+Name: count, dtype: int64
+
+-> auditer_et_corriger_articles() appellera donc l'API Claude (modele Haiku) environ 441 fois lors du prochain run de audit-mensuel.yml (1 appel = 1 article candidat).
