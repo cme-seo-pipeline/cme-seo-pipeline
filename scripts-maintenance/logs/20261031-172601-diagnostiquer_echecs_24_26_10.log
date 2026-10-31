@@ -1,0 +1,54 @@
+# Execution du 2026-10-31T17:26:01Z
+# Script    : scripts-maintenance/diagnostiquer_echecs_24_26_10.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+================================================================================
+JOUR : 2026-10-24
+================================================================================
+  14 article(s) publie(s) ce jour-la.
+  Premiere publication : 2026-10-24 07:54:26.614947+00:00
+  Derniere publication : 2026-10-24 08:14:18.461636+00:00
+  Image a la une : 0/14 ont une image_id renseignee
+  ⚠️ 14 article(s) SANS image_id -- echec probable pendant ou juste
+     apres generer_featured_images() pour ces articles
+     Articles concernes :
+       post_id=11454 | 'Bouteille de gaz : autonomie réelle et calcul de' | Bouteilles
+       post_id=11455 | 'Norme de stockage bouteille de gaz : obligations légales et' | Bouteilles
+       post_id=11456 | 'Bouteille de gaz : checklist de sécurité avant stockage et' | Bouteilles
+       post_id=11457 | 'Facture gaz : décrypter les unités de consommation (kWh vs' | Facture Gaz
+       post_id=11458 | 'Chauffe-eau thermodynamique : schéma et étapes du cycle' | Aides chauffe-eau thermodynamique
+       post_id=11459 | 'Chauffe-eau thermodynamique : les erreurs courantes' | Aides chauffe-eau thermodynamique
+       post_id=11460 | 'Chèque énergie : les étapes concrètes pour le présenter' | Chèque énergie
+       post_id=11461 | 'Chèque énergie : les usages autorisés et interdits selon' | Chèque énergie
+       post_id=11462 | "MaPrimeRénov' : étape par étape du dossier de demande" | MaPrimeRénov'
+       post_id=11463 | "MaPrimeRénov' : calendrier détaillé et délais réels de" | MaPrimeRénov'
+       post_id=11464 | 'Résilier son contrat électricité sans frais : guide' | Contrat Électricité
+       post_id=11465 | 'Résiliation électricité : modèles de lettre et étapes' | Contrat Électricité
+       post_id=11466 | 'Comprendre les kWh : unité de mesure et calcul de votre' | Facture Électricité
+       post_id=11467 | 'Augmentation électricité 2024-2025 : facteurs tarifaires et' | Facture Électricité
+
+================================================================================
+JOUR : 2026-10-25
+================================================================================
+  ⚠️ AUCUN article publie ce jour-la -- echec survenu AVANT ou PENDANT
+     rediger_et_publier (selection/scraping/briefs/redaction/publication)
+================================================================================
+JOUR : 2026-10-26
+================================================================================
+  10 article(s) publie(s) ce jour-la.
+  Premiere publication : 2026-10-26 16:20:17.672939+00:00
+  Derniere publication : 2026-10-26 16:38:14.057391+00:00
+  Image a la une : 10/10 ont une image_id renseignee
+  ✅ Toutes les images a la une sont presentes -- l'echec est survenu APRES
+     generer_featured_images() (SVG dejas injectes directement dans le HTML,
+     donc deja faits avant les images ; reste donc Facebook/Instagram ou
+     la notification comme etapes suspectes pour cette journee).
+
