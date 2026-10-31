@@ -5360,7 +5360,18 @@ def generer_carte_titre(titre, sous_silo, mot_cle, couleur_fond, couleur_accent)
     ax.text(80, 480, "\n".join(lignes), color='white', fontsize=taille,
             fontweight='bold', va='top', linespacing=1.25)
     if mot_cle:
-        ax.text(80, 70, mot_cle, color=(1, 1, 1, 0.8), fontsize=20, va='bottom')
+        # Ligne dediee, au-dessus du nom du site et en dessous du titre --
+        # jamais partagee avec "Comprendre Mon Énergie" (meme ligne y=70
+        # avant ce correctif), pour eliminer tout chevauchement horizontal
+        # quelle que soit la longueur du mot-cle (bug signale le 31/10/2026).
+        # Troncature defensive a 1 ligne : les mots-cles reels sont courts,
+        # ce n'est qu'un filet de securite si jamais un mot-cle anormalement
+        # long passait la chaine de generation des briefs.
+        mot_cle_lignes = textwrap.wrap(mot_cle, width=60)
+        mot_cle_affiche = mot_cle_lignes[0] if mot_cle_lignes else mot_cle
+        if len(mot_cle_lignes) > 1:
+            mot_cle_affiche = mot_cle_affiche.rstrip('.,;: ') + '...'
+        ax.text(80, 130, mot_cle_affiche, color=(1, 1, 1, 0.8), fontsize=20, va='bottom')
     ax.text(1140, 70, "Comprendre Mon Énergie", color=(1, 1, 1, 0.8),
             fontsize=18, fontweight='bold', va='bottom', ha='right')
     dessiner_icone_sous_silo(ax, sous_silo, couleur_accent)
