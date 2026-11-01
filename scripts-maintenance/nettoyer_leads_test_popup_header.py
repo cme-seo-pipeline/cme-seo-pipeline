@@ -6,16 +6,20 @@ test crees par l'operateur le 01/11/2026 en validant le nouveau popup
 
 Les 2 lignes (visibles dans l'onglet Sheets "Leads Formulaire Article",
 meme article, meme numero de test, a 30 secondes d'intervalle) :
-  1. 2026-11-01 17:43:01 (heure Paris) -- prenom='test', tool='appel-header-formulaire'
+  1. 2026-11-01 17:42:58.799548 UTC -- prenom='test', tool='appel-header-formulaire'
      -> test du nouveau popup header.
-  2. 2026-11-01 17:43:31 (heure Paris) -- prenom='oussama', tool='contact-expert-inline'
+  2. 2026-11-01 17:43:29.833653 UTC -- prenom='oussama', tool='contact-expert-inline'
      -> test du mini-formulaire periodique existant sur le meme article,
         fait dans la foulee par l'operateur.
 
-Filtre : telephone='695410020' (numero de test, jamais utilise par un vrai
-lead) AND DATE(timestamp) = '2026-11-01' -- suffisant et sans ambiguite de
-fuseau horaire pour cette fenetre (le 01/11 reste le 01/11 des deux cotes
-compte tenu de l'heure de la journee, Paris ou UTC).
+CORRECTIF (diagnostiquer_leads_0111.py) : le telephone stocke en base est
+en realite '0695410020' (zero initial) -- Sheets l'affiche '695410020' car
+la colonne Telephone y est interpretee comme un nombre, qui supprime le 0
+de tete a l'affichage. Le filtre ci-dessous utilise la vraie valeur stockee.
+Confirme par le meme diagnostic : il existe un 3e lead ce jour-la
+('Walter Auguste', tel='0636458741', autre article) qui n'est PAS un test et
+ne doit surtout pas etre touche -- le filtre telephone+source_post_id ci-
+dessous l'exclut naturellement (numero et article differents).
 
 Verifie aussi, a titre PUREMENT INFORMATIF (pas supprime automatiquement :
 l'operateur n'a demande explicitement que les 2 lignes leads_convertis/Sheets),
@@ -44,7 +48,8 @@ ARTICLE_URL = (
 )
 
 FILTRE_LEADS = """
-    telephone = '695410020' AND DATE(timestamp) = '2026-11-01'
+    telephone = '0695410020' AND source_post_id = '13183'
+    AND tool IN ('appel-header-formulaire', 'contact-expert-inline')
 """
 
 
