@@ -1352,3 +1352,53 @@ monte fort dans les mois a venir. Avantage en contrepartie : une valeur
 reglementaire qui change en cours de mois (ex. le 10) n'attend plus
 jusqu'au mois suivant pour etre corrigee dans les articles, repere au plus
 tard 5 jours apres (prochaine echeance fixe) au lieu de jusqu'a 30.
+
+## Audit cannibalisation mensuel — premier run reel (01/11/2026)
+
+Premier declenchement de `audit-cannibalisation-mensuel.yml` depuis sa
+creation le 19/10 (cron du 1er du mois, 5h10 UTC — execute en realite a
+11h46 UTC le 01/11, decalage probablement du a la file d'attente des
+workflows programmes GitHub Actions, rien d'anormal). Run reussi
+(`detecter_cannibalisation_gsc.py --jours=90 --impressions-min=30`),
+resultat lu directement dans le log du run (exceptionnellement accessible
+depuis ce sandbox pour ce run precis — le blob storage des logs de run
+GitHub Actions reste globalement inaccessible, voir plus haut, section
+sandbox) plutot que dans un fichier commite (conforme au design voulu,
+lecture seule, rien n'est ecrit dans le repo par ce workflow).
+
+**76 requetes GSC en concurrence interne** sur la fenetre de 90 jours :
+**6 en concurrence forte** (action prioritaire), **70 en concurrence
+faible** (a surveiller). Historise ici pour servir de base a une future
+decision de correction/optimisation (fusion, differenciation ou
+redirection 301) — **aucune action n'a ete prise sur ces pages**, la
+donnee est juste capturee pour ne pas la perdre avant la prochaine passe
+(mensuelle, prochain run prevu le 01/12/2026) :
+
+| Requete | Pages en concurrence | Impressions cumulees | Detail |
+|---|---|---|---|
+| `prix du gaz bouteille 2026` | 6 | 140 | Silo Gaz/bouteilles — inclut 2 URL quasi-identiques (`...-1015` / `...-1015-2`), meme famille que les clusters de duplication editoriale deja identifies le 20/10 |
+| `mon énérgie` (avec faute) | 2 | 54 | Page d'accueil vs `/comparateur-energie-electricite-gaz/` — concurrence sur le nom de marque lui-meme |
+| `mon energie` | 2 | 39 | Meme paire que ci-dessus, variante sans faute |
+| `quel fournisseur de gaz choisir` | 3 | 37 | Silo Gaz/comparatifs-fournisseurs — une des 3 pages positionnee en moyenne 90e (`meilleur-fournisseur-gaz-2024-comparatif`, probablement obsolete) |
+| `prix bouteille de gaz carrefour 2026` | 4 | 35 | Meme cluster bouteilles que la 1ere ligne |
+| `fonctionnement compteur electrique` | 5 | 30 | Silo Electricite/compteur — 5 pages quasi-identiques sur le meme sujet |
+
+**Recoupement avec un diagnostic anterieur** : les clusters "bouteilles de
+gaz 2026" et "fonctionnement compteur electrique" correspondent exactement
+a des familles de quasi-doublons deja reperees le 20/10 par
+`analyser_duplication_editoriale.py` (section "Duplication editoriale —
+root cause et correctif" plus haut) — ces articles existaient donc deja
+comme doublons editoriaux suspectes avant meme d'etre confirmes comme
+cannibalisation GSC reelle (vraies requetes, vrai signal de confusion
+Google) par ce premier run. Les deux paires "mon energie"/"mon énérgie"
+sont un cas distinct, pas lie a la duplication editoriale : concurrence
+entre la page d'accueil et une page produit sur le nom de marque, pas un
+probleme de contenu redondant.
+
+**Pas d'action automatique** — la decision (fusionner avec redirection
+301, differencier l'angle, ou laisser tel quel pour les cas faibles) reste
+explicitement editoriale, comme documente a la creation de ce script. Les
+70 cas faibles ne sont pas enumeres ici (volume trop important pour ce
+fichier) — consultables dans l'onglet Actions GitHub du run
+`41303387741` si une revue complete est necessaire avant le prochain run
+du 01/12.
