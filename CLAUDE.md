@@ -592,7 +592,7 @@ partagé par plusieurs blocs différents.
 | Fichier | Déclencheur | Rôle |
 |---|---|---|
 | `publication-quotidienne.yml` | cron quotidien | Publie les nouveaux articles (pipeline.py) |
-| `audit-mensuel.yml` | cron mensuel (5 du mois, 3h UTC — décalé du 1er le 31/10/2026) + `workflow_dispatch` | Audit factuel des valeurs réglementaires citées dans les articles (`auditer_articles_action.py`) — **sans rapport avec les CTA** |
+| `audit-mensuel.yml` | 4x/mois (1, 8, 15, 22 — 3h UTC, décalé du 1er le 31/10/2026 puis passé de 1x à 4x/mois le 1/11/2026) + `workflow_dispatch` | Audit factuel des valeurs réglementaires citées dans les articles (`auditer_articles_action.py`) — **sans rapport avec les CTA**. Nom affiché dans l'onglet Actions mis à jour ("Audit reglementaire articles (4x/mois)"), fichier toujours nommé `audit-mensuel.yml` (seules des références en commentaire ailleurs dans le repo, aucune dépendance de code sur ce nom de fichier — pas renommé pour éviter une churn inutile) |
 | `sync-clarity.yml`, `sync-clarity-par-page.yml` | — | Sync Microsoft Clarity |
 | `sync-indicateurs.yml` | — | Rafraîchit les indicateurs réglementaires |
 | `sync-leads-app.yml` | — | Sync leads vers l'app |
@@ -1148,11 +1148,14 @@ Audite les articles des sous-silos a `pertinence='directe'` (table
 `mapping_indicateur_sous_silo`) contre les dernieres valeurs connues
 (`indicateurs_reglementaires`), et **corrige automatiquement, sans
 validation humaine**, tout article citant une valeur reglementaire
-devenue obsolete. Dernier run : 1/10/2026, succes. **Decale au 5 du mois
-le 31/10/2026** (voir section "Audit mensuel — appel a l'API Claude, et
-volume" plus bas) : prochain run desormais le 5/11/2026, plus le 1/11.
-Sans rapport avec le chantier CTA/formulaire — c'est le seul mecanisme de
-correction retroactive de contenu existant dans ce repo.
+devenue obsolete. Dernier run : 1/10/2026, succes. **Cadence modifiee deux
+fois le meme jour, voir section "Audit mensuel — appel a l'API Claude, et
+volume" plus bas** : decalee au 5 du mois le 31/10/2026, puis passee le
+1/11/2026 a 4 occurrences par mois (1, 8, 15, 22) suite a une nouvelle
+demande operateur — le decalage au 5 n'a donc jamais ete utilise en
+conditions reelles, remplace avant son premier run. Sans rapport avec le
+chantier CTA/formulaire — c'est le seul mecanisme de correction
+retroactive de contenu existant dans ce repo.
 
 **Volet 2 — bilan de sante general** : tous les workflows recurrents sont
 verts sur leurs derniers runs (`sync-clarity`, `sync-clarity-par-page`,
@@ -1322,9 +1325,30 @@ Claude ? Les deux workflows du 1er du mois n'ont pas le meme profil :
   donnees GSC (`01_raw.gsc_queries`), verifie par grep (zero occurrence de
   `anthropic`/`claude` dans ce fichier).
 
-**Decale au 5 du mois (31/10/2026)** : `audit-mensuel.yml` passe du 1er au
-5 du mois (`cron: '0 3 1 * *'` → `'0 3 5 * *'`, toujours 3h UTC), demande
-explicite de l'operateur. `audit-cannibalisation-mensuel.yml` n'est **pas**
-concerne par ce changement (reste au 1er, 5h10 UTC) — seul l'audit
-reglementaire (celui qui appelle l'API Claude, voir ci-dessus) a ete
-decale.
+**Decale au 5 du mois (31/10/2026), puis passe a 4x/mois (1/11/2026)** :
+`audit-mensuel.yml` a d'abord ete decale du 1er au 5 du mois
+(`cron: '0 3 1 * *'` → `'0 3 5 * *'`), puis — demande operateur separee le
+lendemain, avant que ce decalage n'ait eu le temps de tourner une seule
+fois — passe de 1x/mois a **4x/mois, aux dates fixes 1, 8, 15 et 22**
+(`'0 3 1,8,15,22 * *'`, toujours 3h UTC). Titre du workflow renomme
+("Audit reglementaire articles (4x/mois)") pour refleter la nouvelle
+cadence dans l'onglet Actions GitHub. `audit-cannibalisation-mensuel.yml`
+n'est **pas** concerne par ce changement (reste au 1er du mois, 5h10 UTC,
+SQL uniquement) — seul l'audit reglementaire (celui qui appelle l'API
+Claude) a change de cadence ; son commentaire d'origine, qui affirmait les
+deux audits alignes sur le meme jour, a ete corrige en consequence.
+
+**Implication volume/cout directe** : `auditer_et_corriger_articles()`
+re-audite l'integralite du pool de candidats a chaque run (aucun filtre
+"deja verifie recemment" dans la requete SQL) — passer de 1x a 4x/mois
+**quadruple** le nombre d'appels Claude mensuels, de ~441 (voir plus haut)
+a environ **~1764/mois** au volume actuel, qui continuera de croitre avec
+le nombre d'articles publies (meme logique cumulative que documentee
+ci-dessus). Si les valeurs reglementaires sous-jacentes (`indicateurs_reglementaires`)
+ne changent pas entre deux runs du meme mois, les runs intermediaires
+re-confirment simplement "pas obsolete" pour les memes articles — cout
+Haiku reel mais modeste par appel, a surveiller si le volume d'articles
+monte fort dans les mois a venir. Avantage en contrepartie : une valeur
+reglementaire qui change en cours de mois (ex. le 10) n'attend plus
+jusqu'au mois suivant pour etre corrigee dans les articles, repere au plus
+tard 5 jours apres (prochaine echeance fixe) au lieu de jusqu'a 30.
