@@ -70,6 +70,20 @@
  * Necessite la colonne `temps_ms` sur interactions_contenu
  * (scripts-maintenance/ajouter_colonne_temps_ms_interactions.py, ALTER
  * TABLE idempotent -- a executer une seule fois avant ce deploiement).
+ *
+ * AJOUT DU 01/11/2026, suite (demande operateur) : le relais Sheets ci-dessous
+ * (cme_relayer_log_lead(), voir plus bas) accepte desormais aussi
+ * `tool = 'appel-expert-inline'` -- le nouveau mini-formulaire "avant
+ * d'appeler" de cme-cta-progressifs.php (meme perimetre articles, memes
+ * champs nom/prenom+telephone, mais la derniere etape devient un bouton
+ * tel: reel plutot qu'un message "merci"). Decision operateur explicite :
+ * ces leads doivent arriver dans le MEME onglet Google Sheets que le
+ * formulaire de contact, avec source_page et le tracking habituel -- pas de
+ * nouvel onglet ni de nouveau relais, simple elargissement du filtre
+ * existant. Le numero affiche en header/footer n'est pas concerne (reste un
+ * lien tel: direct, inchange) : seul le tracking generique "clic sur
+ * n'importe quel tel:" plus bas (tool='appel-telephone', sans nom/telephone
+ * saisis) continue de s'appliquer a ce numero, comme avant.
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -131,17 +145,21 @@ function cme_relayer_log_lead(WP_REST_Request $request) {
         );
     }
 
-    // Relais secondaire vers Google Sheets, UNIQUEMENT pour les leads du
-    // mini-formulaire integre aux articles (22/10/2026) -- pas pour les
-    // clics tel: ni les soumissions du formulaire /contactez-un-expert/,
-    // qui ne passaient pas deja par un Sheet et ne doivent pas commencer a
-    // y arriver sans l'avoir demande. Meme forme d'appel que l'existant
-    // wordpress-plugins/simulateur-solaire/simulateur-solaire.php (wp_remote_get
-    // avec payload en query string, bloquant -- invisible pour le visiteur,
-    // c'est un appel serveur-a-serveur en arriere-plan comme celui ci-dessus).
+    // Relais secondaire vers Google Sheets, UNIQUEMENT pour les leads des
+    // mini-formulaires integres aux articles -- 'contact-expert-inline'
+    // (22/10/2026) ET 'appel-expert-inline' (01/11/2026, demande operateur :
+    // meme onglet Sheets pour le nouveau formulaire "avant d'appeler") --
+    // pas pour les clics tel: directs ni les soumissions du formulaire
+    // /contactez-un-expert/, qui ne passaient pas deja par un Sheet et ne
+    // doivent pas commencer a y arriver sans l'avoir demande. Meme forme
+    // d'appel que l'existant wordpress-plugins/simulateur-solaire/simulateur-solaire.php
+    // (wp_remote_get avec payload en query string, bloquant -- invisible
+    // pour le visiteur, appel serveur-a-serveur en arriere-plan comme
+    // celui ci-dessus).
     if (CME_APPS_SCRIPT_LEADS_INLINE_URL) {
         $donnees = json_decode($payload, true);
-        if (is_array($donnees) && ($donnees['tool'] ?? '') === 'contact-expert-inline') {
+        $outil = is_array($donnees) ? ($donnees['tool'] ?? '') : '';
+        if (in_array($outil, ['contact-expert-inline', 'appel-expert-inline'], true)) {
             wp_remote_get(
                 CME_APPS_SCRIPT_LEADS_INLINE_URL . '?payload=' . rawurlencode($payload),
                 ['timeout' => 20, 'blocking' => true, 'sslverify' => false]

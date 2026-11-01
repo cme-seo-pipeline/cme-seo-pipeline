@@ -26,6 +26,16 @@
  *    en cPanel comme d'habitude -- cloudshell download, .bak horodate,
  *    upload, purge des 2 caches LiteSpeed)
  * ============================================================
+ *
+ * AJOUT DU 01/11/2026 (demande operateur) : recoit desormais AUSSI les leads
+ * du nouveau mini-formulaire "avant d'appeler" (meme fichier PHP, memes
+ * champs, voir cme-cta-progressifs.php et cme-tracking-conversion.php) --
+ * decision operateur explicite : meme onglet, pas de nouveau Sheet. Pour
+ * distinguer les deux dans l'onglet, une colonne "Type" a ete ajoutee en fin
+ * de ligne (reprend `tool` tel quel : 'contact-expert-inline' ou
+ * 'appel-expert-inline') -- ajout en DERNIERE position pour rester
+ * compatible avec les lignes deja ecrites (aucune migration necessaire).
+ * ============================================================
  */
 
 var SPREADSHEET_ID = '1LBgHQPioaT0buv9rev5egywRDtE8hKIFHFVwjNqw00o'; // meme classeur que les autres leads
@@ -33,7 +43,7 @@ var SHEET_NAME = 'Leads Formulaire Article';
 
 var HEADERS = [
   'Date & Heure', 'Prenom', 'Telephone', 'Email', 'Code Postal',
-  'Silo', 'Position dans l\'article', 'URL de l\'article'
+  'Silo', 'Position dans l\'article', 'URL de l\'article', 'Type'
 ];
 
 function doGet(e) {
@@ -89,6 +99,7 @@ function ecrireSheet(d) {
   sheet.appendRow([
     new Date(),
     d.prenom || '', d.telephone || '', d.email || '', d.code_postal || '',
-    details.silo || '', details.position || '', d.source_page || ''
+    details.silo || '', details.position || '', d.source_page || '',
+    d.tool || ''
   ]);
 }

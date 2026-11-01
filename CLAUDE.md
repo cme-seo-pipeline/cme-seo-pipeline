@@ -1512,3 +1512,130 @@ Script de synthese (temps moyen/median pour atteindre chaque jalon de
 100 mots, croise avec les clics par jalon) a ecrire une fois le volume
 de donnees suffisant — meme sequence que pour `interactions_contenu`
 elle-meme le 26/10 (attendre les donnees avant d'ecrire l'analyse).
+
+**Mise a jour** : la colonne `temps_ms` a ete ajoutee avec succes via le
+pont GitHub Actions (`ajouter_colonne_temps_ms_interactions.py`, run du
+01/11 16:27 UTC) — schema confirme a 14 colonnes. Les deux mu-plugins
+restent en attente de deploiement cPanel (voir section suivante, qui les
+regroupe avec un second chantier dans le meme lot de deploiement).
+
+## Mini-formulaire "avant d'appeler" (01/11/2026)
+
+Demande explicite de l'operateur, dans la continuite directe du chantier
+formulaire de contact progressif : *"est-ce qu'on peut créer un formulaire
+avant d'appeler, le même : nom & prénom + numéro de téléphone avant
+d'appeler, comme ça l'ajustement au niveau du déploiement se fait une
+seule fois"*. Objectif explicite porte par la derniere clause : pas un
+deuxieme formulaire construit a part, mais la REUTILISATION du meme
+generateur deja en place (`creer()` dans `cme-cta-progressifs.php`), pour
+qu'un futur ajustement (styles, champs, validation, RGPD...) n'ait besoin
+d'etre code qu'UNE SEULE fois et profite aux deux formulaires.
+
+**Trois precisions demandees explicitement a l'operateur avant
+implementation** (question posee car ambigu et couteux a refaire une fois
+deploye en prod) :
+1. **Perimetre** : articles uniquement (`is_singular('post')`, meme
+   perimetre que le formulaire de contact existant) — PAS le numero affiche
+   en header/footer (widget WordPress natif sitewide, documente plus haut,
+   section "Bouton telephone du header"), qui reste un lien `tel:` direct,
+   totalement inchange.
+2. **Declenchement de l'appel** : bouton "Appeler maintenant" explicite
+   (pas de redirection automatique) — le visiteur garde la main sur le
+   moment ou l'appel part reellement. Precision operateur ajoutee dans la
+   meme reponse : le numero du header doit rester affiche tel quel, ET les
+   leads captures via ce nouveau bouton doivent partir vers le MEME fichier
+   Google Sheets que le formulaire de contact, avec l'URL de la page et le
+   tracking habituel.
+3. **Pas de contournement** : formulaire obligatoire pour commencer (pas de
+   lien "appeler sans attendre") — revisable plus tard sur la base de
+   donnees reelles si la friction s'avere trop forte.
+
+**Implementation** (`wordpress-mu-plugins/cme-cta-progressifs.php`) :
+- `creer(n)` devient `creer(n, variante)` (`'contact'` par defaut,
+  `'appel'` pour le nouveau formulaire) — AUCUNE duplication de generateur :
+  memes champs (`ETAPES`, inchange : nom/prenom puis telephone), memes
+  styles (`injecterStyles()`, `FORMULAIRE_FOND1/2/ACCENT`), meme
+  validation, meme navigation clavier/boutons, meme case RGPD obligatoire
+  sur la derniere etape de saisie. Seules deux choses changent selon la
+  variante :
+  - le texte d'accroche et la phrase de reassurance (nouvelle constante
+    `TEXTE_APPEL`, texte de reassurance adapte — "un conseiller vous repond
+    immediatement au telephone" plutot que "vous recontacte sous 24h") ;
+  - la DERNIERE etape : pour `'contact'`, l'ecran "✅ Merci, un expert vous
+    recontacte rapidement" inchange ; pour `'appel'`, un ecran "📞 Appeler
+    maintenant · 01 89 71 36 48" dont le bouton est un vrai lien
+    `tel:+33189713648` (nouvelles constantes `TEL_NUMERO`/`TEL_AFFICHAGE`,
+    meme numero que le header) — le lead est envoye (`envoyerLead()`) AU
+    MOMENT ou cette etape s'affiche (donc avant le clic sur le bouton
+    d'appel lui-meme), pas au clic sur le lien `tel:`.
+- `envoyerLead()` prend desormais un 4e parametre `variante` : envoie
+  `tool = 'appel-expert-inline'` (nouveau) au lieu de
+  `'contact-expert-inline'` quand `variante === 'appel'` — permet de
+  distinguer les deux types de conversion dans `leads_convertis` et dans
+  les futures analyses. Evenement `dataLayer` distinct aussi
+  (`generate_lead_appel_inline`).
+- Tracking de progression (`journaliserInteraction`, table
+  `interactions_contenu`) : le champ `cible` (jusqu'ici jamais rempli pour
+  les evenements `form_vu`/`form_etape`/`form_abandon`) porte desormais la
+  variante (`'contact'` ou `'appel'`) — aucune nouvelle colonne necessaire
+  (colonne nullable deja existante, reutilisee), permet de separer les deux
+  entonnoirs dans une future analyse sans migration de schema.
+- **Frequence et position, volontairement DIFFERENTES du formulaire de
+  contact** : une seule occurrence du formulaire "appel" par article (pas
+  toutes les ~230 mots), ajoutee en toute fin de `.entry-content`
+  (`zone.appendChild(...)`, traversee independante de la boucle
+  periodique existante — aucun partage d'etat, aucun risque de regression
+  sur le mecanisme de contact deja en prod et deja mesure). Choix assume,
+  non demande explicitement par l'operateur mais documente ici : placer le
+  nouveau CTA "appel" une seule fois, en fin d'article (moment ou
+  l'intention d'appel est la plus forte, lecteur qui a lu l'ensemble du
+  contenu), plutot que d'alterner les positions periodiques existantes
+  entre les deux variantes — pour ne pas modifier le volume/la frequence du
+  formulaire de contact actuellement mesure (chantier `temps_ms`/
+  `lecture_position` en cours, voir section precedente). Garde-fou
+  `MOTS_MIN_CTA_APPEL = 300` : pas de formulaire "appel" sur un article
+  trop court (stub).
+
+**Cote serveur** (`wordpress-mu-plugins/cme-tracking-conversion.php`,
+`cme_relayer_log_lead()`) : le filtre qui decide quels leads sont relayes
+vers Google Sheets (`CME_APPS_SCRIPT_LEADS_INLINE_URL`) accepte desormais
+`tool IN ('contact-expert-inline', 'appel-expert-inline')` au lieu du seul
+`'contact-expert-inline'` — demande operateur explicite ("le même fichier
+sheets"), simple elargissement d'un `===` vers un `in_array()`, aucun
+nouveau relais/onglet.
+
+**Cote Google Sheets** (`apps-scripts/cme-formulaire-article-leads.gs`) :
+colonne "Type" ajoutee en DERNIERE position de `HEADERS`/`ecrireRow`
+(reprend `tool` tel quel) — pour que l'operateur puisse distinguer les deux
+types de lead dans l'onglet partage ("Leads Formulaire Article") sans avoir
+besoin de croiser avec BigQuery. Ajout en fin de ligne : compatible avec
+les lignes deja ecrites, aucune migration necessaire.
+
+**Pas d'action necessaire sur `tracking-api/server.py`** : `/api/log-lead`
+republie le payload recu tel quel vers `leads_convertis`
+(`tool`/`details`/etc. ne sont pas valides contre une liste figee de
+valeurs connues cote serveur) — un nouveau `tool` n'a besoin d'aucun
+changement de ce cote.
+
+**Valide** : `php -l` sur les deux mu-plugins + extraction du bloc JS de
+`cme-cta-progressifs.php` et des 2 blocs de `cme-tracking-conversion.php`
+(`node --check` sur chacun, aucune erreur) + `node --check` sur
+`cme-formulaire-article-leads.gs` (copie temporaire en `.js`, meme syntaxe).
+
+**Pas encore deploye** — a regrouper dans le MEME lot de deploiement cPanel
+que le chantier `temps_ms`/`lecture_position` (section precedente), les
+deux portant sur les memes fichiers (`cme-cta-progressifs.php` et
+`cme-tracking-conversion.php`) :
+1. Deployer l'Apps Script mis a jour (`cme-formulaire-article-leads.gs`) —
+   action operateur, pas d'acces script.google.com depuis ce sandbox (la
+   nouvelle colonne "Type" n'a d'effet qu'au prochain redeploiement de ce
+   script, pas automatique).
+2. `cloudshell download` les deux mu-plugins modifies, `.bak` horodate en
+   cPanel, upload dans `/wp-content/mu-plugins/`, purger les deux caches
+   LiteSpeed, verifier avec `?t=$RANDOM` sur un article reel (le nouveau
+   bloc "appel" doit apparaitre en toute fin de contenu, apres le dernier
+   formulaire de contact periodique).
+3. Faire un test reel (`?cta60=1` n'est pas necessaire, `MODE='actif'`
+   deja) : remplir le nouveau formulaire "appel" jusqu'au bouton "Appeler
+   maintenant", verifier la ligne correspondante dans `leads_convertis`
+   (`tool='appel-expert-inline'`) et dans l'onglet Sheets (colonne "Type").

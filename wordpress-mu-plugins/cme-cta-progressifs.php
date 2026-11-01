@@ -66,6 +66,38 @@
  * engage/abandonne/soumis. Necessite la colonne `temps_ms` sur
  * interactions_contenu (scripts-maintenance/ajouter_colonne_temps_ms_interactions.py,
  * meme prealable que pour cme-tracking-conversion.php, voir CLAUDE.md).
+ *
+ * AJOUT DU 01/11/2026, suite (demande operateur) : nouveau mini-formulaire
+ * "avant d'appeler", meme principe que le formulaire de contact ci-dessus
+ * (nom/prenom + telephone, meme case RGPD obligatoire, meme validation),
+ * mais dont la DERNIERE etape n'affiche pas un message "merci" -- elle
+ * affiche un vrai bouton "Appeler maintenant" (lien tel:) : le lead est
+ * capture AVANT que l'appel ne soit lance, et le visiteur garde la main sur
+ * le moment ou l'appel part reellement (decision operateur, voir CLAUDE.md).
+ * Objectif explicite : "l'ajustement au niveau du deploiement se fait une
+ * seule fois" -- d'ou un parametre `variante` ajoute a creer() plutot qu'un
+ * second generateur de formulaire duplique ; tout le reste (styles, RGPD,
+ * validation, navigation, tracking de progression) est partage a 100% entre
+ * les deux variantes.
+ * Perimetre : articles uniquement (is_singular('post'), comme le formulaire
+ * de contact), PAS le numero affiche en header/footer -- celui-ci reste un
+ * lien tel: direct, inchange, a la demande explicite de l'operateur.
+ * Frequence : UNE SEULE occurrence par article (pas periodique comme le
+ * formulaire de contact), ajoutee en toute fin de contenu -- c'est la que
+ * l'intention d'appel est la plus forte (lecteur qui a lu tout l'article),
+ * et ca n'entre pas en concurrence avec les formulaires de contact
+ * periodiques deja en place et deja mesures.
+ * Pas de contournement (lien d'appel direct) sur ce bloc : formulaire
+ * obligatoire pour commencer, a la demande explicite de l'operateur --
+ * revisable plus tard sur la base de donnees reelles si la friction s'avere
+ * trop forte.
+ * Lead : meme relais que le formulaire de contact (/wp-json/cme/v1/log-lead),
+ * mais `tool = 'appel-expert-inline'` (distinct de 'contact-expert-inline'
+ * et de 'appel-telephone', voir cme-tracking-conversion.php) pour isoler ce
+ * nouveau type de conversion dans les analyses -- et relaye vers le MEME
+ * onglet Google Sheets que le formulaire de contact (meme fonction PHP cote
+ * serveur, scope elargi, voir cme-tracking-conversion.php), avec source_page
+ * et le tracking habituel (source_post_id, position, silo).
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -90,6 +122,14 @@ add_action('wp_footer', function () {
   var MAX_BOUTONS = 30;       // garde-fou technique, au-dessus du maximum attendu (~23)
   var MOTS_FIN_MIN = 120;     // pas de formulaire s'il reste moins de mots que cela
   var API_LEAD = '/wp-json/cme/v1/log-lead';   // relais deja deploye (cme-tracking-conversion.php)
+
+  // CTA "avant d'appeler" (01/11/2026) -- une seule occurrence par article,
+  // voir docblock plus haut. Meme numero que le bouton du header
+  // (wordpress-mu-plugins/cme-header-tel-style.php), affiche a l'identique.
+  var MOTS_MIN_CTA_APPEL = 300;   // pas de CTA appel sur un article trop court (stub)
+  var TEL_NUMERO = '+33189713648';
+  var TEL_AFFICHAGE = '01 89 71 36 48';
+  var TEXTE_APPEL = '📞 Besoin d’une réponse immédiate ? Parlez à un conseiller énergie';
 
   // Couleurs UNIFIEES sur tout le site (22/10/2026, a la demande du porteur de
   // projet) -- avant, chaque silo avait son propre gradient (bleu/ambre/vert).
@@ -209,7 +249,8 @@ add_action('wp_footer', function () {
         type_evenement: 'form_abandon',
         position_contenu: DERNIER_ETAT.position,
         etape: String(DERNIER_ETAT.idx),
-        silo: DERNIER_ETAT.silo
+        silo: DERNIER_ETAT.silo,
+        cible: DERNIER_ETAT.variante
       });
       viderInteractions();
       DERNIER_ETAT = null;   // evite un double comptage si la page redevient visible puis se cache encore
@@ -220,10 +261,14 @@ add_action('wp_footer', function () {
   window.addEventListener('pagehide', viderInteractions);
 
   // ── ENVOI DU LEAD (reutilise le relais deja deploye et deja valide en prod) ──
-  function envoyerLead(valeurs, position, silo) {
+  // variante='appel' (01/11/2026) : meme relais, `tool` distinct pour isoler
+  // les leads "avant d'appeler" du formulaire de contact classique dans les
+  // analyses et dans leads_convertis -- voir docblock.
+  function envoyerLead(valeurs, position, silo, variante) {
     try {
+      var estAppel = variante === 'appel';
       var payload = {
-        tool: 'contact-expert-inline',
+        tool: estAppel ? 'appel-expert-inline' : 'contact-expert-inline',
         prenom: valeurs.prenom || '',
         telephone: valeurs.telephone || '',
         details: JSON.stringify({ position: position, silo: silo }),
@@ -237,7 +282,7 @@ add_action('wp_footer', function () {
         fetch(API_LEAD, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }).catch(function () {});
       }
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'generate_lead_inline', position: position, silo: silo });
+      window.dataLayer.push({ event: estAppel ? 'generate_lead_appel_inline' : 'generate_lead_inline', position: position, silo: silo });
     } catch (e) {}
   }
 
@@ -265,8 +310,14 @@ add_action('wp_footer', function () {
       // ── GENERATEUR DE MINI-FORMULAIRE (type Typeform, une question a la fois) ──
       // Une seule fonction, reutilisee a chaque position : c'est ce qui rend ce
       // mecanisme modulaire plutot que de dupliquer du HTML par position.
-      function creer(n) {
+      function creer(n, variante) {
+        variante = variante || 'contact';
+        var estAppel = variante === 'appel';
         var offre = offres[(n - 1) % offres.length];
+        var texteIntro = estAppel ? TEXTE_APPEL : offre.texte;
+        var texteReassurance = estAppel
+          ? '🔒 Vos données restent confidentielles · un conseiller vous répond immédiatement au téléphone'
+          : '🔒 Vos données restent confidentielles · un conseiller vous recontacte sous 24h';
         var d = document.createElement('div');
         d.className = 'cme-cta60';
         d.setAttribute('data-pos', String(n));
@@ -287,20 +338,28 @@ add_action('wp_footer', function () {
           '</div>';
         }).join('');
 
+        var finaleHtml = estAppel ?
+          '<div class="cme-mf-etape" data-champ="appel" style="display:none;text-align:center;padding:6px 0;">' +
+            '<div style="font-size:28px;">📞</div>' +
+            '<div style="font-weight:700;font-size:15px;color:#111827;margin:8px 0 14px;">Merci ! Vous pouvez appeler un conseiller dès maintenant.</div>' +
+            '<a href="tel:' + TEL_NUMERO + '" class="cme-mf-appeler" style="display:inline-block;background:' + FORMULAIRE_ACCENT + ';color:#1f2937;font-weight:700;font-size:16px;padding:12px 26px;border-radius:9px;text-decoration:none;">📞 Appeler maintenant · ' + TEL_AFFICHAGE + '</a>' +
+          '</div>'
+          :
+          '<div class="cme-mf-etape" data-champ="merci" style="display:none;text-align:center;padding:6px 0;">' +
+            '<div style="font-size:28px;">✅</div>' +
+            '<div style="font-weight:700;font-size:15px;color:#111827;margin-top:8px;">Merci, un expert vous recontacte rapidement.</div>' +
+          '</div>';
+
         d.innerHTML =
           '<div style="padding:18px 20px 10px;">' +
-            '<div style="color:#fff;font-weight:700;font-size:16px;margin-bottom:6px;">' + offre.texte + '</div>' +
-            '<div style="color:rgba(255,255,255,.8);font-size:12px;margin-bottom:10px;">🔒 Vos données restent confidentielles · un conseiller vous recontacte sous 24h</div>' +
+            '<div style="color:#fff;font-weight:700;font-size:16px;margin-bottom:6px;">' + texteIntro + '</div>' +
+            '<div style="color:rgba(255,255,255,.8);font-size:12px;margin-bottom:10px;">' + texteReassurance + '</div>' +
             '<div style="height:4px;background:rgba(255,255,255,.3);border-radius:2px;overflow:hidden;">' +
               '<div class="cme-mf-progres" style="height:100%;width:25%;background:#fff;transition:width .25s;"></div>' +
             '</div>' +
           '</div>' +
           '<div style="background:#eff6ff;padding:20px;">' +
-            '<div class="cme-mf-etapes">' + etapesHtml +
-              '<div class="cme-mf-etape" data-champ="merci" style="display:none;text-align:center;padding:6px 0;">' +
-                '<div style="font-size:28px;">✅</div>' +
-                '<div style="font-weight:700;font-size:15px;color:#111827;margin-top:8px;">Merci, un expert vous recontacte rapidement.</div>' +
-              '</div>' +
+            '<div class="cme-mf-etapes">' + etapesHtml + finaleHtml +
             '</div>' +
             '<div class="cme-mf-nav" style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;">' +
               '<button type="button" class="cme-mf-prec" style="background:none;border:none;color:#6b7280;font-size:14px;font-weight:600;cursor:pointer;padding:8px;visibility:hidden;">← Précédent</button>' +
@@ -350,16 +409,16 @@ add_action('wp_footer', function () {
         function allerA(nouvelIdx) {
           noeudsEtapes[idx].style.display = 'none';
           idx = nouvelIdx;
-          DERNIER_ETAT = { position: n, idx: idx, silo: prefixe };
+          DERNIER_ETAT = { position: n, idx: idx, silo: prefixe, variante: variante };
           if (idx >= ETAPES.length) {
-            journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: 'termine', silo: prefixe });
+            journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: 'termine', silo: prefixe, cible: variante });
             DERNIER_ETAT = null;   // termine : plus rien a detecter comme abandon pour cette instance
-            afficherEtape(noeudsEtapes[ETAPES.length]);   // etape "merci"
+            afficherEtape(noeudsEtapes[ETAPES.length]);   // etape "merci" ou "appel" selon la variante
             btnNav.style.display = 'none';
             barreProgres.style.width = '100%';
             return;
           }
-          journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: String(idx), silo: prefixe });
+          journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: String(idx), silo: prefixe, cible: variante });
           afficherEtape(noeudsEtapes[idx]);
           btnPrec.style.visibility = idx === 0 ? 'hidden' : 'visible';
           btnSuiv.textContent = idx === ETAPES.length - 1 ? 'Envoyer →' : 'Suivant →';
@@ -380,7 +439,7 @@ add_action('wp_footer', function () {
           afficherErreur('');
           valeurs[champActuel] = val.trim();
           if (idx === ETAPES.length - 1) {
-            envoyerLead(valeurs, n, prefixe);
+            envoyerLead(valeurs, n, prefixe, variante);
             allerA(ETAPES.length);
           } else {
             allerA(idx + 1);
@@ -398,7 +457,7 @@ add_action('wp_footer', function () {
         });
 
         majProgres();
-        journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: '0', silo: prefixe });
+        journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: '0', silo: prefixe, cible: variante });
 
         // Visibilite reelle (pas juste "present dans le DOM" -- insere via
         // JS, le formulaire existe souvent avant d'etre scrolle en vue) :
@@ -407,7 +466,7 @@ add_action('wp_footer', function () {
           var observateurVue = new IntersectionObserver(function (entrees) {
             for (var k = 0; k < entrees.length; k++) {
               if (entrees[k].isIntersecting) {
-                journaliserInteraction({ type_evenement: 'form_vu', position_contenu: n, silo: prefixe });
+                journaliserInteraction({ type_evenement: 'form_vu', position_contenu: n, silo: prefixe, cible: variante });
                 observateurVue.disconnect();
                 break;
               }
@@ -441,13 +500,27 @@ add_action('wp_footer', function () {
         var suivantEl = enfants[i + 1];
         if (!suivantEl || estCta(suivantEl) || estVide(suivantEl)) { continue; }
         if (apres[i] < MOTS_FIN_MIN) { continue; }   // trop pres d'un formulaire existant ou de la fin
-        zone.insertBefore(creer(poses + 1), suivantEl);
+        zone.insertBefore(creer(poses + 1, 'contact'), suivantEl);
         poses++;
         cumul = 0;
       }
 
+      // ── CTA "avant d'appeler" (01/11/2026) : une seule occurrence par
+      // article, ajoutee en toute fin de contenu, voir docblock. N'affecte
+      // pas la frequence/position des formulaires de contact ci-dessus
+      // (traversee independante, aucun partage d'etat avec `poses`/`cumul`).
+      var totalMots = 0;
+      for (i = 0; i < enfants.length; i++) {
+        if (!estCta(enfants[i])) { totalMots += mots(enfants[i]); }
+      }
+      var posesAppel = 0;
+      if (totalMots >= MOTS_MIN_CTA_APPEL && enfants.length) {
+        zone.appendChild(creer(poses + 1, 'appel'));
+        posesAppel = 1;
+      }
+
       if (MODE === 'apercu' && window.console) {
-        window.console.log('cme-cta60 : ' + poses + ' formulaire(s) pose(s), silo ' + prefixe);
+        window.console.log('cme-cta60 : ' + poses + ' formulaire(s) contact pose(s), ' + posesAppel + ' formulaire(s) appel pose(s), silo ' + prefixe);
       }
     } catch (e) {
       if (window.console) { window.console.error('cme-cta60 : erreur ignoree', e); }
