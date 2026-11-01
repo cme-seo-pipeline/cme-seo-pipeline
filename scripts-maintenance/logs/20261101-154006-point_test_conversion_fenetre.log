@@ -1,0 +1,32 @@
+# Execution du 2026-11-01T15:40:06Z
+# Script    : scripts-maintenance/point_test_conversion_fenetre.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📅 Fenetre de test : depuis le 2026-10-28 -- jour 5 (sur 7 a 10 jours prevus, decision au 5-7/11/2026)
+
+📥 Leads reels depuis le 2026-10-28 (leads_convertis)...
+
+📥 Trafic organique depuis le 2026-10-28 (01_raw.ga4_pages)...
+
+================================================================================
+COMPARATIF TRAFIC vs CONVERSION PAR SILO -- depuis le 2026-10-28
+================================================================================
+Silo                        Sessions GA4     Leads     Taux conv.
+--------------------------------------------------------------------------------
+gaz                                  115         1         0.870%
+electricite                           58         5         8.621%
+aide-energetique                      35         1         2.857%
+renovation-energetique                18         0         0.000%
+solaire                                9         0         0.000%
+
+📊 Total leads sur la fenetre : 7
+   - appel-telephone                : 4
+   - contact-expert-inline          : 3
+
+📈 Rythme observe : 1.40 lead(s)/jour sur 5 jour(s) -- projection a 30 jours : 42 (objectif : 100)
