@@ -1,0 +1,109 @@
+# Execution du 2026-11-01T17:54:50Z
+# Script    : scripts-maintenance/nettoyer_leads_test_popup_header.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📋 1) Lignes candidates dans leads_convertis :
+                       timestamp                    tool  prenom  telephone source_post_id                                                                                                              source_page
+2026-11-01 17:42:58.799548+00:00 appel-header-formulaire    test 0695410020          13183 https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs-1101/
+2026-11-01 17:43:29.833653+00:00   contact-expert-inline oussama 0695410020          13183 https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs-1101/
+
+📋 2) A titre informatif uniquement -- lignes interactions_contenu sur le meme article, meme jour (PAS supprimees par ce script) :
+                       timestamp   type_evenement   etape   cible  position_contenu     session_id
+2026-11-01 15:06:02.304000+00:00       form_etape       0                         1 mvxypwaj9tp7ds
+2026-11-01 15:06:02.304000+00:00       form_etape       0                         3 mvxypwaj9tp7ds
+2026-11-01 15:06:02.304000+00:00       form_etape       0                         2 mvxypwaj9tp7ds
+2026-11-01 15:06:02.305000+00:00       form_etape       0                         8 mvxypwaj9tp7ds
+2026-11-01 15:06:02.305000+00:00       form_etape       0                         7 mvxypwaj9tp7ds
+2026-11-01 15:06:02.305000+00:00       form_etape       0                         6 mvxypwaj9tp7ds
+2026-11-01 15:06:02.305000+00:00       form_etape       0                         5 mvxypwaj9tp7ds
+2026-11-01 15:06:02.305000+00:00       form_etape       0                         4 mvxypwaj9tp7ds
+2026-11-01 15:16:44.037000+00:00       form_etape       0                         1 mvxz3ngkx13una
+2026-11-01 15:16:44.037000+00:00       form_etape       0                         2 mvxz3ngkx13una
+2026-11-01 15:16:44.038000+00:00       form_etape       0                         8 mvxz3ngkx13una
+2026-11-01 15:16:44.038000+00:00       form_etape       0                         7 mvxz3ngkx13una
+2026-11-01 15:16:44.038000+00:00       form_etape       0                         6 mvxz3ngkx13una
+2026-11-01 15:16:44.038000+00:00       form_etape       0                         5 mvxz3ngkx13una
+2026-11-01 15:16:44.038000+00:00       form_etape       0                         4 mvxz3ngkx13una
+2026-11-01 15:16:44.038000+00:00       form_etape       0                         3 mvxz3ngkx13una
+2026-11-01 17:31:16.432000+00:00       form_etape       0 contact                 1 mvy3wogzu4n12v
+2026-11-01 17:31:16.432000+00:00       form_etape       0 contact                 2 mvy3wogzu4n12v
+2026-11-01 17:31:16.433000+00:00       form_etape       0 contact                 3 mvy3wogzu4n12v
+2026-11-01 17:31:16.433000+00:00       form_etape       0 contact                 4 mvy3wogzu4n12v
+2026-11-01 17:31:16.433000+00:00       form_etape       0 contact                 5 mvy3wogzu4n12v
+2026-11-01 17:31:16.433000+00:00       form_etape       0 contact                 6 mvy3wogzu4n12v
+2026-11-01 17:31:16.433000+00:00       form_etape       0 contact                 7 mvy3wogzu4n12v
+2026-11-01 17:31:16.433000+00:00       form_etape       0 contact                 8 mvy3wogzu4n12v
+2026-11-01 17:31:16.434000+00:00       form_etape       0   appel                 9 mvy3wogzu4n12v
+2026-11-01 17:31:16.609000+00:00          form_vu         contact                 1 mvy3wogzu4n12v
+2026-11-01 17:31:16.654000+00:00 lecture_position                               200 mvy3woh0xo31j2
+2026-11-01 17:31:16.665000+00:00          form_vu         contact                 2 mvy3wogzu4n12v
+2026-11-01 17:31:16.673000+00:00 lecture_position                               300 mvy3woh0xo31j2
+2026-11-01 17:31:16.862000+00:00 lecture_position                               400 mvy3woh0xo31j2
+2026-11-01 17:31:16.903000+00:00 lecture_position                               600 mvy3woh0xo31j2
+2026-11-01 17:31:16.911000+00:00          form_vu         contact                 3 mvy3wogzu4n12v
+2026-11-01 17:31:16.933000+00:00 lecture_position                               800 mvy3woh0xo31j2
+2026-11-01 17:31:16.949000+00:00 lecture_position                               900 mvy3woh0xo31j2
+2026-11-01 17:31:16.952000+00:00          form_vu         contact                 4 mvy3wogzu4n12v
+2026-11-01 17:31:16.964000+00:00 lecture_position                              1100 mvy3woh0xo31j2
+2026-11-01 17:31:16.983000+00:00 lecture_position                              1200 mvy3woh0xo31j2
+2026-11-01 17:31:16.985000+00:00          form_vu         contact                 5 mvy3wogzu4n12v
+2026-11-01 17:31:16.998000+00:00 lecture_position                              1300 mvy3woh0xo31j2
+2026-11-01 17:31:17.016000+00:00 lecture_position                              1500 mvy3woh0xo31j2
+2026-11-01 17:31:17.261000+00:00          form_vu         contact                 6 mvy3wogzu4n12v
+2026-11-01 17:31:17.275000+00:00 lecture_position                              1600 mvy3woh0xo31j2
+2026-11-01 17:31:17.297000+00:00 lecture_position                              1800 mvy3woh0xo31j2
+2026-11-01 17:31:17.315000+00:00 lecture_position                              1900 mvy3woh0xo31j2
+2026-11-01 17:31:17.316000+00:00          form_vu         contact                 7 mvy3wogzu4n12v
+2026-11-01 17:31:17.335000+00:00 lecture_position                              2100 mvy3woh0xo31j2
+2026-11-01 17:31:17.337000+00:00          form_vu         contact                 8 mvy3wogzu4n12v
+2026-11-01 17:31:17.366000+00:00 lecture_position                              2200 mvy3woh0xo31j2
+2026-11-01 17:31:17.750000+00:00          form_vu           appel                 9 mvy3wogzu4n12v
+2026-11-01 17:31:17.760000+00:00 lecture_position                              2400 mvy3woh0xo31j2
+2026-11-01 17:31:17.797000+00:00 lecture_position                              2600 mvy3woh0xo31j2
+2026-11-01 17:42:31.914000+00:00       form_etape       0 contact                 1 mvy4b5mk0glijz
+2026-11-01 17:42:31.914000+00:00       form_etape       0 contact                 2 mvy4b5mk0glijz
+2026-11-01 17:42:31.914000+00:00       form_etape       0 contact                 3 mvy4b5mk0glijz
+2026-11-01 17:42:31.914000+00:00       form_etape       0 contact                 4 mvy4b5mk0glijz
+2026-11-01 17:42:31.914000+00:00       form_etape       0 contact                 5 mvy4b5mk0glijz
+2026-11-01 17:42:31.914000+00:00       form_etape       0 contact                 6 mvy4b5mk0glijz
+2026-11-01 17:42:31.915000+00:00       form_etape       0 contact                 7 mvy4b5mk0glijz
+2026-11-01 17:42:31.915000+00:00       form_etape       0 contact                 8 mvy4b5mk0glijz
+2026-11-01 17:42:31.915000+00:00       form_etape       0   appel                 9 mvy4b5mk0glijz
+2026-11-01 17:43:05.556000+00:00          form_vu         contact                 1 mvy4b5mk0glijz
+2026-11-01 17:43:05.588000+00:00 lecture_position                               100 mvy4b5mlpazdm4
+2026-11-01 17:43:06.548000+00:00 lecture_position                               200 mvy4b5mlpazdm4
+2026-11-01 17:43:06.581000+00:00          form_vu         contact                 2 mvy4b5mk0glijz
+2026-11-01 17:43:06.597000+00:00 lecture_position                               300 mvy4b5mlpazdm4
+2026-11-01 17:43:06.620000+00:00 lecture_position                               600 mvy4b5mlpazdm4
+2026-11-01 17:43:06.625000+00:00          form_vu         contact                 3 mvy4b5mk0glijz
+2026-11-01 17:43:06.638000+00:00 lecture_position                               800 mvy4b5mlpazdm4
+2026-11-01 17:43:06.654000+00:00 lecture_position                               900 mvy4b5mlpazdm4
+2026-11-01 17:43:06.656000+00:00          form_vu         contact                 4 mvy4b5mk0glijz
+2026-11-01 17:43:06.672000+00:00 lecture_position                              1100 mvy4b5mlpazdm4
+2026-11-01 17:43:06.688000+00:00          form_vu         contact                 5 mvy4b5mk0glijz
+2026-11-01 17:43:06.908000+00:00 lecture_position                              1200 mvy4b5mlpazdm4
+2026-11-01 17:43:06.916000+00:00 lecture_position                              1300 mvy4b5mlpazdm4
+2026-11-01 17:43:06.931000+00:00 lecture_position                              1500 mvy4b5mlpazdm4
+2026-11-01 17:43:06.955000+00:00          form_vu         contact                 6 mvy4b5mk0glijz
+2026-11-01 17:43:06.965000+00:00 lecture_position                              1700 mvy4b5mlpazdm4
+2026-11-01 17:43:06.987000+00:00 lecture_position                              1800 mvy4b5mlpazdm4
+2026-11-01 17:43:06.988000+00:00          form_vu         contact                 7 mvy4b5mk0glijz
+2026-11-01 17:43:07.003000+00:00 lecture_position                              1900 mvy4b5mlpazdm4
+2026-11-01 17:43:07.022000+00:00 lecture_position                              2100 mvy4b5mlpazdm4
+2026-11-01 17:43:07.023000+00:00          form_vu         contact                 8 mvy4b5mk0glijz
+2026-11-01 17:43:07.056000+00:00 lecture_position                              2200 mvy4b5mlpazdm4
+2026-11-01 17:43:16.975000+00:00       form_etape       1 contact                 1 mvy4b5mk0glijz
+2026-11-01 17:43:29.046000+00:00       form_etape termine contact                 1 mvy4b5mk0glijz
+2026-11-01 17:44:44.040000+00:00 lecture_position                              2400 mvy4b5mlpazdm4
+2026-11-01 17:44:44.041000+00:00          form_vu           appel                 9 mvy4b5mk0glijz
+2026-11-01 17:44:44.055000+00:00 lecture_position                              2600 mvy4b5mlpazdm4
+
+Total : 2 ligne(s) leads_convertis candidates a la suppression.
+
+(dry-run -- aucune ecriture. Relancer avec --apply --attendu=N pour supprimer les N lignes leads_convertis.)
