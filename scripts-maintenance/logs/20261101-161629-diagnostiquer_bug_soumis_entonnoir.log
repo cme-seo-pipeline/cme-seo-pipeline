@@ -1,0 +1,53 @@
+# Execution du 2026-11-01T16:16:29Z
+# Script    : scripts-maintenance/diagnostiquer_bug_soumis_entonnoir.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Leads inline reels depuis le 2026-10-28 (leads_convertis)...
+   -> 3 lead(s) trouve(s)
+
+====================================================================================================
+RAPPROCHEMENT lead reel <-> interactions_contenu (par source_post_id, fenetre +/-10 min)
+====================================================================================================
+
+🔹 Lead 2026-10-28 10:55:43.717838+00:00 -- source_post_id=5274 -- https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/
+   details="{\"position\":2,\"silo\":\"electricite\"}"
+   ❌ AUCUNE ligne interactions_contenu trouvee pour ce post_id dans la fenetre (ni vu, ni etape 0, ni etape 1, ni termine)
+
+🔹 Lead 2026-10-28 10:56:30.675131+00:00 -- source_post_id=5274 -- https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/
+   details="{\"position\":3,\"silo\":\"electricite\"}"
+   ❌ AUCUNE ligne interactions_contenu trouvee pour ce post_id dans la fenetre (ni vu, ni etape 0, ni etape 1, ni termine)
+
+🔹 Lead 2026-11-01 15:19:20.915927+00:00 -- source_post_id=3818 -- https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/fonctionnement-prime-energie/
+   details="{\"position\":1,\"silo\":\"aide-energetique\"}"
+   11 ligne(s) trouvee(s) -- vu=True etape0=True etape1=True termine=True
+      2026-11-01 15:17:37.573000+00:00  form_etape   etape='0'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:17:37.573000+00:00  form_etape   etape='0'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:17:37.573000+00:00  form_etape   etape='0'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:17:37.574000+00:00  form_etape   etape='0'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:17:37.574000+00:00  form_etape   etape='0'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:17:37.574000+00:00  form_etape   etape='0'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:17:37.574000+00:00  form_etape   etape='0'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:17:37.574000+00:00  form_etape   etape='0'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:17:57.623000+00:00  form_vu      etape=''         session_id=mvxz4sru1smjyl
+      2026-11-01 15:19:06.722000+00:00  form_etape   etape='1'        session_id=mvxz4sru1smjyl
+      2026-11-01 15:19:22.739000+00:00  form_etape   etape='termine'  session_id=mvxz4sru1smjyl
+
+====================================================================================================
+SYNTHESE sur 3 lead(s) reel(s) inline :
+  form_vu retrouve      : 1/3
+  etape '0' retrouvee   : 1/3
+  etape '1' retrouvee   : 1/3
+  etape 'termine' retrouvee : 1/3
+====================================================================================================
+
+⚠️ Confirme : au moins un lead reel n'a PAS de trace 'termine' correspondante dans interactions_contenu -- pas une fausse alerte de rapprochement (fait par source_post_id + fenetre temporelle large de 10 min), le probleme est reel.
