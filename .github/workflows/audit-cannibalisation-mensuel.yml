@@ -5,13 +5,14 @@ name: CME - Audit cannibalisation mensuel
 # seule : le resultat s'affiche dans les logs de ce run (onglet Actions),
 # rien n'est commite dans le repo (meme logique que audit-liens-hebdomadaire.yml).
 #
-# Cadence mensuelle, alignee sur le rythme de audit-mensuel.yml (meme jour,
-# decale de 2h pour eviter tout chevauchement) : les donnees GSC ont besoin
-# de plusieurs semaines pour accumuler assez d'impressions par requete pour
-# qu'un signal de cannibalisation soit fiable (pas juste du bruit de
-# longue traine) -- une cadence hebdomadaire ne ferait que repeter les
-# memes cas sans rien de nouveau a montrer. Le mois correspond aussi au
-# rythme de decision deja en place pour les autres audits du site.
+# Cadence mensuelle (1er du mois) : les donnees GSC ont besoin de plusieurs
+# semaines pour accumuler assez d'impressions par requete pour qu'un signal
+# de cannibalisation soit fiable (pas juste du bruit de longue traine) --
+# une cadence plus courte ne ferait que repeter les memes cas sans rien de
+# nouveau a montrer. Independant de audit-mensuel.yml (l'audit
+# reglementaire, qui tourne desormais 4x/mois, 1/8/15/22 -- voir CLAUDE.md,
+# "Audit mensuel — appel a l'API Claude, et volume") : les deux audits
+# n'ont plus de cadence alignee depuis le 31/10/2026.
 
 on:
   schedule:
