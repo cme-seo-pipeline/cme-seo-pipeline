@@ -1402,3 +1402,113 @@ explicitement editoriale, comme documente a la creation de ce script. Les
 fichier) — consultables dans l'onglet Actions GitHub du run
 `41303387741` si une revue complete est necessaire avant le prochain run
 du 01/12.
+
+## Entonnoir du mini-formulaire — fausse alerte corrigee (01/11/2026)
+
+Suite a la demande explicite de l'operateur de creuser le bug "soumis=0"
+signale le 29/10 (section plus haut, "Entonnoir du mini-formulaire par
+silo") **en se mefiant explicitement d'une fausse alerte comme celle du
+26/10** (run_id mal attribue) : diagnostic point-par-point via
+`scripts-maintenance/diagnostiquer_bug_soumis_entonnoir.py`, qui
+rapproche chaque lead reel inline (`leads_convertis`,
+tool='contact-expert-inline') de ses evenements dans
+`interactions_contenu` par `source_post_id` + fenetre de +/-10 minutes
+(pas un agregat qui aurait pu masquer un rapprochement errone).
+
+**Resultat : 3 leads inline reels depuis le 28/10**, pas 5 comme le
+tableau trafic/conversion agrege (par silo, tous outils confondus,
+`appel-telephone` inclus) le suggerait :
+- 2 leads du **28/10 10:55-10:56 UTC** (post_id=5274, silo Electricite) :
+  **AUCUNE ligne interactions_contenu, pas meme 'form_vu'**.
+- 1 lead du **01/11 15:19 UTC** (post_id=3818, silo Aide energetique) :
+  **les 4 etapes parfaitement tracees** (vu, etape 0, etape 1, termine),
+  horodatages coherents avec la progression reelle du formulaire.
+
+**Verification du sequencement**
+(`scripts-maintenance/verifier_sequencement_deploiement_cartographie.py`) :
+le **tout premier evenement jamais enregistre** dans
+`interactions_contenu`, toutes sources confondues, date du **28/10
+15:19:09 UTC** — soit environ **4h20 APRES** les 2 leads sans trace.
+**Conclusion : pas un bug de tracking, un probleme de SEQUENCEMENT DE
+DEPLOIEMENT** — meme famille exacte que l'incident "Lionel" du 22/10
+(section plus haut) : ces 2 leads sont arrives avant que l'operateur
+n'ait termine de deployer le code de cartographie des clics en cPanel
+ce jour-la (la table + le code existaient depuis le 26/10, mais le
+deploiement effectif du mu-plugin `cme-cta-progressifs.php` modifie, qui
+necessite un upload manuel cPanel, n'a eu lieu que dans l'apres-midi du
+28/10). Un evenement qui precede le deploiement du code qui le produit
+ne peut structurellement pas exister — ce n'est pas une perte de donnee.
+
+**Le soumis=0 observe pour Gaz/Electricite/Solaire/Renovation dans
+l'entonnoir (29/10 et 01/11) s'explique entierement par ceci**, sans
+aucun bug actif : Electricite n'a eu, sur toute la fenetre de test, QUE
+ces 2 leads inline (tous deux anterieurs au tracking) — zero soumission
+inline APRES le 28/10 15:19 a comparer ; Gaz/Solaire/Renovation n'ont eu
+AUCUN lead inline du tout sur la fenetre (leurs conversions mesurees
+venaient uniquement de `appel-telephone`, que l'entonnoir ne suit pas —
+portee volontairement limitee au mini-formulaire). Le seul lead inline
+survenu apres le go-live du tracking (01/11, Aide energetique) est
+parfaitement trace de bout en bout.
+
+**A nuancer** : un seul cas confirme "parfaitement trace" depuis le
+go-live (echantillon tres faible, structurel vu le faible volume actuel
+de soumissions inline) — suffisant pour infirmer un bug actif plutot que
+pour garantir une fiabilite a 100% sur un volume plus eleve. A
+reconfirmer simplement en laissant le volume s'accumuler, pas en
+recreant un nouveau diagnostic. **Section "Point intermediaire" de
+`objectif-100-leads-mois.md` (doc projet) corrigee en consequence** —
+elle affirmait a tort que le bug persistait au 01/11.
+
+## Cartographie des clics — ajout du TEMPS de lecture (01/11/2026)
+
+Demande operateur, en complement du point precedent : capturer aussi le
+**temps ecoule** depuis le chargement de la page (pas seulement la
+POSITION en mots/scroll, deja captee depuis le 26/10), pour objectiver la
+decision de placement du 1er formulaire (hypothese operateur : "apres
+~15 secondes de lecture, soit ~150 mots"). La position seule ne dit rien
+de la vitesse de lecture reelle des visiteurs — deux lecteurs peuvent
+atteindre 150 mots a des vitesses tres differentes.
+
+**Trois ajouts** :
+1. **Nouvelle colonne `temps_ms`** (INT64, nullable) sur
+   `interactions_contenu` — `scripts-maintenance/ajouter_colonne_temps_ms_interactions.py`
+   (ALTER TABLE ADD COLUMN IF NOT EXISTS, idempotent, meme exception
+   ECRITURE/DDL que `creer_table_interactions_contenu.py`). Lignes
+   existantes : `temps_ms` reste NULL, aucune migration necessaire.
+2. **`cme-tracking-conversion.php`** : `temps_ms` (millisecondes depuis
+   le chargement de la page, `Date.now() - DEBUT`) ajoute a chaque
+   evenement `clic_contenu` existant.
+3. **`cme-cta-progressifs.php`** : `temps_ms` ajoute dans
+   `journaliserInteraction()` (un seul point d'ajout, s'applique donc
+   automatiquement aux 4 types d'evenements existants : `form_vu`,
+   `form_etape` etapes 0/1/termine, `form_abandon`).
+4. **Nouveau tracker `lecture_position`** (`cme-tracking-conversion.php`,
+   meme IIFE que le tracker de clics existant, meme buffer/relais) :
+   jalon tous les ~100 mots lus (pas un intervalle de temps fixe — borne
+   le volume d'evenements a la LONGUEUR de l'article, pas a la duree de
+   la visite ; un lecteur qui reste sur place sans avancer ne genere pas
+   d'evenements supplementaires). Position de lecture approximee par le
+   premier element de `.entry-content` dont le bas depasse ~20% de la
+   hauteur de viewport (zone de lecture active), puis meme technique
+   `motsAvant()` (Range DOM) que pour les clics, appliquee a cet element
+   plutot qu'a l'element clique. Avec `temps_ms`, chaque jalon donne
+   directement "temps reel mis pour atteindre N mots" — exactement la
+   donnee demandee pour trancher le placement du 1er formulaire.
+
+Valide : `php -l` sur les deux mu-plugins + extraction des 3 blocs
+`<<<'JS'` (2 dans `cme-tracking-conversion.php`, 1 dans
+`cme-cta-progressifs.php`) et `node --check` sur chacun — aucune erreur
+de syntaxe.
+
+**Pas encore deploye** : comme toute modification de ces deux fichiers,
+non versionne automatiquement sur le serveur. Avant le prochain upload
+cPanel : executer d'abord `ajouter_colonne_temps_ms_interactions.py` via
+le pont GitHub Actions (la colonne doit exister avant que le relais
+Cloud Run n'essaie d'y inserer une valeur, meme ordre de precaution que
+pour la creation initiale de `interactions_contenu` le 26/10), puis
+deployer les deux mu-plugins (`cloudshell download`, `.bak` horodate,
+upload cPanel, purge des 2 caches LiteSpeed, verifier avec `?t=$RANDOM`).
+Script de synthese (temps moyen/median pour atteindre chaque jalon de
+100 mots, croise avec les clics par jalon) a ecrire une fois le volume
+de donnees suffisant — meme sequence que pour `interactions_contenu`
+elle-meme le 26/10 (attendre les donnees avant d'ecrire l'analyse).

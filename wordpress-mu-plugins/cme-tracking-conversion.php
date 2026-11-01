@@ -56,6 +56,20 @@
  * la creation prealable de la table interactions_contenu
  * (scripts-maintenance/creer_table_interactions_contenu.py, DDL -- a
  * executer une seule fois avant le premier deploiement de ce fichier).
+ *
+ * AJOUT DU 01/11/2026 (demande operateur) : capturer aussi le TEMPS ecoule
+ * depuis le chargement de la page, pas seulement la position en mots/scroll
+ * -- pour decider ou/quand placer le 1er formulaire (ex. hypothese
+ * "apres ~15 secondes de lecture, soit ~150 mots"). La position seule ne
+ * dit rien sur la vitesse de lecture reelle des visiteurs. Deux ajouts :
+ *   1) `temps_ms` sur chaque evenement clic_contenu existant.
+ *   2) Nouveau tracker 'lecture_position' : jalons de lecture (tous les
+ *      100 mots lus environ, pas un echantillonnage par intervalle de
+ *      temps -- plus pertinent pour correler position et temps), avec le
+ *      temps ecoule a chaque jalon. Voir CLAUDE.md pour le detail.
+ * Necessite la colonne `temps_ms` sur interactions_contenu
+ * (scripts-maintenance/ajouter_colonne_temps_ms_interactions.py, ALTER
+ * TABLE idempotent -- a executer une seule fois avant ce deploiement).
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -308,6 +322,11 @@ add_action('wp_footer', function () {
   // persistance entre pages) -- sert uniquement a regrouper les evenements
   // d'un meme lot, pas a suivre un visiteur dans le temps.
   var SESSION_ID = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  // Reference de temps pour `temps_ms` (01/11/2026) -- a quel point du
+  // chargement de la page chaque evenement survient. Date.now() plutot que
+  // performance.now() : coherent avec SESSION_ID et le timestamp ISO
+  // envoyes par ailleurs, pas besoin de precision sub-ms ici.
+  var DEBUT = Date.now();
 
   function pourcentageScroll() {
     try {
@@ -418,10 +437,75 @@ add_action('wp_footer', function () {
         texte: texte,
         position_contenu: motsAvant(cible),
         scroll_pct: pourcentageScroll(),
-        silo: prefixeSilo()
+        silo: prefixeSilo(),
+        temps_ms: Date.now() - DEBUT
       });
     } catch (e) {}
   }, true);
+
+  // ── JALONS DE LECTURE : position (en mots) ET temps pour y arriver
+  // (01/11/2026, demande operateur) ──────────────────────────────────────
+  // But : savoir, pour une position donnee (ex. 150 mots), le temps
+  // REELLEMENT mis pour l'atteindre -- la position seule (deja captee sur
+  // les clics ci-dessus) ne dit rien de la vitesse de lecture. Jalon tous
+  // les ~100 mots plutot qu'un intervalle de temps fixe : borne le volume
+  // d'evenements a la LONGUEUR de l'article (quelques dizaines max), pas a
+  // la duree de la visite (un lecteur qui reste 10 minutes sur place sans
+  // avancer ne doit pas generer d'evenements supplementaires).
+  var PAS_MOTS = 100;
+  var dernierJalon = 0;
+  var zoneArticle = null;
+
+  function initJalonsLecture() {
+    zoneArticle = document.querySelector('article.type-post .entry-content');
+  }
+
+  // Position de lecture approximee par l'element le plus proche du HAUT du
+  // viewport (premiere ligne visible = ce que le lecteur est en train de
+  // lire), puis motsAvant() sur cet element -- meme technique que pour les
+  // clics, appliquee a un point de la zone plutot qu'a l'element clique.
+  function elementEnHautDuViewport() {
+    try {
+      var marge = Math.round(window.innerHeight * 0.2);   // ~20% sous le haut de l'ecran, zone de lecture active
+      var noeuds = zoneArticle.querySelectorAll('p, h2, h3, li, blockquote');
+      for (var i = 0; i < noeuds.length; i++) {
+        var rect = noeuds[i].getBoundingClientRect();
+        if (rect.bottom >= marge) { return noeuds[i]; }
+      }
+      return noeuds.length ? noeuds[noeuds.length - 1] : null;
+    } catch (e) { return null; }
+  }
+
+  var enAttenteJalon = false;
+  function verifierJalonLecture() {
+    if (!zoneArticle || enAttenteJalon) { return; }
+    enAttenteJalon = true;
+    window.requestAnimationFrame(function () {
+      enAttenteJalon = false;
+      try {
+        var el = elementEnHautDuViewport();
+        if (!el) { return; }
+        var motsLus = motsAvant(el);
+        var jalonCourant = Math.floor(motsLus / PAS_MOTS) * PAS_MOTS;
+        if (jalonCourant <= dernierJalon) { return; }
+        dernierJalon = jalonCourant;
+        empiler({
+          type_evenement: 'lecture_position',
+          position_contenu: jalonCourant,
+          scroll_pct: pourcentageScroll(),
+          silo: prefixeSilo(),
+          temps_ms: Date.now() - DEBUT
+        });
+      } catch (e) {}
+    });
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initJalonsLecture();
+  } else {
+    document.addEventListener('DOMContentLoaded', initJalonsLecture);
+  }
+  window.addEventListener('scroll', verifierJalonLecture, { passive: true });
 })();
 JS;
     echo "\n</script>\n";

@@ -58,6 +58,14 @@
  * local independant (pas de dependance d'ordre de chargement entre les deux
  * fichiers). Voir CLAUDE.md, section "Cartographie des clics et progression
  * du formulaire".
+ *
+ * AJOUT DU 01/11/2026 (demande operateur) : `temps_ms` (millisecondes
+ * depuis le chargement de la page) sur chaque evenement form_vu/form_etape/
+ * form_abandon -- pour savoir, pas seulement QUELLE position (n-ieme
+ * formulaire) mais a quel INSTANT de la lecture le formulaire est vu/
+ * engage/abandonne/soumis. Necessite la colonne `temps_ms` sur
+ * interactions_contenu (scripts-maintenance/ajouter_colonne_temps_ms_interactions.py,
+ * meme prealable que pour cme-tracking-conversion.php, voir CLAUDE.md).
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -155,6 +163,10 @@ add_action('wp_footer', function () {
   var API_INTERACTION = '/wp-json/cme/v1/log-interaction';
   var FILE_INTERACTIONS = [];
   var SESSION_ID = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  // Reference de temps pour `temps_ms` (01/11/2026, demande operateur) --
+  // meme principe que dans cme-tracking-conversion.php, fichier distinct
+  // donc variable distincte (pas de partage d'etat entre les deux scripts).
+  var DEBUT = Date.now();
   // Dernier etat connu, mis a jour par CHAQUE instance de formulaire sur la
   // page -- sert uniquement a detecter un abandon au moment ou le visiteur
   // quitte/masque la page (on ne sait pas a l'avance lequel des formulaires
@@ -181,6 +193,7 @@ add_action('wp_footer', function () {
       evt.source_page = window.location.href;
       evt.source_post_id = String(window.CME_POST_ID || '');
       evt.user_agent = (navigator.userAgent || '').slice(0, 120);
+      evt.temps_ms = Date.now() - DEBUT;
       FILE_INTERACTIONS.push(evt);
       if (FILE_INTERACTIONS.length >= 20) { viderInteractions(); }
     } catch (e) {}
