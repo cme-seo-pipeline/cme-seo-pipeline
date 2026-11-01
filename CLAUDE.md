@@ -1639,3 +1639,91 @@ deux portant sur les memes fichiers (`cme-cta-progressifs.php` et
    deja) : remplir le nouveau formulaire "appel" jusqu'au bouton "Appeler
    maintenant", verifier la ligne correspondante dans `leads_convertis`
    (`tool='appel-expert-inline'`) et dans l'onglet Sheets (colonne "Type").
+
+**Mise a jour (meme jour, revirement operateur)** : apres un premier test
+en prod de ce qui precede, l'operateur a clarifie que ce n'est PAS ce
+qu'il voulait en priorite -- il veut que **le bouton tel: du widget
+header lui-meme** (visible sur toutes les pages du site, voir plus haut
+section "Bouton telephone du header") declenche un formulaire avant
+l'appel, pas (seulement) un bloc ajoute en fin d'article. Voir section
+suivante.
+
+## Popup "avant d'appeler" sur le bouton du header (01/11/2026)
+
+Demande operateur explicite, en correction directe du point precedent :
+*"je veux que en cliquant sur le bouton du header... pour appeler il faut
+remplir un formulaire (nom + téléphone + conditions générales) et puis
+appeler"*, et confirme que le mecanisme doit s'appliquer **au bouton
+lui-meme, sur tout le site** (le widget header apparaissant sur toutes
+les pages, pas seulement les articles) -- d'ou une implementation dans
+`cme-tracking-conversion.php` (fichier sitewide) plutot que dans
+`cme-cta-progressifs.php` (articles uniquement).
+
+**Forme du formulaire, precisee explicitement par l'operateur** : PAS le
+pas-a-pas type Typeform du mini-formulaire des articles -- un **popup a
+un seul ecran**, les 2 champs (nom/prenom, telephone) affiches l'un en
+dessous de l'autre en meme temps, plus la case RGPD, un bouton **"Appeler"**
+(pas "Envoyer") qui capture le lead PUIS declenche l'appel reel. Donnees
+historisees "au meme moment... cote BigQuery + Sheets" (demande operateur
+explicite) -- memes destinations que les autres leads inline.
+
+**Implementation** (`wordpress-mu-plugins/cme-tracking-conversion.php`,
+IIFE du tracker sitewide, pas de garde `is_singular`) :
+- Nouveau popup HTML/CSS/JS auto-genere au premier besoin
+  (`creerPopupAppel()`/`ouvrirPopupAppel()`), overlay plein ecran,
+  fermeture par `✕`, clic hors du popup, ou touche Echap -- fermer le
+  popup n'est pas un contournement pour appeler directement (aucun lien
+  tel: direct n'est propose dans le popup), juste annuler l'action.
+- `surClicDocument()` (listener sitewide existant sur tout clic `a[href^="tel:"]`,
+  jusqu'ici uniquement pour le tracking anonyme `appel-telephone`) verifie
+  desormais en premier si le lien clique est a l'interieur de
+  `.header-widget` (scope par ANCETRE, jamais par la classe `.btn-cta`
+  seule -- meme piege que celui deja documente pour
+  `cme-header-tel-style.php`, classe de theme partagee). Si oui :
+  `evt.preventDefault()` + ouverture du popup, et le tracking generique
+  `appel-telephone` est sciemment SAUTE pour ce clic precis (le popup
+  journalisera un lead qualifie a la place). Tous les autres liens tel:
+  du site (dont le bouton "Appeler maintenant" du nouveau bloc de fin
+  d'article, qui n'est pas dans `.header-widget`) gardent le comportement
+  direct existant, sans aucun changement.
+- Validation identique en esprit au mini-formulaire des articles (nom
+  >= 2 caracteres, telephone >= 8 chiffres, case RGPD obligatoire) --
+  dupliquee ici en version compacte plutot que partagee entre fichiers,
+  pour ne pas introduire de dependance d'ordre de chargement entre
+  `cme-cta-progressifs.php` et `cme-tracking-conversion.php` (meme
+  principe d'independance deja applique aux buffers de tracking des deux
+  fichiers).
+- Nouveau `tool = 'appel-header-formulaire'` (distinct de
+  `appel-telephone`, `contact-expert-inline` et `appel-expert-inline`) --
+  ajoute au filtre du relais Sheets (`cme_relayer_log_lead()`, meme onglet
+  "Leads Formulaire Article" que les 2 autres formulaires inline, colonne
+  "Type" deja prete a l'accueillir sans redeploiement de l'Apps Script).
+  Evenement dataLayer distinct aussi (`generate_lead_appel_header`).
+- Apres envoi du lead (`sendBeacon`/`fetch`, non bloquant), l'appel reel
+  est declenche par `window.location.href = 'tel:+33189713648'` -- memes
+  donnees, meme relais `/wp-json/cme/v1/log-lead` que les autres leads
+  inline, aucun nouveau code backend necessaire (ni Cloud Run, ni
+  `leads_convertis`, qui ne valide pas `tool` contre une liste figee).
+
+**Coexistence assumee, pas demandee explicitement ni explicitement
+refusee** : le bloc "avant d'appeler" ajoute en fin de contenu des
+articles (section precedente, `cme-cta-progressifs.php`) n'a PAS ete
+retire -- l'operateur n'a pas demande sa suppression lors de ce
+revirement, seulement l'ajout du popup sur le bouton du header. Les deux
+mecanismes coexistent pour l'instant (capturent des moments differents :
+intention d'appel immediate n'importe ou sur le site, vs fin de lecture
+d'un article) -- a retirer l'un des deux si l'operateur le demande une
+fois vus en prod.
+
+**Valide** : `php -l` + extraction des 2 blocs JS (`node --check` sur
+chacun), aucune erreur.
+
+**Pas encore deploye** : meme fichier que le chantier precedent
+(`cme-tracking-conversion.php`), a regrouper dans le meme lot de
+deploiement cPanel (`cloudshell download`, `.bak` horodate, upload, purge
+des 2 caches LiteSpeed). Aucun redeploiement Apps Script necessaire cette
+fois (colonne "Type" deja generique, pas de nouvelle colonne a ajouter).
+Test reel attendu : cliquer sur le numero du header sur une page
+quelconque du site (pas seulement un article) -> popup -> remplir ->
+"Appeler" -> verifier `tool='appel-header-formulaire'` dans
+`leads_convertis` et dans l'onglet Sheets.

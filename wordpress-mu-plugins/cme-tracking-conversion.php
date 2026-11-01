@@ -84,6 +84,24 @@
  * lien tel: direct, inchange) : seul le tracking generique "clic sur
  * n'importe quel tel:" plus bas (tool='appel-telephone', sans nom/telephone
  * saisis) continue de s'appliquer a ce numero, comme avant.
+ *
+ * AJOUT DU 01/11/2026, suite (revirement demande operateur) : le point
+ * ci-dessus ("le numero du header reste un lien direct, inchange") est
+ * invalide par une demande operateur explicite et contraire, formulee
+ * juste apres avoir teste le point precedent en prod -- le bouton du
+ * header DOIT desormais etre intercepte lui-meme. Voir plus bas, section
+ * "POPUP APPEL SUR LE BOUTON DU HEADER" : clic sur un lien tel: a
+ * l'interieur de `.header-widget` -> popup formulaire (nom+telephone+RGPD,
+ * un seul ecran, pas de pas-a-pas) -> bouton "Appeler" qui envoie le lead
+ * (`tool = 'appel-header-formulaire'`, ajoute au meme filtre Sheets que
+ * ci-dessus) puis declenche l'appel reel. Scope explicitement demande :
+ * tout le site (le widget header apparait sur toutes les pages, pas
+ * seulement les articles) -- d'ou l'implementation ici plutot que dans
+ * cme-cta-progressifs.php (limite aux articles). Le nouveau bloc "avant
+ * d'appeler" en fin d'article (cme-cta-progressifs.php, voir plus haut)
+ * N'A PAS ete retire : l'operateur n'a pas demande sa suppression, les
+ * deux mecanismes coexistent pour l'instant (a retirer si l'operateur le
+ * demande apres l'avoir vu en prod).
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -159,7 +177,9 @@ function cme_relayer_log_lead(WP_REST_Request $request) {
     if (CME_APPS_SCRIPT_LEADS_INLINE_URL) {
         $donnees = json_decode($payload, true);
         $outil = is_array($donnees) ? ($donnees['tool'] ?? '') : '';
-        if (in_array($outil, ['contact-expert-inline', 'appel-expert-inline'], true)) {
+        // 'appel-header-formulaire' (01/11/2026) : popup sur le bouton tel:
+        // du header, voir docblock -- meme onglet Sheets que les 2 autres.
+        if (in_array($outil, ['contact-expert-inline', 'appel-expert-inline', 'appel-header-formulaire'], true)) {
             wp_remote_get(
                 CME_APPS_SCRIPT_LEADS_INLINE_URL . '?payload=' . rawurlencode($payload),
                 ['timeout' => 20, 'blocking' => true, 'sslverify' => false]
@@ -244,12 +264,128 @@ add_action('wp_footer', function () {
     } catch (e) {}
   }
 
+  // ── POPUP APPEL SUR LE BOUTON DU HEADER (01/11/2026, demande operateur) ──
+  // Le bouton tel: du widget header (zone `.header-widget`, voir CLAUDE.md
+  // "Bouton telephone du header") apparait sur TOUTES les pages du site --
+  // scope demande explicitement par l'operateur, d'ou l'implementation ici
+  // (fichier sitewide) plutot que dans cme-cta-progressifs.php (articles
+  // uniquement). Scope par ANCETRE `.header-widget`, jamais par la classe
+  // `.btn-cta` seule -- meme piege deja documente (classe de theme
+  // partagee, potentiellement plusieurs occurrences sur une page) pour
+  // cme-header-tel-style.php. Un seul ecran (pas un pas-a-pas comme le
+  // mini-formulaire des articles) : les 2 champs affiches ensemble + case
+  // RGPD, bouton "Appeler" explicite (pas "Envoyer") qui capture le lead
+  // PUIS declenche l'appel reel -- demande operateur explicite.
+  var TEL_HEADER_NUMERO = '+33189713648';       // meme numero que le bouton lui-meme
+  var TEL_HEADER_AFFICHAGE = '01 89 71 36 48';
+  var URL_CADRE_LEGAL_POPUP = 'https://www.comprendre-mon-energie.fr/cadre-legal-et-confidentialite/';
+  var FOND1_POPUP = '#0f172a';
+  var FOND2_POPUP = '#1e3a8a';
+  var ACCENT_POPUP = '#f59e0b';
+  var popupAppelEl = null;
+
+  function prefixeSiloPopup() {
+    return window.location.pathname.split('/').filter(Boolean)[0] || '';
+  }
+
+  function creerPopupAppel() {
+    var overlay = document.createElement('div');
+    overlay.id = 'cme-popup-appel';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;';
+    overlay.innerHTML =
+      '<div style="background:#fff;border-radius:16px;max-width:380px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);">' +
+        '<div style="background:linear-gradient(135deg,' + FOND1_POPUP + ',' + FOND2_POPUP + ');padding:18px 20px;position:relative;">' +
+          '<button type="button" class="cme-popup-fermer" style="position:absolute;top:8px;right:10px;background:none;border:none;color:rgba(255,255,255,.75);font-size:22px;cursor:pointer;line-height:1;padding:6px;">✕</button>' +
+          '<div style="color:#fff;font-weight:700;font-size:16px;padding-right:24px;">📞 Avant d’appeler</div>' +
+          '<div style="color:rgba(255,255,255,.8);font-size:12px;margin-top:4px;">Laissez vos coordonnées, un conseiller vous accompagne.</div>' +
+        '</div>' +
+        '<div style="background:#eff6ff;padding:20px;">' +
+          '<label style="display:block;font-weight:700;font-size:13px;color:#111827;margin-bottom:6px;">Nom et prénom</label>' +
+          '<input type="text" class="cme-popup-prenom" placeholder="Nom et prénom" style="width:100%;box-sizing:border-box;padding:11px 13px;border:2px solid #e5e7eb;border-radius:9px;font-size:15px;outline:none;margin-bottom:12px;">' +
+          '<label style="display:block;font-weight:700;font-size:13px;color:#111827;margin-bottom:6px;">Téléphone</label>' +
+          '<input type="tel" class="cme-popup-telephone" placeholder="06 12 34 56 78" style="width:100%;box-sizing:border-box;padding:11px 13px;border:2px solid #e5e7eb;border-radius:9px;font-size:15px;outline:none;margin-bottom:10px;">' +
+          '<label style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:12px;color:#6b7280;line-height:1.5;cursor:pointer;">' +
+            '<input type="checkbox" class="cme-popup-rgpd" style="margin-top:2px;flex-shrink:0;">' +
+            '<span>J’accepte d’être recontacté(e) par un conseiller et le traitement de mes données, conformément à notre <a href="' + URL_CADRE_LEGAL_POPUP + '" target="_blank" rel="noopener" style="color:' + FOND2_POPUP + ';text-decoration:underline;">politique de confidentialité</a>.</span>' +
+          '</label>' +
+          '<div class="cme-popup-erreur" style="color:#dc2626;font-size:13px;margin-bottom:8px;display:none;"></div>' +
+          '<button type="button" class="cme-popup-appeler" style="width:100%;background:' + ACCENT_POPUP + ';color:#1f2937;font-weight:700;font-size:15px;padding:12px;border:none;border-radius:9px;cursor:pointer;">📞 Appeler · ' + TEL_HEADER_AFFICHAGE + '</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    function fermer() { overlay.style.display = 'none'; }
+    overlay.querySelector('.cme-popup-fermer').addEventListener('click', fermer);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) { fermer(); } });
+    overlay.addEventListener('keydown', function (e) { if (e.key === 'Escape') { fermer(); } });
+
+    overlay.querySelector('.cme-popup-appeler').addEventListener('click', function () {
+      var prenom = overlay.querySelector('.cme-popup-prenom').value.trim();
+      var telephone = overlay.querySelector('.cme-popup-telephone').value.trim();
+      var rgpd = overlay.querySelector('.cme-popup-rgpd').checked;
+      var erreurEl = overlay.querySelector('.cme-popup-erreur');
+      var erreur = '';
+      if (prenom.length < 2) { erreur = 'Entrez vos nom et prénom.'; }
+      else if (telephone.replace(/\D/g, '').length < 8) { erreur = 'Numéro invalide.'; }
+      else if (!rgpd) { erreur = 'Merci d’accepter la politique de confidentialité pour continuer.'; }
+      if (erreur) { erreurEl.textContent = erreur; erreurEl.style.display = 'block'; return; }
+      erreurEl.style.display = 'none';
+
+      try {
+        var payload = {
+          tool: 'appel-header-formulaire',
+          prenom: prenom,
+          telephone: telephone,
+          details: JSON.stringify({ silo: prefixeSiloPopup() }),
+          source_post_id: String(window.CME_POST_ID || ''),
+          source_page: window.location.href
+        };
+        var body = JSON.stringify(payload);
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(TRACK_API, new Blob([body], { type: 'application/json' }));
+        } else if (window.fetch) {
+          fetch(TRACK_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }).catch(function () {});
+        }
+        dataLayerPush({ event: 'generate_lead_appel_header', phone_number: TEL_HEADER_NUMERO });
+      } catch (e) {}
+
+      fermer();
+      // Appel reel declenche APRES capture du lead -- l'utilisateur garde
+      // malgre tout l'impression d'un enchainement immediat (pas d'attente
+      // visible, sendBeacon ne bloque pas).
+      window.location.href = 'tel:' + TEL_HEADER_NUMERO;
+    });
+
+    return overlay;
+  }
+
+  function ouvrirPopupAppel() {
+    if (!popupAppelEl) { popupAppelEl = creerPopupAppel(); }
+    popupAppelEl.style.display = 'flex';
+    popupAppelEl.querySelector('.cme-popup-erreur').style.display = 'none';
+    popupAppelEl.querySelector('.cme-popup-prenom').value = '';
+    popupAppelEl.querySelector('.cme-popup-telephone').value = '';
+    popupAppelEl.querySelector('.cme-popup-rgpd').checked = false;
+    window.setTimeout(function () { popupAppelEl.querySelector('.cme-popup-prenom').focus(); }, 50);
+  }
+
   // ── CLIC SUR LE NUMERO DE TELEPHONE (tel:, n'importe ou sur le site) ──────
   function surClicDocument(evt) {
     try {
       var lien = evt.target.closest ? evt.target.closest('a[href^="tel:"]') : null;
       if (!lien) { return; }
       var numero = lien.getAttribute('href').replace(/^tel:/, '');
+      // Bouton du header (01/11/2026, demande operateur) : CE lien precis
+      // (scope par ancetre `.header-widget`) est intercepte par le popup
+      // ci-dessus avant de lancer l'appel. Tous les AUTRES liens tel: du
+      // site (dont le bouton "Appeler maintenant" du nouveau CTA en fin
+      // d'article, cme-cta-progressifs.php, volontairement distinct)
+      // gardent le comportement direct existant ci-dessous.
+      if (lien.closest('.header-widget')) {
+        evt.preventDefault();
+        ouvrirPopupAppel();
+        return;
+      }
       dataLayerPush({ event: 'click_to_call', phone_number: numero });
       journaliser({ tool: 'appel-telephone', telephone: numero });
     } catch (e) {}
