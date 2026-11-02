@@ -1,0 +1,34 @@
+# Execution du 2026-11-02T21:49:45Z
+# Script    : scripts-maintenance/fix_liens_morts_maillage_0211.py
+# Arguments : --apply --limite=3
+
+Recuperation de tous les articles publies (contenu brut, ?context=edit)...
+973 article(s) recupere(s).
+
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-prix-economies/ (id=12683)
+  1 lien(s) mort(s) a corriger :
+    - "Consultez notre guide complet sur les aides et leurs cumuls" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-prix-installation-roi/ (id=12681)
+  1 lien(s) mort(s) a corriger :
+    - "aides batterie solaire 2026 cumuls et conditions" : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-facture-electricite-decryptage/ (id=12518)
+  1 lien(s) mort(s) a corriger :
+    - "notre page dédiée aux facteurs d’augmentation tarifaire" : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-electricite-causes/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/pic-consommation-electrique-facture-explose/
+  ✅ Corrige et publie.
+
+⏹️ Limite de 3 article(s) atteinte, arret.
+
+====================================================================================================
+TOTAL : 3 article(s) traite(s), 3 lien(s) mort(s) corrige(s).
+====================================================================================================
