@@ -1,0 +1,32 @@
+# Execution du 2026-11-02T23:19:32Z
+# Script    : scripts-maintenance/verifier_clics_appel_inline.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 1/ leads_convertis, tool='appel-expert-inline' (conversions completes)...
+
+✅ 0 lead(s) complet(s) au total (tout l'historique) :
+  (aucun)
+
+====================================================================================================
+📥 2/ interactions_contenu, cible='appel' (entonnoir complet : vu / etape / abandon)...
+
+type_evenement  etape     nb_evenements   nb_sessions_distinctes
+form_etape      0         241             241
+form_etape      1         1               1
+form_etape      termine   1               1
+form_vu                   33              33
+
+====================================================================================================
+📥 3/ Premiere et derniere date d'evenement 'appel' (tous types), pour contextualiser...
+
+  Premier evenement : 2026-10-24 09:29:53.977000+00:00
+  Dernier evenement : 2026-11-02 23:09:28.329000+00:00
+  Total tous types  : 276
