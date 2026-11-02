@@ -1,0 +1,16 @@
+# Execution du 2026-11-02T23:23:31Z
+# Script    : scripts-maintenance/verifier_clics_popup_header.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📋 Leads 'appel-header-formulaire' depuis 2026-11-01 (hors telephone de test 0695410020) :
+
+  (aucun lead reel trouve sur cette periode)
+
+Total : 0 lead(s) reel(s) via le popup header depuis 2026-11-01.
+(Pour contexte : 4 ligne(s) 'appel-telephone' (tracking generique tel:, hors header) sur la meme periode.)
