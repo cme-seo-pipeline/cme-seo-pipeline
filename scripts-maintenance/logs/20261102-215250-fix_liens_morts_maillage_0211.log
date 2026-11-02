@@ -1,0 +1,144 @@
+# Execution du 2026-11-02T21:52:50Z
+# Script    : scripts-maintenance/fix_liens_morts_maillage_0211.py
+# Arguments : --apply
+
+Recuperation de tous les articles publies (contenu brut, ?context=edit)...
+973 article(s) recupere(s).
+
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-installation-systeme-solaire-combine/ (id=12515)
+  1 lien(s) mort(s) a corriger :
+    - "Vérifier tous les cumuls d’aides applicables à votre département et classe de revenus" : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/prix-installation-systeme-solaire-combine-2026/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/installation-systeme-solaire-combine-etapes-couts/ (id=12514)
+  2 lien(s) mort(s) a corriger :
+    - "Aides système solaire combiné 2026 : tous les cumuls" : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/prix-installation-systeme-solaire-combine-2026/
+    - "Aides système solaire combiné 2026 : tous les cumuls" : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/prix-installation-systeme-solaire-combine-2026/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1028-2/ (id=12513)
+  1 lien(s) mort(s) a corriger :
+    - "prix panneaux solaires 2026 : tarifs réels et devis" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1028/ (id=12512)
+  2 lien(s) mort(s) a corriger :
+    - "MaPrimeRénov’ pour les panneaux solaires" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+    - "les montants de MaPrimeRénov’ varient selon votre région et votre revenu" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-tarifs/ (id=12509)
+  1 lien(s) mort(s) a corriger :
+    - "Aides chauffe-eau solaire 2026-2027 : tous les cumuls" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-couts/ (id=12508)
+  1 lien(s) mort(s) a corriger :
+    - "Aides chauffe-eau solaire 2026 : tous les cumuls possibles" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-groupe-electrogene-1028-2/ (id=12507)
+  2 lien(s) mort(s) a corriger :
+    - "Consultez l’article détaillé sur les aides batterie solaire 2026" : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/
+    - "Consultez notre page dédiée pour connaître les montants 2026-2027 exacts et conditions d’éligibilité" : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-groupe-electrogene-1028/ (id=12506)
+  2 lien(s) mort(s) a corriger :
+    - "Aides batterie solaire 2026 : cumuls et conditions" : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/
+    - "Aides batterie solaire 2026 : cumuls et conditions" : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/ (id=12361)
+  3 lien(s) mort(s) a corriger :
+    - "connaître les prix réels 2026-2027" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+    - "MaPrimeRénov' panneaux solaires 2026-2027" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+    - "Prix panneaux solaires 2026-2027 : tarifs réels et devis" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/ (id=12360)
+  3 lien(s) mort(s) a corriger :
+    - "prix des panneaux solaires 2026 : tarifs réels et devis" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+    - "MaPrimeRénov' panneaux solaires 2026 : montants réels" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+    - "guide MaPrimeRénov' pour les panneaux solaires" : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-economique/ (id=12359)
+  2 lien(s) mort(s) a corriger :
+    - "aides chauffe-eau solaire 2026 : tous les cumuls" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+    - "aides chauffe-eau solaire 2026 : tous les cumuls" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-rentabilite-economies-par-an/ (id=12358)
+  4 lien(s) mort(s) a corriger :
+    - "notre guide complet des aides chauffe-eau solaire 2026" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+    - "notre guide des aides 2026" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+    - "guide des prix chauffe-eau solaire 2026" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/prix-chauffe-eau-solaire-2026-cout-installation/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-cout-reel/
+    - "notre guide des aides 2026" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-temps-retour-investissement/ (id=12357)
+  2 lien(s) mort(s) a corriger :
+    - "Consultez les aides système solaire combiné 2026 pour connaître l'éligibilité actualisée" : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/prix-installation-systeme-solaire-combine-2026/
+    - "les aides système solaire combiné 2026 : tous les cumuls" : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/prix-installation-systeme-solaire-combine-2026/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/quelle-capacite-batterie-solaire-choisir-maison/ (id=12355)
+  1 lien(s) mort(s) a corriger :
+    - "aides batterie solaire 2026 et 2026" : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/prix-batterie-solaire-installation-cout/ (id=12354)
+  2 lien(s) mort(s) a corriger :
+    - "Aides batterie solaire 2026 : cumuls et conditions" : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/
+    - "Aides batterie solaire 2026 : cumuls et conditions" : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/
+  ✅ Corrige et publie.
+
+====================================================================================================
+TOTAL : 15 article(s) traite(s), 29 lien(s) mort(s) corrige(s).
+====================================================================================================
