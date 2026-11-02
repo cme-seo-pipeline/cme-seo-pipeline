@@ -1,0 +1,38 @@
+# Execution du 2026-11-02T23:28:01Z
+# Script    : scripts-maintenance/verifier_entonnoir_formulaire_inline.py
+# Arguments : --cible=contact
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 1/ leads_convertis, tool='contact-expert-inline' (conversions completes)...
+
+✅ 6 lead(s) complet(s) au total (tout l'historique) :
+  2026-10-22 14:39:56.466114+00:00  prenom='lionel'  telephone='0607112671'  source_page=''
+  2026-10-25 18:52:05.793893+00:00  prenom='Nomi'  telephone='0621798792'  source_page='https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-dimensionnement/'
+  2026-10-27 10:08:22.114470+00:00  prenom='Corinne'  telephone='0621560474'  source_page='https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-social-electricite-conditions-demande/'
+  2026-10-28 10:55:43.717838+00:00  prenom='HAMILA FATHI'  telephone='0613451982'  source_page='https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/'
+  2026-10-28 10:56:30.675131+00:00  prenom='HAMILA FATHI'  telephone='0613451982'  source_page='https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/aides-chauffage-electrique-2026/'
+  2026-11-01 15:19:20.915927+00:00  prenom='Walter Auguste'  telephone='0636458741'  source_page='https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/fonctionnement-prime-energie/'
+
+====================================================================================================
+📥 2/ interactions_contenu, cible='contact' (entonnoir complet : vu / etape / abandon)...
+
+type_evenement  etape     nb_evenements   nb_sessions_distinctes
+form_abandon    1         1               1
+form_etape      0         2176            237
+form_etape      1         3               3
+form_etape      termine   2               2
+form_vu                   736             154
+
+====================================================================================================
+📥 3/ Premiere et derniere date d'evenement 'contact' (tous types), pour contextualiser...
+
+  Premier evenement : 2026-10-24 09:29:53.953000+00:00
+  Dernier evenement : 2026-11-02 23:09:17.085000+00:00
+  Total tous types  : 2918
