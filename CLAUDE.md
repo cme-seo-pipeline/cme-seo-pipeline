@@ -1727,3 +1727,72 @@ Test reel attendu : cliquer sur le numero du header sur une page
 quelconque du site (pas seulement un article) -> popup -> remplir ->
 "Appeler" -> verifier `tool='appel-header-formulaire'` dans
 `leads_convertis` et dans l'onglet Sheets.
+
+**Deploye et confirme fonctionnel par l'operateur le 01/11** (popup
+header + formulaire fin d'article). Les 2 leads de test crees pendant la
+validation (tel. de test `0695410020`, meme article) ont ete nettoyes le
+01/11 via `scripts-maintenance/nettoyer_leads_test_popup_header.py`
+(dry-run puis `--apply`, pont GitHub Actions) -- 2 lignes supprimees dans
+`leads_convertis`, sans toucher au lead reel du meme jour (Walter Auguste,
+autre numero/article). Piege rencontre : le telephone de test est stocke
+`0695410020` (zero initial) alors que l'onglet Sheets l'affichait
+`695410020` (colonne interpretee comme un nombre, zero de tete supprime a
+l'affichage) -- toujours verifier la vraie valeur stockee cote BigQuery
+avant de filtrer une suppression sur un telephone copie depuis Sheets.
+Nettoyage Sheets lui-meme fait manuellement par l'operateur (meme
+precedent que l'incident "Lionel"/"QA-TEST" du 24/10 -- pas d'acces API
+Sheets depuis ce sandbox).
+
+## Audit cannibalisation GSC — premier run reel, decision de strategie (02/11/2026)
+
+Suite au premier run reel de `audit-cannibalisation-mensuel.yml` le
+01/11 (voir plus haut, section du meme nom) : 6 cas de "forte
+concurrence" detailles un par un le 02/11 (URLs exactes recuperees via
+`gh run view 41303387741 --log`, exceptionnellement accessible), croises
+avec `analyser_duplication_editoriale.py` (20/10) pour distinguer doublon
+accidentel vs angles reellement differents :
+
+1. **Cluster "bouteilles de gaz, prix 2026"** (requetes "prix du gaz
+   bouteille 2026" + "prix bouteille de gaz carrefour 2026", 6 pages, 0
+   clic cumule) : confirme comme doublon de publication accidentel
+   (cluster 18 de l'analyse du 20/10 -- meme article publie 2 fois a 71
+   secondes d'intervalle le 15/10). Fusion par redirection 301
+   quasi-sans-risque si elle devait avoir lieu (rien a perdre, 0 clic
+   partout).
+2. **"quel fournisseur de gaz choisir"** (3 pages) : 2 pages "2024"
+   quasi invisibles (position ~90) vs 1 page qui performe tres bien
+   (position 2.9, `gaz-naturel-vs-propane-fournisseur-0905`).
+3. **"mon energie"/"mon energie" (requete de marque)** : PAS un doublon
+   de contenu -- page d'accueil (mauvaise position, 32-46) vs page outil
+   comparateur (meilleure position, ~20). Fusionner serait contre-productif
+   (on ne fusionne pas une accueil avec une page outil) -- a laisser tel
+   quel.
+4. **"fonctionnement compteur electrique"** (5 pages) : PAS detecte comme
+   doublon par l'analyse editoriale du 20/10 (titres distincts :
+   communicant/lecture/generique/intelligent) -- possible angles reels
+   plutot que doublon accidentel, a qualifier avant toute action.
+
+**Decision operateur (02/11)** : **aucune fusion/redirection pour
+l'instant**, sur aucun des 4 cas ci-dessus. Strategie retenue, differente
+de la fusion proposee initialement : **ameliorer et differencier le
+contenu de chaque page cannibalisee** plutot que consolider par
+redirection -- une page qui ne peut pas se positionner en premiere
+position doit jouer un role de **"page relais/proxy"** vers les pages du
+site qui rankent deja sur ce mot-cle (maillage interne), plutot que
+disparaitre derriere une 301. Mis en stand-by explicitement **en
+attendant une nouvelle session de scraping cible sur ces mots-cles**, dont
+le but sera d'identifier comment differencier/enrichir chaque page pour
+qu'elle sorte de la cannibalisation sans perdre son URL propre. A ne pas
+re-proposer une fusion/redirection sur ces 4 cas sans revalidation
+explicite -- la decision a ete prise en toute connaissance des
+propositions de fusion initiales.
+
+**Point bloquant identifie en passant, non resolu** : aucun mecanisme de
+creation de redirection 301 trouve dans ce repo (`patch_resolution_redirections.py`
+ne fait que *suivre* des redirections deja existantes, pas en creer).
+RankMath est installe sur le site (vu dans `pipeline/pipeline.py`,
+sync indexation/RankMath) et propose generalement un module de
+redirections, mais non confirme depuis ce sandbox (pas d'acces au site
+live). Sans objet pour l'instant puisqu'aucune fusion n'est prevue, mais a
+clarifier avec l'operateur si une fusion redevient d'actualite apres la
+prochaine session de scraping.
