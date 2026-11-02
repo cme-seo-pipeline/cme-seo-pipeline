@@ -1,0 +1,81 @@
+# Execution du 2026-11-02T11:44:15Z
+# Script    : scripts-maintenance/diagnostiquer_trafic_chine_ga4.py
+# Arguments : --jours=30
+
+🔎 Fenetre d'analyse : 2026-10-03 -> 2026-11-01 (30 jours)
+
+======================================================================
+1) SESSIONS PAR PAYS (top 15)
+======================================================================
+  ⚠️ Erreur API GA4 403 : {
+  "error": {
+    "code": 403,
+    "message": "User does not have sufficient permissions for this property. To learn more about Property ID, see https://developers.google.com/analytics/devguides/reporting/data/v1/property-id.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+  (aucune ligne)
+
+======================================================================
+2) SESSIONS PAR JOUR -- CHINE
+======================================================================
+  ⚠️ Erreur API GA4 403 : {
+  "error": {
+    "code": 403,
+    "message": "User does not have sufficient permissions for this property. To learn more about Property ID, see https://developers.google.com/analytics/devguides/reporting/data/v1/property-id.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+  (aucune ligne)
+
+======================================================================
+3) COMPARATIF CHINE VS FRANCE (memes metriques, meme fenetre)
+======================================================================
+  ⚠️ Erreur API GA4 403 : {
+  "error": {
+    "code": 403,
+    "message": "User does not have sufficient permissions for this property. To learn more about Property ID, see https://developers.google.com/analytics/devguides/reporting/data/v1/property-id.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+  China :
+  (aucune ligne)
+  ⚠️ Erreur API GA4 403 : {
+  "error": {
+    "code": 403,
+    "message": "User does not have sufficient permissions for this property. To learn more about Property ID, see https://developers.google.com/analytics/devguides/reporting/data/v1/property-id.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+  France :
+  (aucune ligne)
+
+======================================================================
+4a) TOP PAGES VISITEES -- CHINE
+======================================================================
+  ⚠️ Erreur API GA4 403 : {
+  "error": {
+    "code": 403,
+    "message": "User does not have sufficient permissions for this property. To learn more about Property ID, see https://developers.google.com/analytics/devguides/reporting/data/v1/property-id.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+  (aucune ligne)
+
+======================================================================
+4b) APPAREIL / OS / NAVIGATEUR -- CHINE
+======================================================================
+  ⚠️ Erreur API GA4 403 : {
+  "error": {
+    "code": 403,
+    "message": "User does not have sufficient permissions for this property. To learn more about Property ID, see https://developers.google.com/analytics/devguides/reporting/data/v1/property-id.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+  (aucune ligne)
