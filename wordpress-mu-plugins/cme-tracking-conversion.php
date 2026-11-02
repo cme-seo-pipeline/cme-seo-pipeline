@@ -393,11 +393,29 @@ add_action('wp_footer', function () {
   document.addEventListener('click', surClicDocument, true);
 
   // ── SOUMISSION DU FORMULAIRE DE CONTACT (WPForms) ──────────────────────────
+  // CORRECTIF du 02/11/2026 : un double comptage reel a ete confirme en prod
+  // (scripts-maintenance/verifier_leads_formulaire_contact_expert.py, 4
+  // lignes en base pour 2 soumissions reelles) -- l'hypothese du docblock
+  // ("voie 1/2 ne se declenchent que pour une confirmation inline, pas une
+  // redirection") etait fausse : l'evenement jQuery wpformsAjaxSubmitSuccess
+  // se declenche bel et bien AVANT la redirection vers /demande-confirmee/,
+  // avec un formId mal forme ("[object Object]"). La garde en memoire
+  // FORMULAIRE_DEJA_TRACKE ne peut pas l'empecher : voie 1 tourne sur la
+  // page d'origine, voie 3 sur /demande-confirmee/ -- deux chargements de
+  // page distincts, donc deux contextes JS distincts, la variable memoire
+  // est reinitialisee entre les deux. Seule une garde PERSISTANTE (meme
+  // principe que celle que voie 3 utilisait deja seule, cle
+  // sessionStorage) survit a la navigation et deduplique vraiment, quelle
+  // que soit la voie qui se declenche en premier.
   var FORMULAIRE_DEJA_TRACKE = {};
   function surSoumissionFormulaire(formId) {
     var cle = String(formId || 'inconnu');
-    if (FORMULAIRE_DEJA_TRACKE[cle]) { return; }   // evite un double comptage si plusieurs voies se declenchent
+    if (FORMULAIRE_DEJA_TRACKE[cle]) { return; }   // evite un double declenchement dans la MEME page (voie 1 + voie 2)
     FORMULAIRE_DEJA_TRACKE[cle] = true;
+    try {
+      if (sessionStorage.getItem('cme_lead_formulaire_contact_trackee') === '1') { return; }
+      sessionStorage.setItem('cme_lead_formulaire_contact_trackee', '1');
+    } catch (e) {}
     dataLayerPush({ event: 'generate_lead', form_id: cle, form_type: 'contact-expert' });
     journaliser({ tool: 'contact-expert-formulaire', details: JSON.stringify({ form_id: cle }) });
   }
@@ -437,17 +455,13 @@ add_action('wp_footer', function () {
 
   // Voie 3 (ajoutee suite au test du 19/10) : la confirmation du formulaire
   // #472 redirige reellement vers /demande-confirmee/ -- la page d'origine
-  // est quittee avant que les voies 1/2 ne puissent reagir. On detecte donc
-  // aussi l'arrivee sur cette page de confirmation elle-meme, avec une garde
-  // sessionStorage pour ne pas recompter un rechargement manuel de la page.
+  // est quittee avant que les voies 1/2 ne puissent reagir (ou APRES avoir
+  // deja reagi, voir le correctif du 02/11 sur la garde partagee dans
+  // surSoumissionFormulaire() ci-dessus, qui deduplique maintenant entre
+  // les voies plutot qu'une garde locale ici redondante avec elle).
   try {
     if (window.location.pathname.indexOf('/demande-confirmee') !== -1) {
-      var dejaConfirme = false;
-      try { dejaConfirme = sessionStorage.getItem('cme_lead_confirme') === '1'; } catch (e) {}
-      if (!dejaConfirme) {
-        try { sessionStorage.setItem('cme_lead_confirme', '1'); } catch (e) {}
-        surSoumissionFormulaire('472-page-confirmation');
-      }
+      surSoumissionFormulaire('472-page-confirmation');
     }
   } catch (e) {}
 })();
