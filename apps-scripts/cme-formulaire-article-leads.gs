@@ -96,8 +96,21 @@ function ecrireSheet(d) {
   var sheet = getSheet();
   var details = {};
   try { details = JSON.parse(d.details || '{}'); } catch (e) { details = {}; }
+  // AJOUT du 02/11/2026 (demande operateur -- necessaire pour un backfill
+  // historique fidele de contact-expert-formulaire) : respecte d.timestamp
+  // quand il est fourni et valide, au lieu de systematiquement dater la
+  // ligne du moment ou Apps Script traite la requete. Le JS cote WordPress
+  // (journaliser(), cme-tracking-conversion.php) renseigne deja ce champ
+  // sur CHAQUE lead envoye depuis toujours -- jusqu'ici silencieusement
+  // ignore ici. Retro-compatible : payload sans timestamp (ou invalide) ->
+  // comportement inchange (new Date(), heure de traitement).
+  var horodatage = new Date();
+  if (d.timestamp) {
+    var horodatageFourni = new Date(d.timestamp);
+    if (!isNaN(horodatageFourni.getTime())) { horodatage = horodatageFourni; }
+  }
   sheet.appendRow([
-    new Date(),
+    horodatage,
     d.prenom || '', d.telephone || '', d.email || '', d.code_postal || '',
     details.silo || '', details.position || '', d.source_page || '',
     d.tool || ''
