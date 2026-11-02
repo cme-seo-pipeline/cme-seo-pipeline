@@ -1,0 +1,56 @@
+# Execution du 2026-11-02T20:55:41Z
+# Script    : scripts-maintenance/verifier_maillage_interne_404_0211.py
+# Arguments : 
+
+Recuperation de tous les articles publies (contenu complet)...
+973 article(s) recupere(s).
+
+====================================================================================================
+RESULTAT -- liens internes trouves DANS LE CONTENU PUBLIE (tous articles, pas un echantillon)
+====================================================================================================
+
+*** https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/ ***
+    LIE DEPUIS 3 article(s) :
+        - https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-installation-systeme-solaire-combine/
+        - https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/installation-systeme-solaire-combine-etapes-couts/
+        - https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-temps-retour-investissement/
+
+*** https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/ ***
+    LIE DEPUIS 5 article(s) :
+        - https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-prix-installation-roi/
+        - https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-groupe-electrogene-1028-2/
+        - https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-groupe-electrogene-1028/
+        - https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/quelle-capacite-batterie-solaire-choisir-maison/
+        - https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/prix-batterie-solaire-installation-cout/
+
+*** https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-electricite-causes/ ***
+    LIE DEPUIS 1 article(s) :
+        - https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-facture-electricite-decryptage/
+
+*** https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/ ***
+    LIE DEPUIS 3 article(s) :
+        - https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1028/
+        - https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/
+        - https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/
+
+*** https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/ ***
+    LIE DEPUIS 5 article(s) :
+        - https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-prix-economies/
+        - https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-tarifs/
+        - https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-couts/
+        - https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-economique/
+        - https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-rentabilite-economies-par-an/
+
+*** https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/prix-chauffe-eau-solaire-2026-cout-installation/ ***
+    LIE DEPUIS 1 article(s) :
+        - https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-rentabilite-economies-par-an/
+
+*** https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/ ***
+    LIE DEPUIS 3 article(s) :
+        - https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1028-2/
+        - https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/
+        - https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/
+
+====================================================================================================
+TOTAL : 21 lien(s) interne(s) trouve(s) vers les 7 URLs 404, sur 973 articles scannes.
+====================================================================================================
