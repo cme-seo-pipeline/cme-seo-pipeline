@@ -1,0 +1,17 @@
+# Execution du 2026-11-02T21:23:50Z
+# Script    : scripts-maintenance/inspecter_rankmath_redirections_admin_ajax.py
+# Arguments : 
+
+Telechargement de https://downloads.wordpress.org/plugin/seo-by-rank-math.latest-stable.zip ...
+====================================================================================================
+seo-by-rank-math/includes/modules/redirections/class-admin.php :: actions ajax / routes enregistrees
+====================================================================================================
+
+====================================================================================================
+Verification de check_ajax_referer / wp_verify_nonce dans ce fichier
+====================================================================================================
+check_ajax_referer( 'redirection_list_action', 'security' );
+
+====================================================================================================
+seo-by-rank-math/includes/modules/redirections/class-table.php :: nonce / capacite
+====================================================================================================
