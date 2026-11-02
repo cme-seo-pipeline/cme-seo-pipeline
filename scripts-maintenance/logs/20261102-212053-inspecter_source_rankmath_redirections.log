@@ -1,0 +1,120 @@
+# Execution du 2026-11-02T21:20:53Z
+# Script    : scripts-maintenance/inspecter_source_rankmath_redirections.py
+# Arguments : 
+
+Telechargement de https://downloads.wordpress.org/plugin/seo-by-rank-math.latest-stable.zip ...
+3.7 Mo telecharges.
+
+====================================================================================================
+Fichiers PHP lies aux redirections (27) :
+====================================================================================================
+  seo-by-rank-math/includes/abilities/redirections/class-get-redirections.php
+  seo-by-rank-math/includes/abilities/redirections/class-subscriber.php
+  seo-by-rank-math/includes/abilities/redirections/index.php
+  seo-by-rank-math/includes/admin/importers/class-redirections.php
+  seo-by-rank-math/includes/admin/wizard/class-monitor-redirection.php
+  seo-by-rank-math/includes/frontend/class-redirection.php
+  seo-by-rank-math/includes/modules/redirections/class-admin.php
+  seo-by-rank-math/includes/modules/redirections/class-cache.php
+  seo-by-rank-math/includes/modules/redirections/class-db.php
+  seo-by-rank-math/includes/modules/redirections/class-debugger.php
+  seo-by-rank-math/includes/modules/redirections/class-export.php
+  seo-by-rank-math/includes/modules/redirections/class-import-export.php
+  seo-by-rank-math/includes/modules/redirections/class-metabox.php
+  seo-by-rank-math/includes/modules/redirections/class-redirection.php
+  seo-by-rank-math/includes/modules/redirections/class-redirections.php
+  seo-by-rank-math/includes/modules/redirections/class-redirector.php
+  seo-by-rank-math/includes/modules/redirections/class-table.php
+  seo-by-rank-math/includes/modules/redirections/class-watcher.php
+  seo-by-rank-math/includes/modules/redirections/views/debugging.php
+  seo-by-rank-math/includes/modules/redirections/views/help-tab-actions.php
+  seo-by-rank-math/includes/modules/redirections/views/help-tab-bulk.php
+  seo-by-rank-math/includes/modules/redirections/views/help-tab-overview.php
+  seo-by-rank-math/includes/modules/redirections/views/help-tab-screen-content.php
+  seo-by-rank-math/includes/modules/redirections/views/main.php
+  seo-by-rank-math/includes/modules/redirections/views/options.php
+  seo-by-rank-math/includes/modules/sitemap/class-redirect-core-sitemaps.php
+  seo-by-rank-math/includes/modules/woocommerce/class-product-redirection.php
+
+====================================================================================================
+Recherche de 'updateRedirection' / enregistrement de routes REST
+====================================================================================================
+
+--- seo-by-rank-math/includes/rest/class-admin.php ---
+
+--- seo-by-rank-math/includes/rest/class-shared.php ---
+ublic function __construct() {
+		$this->namespace = Rest_Helper::BASE;
+	}
+
+	/**
+	 * Register shared routes.
+	 */
+	public function register_routes() {
+
+		register_rest_route(
+			$this->namespace,
+			'/updateRedirection',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'update_redirection' ],
+				'args'                => $this->get_update_redirection_args(),
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'get_redirection_permissions_check' ],
+			]
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/updateMeta',
+			[
+				'methods'             
+...
+est_Helper::BASE;
+	}
+
+	/**
+	 * Register shared routes.
+	 */
+	public function register_routes() {
+
+		register_rest_route(
+			$this->namespace,
+			'/updateRedirection',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'update_redirection' ],
+				'args'                => $this->get_update_redirection_args(),
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'get_redirection_permissions_check' ],
+			]
+		);
+...
+
+====================================================================================================
+Classe Redirection -- methodes publiques (save/create/from_array)
+====================================================================================================
+
+--- seo-by-rank-math/includes/modules/redirections/class-redirection.php ---
+  public static function create( $id = 0 )
+  public static function from( $data )
+  public function __construct( $data, $nocache = false )
+  public function __get( $key )
+  public function get_id()
+  public function set_id( $id )
+  public function set_status( $status )
+  public function set_nocache( $nocache )
+  public function is_new()
+  public function has_sources()
+  public function save()
+  public function is_infinite_loop()
+  public function add_sources( $sources )
+  public function add_source( $pattern, $comparison, $ignore = '' )
+  public function add_destination( $url )
+  public static function strip_subdirectory( $url )
+  public static function get_full_uri()
+
+--- seo-by-rank-math/includes/frontend/class-redirection.php ---
+  public function __construct()
+  public function pre_redirection( $check )
+  public function redirect()
+
+====================================================================================================
