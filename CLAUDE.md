@@ -1957,7 +1957,9 @@ articles "candidats" trouves par recherche de mots-cles), pas l'integralite
 du corpus. `scripts-maintenance/verifier_maillage_interne_404_0211.py`
 (lecture seule, pont GitHub Actions, scanne le contenu complet des **973**
 articles publies, pas un echantillon) trouve **21 liens internes reels**
-vers les 7 URLs 404, repartis sur **13 articles vivants distincts** :
+vers les 7 URLs 404, repartis sur **18 articles vivants distincts**
+(correction d'un premier compte errone a 13, recalcule programmatiquement
+le 02/11 a partir du log brut plutot qu'a la main) :
 
 | URL 404 | Nb liens trouves | Articles sources (extrait) |
 |---|---|---|
@@ -1974,26 +1976,21 @@ seulement) des backlinks externes perimes -- ce sont de VRAIS liens de
 maillage interne, generes par ce pipeline a la publication d'autres
 articles, qui pointent vers des slugs qui n'ont jamais existe dans
 `historique_publications` ni dans aucun statut WordPress (voir diagnostic
-initial). **Mecanisme exact non encore confirme avec certitude** -- deux
-hypotheses, non departagees depuis ce sandbox :
-1. `recuperer_articles_meme_silo()` (repli maillage, interroge directement
-   l'API WordPress live par categorie, PAS `historique_publications`) a pu
-   retourner ces posts a un moment ou ils existaient reellement sur WP
-   (bake le lien en dur dans le contenu de l'article en cours de
-   publication), posts depuis supprimes **directement en WordPress**, hors
-   de tout script de ce repo -- cela expliquerait l'absence totale de
-   trace dans `historique_publications` (si ces posts n'ont jamais ete
-   publies via le chemin standard `publier_article()`, ex. le mecanisme
-   "Solaire transac" distinct et ponctuel deja documente, qui touche
-   exactement le meme silo que 6 des 7 cas).
-2. Renommage manuel du slug de ces articles en wp-admin par l'operateur
-   apres l'insertion du lien (le garde-fou du 31/10 sur le slug ne couvre
-   que le CODE de ce repo, pas une action manuelle humaine en wp-admin).
+initial). **Mecanisme exact confirme le meme jour par lecture de code**
+(voir section suivante, "Root cause confirmee + correctif structurel") :
+`rediger_article()` ne fait que DEMANDER au modele, par consigne de
+PROMPT, de reprendre les URLs du maillage interne "EXACTEMENT" -- rien en
+code ne verifiait que les `<a href>` reellement generes correspondaient a
+une URL effectivement fournie. Les deux hypotheses envisagees initialement
+(suppression/renommage manuel d'un post reellement existant) sont ecartees
+comme explication principale : le vrai mecanisme est une invention du
+modele (URL plausible pour le sujet, jamais fournie ni existante), pas la
+disparition d'une page qui aurait existe.
 
 **Action corrective recommandee, distincte des 301** : ces 21 liens, dans
-13 articles **actuellement en ligne**, sont un probleme UX actif (pas
+18 articles **actuellement en ligne**, sont un probleme UX actif (pas
 seulement un vieux backlink externe) -- un vrai visiteur qui clique "pour
-aller plus loin" sur ces 13 pages tombe sur un 404 aujourd'hui. A corriger
+aller plus loin" sur ces 18 pages tombe sur un 404 aujourd'hui. A corriger
 en remplaçant chacun des 21 liens par le lien de redirection propose
 correspondant (meme tableau que ci-dessus), via un script du meme type que
 `fix_cta_liens_retroactif.py`/`nettoyer_anciens_cta_statiques.py`
