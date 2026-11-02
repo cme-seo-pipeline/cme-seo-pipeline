@@ -2214,11 +2214,28 @@ nouvelle fonction `capturerChampsFormulaireContact(form)` :
 inclut desormais `'contact-expert-formulaire'` en plus des 3 outils inline
 deja presents (`contact-expert-inline`, `appel-expert-inline`,
 `appel-header-formulaire`) — meme onglet "Leads Formulaire Article",
-colonne "Type" deja generique (aucun changement necessaire cote
-`apps-scripts/cme-formulaire-article-leads.gs`). Ce regroupement n'a de
-sens QUE depuis le correctif de capture ci-dessus : avant, ces lignes
-seraient arrivees dans le Sheet avec Prenom/Telephone/Email/Code Postal
-systematiquement vides, melees a des lignes avec coordonnees reelles.
+meme colonne generique en derniere position (aucun changement necessaire
+cote `apps-scripts/cme-formulaire-article-leads.gs` pour le relais
+lui-meme). Ce regroupement n'a de sens QUE depuis le correctif de capture
+ci-dessus : avant, ces lignes seraient arrivees dans le Sheet avec
+Prenom/Telephone/Email/Code Postal systematiquement vides, melees a des
+lignes avec coordonnees reelles.
+
+**Correction de libelle (02/11, suite, meme jour)** : l'operateur a
+confirme l'entete REEL de l'onglet live — 9 colonnes dans l'ordre `Date &
+Heure, Prenom, Telephone, Email, Code Postal, Silo, Position dans
+l'article, URL de l'article, CTA` — la derniere colonne s'appelle **"CTA"**
+sur la feuille live, pas "Type" comme le documentait ce fichier et comme
+le disait la chaine `HEADERS` de `cme-formulaire-article-leads.gs` depuis
+le 01/11. Corrige dans le `.gs` (`'Type'` -> `'CTA'`, + commentaire) pour
+que la source retrouve la realite deployee — **sans impact live** :
+`getSheet()` ne reecrit l'entete que si la cellule A1 est vide, donc un
+redeploiement de ce fichier n'aurait de toute facon jamais ecrase l'entete
+"CTA" deja en place. Confirme au passage, suite a la meme clarification
+operateur : la page `/contactez-un-expert/` est bien la bonne cible visee
+par tout ce chantier, et `Silo`/`Position dans l'article` resteront
+legitimement vides pour les lignes `contact-expert-formulaire` (page
+autonome, pas un article) — pas une anomalie a corriger.
 
 **Pas encore deploye** — meme fichier que les chantiers precedents
 (`cme-tracking-conversion.php`) : non versionne automatiquement sur le

@@ -31,7 +31,7 @@
  * du nouveau mini-formulaire "avant d'appeler" (meme fichier PHP, memes
  * champs, voir cme-cta-progressifs.php et cme-tracking-conversion.php) --
  * decision operateur explicite : meme onglet, pas de nouveau Sheet. Pour
- * distinguer les deux dans l'onglet, une colonne "Type" a ete ajoutee en fin
+ * distinguer les deux dans l'onglet, une colonne "CTA" a ete ajoutee en fin
  * de ligne (reprend `tool` tel quel : 'contact-expert-inline' ou
  * 'appel-expert-inline') -- ajout en DERNIERE position pour rester
  * compatible avec les lignes deja ecrites (aucune migration necessaire).
@@ -43,7 +43,7 @@ var SHEET_NAME = 'Leads Formulaire Article';
 
 var HEADERS = [
   'Date & Heure', 'Prenom', 'Telephone', 'Email', 'Code Postal',
-  'Silo', 'Position dans l\'article', 'URL de l\'article', 'Type'
+  'Silo', 'Position dans l\'article', 'URL de l\'article', 'CTA'
 ];
 
 function doGet(e) {
