@@ -1,0 +1,19 @@
+# Execution du 2026-11-02T22:28:07Z
+# Script    : scripts-maintenance/backfill_sheets_contact_expert_formulaire.py
+# Arguments : --depuis=2026-10-06
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 leads_convertis, tool='contact-expert-formulaire', depuis 2026-10-06...
+
+✅ 4 ligne(s) brute(s) en base -> 2 lead(s) reel(s) apres deduplication (fenetre 5s).
+
+====================================================================================================
+ #  Timestamp (reel)                Lignes brutes   Source page
+====================================================================================================
+ 1  2026-11-02T13:08:22.629000+00:00  2               https://www.comprendre-mon-energie.fr/contactez-un-expert/
+ 2  2026-11-02T13:31:32.173000+00:00  2               https://www.comprendre-mon-energie.fr/contactez-un-expert/
+
+(dry-run -- relancer avec --apply --confirmation=BACKFILL-UNIQUE pour envoyer ces 2 lead(s) au Sheet)
