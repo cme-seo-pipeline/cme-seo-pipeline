@@ -1,0 +1,20 @@
+# Execution du 2026-11-02T19:19:22Z
+# Script    : scripts-maintenance/diagnostiquer_404_audit_0211_suite.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+1) TRACE DANS GOOGLE SEARCH CONSOLE (01_raw.gsc_queries)
+====================================================================================================
+
+### https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+Traceback (most recent call last):
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/diagnostiquer_404_audit_0211_suite.py", line 153, in <module>
+    main()
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/diagnostiquer_404_audit_0211_suite.py", line 91, in main
+    f"clics={int(row['clics_total'])} | impressions={int(row['impressions_total'])} | "
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NAType'
