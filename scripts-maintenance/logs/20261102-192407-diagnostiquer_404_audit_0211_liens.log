@@ -1,0 +1,92 @@
+# Execution du 2026-11-02T19:24:07Z
+# Script    : scripts-maintenance/diagnostiquer_404_audit_0211_liens.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+1) wp_url_mapping (dernier snapshot WRITE_TRUNCATE)
+====================================================================================================
+    absent : aides-systeme-solaire-combine-2026
+    absent : aides-batterie-solaire-2026
+    absent : augmentation-electricite-causes
+    absent : maprimerenov-panneaux-solaires-2026
+    absent : aides-chauffe-eau-solaire-2026
+    absent : prix-chauffe-eau-solaire-2026-cout-installation
+    absent : prix-panneaux-solaires-2026-tarifs
+
+====================================================================================================
+2) Correspondance PARTIELLE dans gsc_queries (LIKE, pas egalite stricte)
+====================================================================================================
+    aucune variante trouvee pour : aides-systeme-solaire-combine-2026
+    aucune variante trouvee pour : aides-batterie-solaire-2026
+    aucune variante trouvee pour : augmentation-electricite-causes
+    aucune variante trouvee pour : maprimerenov-panneaux-solaires-2026
+    aucune variante trouvee pour : aides-chauffe-eau-solaire-2026
+    aucune variante trouvee pour : prix-chauffe-eau-solaire-2026-cout-installation
+    aucune variante trouvee pour : prix-panneaux-solaires-2026-tarifs
+
+====================================================================================================
+3) Liens EN LIVE sur les pages d'archive silo/sous-silo
+====================================================================================================
+
+https://www.comprendre-mon-energie.fr/electricite/ -> HTTP 200
+
+https://www.comprendre-mon-energie.fr/electricite/facture-electricite/ -> HTTP 200
+
+https://www.comprendre-mon-energie.fr/solaire/ -> HTTP 200
+
+https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/ -> HTTP 200
+
+https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/ -> HTTP 200
+
+https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/ -> HTTP 200
+
+https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/ -> HTTP 200
+
+====================================================================================================
+4) Liens EN LIVE sur les articles candidats de remplacement deja identifies
+====================================================================================================
+https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-economies/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-economies-systeme-solaire-combine/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/prix-installation-systeme-solaire-combine-2026/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-5-kwh-prix-devis-rentabilite/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-dimensionnement-prix-roi/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-prix-installation/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-cout-reel/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-reductions-facture-electricite/ -> HTTP 200
+https://www.comprendre-mon-energie.fr/electricite/facture-electricite/pic-consommation-electrique-facture-explose/ -> HTTP 200
+
+====================================================================================================
