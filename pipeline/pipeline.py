@@ -3737,6 +3737,9 @@ def publier_actualites_reglementaires(client_bq, config, wp_config, run_id):
         if erreur:
             print(f"  ❌ {brief['titre_seo']} : {erreur}")
             continue
+        contenu_html, nb_liens_retires = valider_et_nettoyer_liens_internes(contenu_html)
+        if nb_liens_retires:
+            print(f"  🧹 {nb_liens_retires} lien(s) interne(s) mort(s) retire(s) avant publication (Mode Actualite)")
         resultat = publier_article(
             brief, brief['silo'], brief['sous_silo'], contenu_html,
             wp_config, client_bq, run_id, config
@@ -4106,6 +4109,87 @@ def inserer_lien_pilier(contenu_html, silo_name, sous_silo_val):
     url_complete = f"https://www.comprendre-mon-energie.fr{url_relative}"
     lien_html = f'<p>Pour aller plus loin, consultez <a href="{url_complete}">{texte_ancre}</a>.</p>\n'
     return lien_html + contenu_html
+
+
+def _url_interne_est_vivante(url, timeout=8):
+    """Verifie qu'une URL du site repond 200. HEAD d'abord (leger), repli
+    en GET si HEAD echoue/est bloque (405/403) -- meme convention que
+    scripts-maintenance/auditer_liens_internes.py. Toute exception
+    (timeout, DNS, etc.) est traitee comme 'morte' par prudence : mieux
+    vaut perdre un lien valide sur un hoquet reseau transitoire que
+    risquer de publier un 404."""
+    try:
+        r = requests.head(url, timeout=timeout, allow_redirects=True)
+        if r.status_code == 200:
+            return True
+        if r.status_code in (403, 405):
+            r = requests.get(url, timeout=timeout, allow_redirects=True)
+            return r.status_code == 200
+        return False
+    except Exception:
+        return False
+
+
+def valider_et_nettoyer_liens_internes(contenu_html):
+    """Garde-fou STRUCTUREL (ajoute le 02/11/2026, voir CLAUDE.md -- audit
+    404 externe du 02/11 : 21 liens internes morts retrouves dans 13
+    articles vivants, vers 7 slugs qui n'ont jamais existe dans
+    historique_publications ni sous aucun statut WordPress). Root cause
+    confirmee : rediger_article() ne fait que DEMANDER au modele de
+    reprendre les URLs du MAILLAGE INTERNE "EXACTEMENT" -- une consigne de
+    prompt, jamais verifiee en code -- et le modele peut malgre tout
+    produire un lien vers une URL plausible pour le sujet (meme pattern de
+    slug que les vraies pages du site) sans qu'elle n'ait jamais ete
+    fournie ni n'existe reellement.
+
+    Plutot que de corriger seulement le prompt (qui resterait une consigne
+    sans garantie), cette fonction verifie en LIVE, juste avant publication,
+    CHAQUE lien interne present dans le contenu final -- quelle que soit
+    son origine (maillage fourni au modele, lien pilier insere par code,
+    initiative du modele) -- et retire (unwrap, garde le texte de l'ancre)
+    tout lien qui ne repond pas 200. C'est la seule verification qui ne
+    depend pas de connaitre a l'avance toutes les facons dont un lien mort
+    pourrait apparaitre.
+
+    Portee volontairement limitee aux liens vers le propre domaine du site
+    (comprendre-mon-energie.fr, absolu ou relatif) -- les liens externes
+    sont deja couverts par l'audit hebdomadaire auditer_liens_internes.py,
+    et les re-verifier ici ajouterait de la latence/fragilite reseau sans
+    rapport avec ce bug precis.
+
+    Fail-safe a deux niveaux, dans l'esprit du reste du fichier (voir
+    recuperer_articles_meme_silo plus haut) : un lien dont la verification
+    echoue est retire par prudence (voir _url_interne_est_vivante) ; si la
+    fonction elle-meme echoue entierement (parsing, erreur inattendue),
+    elle renvoie le contenu INCHANGE -- ne doit jamais faire echouer toute
+    la publication pour cette verification. Retourne (contenu, nb_retires)."""
+    try:
+        soup = BeautifulSoup(contenu_html, "html.parser")
+        liens_internes = [
+            a for a in soup.find_all("a", href=True)
+            if a["href"].startswith("https://www.comprendre-mon-energie.fr") or a["href"].startswith("/")
+        ]
+        if not liens_internes:
+            return contenu_html, 0
+
+        cache_statut = {}
+        nb_retires = 0
+        for a in liens_internes:
+            href = a["href"]
+            url_complete = href if href.startswith("http") else f"https://www.comprendre-mon-energie.fr{href}"
+            if url_complete not in cache_statut:
+                cache_statut[url_complete] = _url_interne_est_vivante(url_complete)
+            if not cache_statut[url_complete]:
+                print(f"  🧹 Lien interne mort retire avant publication : {url_complete}")
+                a.unwrap()
+                nb_retires += 1
+
+        if nb_retires:
+            return str(soup), nb_retires
+        return contenu_html, 0
+    except Exception as e:
+        print(f"  ⚠️ valider_et_nettoyer_liens_internes indisponible ({e}) -- contenu publie sans ce controle")
+        return contenu_html, 0
 
 
 def recuperer_articles_meme_silo(silo_name, wp_config):
@@ -4973,6 +5057,9 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
                 print(f"  {erreur}")
                 continue
             contenu_html = inserer_lien_pilier(contenu_html, silo_name, sous_silo_pour_maillage)
+            contenu_html, nb_liens_retires = valider_et_nettoyer_liens_internes(contenu_html)
+            if nb_liens_retires:
+                print(f"  🧹 {nb_liens_retires} lien(s) interne(s) mort(s) retire(s) avant publication (verification live)")
 
             liens = re.findall(
                 r'<a href="https://www\.comprendre-mon-energie\.fr[^"]*"', contenu_html

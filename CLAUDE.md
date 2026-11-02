@@ -1999,3 +1999,74 @@ correspondant (meme tableau que ci-dessus), via un script du meme type que
 `fix_cta_liens_retroactif.py`/`nettoyer_anciens_cta_statiques.py`
 (BeautifulSoup, dry-run par defaut) -- pas encore ecrit, propose a
 l'operateur, en attente de son feu vert.
+
+## Root cause confirmee + correctif structurel — liens internes morts (02/11/2026)
+
+Demande operateur explicite ("une solution absolue... plus de production
+de lien interne inexistant") suite a la correction ci-dessus (le maillage
+interne, pas un backlink externe, est la vraie cause des 7 404 de
+l'audit du jour).
+
+**Root cause** : `rediger_article()` (`pipeline/pipeline.py`) passe au
+modele une liste `MAILLAGE INTERNE` (titres+URLs reels, construite par
+`recuperer_articles_meme_sous_silo()`/`recuperer_articles_meme_silo()`) et
+lui demande, par consigne de PROMPT uniquement, de reprendre ces URLs
+"EXACTEMENT" (`"NE JAMAIS modifier l'URL fournie"`) — **rien dans le code
+ne verifie que les `<a href>` reellement presents dans le contenu genere
+correspondent a une URL effectivement fournie**. Le modele peut (et a, de
+facon confirmee) produire un lien vers une URL plausible pour le sujet —
+meme convention de slug que les vraies pages du site — sans qu'elle n'ait
+jamais ete fournie ni n'existe. Les 7 URLs 404 de l'audit en sont
+l'illustration directe : aucune ne figure dans `historique_publications`
+ni dans `LIENS_PILIERS_SOUS_SILO` (le mecanisme pilier, lui, code en dur
+et donc fiable par construction) — seule l'hypothese "invention du modele
+a partir du maillage fourni/du pattern du site" explique des URLs
+plausibles mais jamais reellement publiees.
+
+**Corrige, les deux chemins de publication** (`pipeline/pipeline.py`) :
+nouvelle fonction `valider_et_nettoyer_liens_internes(contenu_html)` (+
+helper `_url_interne_est_vivante()`, HEAD puis repli GET si 403/405, meme
+convention que `auditer_liens_internes.py`) appelee juste avant
+`publier_article()` dans **`rediger_et_publier()`** (run quotidien
+principal, apres `inserer_lien_pilier()` — verifie donc aussi le lien
+pilier code en dur, pas seulement ceux issus du modele) **et** dans
+**`publier_actualites_reglementaires()`** (Mode Actualite, qui appelle
+`rediger_article()` avec `articles_silo=None` mais reste exposee au risque
+— pas de garantie que le modele n'invente rien sans liste fournie).
+Parse avec BeautifulSoup (pas de regex sur HTML imbrique, meme principe
+que documente plus haut pour `nettoyer_anciens_cta_statiques.py`), verifie
+CHAQUE lien interne (domaine du site, absolu ou relatif) en LIVE contre le
+site reel — **peu importe son origine** (maillage fourni, lien pilier,
+initiative du modele) — et retire (unwrap, garde le texte de l'ancre) tout
+lien qui ne repond pas 200. Volontairement limite aux liens internes (les
+externes sont deja couverts par l'audit hebdomadaire). Fail-safe a deux
+niveaux : un lien dont la verification echoue (timeout, exception) est
+traite comme mort par prudence ; si la fonction echoue entierement
+(erreur inattendue), elle renvoie le contenu inchange — ne bloque jamais
+la publication, meme philosophie que les autres fonctions de maillage
+(`recuperer_articles_meme_silo`, etc.).
+
+**C'est une verification de la realite, pas une liste blanche** : elle ne
+suppose rien sur la facon dont un lien mort pourrait apparaitre a l'avenir
+(nouvelle fonction de maillage, evolution du prompt, etc.) — tout lien
+interne qui ne repond pas 200 au moment de la publication est retire,
+point. C'est ce qui en fait une garantie structurelle plutot qu'un patch
+ponctuel sur le mecanisme identifie aujourd'hui.
+
+**Teste en local** (mock des requetes HTTP, aucun appel reseau reel) :
+lien vivant conserve, lien mort (absolu et relatif) retire avec le texte
+de l'ancre preserve, lien externe jamais verifie ni touche, exception
+reseau traitee comme mort, repli HEAD→GET sur 403 fonctionnel. `python3 -m
+py_compile` OK (seul le `SyntaxWarning` preexistant non lie, ligne 2006).
+**Pas encore valide en conditions reelles** — a confirmer au prochain run
+de `publication-quotidienne.yml` que la ligne `🧹 X lien(s) interne(s)
+mort(s) retire(s)` n'apparait plus (ou n'apparait que pour un vrai
+hoquet reseau transitoire), signe que le modele ne produit plus de lien
+vers une URL inexistante — ou, si elle apparait, que le nettoyage a bien
+fonctionne au lieu de laisser un 404 partir en production.
+
+**Limite assumee** : chaque lien interne ajoute un aller-retour HTTP vers
+le site avant publication (quelques secondes, 1-5 liens par article en
+pratique) — cout negligeable par rapport a l'appel au modele lui-meme, et
+sans commune mesure avec le risque de publier un 404 en masse au volume
+anticipe par l'operateur.
