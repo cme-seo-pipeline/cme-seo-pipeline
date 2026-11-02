@@ -1,0 +1,11 @@
+# Execution du 2026-11-02T21:54:49Z
+# Script    : scripts-maintenance/fix_liens_morts_maillage_0211.py
+# Arguments : 
+
+Recuperation de tous les articles publies (contenu brut, ?context=edit)...
+973 article(s) recupere(s).
+
+
+====================================================================================================
+TOTAL : 0 article(s) traite(s), 0 lien(s) mort(s) detecte(s) (dry-run).
+====================================================================================================
