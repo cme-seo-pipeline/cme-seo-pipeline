@@ -2108,3 +2108,32 @@ de chacune des 7 URLs 404, destination = la cible proposee, meme table que
 le diagnostic initial) -- quelques minutes, aucun developpement possible
 pour reduire ca davantage sans un acces navigateur authentifie (hors de
 portee de ce sandbox aujourd'hui).
+
+## Chantier 404/maillage interne du 02/11/2026 — clos
+
+**301** : les 7 redirections ont ete creees manuellement par l'operateur
+dans RankMath (confirme par l'operateur le 02/11) -- aucune verification
+cote code possible depuis ce sandbox (pas d'acces au site live), a
+confirmer visuellement par l'operateur si besoin (`curl -I` sur chaque
+URL 404, doit renvoyer 301 vers la cible plutot que 404).
+
+**32 liens internes morts corriges** (`fix_liens_morts_maillage_0211.py --apply`,
+pont GitHub Actions, canari `--limite=3` valide puis reste du lot) :
+18/18 articles traites, 32/32 liens corriges, **0 erreur**. Verifie par
+un dry-run final post-correction : `0 article(s) traite(s), 0 lien(s)
+mort(s) detecte(s)` -- plus aucun des 7 slugs 404 n'est reference dans le
+contenu stocke d'aucun article publie.
+
+**Garde-fou structurel deploye dans le pipeline** (voir section
+"Root cause confirmee + correctif structurel" plus haut, commit `b5dc8bd`) :
+chaque futur lien interne genere par le modele est verifie en live avant
+publication, quelle que soit son origine -- empeche une recidive du meme
+mecanisme (invention de lien par le modele) pour les prochains articles.
+**A confirmer au prochain run de `publication-quotidienne.yml`** que la
+ligne `🧹 X lien(s) interne(s) mort(s) retire(s)` n'apparait plus (ou,
+si un cas se presente, que le nettoyage fonctionne comme prevu plutot que
+de laisser un 404 partir en production).
+
+Chantier entierement clos : root cause identifiee et corrigee de maniere
+structurelle, contenu existant assaini, redirections posees cote
+operateur.
