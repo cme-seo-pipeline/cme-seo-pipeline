@@ -1884,3 +1884,65 @@ hypotheses : un evenement `popup_vu` (ouverture) et `popup_abandon`
 (fermeture sans soumission) dans `creerPopupAppel()`/`ouvrirPopupAppel()`
 (`cme-tracking-conversion.php`), meme table, meme pattern que le
 mini-formulaire des articles.
+
+## Audit 404 externe du 02/11/2026 — 7 URLs sans trace dans l'ecosysteme
+
+Operateur fournit un export CSV d'un outil d'audit externe (colonnes
+"Page URL with Http 400-499 errors" + "Page depth" -- probablement un
+crawler SEO type Screaming Frog/Ahrefs/SEMrush, pas GSC) listant 7 URLs en
+404, toutes de profondeur 3 (`/{silo}/{sous-silo}/{slug}/`, le schema de
+permalien habituel) : 6 en silo Solaire, 1 en Electricite/Facture.
+
+**Diagnostic exhaustif, resultat inattendu : AUCUNE trace nulle part**,
+verifie par 4 scripts lecture seule distincts
+(`diagnostiquer_404_audit_0211.py`, `..._suite.py`, `..._liens.py`, pont
+GitHub Actions) :
+- **404 confirme en live** sur les 7 URLs (requete HTTP directe depuis le
+  runner GitHub Actions, acces reseau complet).
+- **Aucune ligne** dans `historique_publications` (notre propre log de
+  toute publication faite par ce pipeline, jamais purge par aucun script).
+- **Aucun post WordPress**, meme en recherchant TOUS les statuts
+  (draft/trash/pending/future/private) via l'API authentifiee par slug --
+  ces articles n'existent pas, meme a la corbeille.
+- **Aucune ligne, meme partielle (LIKE)**, dans `01_raw.gsc_queries` --
+  Google n'a jamais vu ces URLs dans les requetes/clics/impressions
+  synchronisees.
+- **Absentes du sitemap XML live** (7 sous-sitemaps parcourus).
+- **Absentes de `02_cleaned.wp_url_mapping`** (dernier snapshot complet
+  des URLs publiees, rafraichi par `rafraichir_wp_url_mapping()`).
+- **Aucun lien live** trouve ni sur les pages d'archive silo/sous-silo
+  concernees (7 pages verifiees), ni sur 13 articles deja publies et
+  thematiquement tres proches (meme sous-silo) -- rien sur le site
+  n'a ete trouve pointant vers ces 7 URLs.
+
+**Conclusion** : ces 7 URLs ne correspondent a aucun article jamais publie
+par ce pipeline ni visible de Google -- l'hypothese la plus probable est
+une **source externe au site** (backlink(s) pointant vers des URLs qui
+n'ont jamais existe ou ont existe avant la periode couverte par nos
+donnees synchronisees, ou decouverte par l'outil d'audit via son propre
+historique/index plutot que par crawl du site actuel). **Non verifiable
+depuis ce sandbox** : le rapport de backlinks de l'outil d'audit lui-meme,
+ou le rapport GSC "Liens" (Search Console UI, hors API synchronisee ici).
+A defaut d'une cause structurelle active sur le site, aucune correction de
+code n'est necessaire -- seule une redirection 301 (cosmetique, pour
+l'experience d'un visiteur qui suivrait ce lien externe perime) a du sens.
+
+**Propositions de cibles de redirection 301** (meilleure page vivante par
+proximite thematique + sous-silo, trouvee par recherche WordPress par
+mot-cle) :
+
+| URL 404 | Cible 301 proposee | Qualite du match |
+|---|---|---|
+| `.../systeme-solaire-combine/aides-systeme-solaire-combine-2026/` | `.../systeme-solaire-combine/prix-installation-systeme-solaire-combine-2026/` | Bon -- meme sous-silo, angle budget proche de "aides" |
+| `.../batterie-panneaux-solaires/aides-batterie-solaire-2026/` | `.../batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/` | Bon -- meme sous-silo, meme suffixe -2026 |
+| `.../facture-electricite/augmentation-electricite-causes/` | `.../facture-electricite/pic-consommation-electrique-facture-explose/` | Tres bon -- theme quasi identique (hausse facture) |
+| `.../panneaux-solaires/maprimerenov-panneaux-solaires-2026/` | `.../panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/` (ou a defaut l'archive `/solaire/panneaux-solaires/`) | Faible -- aucune page vivante ne traite specifiquement MaPrimeRénov pour le solaire, angle le plus proche = prix/ROI |
+| `.../chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/` | `.../chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/` | Bon -- meme sous-silo, angle cout proche de "aides" |
+| `.../chauffe-eau-solaire/prix-chauffe-eau-solaire-2026-cout-installation/` | `.../chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-cout-reel/` | Tres bon -- meme sous-silo, meme angle prix/cout |
+| `.../panneaux-solaires/prix-panneaux-solaires-2026-tarifs/` | `.../panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/` | Tres bon -- meme sous-silo, meme angle prix |
+
+**Point bloquant deja identifie le 02/11** (section "Audit cannibalisation
+GSC" plus haut) : aucun mecanisme de creation de redirection 301 trouve
+dans ce repo -- a clarifier avec l'operateur (RankMath si son module
+redirections est actif, plugin "Redirection", ou .htaccess manuel) avant
+toute execution. Aucune action prise, proposition uniquement.
