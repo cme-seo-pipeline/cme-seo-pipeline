@@ -1,0 +1,119 @@
+# Execution du 2026-11-02T21:22:20Z
+# Script    : scripts-maintenance/inspecter_source_rankmath_redirections_suite.py
+# Arguments : 
+
+Telechargement de https://downloads.wordpress.org/plugin/seo-by-rank-math.latest-stable.zip ...
+
+====================================================================================================
+seo-by-rank-math/includes/rest/class-shared.php :: update_redirection()
+====================================================================================================
+function update_redirection( WP_REST_Request $request ) {
+		$cmb     = new \stdClass();
+		$metabox = new Metabox();
+
+		$cmb->object_id    = $request->get_param( 'objectID' );
+		$cmb->object_type  = null !== $request->get_param( 'objectType' ) ? $request->get_param( 'objectType' ) : 'post';
+		$cmb->data_to_save = [
+			'has_redirect'                 => $request->get_param( 'hasRedirect' ),
+			'redirection_id'               => $request->get_param( 'redirectionID' ),
+			'redirection_url_to'           => $request->get_param( 'redirectionUrl' ),
+			'redirection_sources'          => \str_replace( home_url( '/' ), '', $request->get_param( 'redirectionSources' ) ),
+			'redirection_header_code'      => $request->get_param( 'redirectionType' ) ? $request->get_param( 'redirectionType' ) : 301,
+			'rank_math_enable_redirection' => 'on',
+		];
+
+		if ( false === $request->get_param( 'hasRedirect' ) ) {
+			unset( $cmb->data_to_save['redirection_url_to'] );
+		}
+
+		if ( empty( $request->get_param( 'redirectionID' ) ) ) {
+			unset( $cmb->data_to_save['redirection_id'] );
+		}
+
+		return $metabox->save_advanced_meta( $cmb );
+	}
+
+====================================================================================================
+seo-by-rank-math/includes/rest/class-shared.php :: get_update_redirection_args()
+====================================================================================================
+function get_update_redirection_args() {
+		return [
+			'objectID'        => [
+				'type'              => 'integer',
+				'required'          => true,
+				'description'       => esc_html__( 'Object unique id', 'seo-by-rank-math' ),
+				'validate_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'is_param_empty' ],
+			],
+			'objectType'      => [
+				'type'              => 'string',
+				'default'           => 'post',
+				'required'          => true,
+				'description'       => esc_html__( 'Object Type i.e. post, term, user', 'seo-by-rank-math' ),
+				'sanitize_callback' => 'rest_sanitize_request_arg',
+				'validate_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'is_valid_string' ],
+			],
+			'hasRedirect'     => [
+				'type'        => 'boolean',
+				'required'    => true,
+				'description' => esc_html__( 'Whether the object has a redirect or not', 'seo-by-rank-math' ),
+			],
+			'redirectionID'   => [
+				'type'        => 'string',
+				'required'    => false,
+				'description' => esc_html__( 'Redirection ID', 'seo-by-rank-math' ),
+			],
+			'redirectionUrl'  => [
+				'type'              => 'string',
+				'required'          => false,
+				'description'       => esc_html__( 'Redirection URL', 'seo-by-rank-math' ),
+				'sanitize_callback' => 'rest_sanitize_request_arg',
+				'validate_callback' => function ( $param, $request ) {
+					$redirection_type = $request->get_param( 'redirectionType' );
+					if ( in_array( $param, [ '301', '302', '307' ], true ) ) {
+						return Url::is_url( $param );
+					}
+
+					return true;
+				},
+			],
+			'redirectionType' => [
+				'type'              => 'string',
+				'default'           => '301',
+				'required'          => true,
+				'description'       => esc_html__( 'Redirection Type', 'seo-by-rank-math' ),
+				'enum'              => [ '301', '302', '307', '410', '451' ],
+				'sanitize_callback' => 'rest_sanitize_request_arg',
+				'validate_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'is_valid_string' ],
+			],
+		];
+	}
+
+====================================================================================================
+seo-by-rank-math/includes/rest/class-rest-helper.php :: get_redirection_permissions_check()
+====================================================================================================
+function get_redirection_permissions_check() {
+		if ( ! Helper::is_module_active( 'redirections' ) || ! Helper::has_cap( 'redirections' ) ) {
+			return new WP_Error(
+				'rest_cannot_edit',
+				__( 'Sorry, you are not allowed to create/update redirection.', 'seo-by-rank-math' ),
+				[ 'status' => rest_authorization_required_code() ]
+			);
+		}
+
+		return true;
+	}
+
+====================================================================================================
+seo-by-rank-math/includes/rest/class-rest-helper.php :: get_redirection_permissions_check()
+====================================================================================================
+function get_redirection_permissions_check() {
+		if ( ! Helper::is_module_active( 'redirections' ) || ! Helper::has_cap( 'redirections' ) ) {
+			return new WP_Error(
+				'rest_cannot_edit',
+				__( 'Sorry, you are not allowed to create/update redirection.', 'seo-by-rank-math' ),
+				[ 'status' => rest_authorization_required_code() ]
+			);
+		}
+
+		return true;
+	}
