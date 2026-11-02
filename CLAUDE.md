@@ -1861,3 +1861,26 @@ impact SEO (Googlebot ne crawle pas depuis des plages IP chinoises), mais
 que ce serait une action cote serveur/hebergement (cPanel ou plugin
 securite), hors de portee d'execution directe depuis ce sandbox -- comme
 pour les autres actions serveur de ce projet.
+
+## Popup header — verification des clics depuis le deploiement (02/11/2026)
+
+Demande operateur : verifier s'il y a eu des clics sur le numero du header
+depuis la mise en ligne du popup obligatoire (confirme fonctionnel le
+01/11, voir section precedente). `scripts-maintenance/verifier_clics_popup_header.py`
+(lecture seule, pont GitHub Actions) : **0 lead reel** via
+`tool='appel-header-formulaire'` depuis le 01/11 (hors le lead de test deja
+nettoye). Pour contexte, 4 lignes `appel-telephone` (tracking generique
+tel:, hors header) sur la meme periode.
+
+**Limite de mesure a garder en tete pour interpreter ce chiffre** : le
+popup ne journalise aucun evenement dans `interactions_contenu` (pas de
+`popup_vu`/`popup_abandon`, contrairement au mini-formulaire des
+articles qui a `form_vu`/`form_abandon`) -- impossible de distinguer
+"personne n'a clique sur le bouton du header" de "des visiteurs ont
+clique, vu le popup, et abandonne avant de le remplir". Ce 0 ne garantit
+donc pas l'absence de friction, seulement l'absence de conversion
+complete. A ajouter si l'operateur veut trancher entre ces deux
+hypotheses : un evenement `popup_vu` (ouverture) et `popup_abandon`
+(fermeture sans soumission) dans `creerPopupAppel()`/`ouvrirPopupAppel()`
+(`cme-tracking-conversion.php`), meme table, meme pattern que le
+mini-formulaire des articles.
