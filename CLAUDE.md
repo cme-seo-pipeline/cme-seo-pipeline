@@ -2237,17 +2237,53 @@ par tout ce chantier, et `Silo`/`Position dans l'article` resteront
 legitimement vides pour les lignes `contact-expert-formulaire` (page
 autonome, pas un article) — pas une anomalie a corriger.
 
-**Pas encore deploye** — meme fichier que les chantiers precedents
-(`cme-tracking-conversion.php`) : non versionne automatiquement sur le
-serveur. `cloudshell download`, `.bak` horodate en cPanel, upload dans
-`/wp-content/mu-plugins/`, purger les deux caches LiteSpeed, verifier avec
-`?t=$RANDOM`. **Test reel necessaire apres deploiement** (pas seulement
-visuel) : soumettre le vrai formulaire sur `/contactez-un-expert/` avec un
-nom/telephone/code postal de test connus, puis verifier dans
-`leads_convertis` (une seule ligne desormais, pas deux) ET dans l'onglet
-Sheets que les 4 champs sont bien remplis et correspondent aux valeurs
-saisies — sinon ajuster l'heuristique de `capturerChampsFormulaireContact()`
-selon ce que revele la ligne reelle (meme pattern que l'incident
-"Lionel"/"QA-TEST" : nettoyer la ligne de test ensuite, comme d'habitude,
-ni acces API Sheets ni WPForms Entries depuis ce sandbox pour le faire
-soi-meme).
+**Deploiement — piege rencontre et resolu (02-03/11/2026)** : le premier
+upload cPanel de ce fichier (commits `98dca1c`/`424b765`) n'a pas pris
+effet malgre l'operateur confirmant avoir pousse/deploye — un test reel a
+reproduit exactement l'ancien bug (double ligne, champs vides). Diagnostic
+par chaine de verification : `curl ".../contactez-un-expert/?t=$RANDOM" |
+grep -o "<marqueur unique du nouveau code>"` renvoyait vide, confirmant que
+le SERVEUR servait toujours l'ancien fichier. Cause racine : le clone
+Cloud Shell de l'operateur etait perime (anterieur au commit du jour) —
+`cloudshell download` telechargeait donc fidelement... l'ancienne version.
+**Resolu** en repartant d'un clone frais a chaque fois plutot que de
+reutiliser un dossier existant :
+```bash
+rm -rf ~/cme-fresh && git clone https://github.com/cme-seo-pipeline/cme-seo-pipeline ~/cme-fresh
+grep -c "<marqueur attendu>" ~/cme-fresh/wordpress-mu-plugins/cme-tracking-conversion.php   # doit matcher le nombre attendu avant de telecharger
+cloudshell download ~/cme-fresh/wordpress-mu-plugins/cme-tracking-conversion.php
+```
+Repris en CLAUDE.md car generalisable a tout futur deploiement de ce
+fichier (ou de `cme-cta-progressifs.php`) : si un `curl` de verification
+post-deploiement ne montre pas le changement attendu, verifier d'abord
+que le clone LOCAL de l'operateur est a jour avant de suspecter le cache
+LiteSpeed ou un probleme d'upload — un clone perime produit exactement
+les memes symptomes qu'un cache non purge.
+
+**Deuxieme piege, distinct, trouve lors du test reel qui a suivi** : une
+fois le bon fichier deploye, le test en navigation privee a montre que le
+champ "Telephone" du formulaire live n'utilise PAS le type de champ
+WPForms dedie (`wpforms-field-phone`) — c'est un champ texte simple, comme
+le code postal. L'ancienne heuristique de `capturerChampsFormulaireContact()`
+("par elimination, le 1er champ texte restant = code_postal") prenait donc
+le telephone (place avant dans le formulaire) et ecrasait le vrai code
+postal, jamais capture. **Corrige** (commit `5b0bcfd`) en classant les
+champs texte restants par le CONTENU de leur valeur plutot que par leur
+position : un telephone francais a 9-14 chiffres, un code postal en a
+exactement 5 — aucune ambiguite pratique. Valide par un test unitaire
+local (6 cas) puis en conditions reelles (navigation privee) : telephone
+et code postal desormais chacun dans la bonne colonne.
+
+**Validation complete en conditions reelles le 03/11** : l'operateur a
+teste tous les formulaires de conversion (contact-expert-formulaire,
+contact-expert-inline, appel-expert-inline, appel-header-formulaire) en
+navigation privee apres ce second correctif — tous fonctionnels, champs
+correctement captures et separes. Les 9 lignes de test generees pendant
+cette session de validation (dont les 2 paires du bug de double comptage
+pre-fix et la ligne du bug telephone/code_postal pre-fix) ont ete
+supprimees de `leads_convertis` via
+`scripts-maintenance/nettoyer_leads_test_0211_0302.py` (dry-run puis
+`--apply`, cible par timestamp exact, pont GitHub Actions) — nettoyage du
+Sheet correspondant fait manuellement par l'operateur (meme precedent que
+les incidents "Lionel"/"QA-TEST popup header"). **Chantier entierement
+clos.**
