@@ -163,23 +163,26 @@ function cme_relayer_log_lead(WP_REST_Request $request) {
         );
     }
 
-    // Relais secondaire vers Google Sheets, UNIQUEMENT pour les leads des
-    // mini-formulaires integres aux articles -- 'contact-expert-inline'
-    // (22/10/2026) ET 'appel-expert-inline' (01/11/2026, demande operateur :
-    // meme onglet Sheets pour le nouveau formulaire "avant d'appeler") --
-    // pas pour les clics tel: directs ni les soumissions du formulaire
-    // /contactez-un-expert/, qui ne passaient pas deja par un Sheet et ne
-    // doivent pas commencer a y arriver sans l'avoir demande. Meme forme
-    // d'appel que l'existant wordpress-plugins/simulateur-solaire/simulateur-solaire.php
+    // Relais secondaire vers Google Sheets -- 'contact-expert-inline'
+    // (22/10/2026), 'appel-expert-inline' (01/11/2026), 'appel-header-formulaire'
+    // (01/11/2026) et desormais 'contact-expert-formulaire' (02/11/2026,
+    // demande operateur explicite : regrouper le vrai formulaire de contact
+    // /contactez-un-expert/ dans le MEME onglet que les 3 outils inline --
+    // voir CLAUDE.md). Ce dernier n'a de valeur dans le Sheet que depuis le
+    // correctif du 02/11 qui capture desormais prenom/telephone/email/
+    // code_postal au moment de la soumission (voir capturerChampsFormulaireContact()
+    // plus bas) -- avant ce correctif ces 4 champs etaient systematiquement
+    // vides, ce qui aurait produit des lignes inutilisables dans ce Sheet.
+    // Pas pour les clics tel: directs (tool='appel-telephone'), qui restent
+    // anonymes et ne passent pas par ce relais. Meme forme d'appel que
+    // l'existant wordpress-plugins/simulateur-solaire/simulateur-solaire.php
     // (wp_remote_get avec payload en query string, bloquant -- invisible
     // pour le visiteur, appel serveur-a-serveur en arriere-plan comme
     // celui ci-dessus).
     if (CME_APPS_SCRIPT_LEADS_INLINE_URL) {
         $donnees = json_decode($payload, true);
         $outil = is_array($donnees) ? ($donnees['tool'] ?? '') : '';
-        // 'appel-header-formulaire' (01/11/2026) : popup sur le bouton tel:
-        // du header, voir docblock -- meme onglet Sheets que les 2 autres.
-        if (in_array($outil, ['contact-expert-inline', 'appel-expert-inline', 'appel-header-formulaire'], true)) {
+        if (in_array($outil, ['contact-expert-inline', 'appel-expert-inline', 'appel-header-formulaire', 'contact-expert-formulaire'], true)) {
             wp_remote_get(
                 CME_APPS_SCRIPT_LEADS_INLINE_URL . '?payload=' . rawurlencode($payload),
                 ['timeout' => 20, 'blocking' => true, 'sslverify' => false]
@@ -408,7 +411,7 @@ add_action('wp_footer', function () {
   // sessionStorage) survit a la navigation et deduplique vraiment, quelle
   // que soit la voie qui se declenche en premier.
   var FORMULAIRE_DEJA_TRACKE = {};
-  function surSoumissionFormulaire(formId) {
+  function surSoumissionFormulaire(formId, champsCaptures) {
     var cle = String(formId || 'inconnu');
     if (FORMULAIRE_DEJA_TRACKE[cle]) { return; }   // evite un double declenchement dans la MEME page (voie 1 + voie 2)
     FORMULAIRE_DEJA_TRACKE[cle] = true;
@@ -416,9 +419,78 @@ add_action('wp_footer', function () {
       if (sessionStorage.getItem('cme_lead_formulaire_contact_trackee') === '1') { return; }
       sessionStorage.setItem('cme_lead_formulaire_contact_trackee', '1');
     } catch (e) {}
+    var champs = champsCaptures || {};
     dataLayerPush({ event: 'generate_lead', form_id: cle, form_type: 'contact-expert' });
-    journaliser({ tool: 'contact-expert-formulaire', details: JSON.stringify({ form_id: cle }) });
+    journaliser({
+      tool: 'contact-expert-formulaire',
+      prenom: champs.prenom || '',
+      telephone: champs.telephone || '',
+      email: champs.email || '',
+      code_postal: champs.code_postal || '',
+      details: JSON.stringify({ form_id: cle })
+    });
   }
+
+  // AJOUT du 02/11/2026 (demande operateur -- regrouper ces leads avec les 3
+  // outils inline dans le meme onglet Sheets implique d'avoir les memes
+  // champs) : capture nom/telephone/email/code postal depuis le VRAI
+  // formulaire WPForms #472 au moment de la soumission -- jusqu'ici le
+  // tracking ne faisait que detecter QU'une soumission avait eu lieu, sans
+  // jamais lire les valeurs saisies. Capture generique par CLASSE DE CHAMP
+  // WPForms (wpforms-field-phone/-email/-name/-text), pas par un nom/id
+  // d'input (WPForms les genere de maniere generique et positionnelle,
+  // "wpforms[fields][N]", sans rapport avec le type du champ -- seule la
+  // classe du conteneur est un signal fiable, independant de la langue des
+  // libelles). Le champ "code postal" n'a pas de classe WPForms dediee
+  // (pas un type de champ natif) : par elimination, le premier champ texte
+  // simple restant une fois nom/tel/email identifies. HYPOTHESE A CONFIRMER
+  // PAR UN TEST REEL apres deploiement (voir CLAUDE.md) -- ce sandbox n'a
+  // pas d'acces au DOM du formulaire live pour la verifier avant coup.
+  // Capturee au moment du 'submit' natif (capture phase, document), AVANT
+  // que WPForms n'intercepte en AJAX -- c'est le seul instant ou les 2
+  // voies qui restent sur la page d'origine (1 et 2) peuvent encore lire
+  // les valeurs ; la voie 3 (page de confirmation, apres redirection) n'a
+  // plus acces au formulaire d'origine, et repart donc sans ces champs --
+  // degradation sans casse, strictement pas pire qu'avant ce correctif.
+  function capturerChampsFormulaireContact(form) {
+    var champs = { prenom: '', telephone: '', email: '', code_postal: '' };
+    try {
+      var texteRestant = [];
+      var conteneurs = form.querySelectorAll('.wpforms-field');
+      for (var i = 0; i < conteneurs.length; i++) {
+        var c = conteneurs[i];
+        var cls = c.className || '';
+        var champsInput = c.querySelectorAll('input, textarea');
+        if (!champsInput.length) { continue; }
+        if (cls.indexOf('wpforms-field-phone') !== -1) {
+          champs.telephone = (champsInput[0].value || '').trim();
+        } else if (cls.indexOf('wpforms-field-email') !== -1) {
+          champs.email = (champsInput[0].value || '').trim();
+        } else if (cls.indexOf('wpforms-field-name') !== -1) {
+          var morceaux = [];
+          for (var j = 0; j < champsInput.length; j++) {
+            var v = (champsInput[j].value || '').trim();
+            if (v) { morceaux.push(v); }
+          }
+          champs.prenom = morceaux.join(' ');
+        } else if (cls.indexOf('wpforms-field-text') !== -1 || cls.indexOf('wpforms-field-number') !== -1) {
+          var val = (champsInput[0].value || '').trim();
+          if (val) { texteRestant.push(val); }
+        }
+      }
+      if (texteRestant.length) { champs.code_postal = texteRestant[0]; }
+    } catch (e) {}
+    return champs;
+  }
+
+  var DERNIERS_CHAMPS_CAPTURES = {};
+  document.addEventListener('submit', function (evt) {
+    try {
+      var form = evt.target;
+      if (!form || !form.id || form.id.indexOf('wpforms-form-') !== 0) { return; }
+      DERNIERS_CHAMPS_CAPTURES = capturerChampsFormulaireContact(form);
+    } catch (e) {}
+  }, true);
 
   // Voie 1 : evenement jQuery officiel de WPForms sur soumission AJAX reussie
   // (ne se declenche que si la confirmation est un message inline, pas une
@@ -426,7 +498,7 @@ add_action('wp_footer', function () {
   try {
     if (window.jQuery) {
       window.jQuery(document).on('wpformsAjaxSubmitSuccess', function (event, formId) {
-        surSoumissionFormulaire(formId);
+        surSoumissionFormulaire(formId, DERNIERS_CHAMPS_CAPTURES);
       });
     }
   } catch (e) {}
@@ -444,7 +516,7 @@ add_action('wp_footer', function () {
             if (noeud.classList && noeud.classList.contains('wpforms-confirmation-container-full')) {
               var conteneur = noeud.closest ? noeud.closest('[id^="wpforms-"]') : null;
               var id = conteneur ? (conteneur.id || '').replace('wpforms-', '') : 'inconnu';
-              surSoumissionFormulaire(id);
+              surSoumissionFormulaire(id, DERNIERS_CHAMPS_CAPTURES);
             }
           }
         }
