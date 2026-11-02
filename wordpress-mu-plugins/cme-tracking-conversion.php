@@ -441,17 +441,31 @@ add_action('wp_footer', function () {
   // d'input (WPForms les genere de maniere generique et positionnelle,
   // "wpforms[fields][N]", sans rapport avec le type du champ -- seule la
   // classe du conteneur est un signal fiable, independant de la langue des
-  // libelles). Le champ "code postal" n'a pas de classe WPForms dediee
-  // (pas un type de champ natif) : par elimination, le premier champ texte
-  // simple restant une fois nom/tel/email identifies. HYPOTHESE A CONFIRMER
-  // PAR UN TEST REEL apres deploiement (voir CLAUDE.md) -- ce sandbox n'a
-  // pas d'acces au DOM du formulaire live pour la verifier avant coup.
+  // libelles).
   // Capturee au moment du 'submit' natif (capture phase, document), AVANT
   // que WPForms n'intercepte en AJAX -- c'est le seul instant ou les 2
   // voies qui restent sur la page d'origine (1 et 2) peuvent encore lire
   // les valeurs ; la voie 3 (page de confirmation, apres redirection) n'a
   // plus acces au formulaire d'origine, et repart donc sans ces champs --
   // degradation sans casse, strictement pas pire qu'avant ce correctif.
+  //
+  // CORRECTIF du 03/11/2026, suite a un test reel en navigation privee :
+  // le champ "Telephone" du formulaire live n'utilise PAS le type WPForms
+  // dedie (pas de classe wpforms-field-phone) -- c'est un champ texte
+  // simple, comme le code postal. L'ancienne heuristique "par elimination,
+  // le 1er champ texte restant = code_postal" prenait donc le telephone
+  // (place avant dans le formulaire) et ecrasait le vrai code postal, qui
+  // n'etait jamais capture. Remplace par une detection PAR LE CONTENU de
+  // chaque champ texte restant plutot que par sa position : un telephone
+  // francais a entre 9 et 14 chiffres, un code postal en a exactement 5 --
+  // aucune ambiguite pratique entre les deux formats.
+  function estTelephoneProbable(valeur) {
+    var chiffres = valeur.replace(/\D/g, '');
+    return chiffres.length >= 9 && chiffres.length <= 14;
+  }
+  function estCodePostalProbable(valeur) {
+    return /^\d{5}$/.test(valeur.trim());
+  }
   function capturerChampsFormulaireContact(form) {
     var champs = { prenom: '', telephone: '', email: '', code_postal: '' };
     try {
@@ -478,7 +492,27 @@ add_action('wp_footer', function () {
           if (val) { texteRestant.push(val); }
         }
       }
-      if (texteRestant.length) { champs.code_postal = texteRestant[0]; }
+      // Classe par contenu les champs texte restants (telephone mal type +
+      // code postal, typiquement). Priorite au telephone s'il n'a pas deja
+      // ete trouve via la classe dediee ci-dessus.
+      for (var k = 0; k < texteRestant.length; k++) {
+        var valeur = texteRestant[k];
+        if (!champs.telephone && estTelephoneProbable(valeur)) {
+          champs.telephone = valeur;
+        } else if (!champs.code_postal && estCodePostalProbable(valeur)) {
+          champs.code_postal = valeur;
+        }
+      }
+      // Filet de securite : un champ texte restant qui ne correspond a
+      // aucun des deux formats attendus est tout de meme conserve plutot
+      // que perdu silencieusement (ex. code postal non-francais, format
+      // inattendu) -- va dans code_postal s'il reste vide, jamais dans
+      // telephone pour ne pas re-introduire l'ecrasement corrige ici.
+      if (!champs.code_postal) {
+        for (var m = 0; m < texteRestant.length; m++) {
+          if (texteRestant[m] !== champs.telephone) { champs.code_postal = texteRestant[m]; break; }
+        }
+      }
     } catch (e) {}
     return champs;
   }
