@@ -77,22 +77,26 @@ def main():
     for url in URLS_404:
         df = client_bq.query(f"""
             SELECT MIN(date) AS premiere_date, MAX(date) AS derniere_date,
-                   SUM(clics) AS clics_total, SUM(impressions) AS impressions_total,
-                   COUNT(DISTINCT query) AS nb_requetes_distinctes
+                   SUM(IFNULL(clics, 0)) AS clics_total,
+                   SUM(IFNULL(impressions, 0)) AS impressions_total,
+                   COUNT(DISTINCT query) AS nb_requetes_distinctes,
+                   COUNT(*) AS nb_lignes
             FROM `{PROJECT_ID}.01_raw.gsc_queries`
             WHERE page = '{url}'
         """).to_dataframe()
         row = df.iloc[0]
         print(f"\n### {url}")
-        if row['premiere_date'] is None:
+        if row['premiere_date'] is None or int(row['nb_lignes']) == 0:
             print("    GSC : aucune ligne -- jamais vu par Google Search Console")
         else:
             print(f"    GSC : vu du {row['premiere_date']} au {row['derniere_date']} | "
                   f"clics={int(row['clics_total'])} | impressions={int(row['impressions_total'])} | "
-                  f"{int(row['nb_requetes_distinctes'])} requete(s) distincte(s)")
+                  f"{int(row['nb_requetes_distinctes'])} requete(s) distincte(s) | "
+                  f"{int(row['nb_lignes'])} ligne(s)")
             # top requetes
             df_q = client_bq.query(f"""
-                SELECT query, SUM(clics) AS clics, SUM(impressions) AS impressions
+                SELECT query, SUM(IFNULL(clics, 0)) AS clics,
+                       SUM(IFNULL(impressions, 0)) AS impressions
                 FROM `{PROJECT_ID}.01_raw.gsc_queries`
                 WHERE page = '{url}'
                 GROUP BY query ORDER BY impressions DESC LIMIT 5
