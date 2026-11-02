@@ -1,0 +1,107 @@
+# Execution du 2026-11-02T19:21:15Z
+# Script    : scripts-maintenance/diagnostiquer_404_audit_0211_suite.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+1) TRACE DANS GOOGLE SEARCH CONSOLE (01_raw.gsc_queries)
+====================================================================================================
+
+### https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+    GSC : aucune ligne -- jamais vu par Google Search Console
+
+### https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+    GSC : aucune ligne -- jamais vu par Google Search Console
+
+### https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-electricite-causes/
+    GSC : aucune ligne -- jamais vu par Google Search Console
+
+### https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+    GSC : aucune ligne -- jamais vu par Google Search Console
+
+### https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+    GSC : aucune ligne -- jamais vu par Google Search Console
+
+### https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/prix-chauffe-eau-solaire-2026-cout-installation/
+    GSC : aucune ligne -- jamais vu par Google Search Console
+
+### https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/
+    GSC : aucune ligne -- jamais vu par Google Search Console
+
+====================================================================================================
+2) PRESENCE DANS LE SITEMAP XML LIVE
+====================================================================================================
+sitemap_index.xml -> HTTP 200
+7 sous-sitemap(s) trouve(s)
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-electricite-causes/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/prix-chauffe-eau-solaire-2026-cout-installation/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/
+
+====================================================================================================
+3) RECHERCHE D'UNE PAGE DE REMPLACEMENT VIVANTE (par mot-cle WP)
+====================================================================================================
+
+### https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+    Recherche WP : 'systeme solaire combine aides'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-economies/ -- 'Système solaire combiné vs chaudière gaz : ROI et payback'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-economies-systeme-solaire-combine/ -- 'Système solaire combiné : rentabilité réelle et économies'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031/ -- 'Panneaux solaires 400W : consommation électrique réelle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/ -- 'Chauffe-eau solaire vs gaz : analyse des coûts réels'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/prix-installation-systeme-solaire-combine-2026/ -- 'Système solaire combiné : budget installation région'
+
+### https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+    Recherche WP : 'batterie solaire aides'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031/ -- 'Panneaux solaires 400W : consommation électrique réelle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-dimensionnement-prix-roi/ -- 'Kit solaire 9kW : étude de cas réelle &#8211; consommation type'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-prix-installation/ -- 'Kit solaire 9kW : guide d&rsquo;achat par marque et modèle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-vs-panneau-seul-roi-2026/ -- 'Panneau solaire seul ou avec batterie : rentabilité réelle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/batterie-solaire-5-kwh-prix-devis-rentabilite/ -- 'Batterie solaire 5 kWh : guide complet d&rsquo;achat et ROI'
+
+### https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-electricite-causes/
+    Recherche WP : 'augmentation electricite'
+        candidat : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-reductions-facture-electricite/ -- 'Réduction facture électricité : stratégies et dispositifs'
+        candidat : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/pic-consommation-electrique-facture-explose/ -- 'Pics de consommation électrique : comment éviter'
+        candidat : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/droits-obligations-contrat-electricite/ -- 'Droits du consommateur électricité : recours et protection'
+        candidat : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/duree-conditions-legales-contrat-electricite/ -- 'Durée légale d&rsquo;un contrat électricité :'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031/ -- 'Panneaux solaires 400W : consommation électrique réelle'
+
+### https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+    Recherche WP : 'panneaux solaires maprimerenov'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/ -- 'Panneaux solaires 400W : calculateur ROI personnalisé'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031/ -- 'Panneaux solaires 400W : consommation électrique réelle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-dimensionnement-prix-roi/ -- 'Kit solaire 9kW : étude de cas réelle &#8211; consommation type'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-prix-installation/ -- 'Kit solaire 9kW : guide d&rsquo;achat par marque et modèle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-cout-reel/ -- 'Chauffe-eau solaire vs électrique : rentabilité année'
+
+### https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+    Recherche WP : 'chauffe-eau solaire aides'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-economies/ -- 'Système solaire combiné vs chaudière gaz : ROI et payback'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-dimensionnement-prix-roi/ -- 'Kit solaire 9kW : étude de cas réelle &#8211; consommation type'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-prix-installation/ -- 'Kit solaire 9kW : guide d&rsquo;achat par marque et modèle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/ -- 'Chauffe-eau solaire vs gaz : analyse des coûts réels'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-cout-reel/ -- 'Chauffe-eau solaire vs électrique : rentabilité année'
+
+### https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/prix-chauffe-eau-solaire-2026-cout-installation/
+    Recherche WP : 'chauffe-eau solaire prix'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chaudiere-gaz-economies/ -- 'Système solaire combiné vs chaudière gaz : ROI et payback'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-dimensionnement-prix-roi/ -- 'Kit solaire 9kW : étude de cas réelle &#8211; consommation type'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-prix-installation/ -- 'Kit solaire 9kW : guide d&rsquo;achat par marque et modèle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/ -- 'Chauffe-eau solaire vs gaz : analyse des coûts réels'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-cout-reel/ -- 'Chauffe-eau solaire vs électrique : rentabilité année'
+
+### https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/
+    Recherche WP : 'panneaux solaires prix'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031-2/ -- 'Panneaux solaires 400W : calculateur ROI personnalisé'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-400w-prix-rendement-roi-1031/ -- 'Panneaux solaires 400W : consommation électrique réelle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-dimensionnement-prix-roi/ -- 'Kit solaire 9kW : étude de cas réelle &#8211; consommation type'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-9kw-prix-installation/ -- 'Kit solaire 9kW : guide d&rsquo;achat par marque et modèle'
+        candidat : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-cout-reel/ -- 'Chauffe-eau solaire vs électrique : rentabilité année'
+
+====================================================================================================
