@@ -1,0 +1,51 @@
+# Execution du 2026-11-02T22:06:35Z
+# Script    : scripts-maintenance/verifier_leads_formulaire_contact_expert.py
+# Arguments : --jours=60
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Lignes tool='contact-expert-formulaire' (leads_convertis, 60 derniers jours)...
+
+✅ 4 ligne(s) trouvee(s).
+
+====================================================================================================
+COMPLETUDE DES CHAMPS (nb de lignes NON vides / total)
+====================================================================================================
+  prenom          : 0/4 non vide(s)
+  nom             : 0/4 non vide(s)
+  email           : 0/4 non vide(s)
+  telephone       : 0/4 non vide(s)
+  code_postal     : 0/4 non vide(s)
+
+====================================================================================================
+ECHANTILLON (les 4 plus recentes lignes)
+====================================================================================================
+
+  2026-11-02 13:08:22.629000+00:00
+    prenom=''  telephone=''  email=''  code_postal=''
+    source_page='https://www.comprendre-mon-energie.fr/contactez-un-expert/'
+    details='"{\\"form_id\\":\\"[object Object]\\"}"'
+
+  2026-11-02 13:08:23.317000+00:00
+    prenom=''  telephone=''  email=''  code_postal=''
+    source_page='https://www.comprendre-mon-energie.fr/demande-confirmee/'
+    details='"{\\"form_id\\":\\"472-page-confirmation\\"}"'
+
+  2026-11-02 13:31:32.173000+00:00
+    prenom=''  telephone=''  email=''  code_postal=''
+    source_page='https://www.comprendre-mon-energie.fr/contactez-un-expert/'
+    details='"{\\"form_id\\":\\"[object Object]\\"}"'
+
+  2026-11-02 13:31:32.975000+00:00
+    prenom=''  telephone=''  email=''  code_postal=''
+    source_page='https://www.comprendre-mon-energie.fr/demande-confirmee/'
+    details='"{\\"form_id\\":\\"472-page-confirmation\\"}"'
+
+====================================================================================================
+FENETRE DE DATES
+====================================================================================================
+  Premiere : 2026-11-02 13:08:22.629000+00:00
+  Derniere : 2026-11-02 13:31:32.975000+00:00
+  Total    : 4 ligne(s) sur 60 jours
