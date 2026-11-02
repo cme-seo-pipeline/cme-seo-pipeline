@@ -1,0 +1,94 @@
+# Execution du 2026-11-02T21:15:10Z
+# Script    : scripts-maintenance/verifier_api_rankmath_redirections.py
+# Arguments : 
+
+====================================================================================================
+1) Decouverte REST (/wp-json/) -- namespaces enregistres par les plugins actifs
+====================================================================================================
+31 namespace(s) trouve(s).
+Namespaces lies SEO/redirections : ['rankmath/v1', 'rankmath/v1/setupWizard', 'rankmath/v1/in', 'rankmath/v1/ai-visibility', 'rankmath/v1/ca', 'rankmath/v1/an', 'rankmath/v1/status']
+
+====================================================================================================
+2) Routes exposees par le(s) namespace(s) RankMath
+====================================================================================================
+    /rankmath/v1
+    /rankmath/v1/ai-visibility
+    /rankmath/v1/ai-visibility/brands
+    /rankmath/v1/ai-visibility/brands/(?P<id>[a-zA-Z0-9\-]+)
+    /rankmath/v1/ai-visibility/brands/(?P<id>[a-zA-Z0-9\-]+)/generate-queries
+    /rankmath/v1/ai-visibility/brands/(?P<id>[a-zA-Z0-9\-]+)/insights
+    /rankmath/v1/ai-visibility/brands/(?P<id>[a-zA-Z0-9\-]+)/queries
+    /rankmath/v1/ai-visibility/brands/(?P<id>[a-zA-Z0-9\-]+)/queries/(?P<qid>[a-zA-Z0-9\-]+)
+    /rankmath/v1/ai-visibility/checkout-url
+    /rankmath/v1/ai-visibility/overview
+    /rankmath/v1/ai-visibility/trial/activate
+    /rankmath/v1/an
+    /rankmath/v1/an/analyticsSummary
+    /rankmath/v1/an/dashboard
+    /rankmath/v1/an/inspectionResults
+    /rankmath/v1/an/keywordsOverview
+    /rankmath/v1/an/keywordsRows
+    /rankmath/v1/an/keywordsSummary
+    /rankmath/v1/an/post/(?P<id>\d+)
+    /rankmath/v1/an/postsRowsByObjects
+    /rankmath/v1/an/postsSummary
+    /rankmath/v1/an/removeFrontendStats
+    /rankmath/v1/an/userPreferences
+    /rankmath/v1/ca
+    /rankmath/v1/ca/createPost
+    /rankmath/v1/ca/deleteOutput
+    /rankmath/v1/ca/generateAlt
+    /rankmath/v1/ca/getCredits
+    /rankmath/v1/ca/pingContentAI
+    /rankmath/v1/ca/researchKeyword
+    /rankmath/v1/ca/saveOutput
+    /rankmath/v1/ca/savePrompts
+    /rankmath/v1/ca/updateCredits
+    /rankmath/v1/ca/updatePrompt
+    /rankmath/v1/ca/updateRecentPrompt
+    /rankmath/v1/dashboardWidget
+    /rankmath/v1/disconnectSite
+    /rankmath/v1/getFeaturedImageId
+    /rankmath/v1/in
+    /rankmath/v1/in/clearLog
+    /rankmath/v1/in/getLog
+    /rankmath/v1/in/resetKey
+    /rankmath/v1/in/submitUrls
+    /rankmath/v1/links/links
+    /rankmath/v1/links/links-stats
+    /rankmath/v1/links/posts
+    /rankmath/v1/links/posts-stats
+    /rankmath/v1/saveModule
+    /rankmath/v1/searchPage
+    /rankmath/v1/setupWizard
+    /rankmath/v1/setupWizard/getStepData
+    /rankmath/v1/setupWizard/updateStepData
+    /rankmath/v1/setupWizard/updateTrackingOptin
+    /rankmath/v1/status
+    /rankmath/v1/status/exportSettings
+    /rankmath/v1/status/getViewData
+    /rankmath/v1/status/importSettings
+    /rankmath/v1/status/runBackup
+    /rankmath/v1/status/updateViewData
+    /rankmath/v1/toolsAction
+    /rankmath/v1/updateMeta
+    /rankmath/v1/updateMetaBulk
+    /rankmath/v1/updateMode
+    /rankmath/v1/updateRedirection
+    /rankmath/v1/updateSchemas
+    /rankmath/v1/updateSeoScore
+    /rankmath/v1/updateSettings
+
+Routes mentionnant 'redirect' : ['/rankmath/v1/updateRedirection']
+
+====================================================================================================
+3) Test de lecture authentifie sur la 1ere route de redirections trouvee (GET uniquement)
+====================================================================================================
+GET /rankmath/v1/updateRedirection -> HTTP 404
+<!DOCTYPE html><html lang="fr-FR" prefix="og: https://ogp.me/ns#"><head><script data-no-optimize="1">var litespeed_docref=sessionStorage.getItem("litespeed_docref");litespeed_docref&&(Object.defineProperty(document,"referrer",{get:function(){return litespeed_docref}}),sessionStorage.removeItem("litespeed_docref"));</script><meta charset="UTF-8">
+<script data-cfasync="false" data-pagespeed-no-defer>var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || [];
+	(function(){dataLayer.push(arguments);})('set', 'developer_id.dNGJiYT', true);</script><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Not Found - Comprendre Mon Énergie</title><meta name="robots" content="follow, noindex"/><meta property="og:locale" content="fr_FR" /><meta property="og:type" content="article" /><meta property="og:title" content="Page Not Found - Comprendre Mon Énergie" /><meta property="og:site_name" content="Comprendre Mon Énergie" /><meta property="og:image" content="https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/03/logo-officiel-comprendre-mon-energie-observatoire.png" /><meta property="og:image:secure_url" content="https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/03/logo-officiel-comprendre-mon-energie-observatoire.png" /><meta property="og:image:width" content="500" /><meta property="og:image:height" content="500" /><meta property="og:image:alt" content="Logo Comprendre Mon Énergie : expertise indépendante pour maîtriser vos 
+
+====================================================================================================
