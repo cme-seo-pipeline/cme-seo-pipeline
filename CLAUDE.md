@@ -2067,3 +2067,44 @@ le site avant publication (quelques secondes, 1-5 liens par article en
 pratique) — cout negligeable par rapport a l'appel au modele lui-meme, et
 sans commune mesure avec le risque de publier un 404 en masse au volume
 anticipe par l'operateur.
+
+## 32 liens morts (pas 21) + redirections 301 : pas automatisable via RankMath (02/11/2026)
+
+**Recomptage precis** : `fix_liens_morts_maillage_0211.py` (dry-run, BeautifulSoup,
+compte chaque `<a href>` reellement present plutot qu'une seule fois par
+article) trouve **32 liens morts** sur les 18 articles -- plusieurs
+articles repetent le meme lien mort a 2-3 endroits du texte (le compte de
+21 du diagnostic initial comptait les paires (article, URL 404) distinctes,
+pas les occurrences). Script pret, teste en dry-run via le pont GitHub
+Actions, en attente du feu vert operateur pour `--apply`.
+
+**RankMath — API REST verifiee par lecture de sa source PUBLIQUE**
+(wordpress.org, pas le site live) avant toute tentative reelle :
+RankMath EST installe et actif (confirme via `/wp-json/`, namespace
+`rankmath/v1`), mais sa seule route REST liee aux redirections
+(`/rankmath/v1/updateRedirection`, POST) est **celle du metabox par
+article** (`objectID`/`objectType` requis, `$metabox->save_advanced_meta()`)
+-- elle attache un redirect a un objet WordPress EXISTANT, pas de source
+arbitraire vers destination arbitraire. **Inutilisable pour nos 7 URLs**,
+qui n'ont justement aucun post WordPress correspondant.
+
+Le vrai gestionnaire de redirections (Admin → RankMath → Redirections →
+Ajouter, source arbitraire → destination arbitraire) n'expose aucune route
+REST ni action ajax dans `class-admin.php` -- protege par
+`check_ajax_referer('redirection_list_action', 'security')`, un nonce lie
+a une session admin cookie, **que l'authentification par Application
+Password (utilisee par ce pipeline) ne peut pas fournir**. Confirme par
+lecture directe du code source du plugin
+(`inspecter_source_rankmath_redirections*.py`,
+`inspecter_rankmath_redirections_admin_ajax.py`, pont GitHub Actions,
+telechargement de la source publique wordpress.org -- aucun test en
+aveugle sur le site live).
+
+**Conclusion** : la creation des 7 redirections 301 n'est pas automatisable
+depuis ce sandbox (ni par ce pipeline, ni par Claude Code) avec les moyens
+d'authentification actuels. Reste une action manuelle operateur : 7 entrees
+dans wp-admin → RankMath → Redirections → Ajouter (source = chemin relatif
+de chacune des 7 URLs 404, destination = la cible proposee, meme table que
+le diagnostic initial) -- quelques minutes, aucun developpement possible
+pour reduire ca davantage sans un acces navigateur authentifie (hors de
+portee de ce sandbox aujourd'hui).
