@@ -1946,3 +1946,56 @@ GSC" plus haut) : aucun mecanisme de creation de redirection 301 trouve
 dans ce repo -- a clarifier avec l'operateur (RankMath si son module
 redirections est actif, plugin "Redirection", ou .htaccess manuel) avant
 toute execution. Aucune action prise, proposition uniquement.
+
+**CORRECTIF A LA CONCLUSION CI-DESSUS (meme jour, quelques heures plus
+tard)** : l'operateur a explicitement demande de revérifier l'hypothese
+"maillage interne genere par nos propres pipelines", jugee *a priori* peu
+probable dans le diagnostic initial. **L'hypothese etait juste** -- le
+diagnostic initial (`diagnostiquer_404_audit_0211_liens.py`) n'avait
+verifie qu'un echantillon choisi a la main (7 pages d'archive + 13
+articles "candidats" trouves par recherche de mots-cles), pas l'integralite
+du corpus. `scripts-maintenance/verifier_maillage_interne_404_0211.py`
+(lecture seule, pont GitHub Actions, scanne le contenu complet des **973**
+articles publies, pas un echantillon) trouve **21 liens internes reels**
+vers les 7 URLs 404, repartis sur **13 articles vivants distincts** :
+
+| URL 404 | Nb liens trouves | Articles sources (extrait) |
+|---|---|---|
+| aides-systeme-solaire-combine-2026 | 3 | cout-installation-systeme-solaire-combine, installation-systeme-solaire-combine-etapes-couts, systeme-solaire-combine-temps-retour-investissement |
+| aides-batterie-solaire-2026 | 5 | batterie-solaire-prix-installation-roi, batterie-solaire-vs-groupe-electrogene-1028(-2), quelle-capacite-batterie-solaire-choisir-maison, prix-batterie-solaire-installation-cout |
+| augmentation-electricite-causes | 1 | comprendre-facture-electricite-decryptage |
+| maprimerenov-panneaux-solaires-2026 | 3 | panneaux-solaires-monocristallins-vs-polycristallins-1028, rentabilite-panneaux-solaires-temps-retour-investissement, combien-panneaux-solaires-maison-budget |
+| aides-chauffe-eau-solaire-2026 | 5 | chauffe-eau-solaire-vs-electrique-prix-economies, installation-chauffe-eau-solaire-etapes-tarifs/-couts, chauffe-eau-solaire-vs-electrique-economique, chauffe-eau-solaire-rentabilite-economies-par-an |
+| prix-chauffe-eau-solaire-2026-cout-installation | 1 | chauffe-eau-solaire-rentabilite-economies-par-an |
+| prix-panneaux-solaires-2026-tarifs | 3 | panneaux-solaires-monocristallins-vs-polycristallins-1028-2, rentabilite-panneaux-solaires-temps-retour-investissement, combien-panneaux-solaires-maison-budget |
+
+**Correction de la conclusion precedente** : ce ne sont donc PAS (ou pas
+seulement) des backlinks externes perimes -- ce sont de VRAIS liens de
+maillage interne, generes par ce pipeline a la publication d'autres
+articles, qui pointent vers des slugs qui n'ont jamais existe dans
+`historique_publications` ni dans aucun statut WordPress (voir diagnostic
+initial). **Mecanisme exact non encore confirme avec certitude** -- deux
+hypotheses, non departagees depuis ce sandbox :
+1. `recuperer_articles_meme_silo()` (repli maillage, interroge directement
+   l'API WordPress live par categorie, PAS `historique_publications`) a pu
+   retourner ces posts a un moment ou ils existaient reellement sur WP
+   (bake le lien en dur dans le contenu de l'article en cours de
+   publication), posts depuis supprimes **directement en WordPress**, hors
+   de tout script de ce repo -- cela expliquerait l'absence totale de
+   trace dans `historique_publications` (si ces posts n'ont jamais ete
+   publies via le chemin standard `publier_article()`, ex. le mecanisme
+   "Solaire transac" distinct et ponctuel deja documente, qui touche
+   exactement le meme silo que 6 des 7 cas).
+2. Renommage manuel du slug de ces articles en wp-admin par l'operateur
+   apres l'insertion du lien (le garde-fou du 31/10 sur le slug ne couvre
+   que le CODE de ce repo, pas une action manuelle humaine en wp-admin).
+
+**Action corrective recommandee, distincte des 301** : ces 21 liens, dans
+13 articles **actuellement en ligne**, sont un probleme UX actif (pas
+seulement un vieux backlink externe) -- un vrai visiteur qui clique "pour
+aller plus loin" sur ces 13 pages tombe sur un 404 aujourd'hui. A corriger
+en remplaçant chacun des 21 liens par le lien de redirection propose
+correspondant (meme tableau que ci-dessus), via un script du meme type que
+`fix_cta_liens_retroactif.py`/`nettoyer_anciens_cta_statiques.py`
+(BeautifulSoup, dry-run par defaut) -- pas encore ecrit, propose a
+l'operateur, en attente de son feu vert.
