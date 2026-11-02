@@ -1,0 +1,29 @@
+# Execution du 2026-11-02T22:43:39Z
+# Script    : scripts-maintenance/diagnostiquer_test_live_0211_soir.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Toutes les lignes leads_convertis des 2 dernieres heures (tous tools)...
+
+✅ 2 ligne(s) trouvee(s) sur les 2 dernieres heures :
+
+==============================================================================================================
+
+  2026-11-02 22:40:23.791000+00:00  tool='contact-expert-formulaire'
+    prenom=''  telephone=''  email=''  code_postal=''
+    source_page='https://www.comprendre-mon-energie.fr/demande-confirmee/'
+    details='"{\\"form_id\\":\\"472-page-confirmation\\"}"'
+
+  2026-11-02 22:40:22.487000+00:00  tool='contact-expert-formulaire'
+    prenom=''  telephone=''  email=''  code_postal=''
+    source_page='https://www.comprendre-mon-energie.fr/contactez-un-expert/'
+    details='"{\\"form_id\\":\\"[object Object]\\"}"'
+
+==============================================================================================================
+Recherche specifique du telephone de test 0695410020 / 695410020...
+⚠️ Aucune ligne ne contient ce telephone -- soit le test n'a pas atteint BigQuery,
+   soit le telephone n'a pas ete capture (voir tool='contact-expert-formulaire' ci-dessus,
+   le champ pourrait rester vide si la capture par classe WPForms n'a pas fonctionne).
