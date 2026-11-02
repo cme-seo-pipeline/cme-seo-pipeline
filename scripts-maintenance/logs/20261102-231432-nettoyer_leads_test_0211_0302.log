@@ -1,0 +1,25 @@
+# Execution du 2026-11-02T23:14:32Z
+# Script    : scripts-maintenance/nettoyer_leads_test_0211_0302.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Verification des 9 ligne(s) ciblee(s) dans leads_convertis...
+
+✅ 9 ligne(s) trouvee(s) sur 9 timestamp(s) cible(s) :
+
+====================================================================================================
+  2026-11-02 22:40:22.487000+00:00  tool='contact-expert-formulaire'  prenom=''  telephone=''  code_postal=''
+  2026-11-02 22:40:23.791000+00:00  tool='contact-expert-formulaire'  prenom=''  telephone=''  code_postal=''
+  2026-11-02 22:58:44.531000+00:00  tool='contact-expert-formulaire'  prenom=''  telephone=''  code_postal=''
+  2026-11-02 22:58:45.534000+00:00  tool='contact-expert-formulaire'  prenom=''  telephone=''  code_postal=''
+  2026-11-02 23:01:57.678000+00:00  tool='contact-expert-formulaire'  prenom='Test Diagnostic'  telephone=''  code_postal='0612345678'
+  2026-11-02 23:07:57.623000+00:00  tool='contact-expert-formulaire'  prenom='test test'  telephone='0695410020'  code_postal='75000'
+  2026-11-02 23:09:16.154887+00:00  tool='contact-expert-inline'  prenom='test'  telephone='0695410020'  code_postal=''
+  2026-11-02 23:09:28.935832+00:00  tool='appel-expert-inline'  prenom='test'  telephone='0695410020'  code_postal=''
+  2026-11-02 23:09:49.762325+00:00  tool='appel-header-formulaire'  prenom='test'  telephone='0695410020'  code_postal=''
+====================================================================================================
+
+(dry-run -- relancer avec --apply --confirmation=NETTOYAGE-TESTS-0302 pour supprimer reellement ces lignes)
