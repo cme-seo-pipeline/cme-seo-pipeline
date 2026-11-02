@@ -1796,3 +1796,68 @@ redirections, mais non confirme depuis ce sandbox (pas d'acces au site
 live). Sans objet pour l'instant puisqu'aucune fusion n'est prevue, mais a
 clarifier avec l'operateur si une fusion redevient d'actualite apres la
 prochaine session de scraping.
+
+## Trafic Chine signale dans Clarity — diagnostic (02/11/2026)
+
+Demande operateur : sessions quotidiennes en provenance de Chine visibles
+dans Microsoft Clarity, "sans parcours reel" (observation faite par
+l'operateur dans le tableau de bord Clarity, replay de session -- pas
+accessible depuis ce sandbox, voir plus haut "les vraies heatmaps...
+existent uniquement dans le tableau de bord Clarity"). But : comprendre de
+quoi il s'agit, pas encore d'action demandee.
+
+**Tentative 1 — API GA4 Data directement (nouveau, pas de precedent dans
+le repo)** : `scripts-maintenance/diagnostiquer_trafic_chine_ga4.py` --
+`01_raw.ga4_pages` (table synchronisee habituelle) n'a pas de dimension
+pays (seulement pagePath + date, voir `apps-scripts/cme-ga4-to-bq.gs`),
+donc appel direct a `analyticsdata.googleapis.com` avec le meme compte de
+service que le pipeline (`GOOGLE_APPLICATION_CREDENTIALS`, scope
+`analytics.readonly`). **Echec en 403 PERMISSION_DENIED sur les 5
+rapports** -- ce compte de service (`GCP_SA_KEY_CME`) n'a pas acces a la
+propriete GA4 528487832 (contrairement au compte `cme-apps-script@...`
+utilise par Apps Script, qui lui y a acces -- ce sont donc deux comptes
+de service distincts, ou le meme compte avec des roles IAM differents
+selon le produit Google). Si une mesure GA4 granulaire par pays est
+necessaire a l'avenir, il faudra soit faire autoriser `GCP_SA_KEY_CME` en
+Lecteur sur la propriete GA4 (Admin GA4 -> Gestion des acces), soit
+ajouter la dimension pays a `cme-ga4-to-bq.gs` (action operateur,
+script.google.com).
+
+**Tentative 2 — donnees Clarity deja synchronisees (repli qui a
+fonctionne)** : `scripts-maintenance/diagnostiquer_trafic_chine_clarity.py`
+-- lecture de `04_pipeline_seo.clarity_insights_quotidien` (metrique
+`Country`, 14 jours). **Confirme un vrai signal, mais de faible volume** :
+environ 1 session Chine par jour (0 a 3 selon le jour, present 10 jours
+sur 14), contre 50-180 sessions France/jour et des pics ponctuels
+Allemagne (jusqu'a 80/jour, cause non investiguee ici, hors perimetre de
+la demande). **Pas de panique justifiee par le volume seul** -- 1 session/
+jour est un bruit de fond tres courant sur n'importe quel site public
+(scanners/scrapers automatiques), pas le signe d'une attaque ciblee ou
+d'une volumetrie anormale. Ce qui rend ce cas notable n'est pas le volume
+mais la **regularite** (quasi quotidien, contrairement a des pays comme le
+Maroc/la Belgique dont la presence s'explique par le lectorat francophone)
+combinee a l'observation directe de l'operateur (sessions sans parcours
+reel dans le replay Clarity) -- cohérent avec un scraper/scanner automatise
+plutot qu'un vrai visiteur curieux, mais **non confirme avec certitude**
+depuis ce sandbox : l'API Clarity exportee ne croise pas pays x engagement
+(EngagementTime/ScrollDepth/RageClickCount sont des agregats globaux du
+site, pas filtrables par pays), donc impossible de prouver "0 engagement
+specifiquement pour la Chine" avec les donnees actuellement accessibles
+par script -- seule l'observation visuelle de l'operateur dans Clarity
+(hors de portee de ce sandbox) le confirme directement.
+
+**Aucune protection/durcissement securite (plugin pare-feu, limitation de
+requetes, desactivation de l'enumeration d'utilisateurs REST, etc.) trouve
+dans ce repo** -- grep exhaustif sans resultat (`wordfence`, `sucuri`,
+`xmlrpc`, `fail2ban`, etc.). Ca ne prouve pas l'absence cote wp-admin (pas
+d'acces live depuis ce sandbox), seulement qu'aucun travail de ce type n'a
+ete documente/verse dans le repo jusqu'ici.
+
+**Aucune action prise** -- diagnostic uniquement, a la demande explicite
+de l'operateur ("je veux juste savoir de quoi il s'agit"). Si une
+mitigation est demandee a l'avenir (blocage geographique, regles de
+pare-feu), rappeler que bloquer du trafic Chine n'a normalement aucun
+impact SEO (Googlebot ne crawle pas depuis des plages IP chinoises), mais
+que ce serait une action cote serveur/hebergement (cPanel ou plugin
+securite), hors de portee d'execution directe depuis ce sandbox -- comme
+pour les autres actions serveur de ce projet.
