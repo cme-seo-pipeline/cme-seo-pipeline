@@ -1,0 +1,65 @@
+# Execution du 2026-11-02T19:16:26Z
+# Script    : scripts-maintenance/diagnostiquer_404_audit_0211.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+
+### https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/aides-systeme-solaire-combine-2026/
+    slug = 'aides-systeme-solaire-combine-2026'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne trouvee pour ce slug
+    Recherche directe par slug WP : aucun post (publie ou non) avec ce slug exact
+
+### https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/aides-batterie-solaire-2026/
+    slug = 'aides-batterie-solaire-2026'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne trouvee pour ce slug
+    Recherche directe par slug WP : aucun post (publie ou non) avec ce slug exact
+
+### https://www.comprendre-mon-energie.fr/electricite/facture-electricite/augmentation-electricite-causes/
+    slug = 'augmentation-electricite-causes'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne trouvee pour ce slug
+    Recherche directe par slug WP : aucun post (publie ou non) avec ce slug exact
+
+### https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/maprimerenov-panneaux-solaires-2026/
+    slug = 'maprimerenov-panneaux-solaires-2026'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne trouvee pour ce slug
+    Recherche directe par slug WP : aucun post (publie ou non) avec ce slug exact
+
+### https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+    slug = 'aides-chauffe-eau-solaire-2026'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne trouvee pour ce slug
+    Recherche directe par slug WP : aucun post (publie ou non) avec ce slug exact
+
+### https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/prix-chauffe-eau-solaire-2026-cout-installation/
+    slug = 'prix-chauffe-eau-solaire-2026-cout-installation'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne trouvee pour ce slug
+    Recherche directe par slug WP : aucun post (publie ou non) avec ce slug exact
+
+### https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/prix-panneaux-solaires-2026-tarifs/
+    slug = 'prix-panneaux-solaires-2026-tarifs'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne trouvee pour ce slug
+    Recherche directe par slug WP : aucun post (publie ou non) avec ce slug exact
+
+====================================================================================================
