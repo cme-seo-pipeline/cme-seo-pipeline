@@ -2137,3 +2137,100 @@ de laisser un 404 partir en production).
 Chantier entierement clos : root cause identifiee et corrigee de maniere
 structurelle, contenu existant assaini, redirections posees cote
 operateur.
+
+## Leads du vrai formulaire de contact — double comptage + regroupement Sheets (02/11/2026)
+
+Demande operateur : "on verifie les leads enregistres sur le formulaire
+'contactez-un-expert' et on regroupe le tout sur le meme fichier sheets,
+la meme feuille d'inline formulaire et bouton headers."
+
+**Verification** (`scripts-maintenance/verifier_leads_formulaire_contact_expert.py`,
+lecture seule, pont GitHub Actions) sur `leads_convertis`,
+`tool='contact-expert-formulaire'` (le vrai formulaire WPForms #472 sur
+`/contactez-un-expert/`, tracking mis en place le 19/10, voir "Tracking
+de conversion" plus haut) : **4 lignes sur 60 jours, toutes du jour meme**,
+groupees en 2 paires a ~1 seconde d'intervalle — **0/4 avec un champ
+prenom/nom/email/telephone/code_postal non vide**.
+
+**Deux problemes distincts confirmes, pas un seul** :
+
+1. **Double comptage reel** (bug) : chaque soumission reelle produisait 2
+   lignes, pas 1. L'hypothese du docblock d'origine ("voie 1/2 ne se
+   declenchent que pour une confirmation inline, pas une redirection")
+   etait fausse — l'evenement jQuery `wpformsAjaxSubmitSuccess` (voie 1)
+   se declenche en realite AUSSI pour un formulaire qui redirige vers
+   `/demande-confirmee/` (avec un `formId` mal forme, `"[object Object]"`),
+   juste AVANT que le navigateur n'effectue la redirection — la garde en
+   memoire (`FORMULAIRE_DEJA_TRACKE`) ne pouvait pas l'empecher puisque
+   voie 1 (page d'origine) et voie 3 (page de confirmation) sont deux
+   chargements de page distincts, donc deux contextes JS distincts, la
+   variable memoire etant reinitialisee entre les deux. **Corrige**
+   (commit `98dca1c`) par une garde PARTAGEE en `sessionStorage` (survit a
+   la navigation), deplacee dans `surSoumissionFormulaire()` — quelle que
+   soit la voie qui se declenche en premier, la seconde est desormais
+   ignoree. Au passage, simplifie la voie 3 (sa propre garde locale
+   `cme_lead_confirme` devient redondante avec la garde partagee, retiree).
+2. **Aucun champ capture** (limite structurelle, pas un bug) : contrairement
+   aux 3 mini-formulaires inline (qui possedent leurs propres champs et les
+   envoient directement), le tracking du vrai formulaire ne faisait que
+   DETECTER qu'une soumission avait eu lieu — jamais lire les valeurs
+   saisies dans les champs WPForms eux-memes.
+
+**Decision operateur, suite a la clarification demandee** ("on capture ces
+5 infos depuis le formulaire contactez un expert : Date & Heure, Prenom,
+Telephone, Email, Code Postal") : capturer effectivement ces champs plutot
+que se limiter a un compteur vide. **Corrige** (commit `424b765`),
+nouvelle fonction `capturerChampsFormulaireContact(form)` :
+- Lit les champs au moment du `submit` NATIF (capture phase, sur
+  `document`, donc avant que WPForms n'intercepte en AJAX) — c'est le
+  seul instant ou le DOM du formulaire est encore disponible pour les
+  voies qui restent sur la page d'origine (1 et 2). La voie 3 (page de
+  confirmation, apres redirection) n'y a plus acces et repart donc sans
+  ces champs, exactement comme avant ce correctif — degradation sans
+  casse, jamais pire qu'avant.
+- Identification par **CLASSE de champ WPForms**
+  (`wpforms-field-phone`/`-email`/`-name`), pas par nom/id d'input : chez
+  WPForms, `name`/`id` sont generiques et positionnels
+  (`wpforms[fields][N]`), sans rapport avec le type du champ — seule la
+  classe du conteneur est un signal fiable, independant de la langue des
+  libelles saisis par l'operateur dans le constructeur de formulaire.
+  Le champ "Nom" peut etre configure en 1 input (Simple) ou plusieurs
+  (First-Last) chez WPForms : les deux cas sont geres (concatenation).
+- **Code postal : pas de classe WPForms dediee** (ce n'est pas un type de
+  champ natif) — identifie **par elimination** : le premier champ texte
+  simple restant une fois nom/tel/email trouves. **HYPOTHESE A CONFIRMER
+  PAR UN TEST REEL post-deploiement** (ce sandbox n'a pas acces au DOM
+  live du formulaire #472 pour la verifier avant coup) — si le formulaire
+  reel contient un champ texte supplementaire inattendu, ou si le champ
+  code postal utilise en realite un type "Nombre" plutot que "Texte", a
+  ajuster une fois verifie sur une soumission de test reelle.
+- Teste localement (DOM mocke en JS, 5 cas : champs simples, nom
+  First-Last concatene, champ vide tolere, aucun champ texte restant,
+  exception du DOM -> fail-safe sans crash) + `php -l` et `node --check`
+  sur l'ensemble du fichier modifie.
+
+**Regroupement Sheets** (meme commit `424b765`) : le filtre de
+`cme_relayer_log_lead()` (`wordpress-mu-plugins/cme-tracking-conversion.php`)
+inclut desormais `'contact-expert-formulaire'` en plus des 3 outils inline
+deja presents (`contact-expert-inline`, `appel-expert-inline`,
+`appel-header-formulaire`) — meme onglet "Leads Formulaire Article",
+colonne "Type" deja generique (aucun changement necessaire cote
+`apps-scripts/cme-formulaire-article-leads.gs`). Ce regroupement n'a de
+sens QUE depuis le correctif de capture ci-dessus : avant, ces lignes
+seraient arrivees dans le Sheet avec Prenom/Telephone/Email/Code Postal
+systematiquement vides, melees a des lignes avec coordonnees reelles.
+
+**Pas encore deploye** — meme fichier que les chantiers precedents
+(`cme-tracking-conversion.php`) : non versionne automatiquement sur le
+serveur. `cloudshell download`, `.bak` horodate en cPanel, upload dans
+`/wp-content/mu-plugins/`, purger les deux caches LiteSpeed, verifier avec
+`?t=$RANDOM`. **Test reel necessaire apres deploiement** (pas seulement
+visuel) : soumettre le vrai formulaire sur `/contactez-un-expert/` avec un
+nom/telephone/code postal de test connus, puis verifier dans
+`leads_convertis` (une seule ligne desormais, pas deux) ET dans l'onglet
+Sheets que les 4 champs sont bien remplis et correspondent aux valeurs
+saisies — sinon ajuster l'heuristique de `capturerChampsFormulaireContact()`
+selon ce que revele la ligne reelle (meme pattern que l'incident
+"Lionel"/"QA-TEST" : nettoyer la ligne de test ensuite, comme d'habitude,
+ni acces API Sheets ni WPForms Entries depuis ce sandbox pour le faire
+soi-meme).
