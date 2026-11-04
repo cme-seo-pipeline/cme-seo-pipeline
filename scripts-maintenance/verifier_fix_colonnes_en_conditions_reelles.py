@@ -53,7 +53,15 @@ def verifier(page, post_id, nom, chemin):
     print("=" * 90)
 
     page.goto(url, wait_until="load", timeout=45000)
-    page.wait_for_timeout(1500)   # laisse demarrer()/injecterStyles() s'executer (synchrone, mais prudence)
+    # LiteSpeed Cache ("Delay JS Execution") differe l'execution des scripts
+    # jusqu'a la premiere interaction reelle -- une attente passive ne suffit
+    # pas (confirme le 04/11 par verifier_delai_js_litespeed.py). On simule
+    # une interaction minimale avant de lire le DOM.
+    page.mouse.move(200, 300)
+    page.mouse.wheel(0, 800)
+    page.wait_for_timeout(1000)
+    page.mouse.wheel(0, 1200)
+    page.wait_for_timeout(1500)
 
     resultat = page.evaluate("""
         () => {
