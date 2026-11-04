@@ -1,0 +1,16 @@
+# Execution du 2026-11-04T21:44:09Z
+# Script    : scripts-maintenance/nettoyer_leads_test_0411.py
+# Arguments : --apply --confirmation=SUPPRIMER
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+Lignes correspondant exactement aux timestamps cibles (verification avant suppression) :
+  2026-11-04 18:43:58.875618+00:00 | tool=appel-expert-inline | prenom='test' | tel='0695410020' | details="{\"position\":8,\"silo\":\"electricite\"}"
+  2026-11-04 18:44:07.874395+00:00 | tool=contact-expert-inline | prenom='test' | tel='0695410020' | details="{\"position\":1,\"silo\":\"electricite\"}"
+  2026-11-04 18:44:32.072074+00:00 | tool=appel-header-formulaire | prenom='TEST' | tel='0695410020' | details="{\"silo\":\"electricite\"}"
+
+3 ligne(s) correspondante(s).
+
+✅ 3 ligne(s) supprimee(s) de leads_convertis.
