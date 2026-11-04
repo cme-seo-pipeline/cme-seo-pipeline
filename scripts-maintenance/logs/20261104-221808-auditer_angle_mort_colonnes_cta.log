@@ -1,0 +1,86 @@
+# Execution du 2026-11-04T22:18:08Z
+# Script    : scripts-maintenance/auditer_angle_mort_colonnes_cta.py
+# Arguments : --detail
+
+📥 Recuperation de tous les articles publies (API REST WordPress)...
+   973 article(s) recupere(s).
+
+==========================================================================================
+1/ ANGLE MORT TOTAL (0 formulaire 'contact' pose malgre >= 420 mots) : 17 article(s)
+==========================================================================================
+  id=3489 | 2741 mots | 7 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/renovation-energetique/
+  id=3488 | 2851 mots | 7 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz/
+  id=3491 | 2569 mots | 7 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-solaires/
+  id=3384 | 1996 mots | 7 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/aides-renovation-energetique/
+  id=3385 | 2238 mots | 7 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/aides-energetiques-guide-2/
+  id=2218 | 4461 mots | 7 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  id=1333 | 1761 mots | 6 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+  id=1006 | 1019 mots | 4 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-de-base/
+  id=904 | 1074 mots | 4 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/transition-energetique/
+  id=851 | 1561 mots | 6 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+  id=844 | 1052 mots | 4 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/
+  id=842 | 811 mots | 3 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz-2/
+  id=663 | 691 mots | 2 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky/
+  id=661 | 622 mots | 2 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite/
+  id=561 | 846 mots | 3 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/prix-electricite/
+  id=557 | 815 mots | 3 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/droits-electricite/
+  id=538 | 1097 mots | 4 formulaire(s) attendu(s), 0 pose | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/marche-electricite/
+
+==========================================================================================
+2/ DEFICIT PARTIEL (moins de formulaires 'contact' que ce que les seuils de mots suggereraient) : 48 article(s)
+==========================================================================================
+  id=13177 | 1984 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/bouteilles/propane-vs-butane-lequel-choisir/
+  id=12390 | 2100 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montant-2026-conditions-eligibilite/
+  id=11248 | 1955 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2025-eligibilite-obtention/
+  id=11240 | 1972 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-13kg-vs-5kg-comparatif/
+  id=9798 | 2047 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1015/
+  id=9764 | 922 mots | 3 pose(s) / 4 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-octobre-2026/
+  id=9677 | 2018 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2025/
+  id=9454 | 2005 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-validite-delai-expiration/
+  id=8816 | 1999 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montant-calcul/
+  id=8375 | 2023 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-fonctionnement-tarification/
+  id=8357 | 1951 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-propane-vs-butane-comparatif/
+  id=8340 | 526 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-septembre-2026/
+  id=7984 | 1541 mots | 5 pose(s) / 6 attendu(s) | https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-obligatoire/
+  id=7488 | 1951 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/fournisseur-electricite-moins-cher-comparatif/
+  id=7476 | 2047 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-pret-ecologique/
+  id=7270 | 1983 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-quel-financement-choisir/
+  id=7069 | 2006 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-comparatif-2026-0827/
+  id=7067 | 1907 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-fournisseurs-electricite-tarifs-2026/
+  id=7059 | 2028 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/delai-mise-en-service-gaz-demenagement-0827/
+  id=7037 | 595 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-9/
+  id=7035 | 599 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-8/
+  id=7033 | 576 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-7/
+  id=7031 | 565 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-6/
+  id=7029 | 583 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-5/
+  id=7027 | 598 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-4/
+  id=7025 | 557 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-3/
+  id=7023 | 563 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-2/
+  id=7021 | 625 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827/
+  id=7019 | 595 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026/
+  id=6675 | 1926 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0822/
+  id=6671 | 1979 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs/
+  id=6615 | 1919 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0821-2/
+  id=6547 | 1911 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparer-offres-electricite-verte/
+  id=6533 | 2047 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0820/
+  id=6266 | 553 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chauffage-gaz-aout-2026/
+  id=6263 | 516 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chauffage-gaz-august-2026/
+  id=5945 | 2052 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-reglemente-electricite-2026/
+  id=5804 | 2366 mots | 5 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-procedure-0814/
+  id=5633 | 1911 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/travaux-eligibles-eco-ptz-2025/
+  id=4966 | 2867 mots | 3 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/renovation-energetique/poele/installation-poele-masse/
+  id=4745 | 1622 mots | 5 pose(s) / 6 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-2026-comparatif-tarifs/
+  id=4364 | 1953 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/consommation-electrique-mesure-optimisation-0713/
+  id=3661 | 1997 mots | 6 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/gaz/bouteilles/fonctionnement-bouteilles-gaz/
+  id=3387 | 3138 mots | 1 pose(s) / 7 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-electricite/
+  id=840 | 592 mots | 1 pose(s) / 2 attendu(s) | https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-photovoltaiques/
+  id=709 | 362 mots | 0 pose(s) / 1 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/compteur/coupure-electricite/
+  id=699 | 1291 mots | 3 pose(s) / 5 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+  id=563 | 938 mots | 1 pose(s) / 4 attendu(s) | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/changer-fournisseur-electricite/
+
+==========================================================================================
+Resume
+==========================================================================================
+  Total articles publies : 973
+  Angle mort total        : 17
+  Deficit partiel         : 48
