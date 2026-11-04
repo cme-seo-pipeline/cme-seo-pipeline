@@ -138,6 +138,15 @@ def log_interaction():
                 "source_page":      str(e.get("source_page", ""))[:250],
                 "source_post_id":   str(e.get("source_post_id", ""))[:20],
                 "user_agent":       str(e.get("user_agent", ""))[:120],
+                # temps_ms ajoute le 01/11/2026 (colonne BigQuery + JS cote
+                # mu-plugins deja en place depuis cette date) mais JAMAIS
+                # mappe ici -- bug trouve le 04/11/2026
+                # (diagnostiquer_temps_ms_vide.py : 5048/5048 lignes
+                # lecture_position avec temps_ms NULL depuis le debut de la
+                # collecte). Nullable : certains evenements plus anciens
+                # ou d'une version de JS non encore redeployee n'en
+                # envoient pas.
+                "temps_ms":         (int(e["temps_ms"]) if e.get("temps_ms") is not None else None),
             })
 
         if not lignes:
