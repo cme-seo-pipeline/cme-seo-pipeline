@@ -1,0 +1,32 @@
+# Execution du 2026-11-04T23:01:37Z
+# Script    : scripts-maintenance/classer_cause_racine_17_angle_mort.py
+# Arguments : 
+
+  id= 3489 | article brut (PAS corrige)   | <article class=""> | 2731 mots
+  id= 3488 | article brut (PAS corrige)   | <article class=""> | 2849 mots
+  id= 3491 | article brut (PAS corrige)   | <article class=""> | 2559 mots
+  id= 3384 | article brut (PAS corrige)   | <article class=""> | 1994 mots
+  id= 3385 | article brut (PAS corrige)   | <article class=""> | 2236 mots
+  id= 1333 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 1761 mots
+  id= 1006 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 1019 mots
+  id=  904 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 1074 mots
+  id=  851 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 1364 mots
+  id=  844 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 1052 mots
+  id=  842 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 811 mots
+  id=  663 | autre (a investiguer)        | <div class="uagb-block-b036134c uagb-infobox__content-wrap uagb-infobox-icon-above-title uagb-infobox-image-valign-top wp-block-uagb-info-box--has-margin wp-block-uagb-info-box shadow-block"> | 116 mots
+  id=  661 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 137 mots
+  id=  561 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 846 mots
+  id=  557 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 815 mots
+  id=  538 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 1097 mots
+  id= 4966 | autre (a investiguer)        | <ul class=""> | 2086 mots
+  id= 3387 | article brut (PAS corrige)   | <article class=""> | 2824 mots
+  id=  563 | columns (deja corrige)       | <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 451 mots
+  id=  699 | autre (a investiguer)        | <ul class="wp-block-list"> | 152 mots
+  id= 5804 | autre (a investiguer)        | <h4 class=""> | 949 mots
+
+==========================================================================================
+Resume
+==========================================================================================
+  columns (deja corrige) : 11
+  article brut (PAS corrige) : 6
+  autre (a investiguer) : 4
