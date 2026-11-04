@@ -325,7 +325,12 @@ def selectionner_silos_a_traiter(client_bq, config):
     choisi dynamiquement comme pour les autres sous-silos du quota (peu de
     requetes GSC transactionnelles disponibles pour Solaire vu son faible
     trafic actuel -- imposer un mot-cle figé aurait vite tourne en rond).
-    Total vise desormais 24 articles/jour (14 existants, inchanges + 10
+
+    Quota Solaire divise par deux le 04/11/2026 (decision operateur, pour
+    faire de la place a un nouveau sous-silo Aide Énergétique -- voir plus
+    bas) : 2/jour -> 1/jour par sous-silo, soit 5/jour au lieu de 10/jour
+    au total pour Solaire (5 sous-silos x 1, structure inchangee sinon).
+    Total vise desormais 19 articles/jour (14 existants, inchanges + 5
     Solaire).
     """
     QUOTAS_SOUS_SILO = [
@@ -336,11 +341,11 @@ def selectionner_silos_a_traiter(client_bq, config):
         ("3. Aide Énergétique", "MaPrimeRénov'", 2),
         ("3. Aide Énergétique", "Chèque énergie", 2),
         ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 2),
-        ("4. Solaire", "Kit solaire", 2),
-        ("4. Solaire", "Panneaux solaires", 2),
-        ("4. Solaire", "Batterie panneaux solaires", 2),
-        ("4. Solaire", "Système solaire combiné", 2),
-        ("4. Solaire", "Chauffe-eau solaire", 2),
+        ("4. Solaire", "Kit solaire", 1),
+        ("4. Solaire", "Panneaux solaires", 1),
+        ("4. Solaire", "Batterie panneaux solaires", 1),
+        ("4. Solaire", "Système solaire combiné", 1),
+        ("4. Solaire", "Chauffe-eau solaire", 1),
     ]
     total_vise = sum(q for _, _, q in QUOTAS_SOUS_SILO)
     print(f"📅 Run par sous-silo cible → {total_vise} articles vises sur {len(QUOTAS_SOUS_SILO)} sous-silos")
