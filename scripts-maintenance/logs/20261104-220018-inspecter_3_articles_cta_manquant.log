@@ -1,0 +1,32 @@
+# Execution du 2026-11-04T22:00:18Z
+# Script    : scripts-maintenance/inspecter_3_articles_cta_manquant.py
+# Arguments : 
+
+==========================================================================================
+1/ id=908 (solaire/production-solaire/)
+==========================================================================================
+  id=908 | status=publish | https://www.comprendre-mon-energie.fr/solaire/production-solaire/
+  Longueur HTML brute  : 0 caracteres
+  Mots visibles (texte): 0
+  ⚠️ Aucun texte visible extrait -- contenu probablement compose uniquement de blocs
+     non textuels (shortcode, embed, galerie d'images, iframe...). Extrait HTML brut :
+     ''
+
+==========================================================================================
+2/ id=709 (electricite/compteur/coupure-electricite/)
+==========================================================================================
+  id=709 | status=publish | https://www.comprendre-mon-energie.fr/electricite/compteur/coupure-electricite/
+  Longueur HTML brute  : 6758 caracteres
+  Mots visibles (texte): 362
+  Debut : Coupure électricité : Les solutions pour rétablir le courant rapidement . Faire face à une coupure électricité est une situation stressante qui nécessite une réaction rapide. En 2026, une interruption de courant peut avoir plusieurs origines : une panne sur...
+  Fin   : ...liée à un changement de domicile récent, n’oubliez pas d’anticiper vos démarches pour votre futur logement. Pour éviter tout désagrément lors de votre installation, consultez notre guide complet pour réussir votre déménagement électricité et activer votre compteur en toute sérénité.
+
+==========================================================================================
+3/ attestation-de-contrat-delectricite (signale par l'operateur)
+==========================================================================================
+  id=2218 | status=publish | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  Longueur HTML brute  : 66423 caracteres
+  Mots visibles (texte): 4461
+  Debut : rédigé par Oussama Blal Contact 📧 Besoin d’un justificatif de domicile officiel pour vos démarches administratives ? L’ Attestation de Contrat d’Électricité est le document le plus simple et le plus rapide à obtenir pour prouver votre lieu de résidence....
+  Fin   : ...du plan de sobriété pour équiper votre logement à 0 €. Obtenir mon thermostat 100% gratuit 🎁 🔄 Changement de Fournisseur : Comparez les offres et économisez jusqu’à 200 € sur votre facture annuelle. Comparer les prix et économiser 📉
+
