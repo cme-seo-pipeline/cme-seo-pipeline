@@ -1,0 +1,30 @@
+# Execution du 2026-11-04T21:47:54Z
+# Script    : scripts-maintenance/auditer_articles_sans_cta_inline.py
+# Arguments : --detail
+
+📥 Recuperation de tous les articles publies (API REST WordPress)...
+   973 article(s) recupere(s).
+
+==========================================================================================
+1/ Prefixe d'URL non reconnu -- AUCUN formulaire (ni contact ni appel) : 0 article(s)
+==========================================================================================
+  (aucun)
+
+==========================================================================================
+2/ Trop court pour le bloc 'avant d'appeler' (< 300 mots) : 1 article(s)
+==========================================================================================
+  id=908 | solaire | 0 mots | https://www.comprendre-mon-energie.fr/solaire/production-solaire/
+
+==========================================================================================
+3/ Trop court pour obtenir au moins 1 formulaire 'contact' (< ~420 mots, approx.) : 2 article(s)
+==========================================================================================
+  id=908 | solaire | 0 mots | https://www.comprendre-mon-energie.fr/solaire/production-solaire/
+  id=709 | electricite | 362 mots | https://www.comprendre-mon-energie.fr/electricite/compteur/coupure-electricite/
+
+==========================================================================================
+Resume
+==========================================================================================
+  Total articles publies           : 973
+  Zero formulaire (prefixe inconnu) : 0
+  Zero bloc 'avant d'appeler'        : 1
+  Zero 1er formulaire 'contact'      : 2
