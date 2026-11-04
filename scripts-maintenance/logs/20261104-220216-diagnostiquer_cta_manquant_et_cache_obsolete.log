@@ -1,0 +1,117 @@
+# Execution du 2026-11-04T22:02:16Z
+# Script    : scripts-maintenance/diagnostiquer_cta_manquant_et_cache_obsolete.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+==========================================================================================
+VOLET 1 — structure HTML de l'article attestation-de-contrat-delectricite (id=2218)
+==========================================================================================
+  Zone ciblee        : NON TROUVE -- analyse sur tout le document
+  <p>         : 67 au total, 65 avec du texte visible
+  <ul>        : 4 au total, 4 avec du texte visible
+  <ol>        : 3 au total, 3 avec du texte visible
+  <table>     : 6 au total, 6 avec du texte visible
+  <figure>    : 9 au total, 9 avec du texte visible
+  <blockquote>: 0 au total, 0 avec du texte visible
+  <div> enfants directs de la zone ciblee : 3
+
+==========================================================================================
+VOLET 2 — recherche de signature 'ancienne version' apres le deploiement (>= 18h00 UTC le 04/11)
+==========================================================================================
+  ⚠️ 56 evenement(s) avec signature ancienne version trouve(s) :
+    2026-11-04 18:02:43.919000+00:00 | post_id=5945 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:02:43.919000+00:00 | post_id=5945 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:02:43.919000+00:00 | post_id=5945 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:02:43.919000+00:00 | post_id=5945 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:02:43.920000+00:00 | post_id=5945 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:02:43.920000+00:00 | post_id=5945 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:02:43.920000+00:00 | post_id=5945 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:02:43.921000+00:00 | post_id=5945 | form_etape | etape='0' | cible='appel'
+    2026-11-04 18:05:25.854000+00:00 | post_id=4745 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:05:25.855000+00:00 | post_id=4745 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:05:25.855000+00:00 | post_id=4745 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:05:25.855000+00:00 | post_id=4745 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:05:25.856000+00:00 | post_id=4745 | form_etape | etape='0' | cible='contact'
+    2026-11-04 18:05:25.857000+00:00 | post_id=4745 | form_etape | etape='0' | cible='appel'
+    2026-11-04 19:44:54.050000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.057000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.057000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.058000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.059000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.060000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.060000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.061000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.061000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.062000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 19:44:54.067000+00:00 | post_id=4701 | form_etape | etape='0' | cible='appel'
+    2026-11-04 20:24:32.510000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.511000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.512000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.512000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.513000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.514000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.514000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.515000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.516000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.517000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:24:32.521000+00:00 | post_id=4701 | form_etape | etape='0' | cible='appel'
+    2026-11-04 20:27:15.483000+00:00 | post_id=5005 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:27:15.498000+00:00 | post_id=5005 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:27:15.505000+00:00 | post_id=5005 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:27:15.508000+00:00 | post_id=5005 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:27:15.513000+00:00 | post_id=5005 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:27:15.538000+00:00 | post_id=5005 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:27:15.541000+00:00 | post_id=5005 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:27:15.543000+00:00 | post_id=5005 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:27:15.561000+00:00 | post_id=5005 | form_etape | etape='0' | cible='appel'
+    2026-11-04 20:30:10.109000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.114000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.114000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.115000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.116000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.117000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.117000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.118000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.119000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.120000+00:00 | post_id=4701 | form_etape | etape='0' | cible='contact'
+    2026-11-04 20:30:10.126000+00:00 | post_id=4701 | form_etape | etape='0' | cible='appel'
+
+  Post_id(s) a purger en priorite (cache LiteSpeed) : ['4701', '4745', '5005', '5945']
+
+  --- Evenements (toutes signatures) pour l'article attestation-de-contrat-delectricite (id=2218) ---
+Traceback (most recent call last):
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/diagnostiquer_cta_manquant_et_cache_obsolete.py", line 139, in <module>
+    main()
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/diagnostiquer_cta_manquant_et_cache_obsolete.py", line 135, in main
+    volet2()
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/diagnostiquer_cta_manquant_et_cache_obsolete.py", line 125, in volet2
+    rows2 = list(client.query(query2).result())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/job/query.py", line 1676, in result
+    while not is_job_done():
+              ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/job/query.py", line 1625, in is_job_done
+    raise job_failed_exception
+google.api_core.exceptions.BadRequest: 400 No matching signature for operator = for argument types: STRING, INT64
+  Signature: T1 = T1
+    Unable to find common supertype for templated argument <T1>
+      Input types for <T1>: {INT64, STRING} at [4:15]; reason: invalidQuery, location: query, message: No matching signature for operator = for argument types: STRING, INT64
+  Signature: T1 = T1
+    Unable to find common supertype for templated argument <T1>
+      Input types for <T1>: {INT64, STRING} at [4:15]
+
+Location: EU
+Job ID: 2693a36b-c3e3-496d-a98e-46b8edd6f0e1
+
