@@ -1,0 +1,133 @@
+# Execution du 2026-11-04T15:02:13Z
+# Script    : scripts-maintenance/synthese_zones_clic_retention.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📅 Fenetre : depuis le 2026-10-28
+
+==========================================================================================
+1/ Volume global sur la fenetre
+==========================================================================================
+  clic_contenu       : 87 evenement(s), 51 session(s) distincte(s)
+  lecture_position   : 5032 evenement(s), 422 session(s) distincte(s)
+
+==========================================================================================
+2/ Zones de clic les plus actives (clic_contenu, par section)
+==========================================================================================
+  section                                      cible       clics   sessions  mots_avant  scroll%
+  (aucune section / avant 1er h2-h3)           lien_interne8       8         42          3.9
+  Grille tarifaire des bouteilles de gaz en ...image       7       4         116         8.6
+  Prix heures pleines/creuses : grille tarif...image       7       2         111         7.4
+  Tarifs actuels des bouteilles de gaz en 2026 image       6       2         128         8.8
+  MaPrimeRénov chauffage électrique 2026 : m...image       5       2         111         9.6
+  Quels travaux énergétiques ouvrent droit à...image       5       1         118         1.0
+  Kit solaire autonome vs autoconsommation r...image       5       1         118         7.0
+  Les 5 étapes principales du processus MaPr...image       3       1         89          2.0
+  Tarif fixe électricité : stabilité et prév...image       3       1         163         6.0
+  Facteurs qui influencent le prix de votre ...image       2       1         522         18.0
+  Préparation et diagnostic avant l’installa...image       2       1         136         4.0
+  Pouvez-vous résilier votre contrat gaz san...image       2       1         91          6.0
+  Facteurs qui influencent le prix des boute...image       2       1         469         26.0
+  Tarifs actuels des bouteilles de gaz propane image       2       2         102         12.5
+  Où recharger sa bouteille de gaz : les dif...image       2       1         146         5.0
+  Comment fonctionne un radiateur gaz ?        image       2       1         104         5.0
+  Résiliation pour déménagement                lien_interne1       1         1863        62.0
+  Tableau comparatif des fournisseurs électr...image       1       1         113         13.0
+  Propane vs butane : les deux grandes famil...image       1       1         158         6.0
+  Quelles sont les aides disponibles pour ré...image       1       1         145         10.0
+  Comment fonctionnent les barèmes de revenu...image       1       1         102         7.0
+  Préparation et matériel nécessaire avant i...image       1       1         87          4.0
+  Pourquoi comparer les offres de gaz est es...image       1       1         72          8.0
+  Composition chimique et origine du butane ...image       1       1         126         7.0
+  Ressources complémentaires                   lien_interne1       1         2491        90.0
+
+==========================================================================================
+3/ Clics par silo x cible
+==========================================================================================
+  aide-energetique       | image          : 13 clic(s), 6 session(s)
+  aide-energetique       | lien_interne   : 4 clic(s), 4 session(s)
+  electricite            | image          : 19 clic(s), 9 session(s)
+  electricite            | lien_interne   : 8 clic(s), 8 session(s)
+  gaz                    | image          : 31 clic(s), 18 session(s)
+  gaz                    | lien_interne   : 5 clic(s), 5 session(s)
+  renovation-energetique | lien_interne   : 1 clic(s), 1 session(s)
+  solaire                | image          : 5 clic(s), 1 session(s)
+  solaire                | lien_interne   : 1 clic(s), 1 session(s)
+
+==========================================================================================
+4/ Retention de lecture par jalon (lecture_position, tous silos)
+==========================================================================================
+  mots_lus    sessions    % retenu vs 1er jalon   temps_moy(s)  temps_median(s)
+  100         404         100.0                   nan           nan
+  200         363         89.9                    nan           nan
+  300         356         88.1                    nan           nan
+  400         327         80.9                    nan           nan
+  500         306         75.7                    nan           nan
+  600         284         70.3                    nan           nan
+  700         258         63.9                    nan           nan
+  800         236         58.4                    nan           nan
+  900         219         54.2                    nan           nan
+  1000        200         49.5                    nan           nan
+  1100        181         44.8                    nan           nan
+  1200        175         43.3                    nan           nan
+  1300        159         39.4                    nan           nan
+  1400        149         36.9                    nan           nan
+  1500        141         34.9                    nan           nan
+  1600        129         31.9                    nan           nan
+  1700        117         29.0                    nan           nan
+  1800        112         27.7                    nan           nan
+  1900        104         25.7                    nan           nan
+  2000        93          23.0                    nan           nan
+  2100        92          22.8                    nan           nan
+  2200        88          21.8                    nan           nan
+  2300        79          19.6                    nan           nan
+  2400        75          18.6                    nan           nan
+  2500        66          16.3                    nan           nan
+  2600        65          16.1                    nan           nan
+  2700        51          12.6                    nan           nan
+  2800        45          11.1                    nan           nan
+  2900        37          9.2                     nan           nan
+  3000        35          8.7                     nan           nan
+  3100        26          6.4                     nan           nan
+  3200        14          3.5                     nan           nan
+  3300        12          3.0                     nan           nan
+  3400        9           2.2                     nan           nan
+  3500        7           1.7                     nan           nan
+  3600        6           1.5                     nan           nan
+  3700        5           1.2                     nan           nan
+  3800        1           0.2                     nan           nan
+  3900        1           0.2                     nan           nan
+  4100        1           0.2                     nan           nan
+  4200        1           0.2                     nan           nan
+  4300        2           0.5                     nan           nan
+  4400        1           0.2                     nan           nan
+
+==========================================================================================
+5/ Retention par silo aux jalons 100/200/300 mots
+==========================================================================================
+  aide-energetique       | 100 mots : 79 session(s), nans en moyenne
+  aide-energetique       | 200 mots : 77 session(s), nans en moyenne
+  aide-energetique       | 300 mots : 71 session(s), nans en moyenne
+  electricite            | 100 mots : 141 session(s), nans en moyenne
+  electricite            | 200 mots : 126 session(s), nans en moyenne
+  electricite            | 300 mots : 127 session(s), nans en moyenne
+  gaz                    | 100 mots : 150 session(s), nans en moyenne
+  gaz                    | 200 mots : 128 session(s), nans en moyenne
+  gaz                    | 300 mots : 127 session(s), nans en moyenne
+  renovation-energetique | 100 mots : 13 session(s), nans en moyenne
+  renovation-energetique | 200 mots : 13 session(s), nans en moyenne
+  renovation-energetique | 300 mots : 13 session(s), nans en moyenne
+  solaire                | 100 mots : 21 session(s), nans en moyenne
+  solaire                | 200 mots : 19 session(s), nans en moyenne
+  solaire                | 300 mots : 18 session(s), nans en moyenne
