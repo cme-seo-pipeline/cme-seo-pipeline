@@ -16,9 +16,10 @@ USAGE :
 import sys
 
 try:
+    import pandas as pd
     from google.cloud import bigquery
 except ImportError:
-    sys.exit("❌ google-cloud-bigquery manquant")
+    sys.exit("❌ google-cloud-bigquery/pandas manquant")
 
 PROJECT_ID = "seo-data-hub-cme"
 DATASET_ID = "04_pipeline_seo"
@@ -50,9 +51,13 @@ def main():
 
     print(f"📅 {len(df)} evenement(s) le(s) plus recent(s) (toute la table, pas filtre par date) :\n")
     for _, r in df.iterrows():
+        # Bug corrige (04/11/2026) : "tms is not None and str(tms) != 'nan'"
+        # traitait a tort le NA nullable pandas (Int64/<NA>) comme une valeur
+        # presente -- seul pandas.isna() detecte correctement ce cas, en plus
+        # du vrai NULL BigQuery renvoye comme None ou NaN flottant.
         tms = r["temps_ms"]
-        marqueur = "✅" if tms is not None and str(tms) != "nan" else "❌ NULL"
-        print(f"  {r['timestamp']} | {r['type_evenement']:<16} | temps_ms={marqueur:<10} | pos={r['position_contenu']} | {r['silo']} | post_id={r['source_post_id']}")
+        marqueur = "❌ NULL" if pd.isna(tms) else "✅ " + str(int(tms))
+        print(f"  {r['timestamp']} | {r['type_evenement']:<16} | temps_ms={marqueur:<14} | pos={r['position_contenu']} | {r['silo']} | post_id={r['source_post_id']}")
 
     non_null = df["temps_ms"].notna().sum()
     print(f"\n{non_null}/{len(df)} des {len(df)} evenements les plus recents ont temps_ms renseigne.")
