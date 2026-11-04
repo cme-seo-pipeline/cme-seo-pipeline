@@ -1,13 +1,16 @@
 <?php
 /**
  * Plugin Name: CME - Formulaire de contact progressif
- * Description: Insere un mini-formulaire de contact interactif (type Typeform,
- * une question a la fois) environ toutes les 230 mots (~1 minute de lecture)
- * dans le corps de chaque article, avec les couleurs du silo. Remplace les
- * anciens boutons CTA qui renvoyaient vers /contactez-un-expert/ : desormais
- * le visiteur remplit directement un mini-formulaire dans l'article, sans
- * changer de page. Mode apercu par defaut : visible uniquement avec ?cta60=1
- * dans l'URL. Pour desactiver : supprimer ce fichier.
+ * Description: Insere un mini-formulaire de contact interactif -- UN SEUL
+ * ECRAN (nom/prenom + telephone affiches ensemble, case RGPD, un seul
+ * bouton d'envoi, depuis le 04/11/2026 -- voir chantier plus bas) -- a une
+ * cadence croissante (300, 500, 700, 900, 1100 mots, puis tous les 400 mots,
+ * plafonnee a 7 occurrences) dans le corps de chaque article, avec les
+ * couleurs unifiees du site. Remplace les anciens boutons CTA qui
+ * renvoyaient vers /contactez-un-expert/ : desormais le visiteur remplit
+ * directement un mini-formulaire dans l'article, sans changer de page. Mode
+ * apercu par defaut : visible uniquement avec ?cta60=1 dans l'URL. Pour
+ * desactiver : supprimer ce fichier.
  *
  * CHANTIER DU 22/10/2026 (remplacement bouton -> formulaire) :
  *  - Demande explicite de l'operateur : plus de banniere flottante (Zendure,
@@ -98,6 +101,40 @@
  * onglet Google Sheets que le formulaire de contact (meme fonction PHP cote
  * serveur, scope elargi, voir cme-tracking-conversion.php), avec source_page
  * et le tracking habituel (source_post_id, position, silo).
+ *
+ * CHANTIER DU 04/11/2026 (formulaire a un seul ecran + nouvelle cadence,
+ * UNIFIE sur tous les silos/tous les articles -- demande explicite de
+ * l'operateur, decidee sur la base des donnees de retention/clics/
+ * abandon accumulees du 28/10 au 04/11, voir claude/objectif-100-leads-mois.md
+ * et CLAUDE.md) :
+ *  - Formulaire a UN SEUL ECRAN : nom/prenom ET telephone affiches en meme
+ *    temps (plus de type Typeform "une question a la fois"), case RGPD
+ *    sous les champs, UN SEUL bouton ("Envoyer" pour la variante contact,
+ *    "Appeler maintenant" pour la variante appel -- meme comportement que
+ *    le popup header deja en prod : le lead est envoye PUIS l'appel declenche
+ *    par window.location.href = 'tel:...', en un seul clic). Motivation
+ *    chiffree : 4 abandons sur 6 sessions ayant atteint l'ancienne derniere
+ *    etape (telephone), soit ~67% -- la friction se jouait juste avant la
+ *    soumission, pas a l'entree du formulaire.
+ *  - Nouvelle cadence de placement (variante contact uniquement, le bloc
+ *    "avant d'appeler" reste une occurrence unique en fin d'article,
+ *    inchange) : 1er formulaire a 300 mots (encore 88% de retention a ce
+ *    stade, pas de concurrence avec les images les plus cliquees, groupees
+ *    a 100-170 mots) ; tous les 200 mots jusqu'a 1200 mots (zone ou se
+ *    concentrait 100% de la conversion mesuree sous l'ancienne cadence a
+ *    ~230 mots) ; tous les 400 mots au-dela (public residuel en forte
+ *    baisse de retention, rendement marginal plus faible). Plafonne a 7
+ *    occurrences meme sur les articles tres longs, pour ne jamais
+ *    "wallpaperer" un article. Voir prochainSeuilContact() plus bas.
+ *  - Tracking simplifie en consequence (plus d'etape intermediaire
+ *    "telephone atteinte" puisqu'il n'y a plus qu'un seul ecran) :
+ *    form_vu (visible) et form_etape=termine (soumis) suffisent ;
+ *    form_abandon est redefini -- "vu mais jamais soumis" au lieu de
+ *    "etape telephone atteinte sans soumettre" (etape='vu' au lieu d'un
+ *    numero d'etape). Rupture de continuite ASSUMEE avec les indicateurs
+ *    mesures du 28/10 au 04/11 (positions 1/2/3/5, taux d'abandon ~67%,
+ *    cadence a 230 mots) : nouveau point de mesure prevu a 30 jours
+ *    plutot qu'a 7-10 jours, decision explicite de l'operateur.
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -118,10 +155,19 @@ add_action('wp_footer', function () {
 
   // ── REGLAGES ────────────────────────────────────────────────────────────
   var MODE = 'actif';         // 'apercu' : visible seulement avec ?cta60=1 | 'actif' : tous les visiteurs | 'off'
-  var MOTS_PAR_BOUTON = 230;  // environ une minute de lecture
-  var MAX_BOUTONS = 30;       // garde-fou technique, au-dessus du maximum attendu (~23)
+  var MAX_FORMULAIRES_CONTACT = 7;   // plafond volontaire (04/11/2026) -- jamais "wallpaperer" un article tres long
   var MOTS_FIN_MIN = 120;     // pas de formulaire s'il reste moins de mots que cela
   var API_LEAD = '/wp-json/cme/v1/log-lead';   // relais deja deploye (cme-tracking-conversion.php)
+
+  // Cadence de placement du formulaire CONTACT (04/11/2026, voir docblock) --
+  // seuil en mots lus depuis le DEBUT de l'article (position ABSOLUE, pas une
+  // distance depuis le formulaire precedent) pour le (poses+1)-ieme
+  // formulaire deja pose : 300, 500, 700, 900, 1100 (pas de 200 mots), puis
+  // 1500, 1900, 2300... (pas de 400 mots) au-dela.
+  function prochainSeuilContact(poses) {
+    if (poses < 5) { return 300 + poses * 200; }
+    return 1100 + (poses - 4) * 400;
+  }
 
   // CTA "avant d'appeler" (01/11/2026) -- une seule occurrence par article,
   // voir docblock plus haut. Meme numero que le bouton du header
@@ -160,6 +206,9 @@ add_action('wp_footer', function () {
   // friction) -- email et code_postal retires. "prenom" porte desormais le
   // nom ET le prenom en un seul champ (cle technique inchangee pour rester
   // compatible avec le schema BigQuery/Sheets existant sans migration).
+  // Depuis le 04/11/2026, les deux champs sont affiches SIMULTANEMENT (un
+  // seul ecran, voir creer() plus bas) -- ce tableau ne decrit plus un
+  // enchainement d'etapes, juste la liste des champs a generer.
   var ETAPES = [
     { champ: 'prenom', icone: '👋', label: 'Vos nom et prénom ?', type: 'text', placeholder: 'Nom et prénom' },
     { champ: 'telephone', icone: '📱', label: 'Votre numéro de téléphone ?', type: 'tel', placeholder: '06 12 34 56 78' }
@@ -210,7 +259,10 @@ add_action('wp_footer', function () {
   // Dernier etat connu, mis a jour par CHAQUE instance de formulaire sur la
   // page -- sert uniquement a detecter un abandon au moment ou le visiteur
   // quitte/masque la page (on ne sait pas a l'avance lequel des formulaires
-  // de la page il a utilise, donc on retient le plus recent).
+  // de la page il a utilise, donc on retient le plus recent). Depuis le
+  // 04/11/2026 (formulaire a un seul ecran) : plus d'etape intermediaire a
+  // retenir, juste "vu" (vrai) ou pas -- voir docblock, redefinition de
+  // form_abandon.
   var DERNIER_ETAT = null;
 
   function viderInteractions() {
@@ -238,17 +290,21 @@ add_action('wp_footer', function () {
       if (FILE_INTERACTIONS.length >= 20) { viderInteractions(); }
     } catch (e) {}
   }
-  // Enregistre une seule fois (pas par instance de formulaire) : abandon =
-  // la derniere etape atteinte etait "telephone" (idx>=1) sans avoir
-  // complete (idx < ETAPES.length, donc pas encore arrive a "merci").
+  // Enregistre une seule fois (pas par instance de formulaire). Redefini le
+  // 04/11/2026 (formulaire a un seul ecran, voir docblock) : abandon = le
+  // formulaire a ete VU (DERNIER_ETAT.vu, mis par l'IntersectionObserver
+  // dans creer()) mais jamais soumis (DERNIER_ETAT remis a null au moment
+  // de l'envoi reussi, voir envoyer() dans creer()) -- avant il fallait
+  // avoir atteint l'etape "telephone" sans avoir complete ; il n'y a plus
+  // qu'un seul ecran, donc plus qu'un seul etat possible a detecter.
   window.setInterval(viderInteractions, 15000);
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState !== 'hidden') { return; }
-    if (DERNIER_ETAT && DERNIER_ETAT.idx > 0 && DERNIER_ETAT.idx < ETAPES.length) {
+    if (DERNIER_ETAT && DERNIER_ETAT.vu) {
       journaliserInteraction({
         type_evenement: 'form_abandon',
         position_contenu: DERNIER_ETAT.position,
-        etape: String(DERNIER_ETAT.idx),
+        etape: 'vu',
         silo: DERNIER_ETAT.silo,
         cible: DERNIER_ETAT.variante
       });
@@ -307,7 +363,7 @@ add_action('wp_footer', function () {
       zone.setAttribute('data-cta60', '1');
       injecterStyles();
 
-      // ── GENERATEUR DE MINI-FORMULAIRE (type Typeform, une question a la fois) ──
+      // ── GENERATEUR DE MINI-FORMULAIRE (UN SEUL ECRAN depuis le 04/11/2026) ──
       // Une seule fonction, reutilisee a chaque position : c'est ce qui rend ce
       // mecanisme modulaire plutot que de dupliquer du HTML par position.
       function creer(n, variante) {
@@ -323,66 +379,39 @@ add_action('wp_footer', function () {
         d.setAttribute('data-pos', String(n));
         d.style.cssText = 'background:linear-gradient(135deg,' + FORMULAIRE_FOND1 + ',' + FORMULAIRE_FOND2 + ');border-radius:16px;margin:26px 0;overflow:hidden;clear:both;max-width:100%;box-sizing:border-box;';
 
-        var etapesHtml = ETAPES.map(function (e, i) {
-          var derniere = i === ETAPES.length - 1;
-          return '<div class="cme-mf-etape" data-champ="' + e.champ + '" style="display:' + (i === 0 ? 'block' : 'none') + ';">' +
-            '<label style="display:block;font-weight:700;font-size:15px;color:#111827;margin-bottom:10px;"><span style="font-size:20px;margin-right:8px;">' + e.icone + '</span>' + e.label + '</label>' +
-            '<input type="' + e.type + '" class="cme-mf-input" placeholder="' + e.placeholder + '" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s;">' +
-            (derniere ?
-              '<label class="cme-mf-rgpd" style="display:flex;align-items:flex-start;gap:8px;margin-top:14px;font-size:12px;color:#6b7280;line-height:1.5;cursor:pointer;">' +
-                '<input type="checkbox" class="cme-mf-rgpd-case" style="margin-top:2px;flex-shrink:0;">' +
-                '<span>J’accepte d’être recontacté(e) par un conseiller et le traitement de mes données, conformément à notre <a href="' + URL_CADRE_LEGAL + '" target="_blank" rel="noopener" style="color:' + FORMULAIRE_FOND2 + ';text-decoration:underline;">politique de confidentialité</a>.</span>' +
-              '</label>'
-              : '') +
-            '<div class="cme-mf-erreur" style="color:#dc2626;font-size:13px;margin-top:6px;display:none;"></div>' +
+        // Les 2 champs (ETAPES) sont desormais affiches EN MEME TEMPS, pas
+        // l'un apres l'autre -- fini le type Typeform (04/11/2026).
+        var champsHtml = ETAPES.map(function (e) {
+          return '<div class="cme-mf-champ" style="margin-bottom:12px;">' +
+            '<label style="display:block;font-weight:700;font-size:14px;color:#111827;margin-bottom:6px;"><span style="font-size:18px;margin-right:6px;">' + e.icone + '</span>' + e.label + '</label>' +
+            '<input type="' + e.type + '" class="cme-mf-input" data-champ="' + e.champ + '" placeholder="' + e.placeholder + '" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s;">' +
           '</div>';
         }).join('');
 
-        var finaleHtml = estAppel ?
-          '<div class="cme-mf-etape" data-champ="appel" style="display:none;text-align:center;padding:6px 0;">' +
-            '<div style="font-size:28px;">📞</div>' +
-            '<div style="font-weight:700;font-size:15px;color:#111827;margin:8px 0 14px;">Merci ! Vous pouvez appeler un conseiller dès maintenant.</div>' +
-            '<a href="tel:' + TEL_NUMERO + '" class="cme-mf-appeler" style="display:inline-block;background:' + FORMULAIRE_ACCENT + ';color:#1f2937;font-weight:700;font-size:16px;padding:12px 26px;border-radius:9px;text-decoration:none;">📞 Appeler maintenant · ' + TEL_AFFICHAGE + '</a>' +
-          '</div>'
-          :
-          '<div class="cme-mf-etape" data-champ="merci" style="display:none;text-align:center;padding:6px 0;">' +
-            '<div style="font-size:28px;">✅</div>' +
-            '<div style="font-weight:700;font-size:15px;color:#111827;margin-top:8px;">Merci, un expert vous recontacte rapidement.</div>' +
+        var rgpdHtml =
+          '<label class="cme-mf-rgpd" style="display:flex;align-items:flex-start;gap:8px;margin:2px 0 14px;font-size:12px;color:#6b7280;line-height:1.5;cursor:pointer;">' +
+            '<input type="checkbox" class="cme-mf-rgpd-case" style="margin-top:2px;flex-shrink:0;">' +
+            '<span>J’accepte d’être recontacté(e) par un conseiller et le traitement de mes données, conformément à notre <a href="' + URL_CADRE_LEGAL + '" target="_blank" rel="noopener" style="color:' + FORMULAIRE_FOND2 + ';text-decoration:underline;">politique de confidentialité</a>.</span>' +
+          '</label>';
+
+        var texteBouton = estAppel ? '📞 Appeler maintenant' : 'Envoyer →';
+        var formulaireHtml =
+          '<div class="cme-mf-formulaire">' +
+            champsHtml + rgpdHtml +
+            '<div class="cme-mf-erreur" style="color:#dc2626;font-size:13px;margin-bottom:10px;display:none;"></div>' +
+            '<button type="button" class="cme-mf-suiv" style="width:100%;background:' + FORMULAIRE_ACCENT + ';color:#1f2937;font-weight:700;font-size:16px;padding:13px 24px;border:none;border-radius:9px;cursor:pointer;">' + texteBouton + '</button>' +
           '</div>';
 
         d.innerHTML =
           '<div style="padding:18px 20px 10px;">' +
             '<div style="color:#fff;font-weight:700;font-size:16px;margin-bottom:6px;">' + texteIntro + '</div>' +
-            '<div style="color:rgba(255,255,255,.8);font-size:12px;margin-bottom:10px;">' + texteReassurance + '</div>' +
-            '<div style="height:4px;background:rgba(255,255,255,.3);border-radius:2px;overflow:hidden;">' +
-              '<div class="cme-mf-progres" style="height:100%;width:25%;background:#fff;transition:width .25s;"></div>' +
-            '</div>' +
+            '<div style="color:rgba(255,255,255,.8);font-size:12px;">' + texteReassurance + '</div>' +
           '</div>' +
           '<div style="background:#eff6ff;padding:20px;">' +
-            '<div class="cme-mf-etapes">' + etapesHtml + finaleHtml +
-            '</div>' +
-            '<div class="cme-mf-nav" style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;">' +
-              '<button type="button" class="cme-mf-prec" style="background:none;border:none;color:#6b7280;font-size:14px;font-weight:600;cursor:pointer;padding:8px;visibility:hidden;">← Précédent</button>' +
-              '<button type="button" class="cme-mf-suiv" style="background:' + FORMULAIRE_ACCENT + ';color:#1f2937;font-weight:700;font-size:15px;padding:11px 24px;border:none;border-radius:9px;cursor:pointer;white-space:nowrap;">Suivant →</button>' +
-            '</div>' +
+            '<div class="cme-mf-corps">' + formulaireHtml + '</div>' +
           '</div>';
 
-        // ── navigation entre etapes (ferme sur d, n, prefixe) ──
-        var idx = 0;
-        var valeurs = {};
-        var noeudsEtapes = Array.prototype.slice.call(d.querySelectorAll('.cme-mf-etape'));
-        var barreProgres = d.querySelector('.cme-mf-progres');
-        var btnPrec = d.querySelector('.cme-mf-prec');
-        var btnSuiv = d.querySelector('.cme-mf-suiv');
-        var btnNav = d.querySelector('.cme-mf-nav');
-
-        function inputActif() {
-          return noeudsEtapes[idx].querySelector('.cme-mf-input');
-        }
-        function majProgres() {
-          var pct = Math.min(100, Math.round(((idx + 1) / ETAPES.length) * 100));
-          barreProgres.style.width = pct + '%';
-        }
+        // ── validation + envoi (ferme sur d, n, prefixe) ──
         function valider(champ, valeur) {
           valeur = (valeur || '').trim();
           if (champ === 'prenom') { return valeur.length >= 2 ? '' : 'Entrez vos nom et prénom.'; }
@@ -390,74 +419,55 @@ add_action('wp_footer', function () {
           return '';
         }
         function afficherErreur(msg) {
-          var erreurEl = noeudsEtapes[idx].querySelector('.cme-mf-erreur');
+          var erreurEl = d.querySelector('.cme-mf-erreur');
           if (!erreurEl) { return; }
           if (msg) { erreurEl.textContent = msg; erreurEl.style.display = 'block'; }
           else { erreurEl.style.display = 'none'; }
         }
-        function afficherEtape(el) {
-          // Petite transition d'entree (fade-in) plutot qu'un affichage brut --
-          // display reste pilote en JS (simple et fiable), seule l'opacite est
-          // animee via la feuille de style partagee / transition inline.
-          el.style.display = 'block';
-          el.style.opacity = '0';
-          window.requestAnimationFrame(function () {
-            el.style.transition = 'opacity .2s ease';
-            el.style.opacity = '1';
-          });
+        function afficherMerci() {
+          var corps = d.querySelector('.cme-mf-corps');
+          if (!corps) { return; }
+          corps.innerHTML =
+            '<div style="text-align:center;padding:6px 0;">' +
+              '<div style="font-size:28px;">✅</div>' +
+              '<div style="font-weight:700;font-size:15px;color:#111827;margin-top:8px;">Merci, un expert vous recontacte rapidement.</div>' +
+            '</div>';
         }
-        function allerA(nouvelIdx) {
-          noeudsEtapes[idx].style.display = 'none';
-          idx = nouvelIdx;
-          DERNIER_ETAT = { position: n, idx: idx, silo: prefixe, variante: variante };
-          if (idx >= ETAPES.length) {
-            journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: 'termine', silo: prefixe, cible: variante });
-            DERNIER_ETAT = null;   // termine : plus rien a detecter comme abandon pour cette instance
-            afficherEtape(noeudsEtapes[ETAPES.length]);   // etape "merci" ou "appel" selon la variante
-            btnNav.style.display = 'none';
-            barreProgres.style.width = '100%';
-            return;
+        function envoyer() {
+          var inputs = Array.prototype.slice.call(d.querySelectorAll('.cme-mf-input'));
+          var valeurs = {};
+          var premiereErreur = '';
+          for (var k = 0; k < inputs.length; k++) {
+            var champ = inputs[k].getAttribute('data-champ');
+            var val = inputs[k].value;
+            var erreur = valider(champ, val);
+            if (erreur && !premiereErreur) { premiereErreur = erreur; }
+            valeurs[champ] = val.trim();
           }
-          journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: String(idx), silo: prefixe, cible: variante });
-          afficherEtape(noeudsEtapes[idx]);
-          btnPrec.style.visibility = idx === 0 ? 'hidden' : 'visible';
-          btnSuiv.textContent = idx === ETAPES.length - 1 ? 'Envoyer →' : 'Suivant →';
-          majProgres();
-          var inp = inputActif();
-          if (inp) { window.setTimeout(function () { inp.focus(); }, 50); }
-        }
-        function suivant() {
-          var champActuel = ETAPES[idx].champ;
-          var inp = inputActif();
-          var val = inp ? inp.value : '';
-          var erreur = valider(champActuel, val);
-          if (!erreur && idx === ETAPES.length - 1) {
-            var caseRgpd = noeudsEtapes[idx].querySelector('.cme-mf-rgpd-case');
-            if (caseRgpd && !caseRgpd.checked) { erreur = 'Merci d’accepter la politique de confidentialité pour continuer.'; }
+          if (!premiereErreur) {
+            var caseRgpd = d.querySelector('.cme-mf-rgpd-case');
+            if (caseRgpd && !caseRgpd.checked) { premiereErreur = 'Merci d’accepter la politique de confidentialité pour continuer.'; }
           }
-          if (erreur) { afficherErreur(erreur); return; }
+          if (premiereErreur) { afficherErreur(premiereErreur); return; }
           afficherErreur('');
-          valeurs[champActuel] = val.trim();
-          if (idx === ETAPES.length - 1) {
-            envoyerLead(valeurs, n, prefixe, variante);
-            allerA(ETAPES.length);
+          envoyerLead(valeurs, n, prefixe, variante);
+          journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: 'termine', silo: prefixe, cible: variante });
+          DERNIER_ETAT = null;   // termine : plus rien a detecter comme abandon pour cette instance
+          if (estAppel) {
+            // Meme comportement que le popup du bouton telephone du header
+            // (cme-tracking-conversion.php, deja en prod) : lead envoye PUIS
+            // appel declenche dans le meme clic, pas d'ecran intermediaire.
+            window.location.href = 'tel:' + TEL_NUMERO;
           } else {
-            allerA(idx + 1);
+            afficherMerci();
           }
         }
-        function precedent() {
-          if (idx === 0) { return; }
-          allerA(idx - 1);
-        }
 
-        btnSuiv.addEventListener('click', suivant);
-        btnPrec.addEventListener('click', precedent);
+        var btnSuiv = d.querySelector('.cme-mf-suiv');
+        btnSuiv.addEventListener('click', envoyer);
         d.addEventListener('keydown', function (evt) {
-          if (evt.key === 'Enter') { evt.preventDefault(); suivant(); }
+          if (evt.key === 'Enter') { evt.preventDefault(); envoyer(); }
         });
-
-        majProgres();
-        journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: '0', silo: prefixe, cible: variante });
 
         // Visibilite reelle (pas juste "present dans le DOM" -- insere via
         // JS, le formulaire existe souvent avant d'etre scrolle en vue) :
@@ -467,6 +477,7 @@ add_action('wp_footer', function () {
             for (var k = 0; k < entrees.length; k++) {
               if (entrees[k].isIntersecting) {
                 journaliserInteraction({ type_evenement: 'form_vu', position_contenu: n, silo: prefixe, cible: variante });
+                DERNIER_ETAT = { position: n, vu: true, silo: prefixe, variante: variante };
                 observateurVue.disconnect();
                 break;
               }
@@ -488,27 +499,31 @@ add_action('wp_footer', function () {
         if (estCta(enfants[i])) { acc = 0; } else { acc += mots(enfants[i]); }
       }
 
-      var cumul = 0;
+      // Cadence absolue (04/11/2026) : totalMotsVus ne se reinitialise JAMAIS
+      // (sauf qu'on ne compte pas les mots d'un formulaire deja existant,
+      // comme avant) -- le seuil a atteindre est calcule depuis le DEBUT de
+      // l'article, pas depuis le dernier formulaire pose. Voir
+      // prochainSeuilContact() dans les REGLAGES plus haut.
+      var totalMotsVus = 0;
       var poses = 0;
       for (i = 0; i < enfants.length; i++) {
         var el = enfants[i];
-        if (estCta(el)) { cumul = 0; continue; }   // un formulaire existant remet le compteur a zero
-        cumul += mots(el);
-        if (cumul < MOTS_PAR_BOUTON) { continue; }
-        if (poses >= MAX_BOUTONS) { break; }
+        if (estCta(el)) { continue; }
+        totalMotsVus += mots(el);
+        if (poses >= MAX_FORMULAIRES_CONTACT) { break; }
+        if (totalMotsVus < prochainSeuilContact(poses)) { continue; }
         if (!/^(P|UL|OL|TABLE|FIGURE|BLOCKQUOTE)$/.test(el.tagName)) { continue; }   // jamais apres un titre, ni au milieu d'un bloc
         var suivantEl = enfants[i + 1];
         if (!suivantEl || estCta(suivantEl) || estVide(suivantEl)) { continue; }
         if (apres[i] < MOTS_FIN_MIN) { continue; }   // trop pres d'un formulaire existant ou de la fin
         zone.insertBefore(creer(poses + 1, 'contact'), suivantEl);
         poses++;
-        cumul = 0;
       }
 
       // ── CTA "avant d'appeler" (01/11/2026) : une seule occurrence par
       // article, ajoutee en toute fin de contenu, voir docblock. N'affecte
       // pas la frequence/position des formulaires de contact ci-dessus
-      // (traversee independante, aucun partage d'etat avec `poses`/`cumul`).
+      // (traversee independante, aucun partage d'etat avec `poses`/`totalMotsVus`).
       var totalMots = 0;
       for (i = 0; i < enfants.length; i++) {
         if (!estCta(enfants[i])) { totalMots += mots(enfants[i]); }
