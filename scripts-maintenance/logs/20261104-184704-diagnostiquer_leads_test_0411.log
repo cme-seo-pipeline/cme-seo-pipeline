@@ -1,0 +1,27 @@
+# Execution du 2026-11-04T18:47:04Z
+# Script    : scripts-maintenance/diagnostiquer_leads_test_0411.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+==========================================================================================
+1/ Lignes leads_convertis avec telephone LIKE %695410020%
+==========================================================================================
+  2026-11-04 18:43:58.875618+00:00 | tool=appel-expert-inline      | prenom='test' | tel='0695410020' | details="{\"position\":8,\"silo\":\"electricite\"}" | post_id=13029
+  2026-11-04 18:44:07.874395+00:00 | tool=contact-expert-inline    | prenom='test' | tel='0695410020' | details="{\"position\":1,\"silo\":\"electricite\"}" | post_id=13029
+  2026-11-04 18:44:32.072074+00:00 | tool=appel-header-formulaire  | prenom='TEST' | tel='0695410020' | details="{\"silo\":\"electricite\"}" | post_id=13029
+
+  Total : 3 ligne(s).
+
+==========================================================================================
+2/ Evenements form_etape='termine' du 04/11 (pour corroborer, meme fenetre)
+==========================================================================================
+  2026-11-04 16:09:54.026000+00:00 | variante=contact | pos=2 | electricite | post_id=7340
+  2026-11-04 18:43:58.174000+00:00 | variante=appel | pos=8 | electricite | post_id=13029
+  2026-11-04 18:44:07.173000+00:00 | variante=contact | pos=1 | electricite | post_id=13029
+
+  Total : 3 evenement(s).
