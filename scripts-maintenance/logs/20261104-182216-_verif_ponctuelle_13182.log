@@ -1,0 +1,100 @@
+# Execution du 2026-11-04T18:22:16Z
+# Script    : scripts-maintenance/_verif_ponctuelle_13182.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.17) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+                       timestamp type_evenement   cible etape  position_contenu source_post_id
+2026-11-01 15:16:40.001000+00:00     form_etape             0                 3          13182
+2026-11-01 15:16:40.001000+00:00     form_etape             0                 2          13182
+2026-11-01 15:16:40.001000+00:00     form_etape             0                 1          13182
+2026-11-01 15:16:40.002000+00:00     form_etape             0                 8          13182
+2026-11-01 15:16:40.002000+00:00     form_etape             0                 7          13182
+2026-11-01 15:16:40.002000+00:00     form_etape             0                 6          13182
+2026-11-01 15:16:40.002000+00:00     form_etape             0                 5          13182
+2026-11-01 15:16:40.002000+00:00     form_etape             0                 4          13182
+2026-11-01 15:16:40.003000+00:00     form_etape             0                10          13182
+2026-11-01 15:16:40.003000+00:00     form_etape             0                 9          13182
+2026-11-01 15:16:40.003000+00:00     form_etape             0                11          13182
+2026-11-01 17:23:22.473000+00:00     form_etape contact     0                 1          13182
+2026-11-01 17:23:22.473000+00:00     form_etape contact     0                 2          13182
+2026-11-01 17:23:22.474000+00:00     form_etape contact     0                 3          13182
+2026-11-01 17:23:22.474000+00:00     form_etape contact     0                 4          13182
+2026-11-01 17:23:22.474000+00:00     form_etape contact     0                 6          13182
+2026-11-01 17:23:22.474000+00:00     form_etape contact     0                 7          13182
+2026-11-01 17:23:22.474000+00:00     form_etape contact     0                 5          13182
+2026-11-01 17:23:22.475000+00:00     form_etape contact     0                 8          13182
+2026-11-01 17:23:22.475000+00:00     form_etape contact     0                 9          13182
+2026-11-01 17:23:22.475000+00:00     form_etape contact     0                10          13182
+2026-11-01 17:23:22.475000+00:00     form_etape contact     0                11          13182
+2026-11-01 17:23:22.476000+00:00     form_etape   appel     0                12          13182
+2026-11-01 17:23:24.026000+00:00        form_vu contact                       1          13182
+2026-11-01 17:23:40.931000+00:00     form_etape contact     0                 2          13182
+2026-11-01 17:23:40.931000+00:00     form_etape contact     0                 1          13182
+2026-11-01 17:23:40.932000+00:00     form_etape contact     0                 7          13182
+2026-11-01 17:23:40.932000+00:00     form_etape contact     0                10          13182
+2026-11-01 17:23:40.932000+00:00     form_etape contact     0                 9          13182
+2026-11-01 17:23:40.932000+00:00     form_etape contact     0                 8          13182
+2026-11-01 17:23:40.932000+00:00     form_etape contact     0                 6          13182
+2026-11-01 17:23:40.932000+00:00     form_etape contact     0                 5          13182
+2026-11-01 17:23:40.932000+00:00     form_etape contact     0                 4          13182
+2026-11-01 17:23:40.932000+00:00     form_etape contact     0                 3          13182
+2026-11-01 17:23:40.933000+00:00     form_etape contact     0                11          13182
+2026-11-01 17:23:40.933000+00:00     form_etape   appel     0                12          13182
+2026-11-01 17:23:42.776000+00:00        form_vu contact                       1          13182
+2026-11-01 17:23:43.642000+00:00        form_vu contact                       2          13182
+2026-11-01 17:23:43.694000+00:00        form_vu contact                       3          13182
+2026-11-01 17:23:44.080000+00:00        form_vu contact                       4          13182
+2026-11-01 17:23:44.126000+00:00        form_vu contact                       5          13182
+2026-11-01 17:23:44.428000+00:00        form_vu contact                       6          13182
+2026-11-01 17:23:44.478000+00:00        form_vu contact                       7          13182
+2026-11-01 17:23:44.526000+00:00        form_vu contact                       8          13182
+2026-11-01 17:23:44.896000+00:00        form_vu contact                       9          13182
+2026-11-01 17:23:44.930000+00:00        form_vu contact                      10          13182
+2026-11-01 17:23:44.969000+00:00        form_vu contact                      11          13182
+2026-11-01 17:23:45.408000+00:00        form_vu   appel                      12          13182
+2026-11-03 20:54:44.408000+00:00     form_etape contact     0                 1          13182
+2026-11-03 20:54:44.408000+00:00     form_etape contact     0                 2          13182
+2026-11-03 20:54:44.408000+00:00     form_etape contact     0                 3          13182
+2026-11-03 20:54:44.408000+00:00     form_etape contact     0                 4          13182
+2026-11-03 20:54:44.409000+00:00     form_etape contact     0                 5          13182
+2026-11-03 20:54:44.409000+00:00     form_etape contact     0                 6          13182
+2026-11-03 20:54:44.410000+00:00     form_etape contact     0                 7          13182
+2026-11-03 20:54:44.410000+00:00     form_etape contact     0                 8          13182
+2026-11-03 20:54:44.410000+00:00     form_etape contact     0                 9          13182
+2026-11-03 20:54:44.410000+00:00     form_etape contact     0                10          13182
+2026-11-03 20:54:44.410000+00:00     form_etape contact     0                11          13182
+2026-11-03 20:54:44.411000+00:00     form_etape   appel     0                12          13182
+2026-11-03 20:54:44.813000+00:00     form_etape contact     0                 3          13182
+2026-11-03 20:54:44.813000+00:00     form_etape contact     0                 2          13182
+2026-11-03 20:54:44.813000+00:00     form_etape contact     0                 1          13182
+2026-11-03 20:54:44.813000+00:00     form_etape contact     0                 4          13182
+2026-11-03 20:54:44.813000+00:00     form_etape contact     0                 5          13182
+2026-11-03 20:54:44.814000+00:00     form_etape contact     0                 6          13182
+2026-11-03 20:54:44.814000+00:00     form_etape contact     0                 7          13182
+2026-11-03 20:54:44.814000+00:00     form_etape contact     0                 8          13182
+2026-11-03 20:54:44.814000+00:00     form_etape contact     0                 9          13182
+2026-11-03 20:54:44.814000+00:00     form_etape contact     0                10          13182
+2026-11-03 20:54:44.814000+00:00     form_etape contact     0                11          13182
+2026-11-03 20:54:44.816000+00:00     form_etape   appel     0                12          13182
+2026-11-03 20:56:28.268000+00:00        form_vu contact                       1          13182
+2026-11-04 18:06:45.071000+00:00        form_vu contact                       1          13182
+2026-11-04 18:06:51.265000+00:00        form_vu contact                       2          13182
+2026-11-04 18:06:51.431000+00:00        form_vu contact                       3          13182
+2026-11-04 18:06:52.780000+00:00        form_vu contact                       4          13182
+2026-11-04 18:06:53.131000+00:00        form_vu contact                       5          13182
+2026-11-04 18:06:53.664000+00:00        form_vu contact                       6          13182
+2026-11-04 18:06:54.314000+00:00        form_vu contact                       7          13182
+2026-11-04 18:06:55.120000+00:00        form_vu   appel                       8          13182
+2026-11-04 18:07:32.088000+00:00   form_abandon   appel    vu                 8          13182
+2026-11-04 18:10:46.047000+00:00        form_vu contact                       1          13182
+2026-11-04 18:10:46.613000+00:00        form_vu contact                       2          13182
+2026-11-04 18:10:46.966000+00:00        form_vu contact                       3          13182
+2026-11-04 18:10:47.504000+00:00        form_vu contact                       4          13182
+2026-11-04 18:10:47.835000+00:00        form_vu contact                       5          13182
+2026-11-04 18:10:48.133000+00:00        form_vu contact                       6          13182
+2026-11-04 18:10:48.389000+00:00        form_vu contact                       7          13182
+2026-11-04 18:10:49.198000+00:00        form_vu   appel                       8          13182
+2026-11-04 18:10:52.329000+00:00   form_abandon   appel    vu                 8          13182
