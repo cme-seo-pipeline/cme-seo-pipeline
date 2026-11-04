@@ -330,8 +330,23 @@ def selectionner_silos_a_traiter(client_bq, config):
     faire de la place a un nouveau sous-silo Aide Énergétique -- voir plus
     bas) : 2/jour -> 1/jour par sous-silo, soit 5/jour au lieu de 10/jour
     au total pour Solaire (5 sous-silos x 1, structure inchangee sinon).
-    Total vise desormais 19 articles/jour (14 existants, inchanges + 5
-    Solaire).
+
+    Nouveau sous-silo "Aide pompe à chaleur" ajoute le 04/11/2026
+    (categorie WordPress creee manuellement par l'operateur le meme jour,
+    parente "Aide Énergétique", slug aide-pompe-a-chaleur) : +3/jour,
+    MEME mecanisme de selection dynamique que les autres sous-silos du
+    quota (GSC en priorite, fallback anciennete, aucune liste figee).
+    Objectif explicite de l'operateur : que ce sous-silo devienne une
+    reference et capte du trafic PRET A CONVERTIR, "le meme que la
+    derniere configuration du silo Solaire" -- d'ou l'angle transactionnel
+    impose (voir ANGLE_TRANSACTIONNEL_GENERIQUE et son branchement dans
+    generer_tous_briefs(), etendu de "silo == Solaire" a ce sous-silo
+    precis, PAS a tout le silo Aide Énergétique -- MaPrimeRénov'/Chèque
+    énergie/Aides chauffe-eau thermodynamique restent sur l'angle
+    informationnel habituel).
+
+    Total vise desormais 22 articles/jour (14 existants + 5 Solaire + 3
+    Aide pompe à chaleur).
     """
     QUOTAS_SOUS_SILO = [
         ("1. Gaz", "Bouteilles", 3),
@@ -341,6 +356,7 @@ def selectionner_silos_a_traiter(client_bq, config):
         ("3. Aide Énergétique", "MaPrimeRénov'", 2),
         ("3. Aide Énergétique", "Chèque énergie", 2),
         ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 2),
+        ("3. Aide Énergétique", "Aide pompe à chaleur", 3),
         ("4. Solaire", "Kit solaire", 1),
         ("4. Solaire", "Panneaux solaires", 1),
         ("4. Solaire", "Batterie panneaux solaires", 1),
@@ -1046,14 +1062,20 @@ JSON uniquement."""
         return None, f"❌ Erreur : {e}"
 
 
-# Angle transactionnel generique impose aux articles Solaire du quota
-# quotidien recurrent (QUOTAS_SOUS_SILO, 27/10/2026) -- le mot-cle lui
-# reste choisi dynamiquement (GSC/anciennete), seul l'angle de traitement
-# est force, quel que soit le mot-cle retenu ce jour-la. Objectif :
-# reproduire l'intention transactionnelle du lot ponctuel du 26/10 sans
-# dependre d'une liste figee de mots-cles (epuisable) -- voir le
-# commentaire de QUOTAS_SOUS_SILO pour le contexte complet.
-ANGLE_TRANSACTIONNEL_SOLAIRE = (
+# Angle transactionnel generique impose aux articles du quota quotidien
+# recurrent (QUOTAS_SOUS_SILO) pour les sous-silos ou le ciblage explicite
+# est de capter du trafic PRET A CONVERTIR plutot que purement informationnel
+# -- le mot-cle lui reste choisi dynamiquement (GSC/anciennete), seul
+# l'angle de traitement est force, quel que soit le mot-cle retenu ce
+# jour-la. Introduit pour Solaire le 27/10/2026 (reproduire l'intention
+# transactionnelle du lot ponctuel du 26/10 sans dependre d'une liste
+# figee de mots-cles, epuisable) ; etendu le 04/11/2026 au nouveau
+# sous-silo "Aide pompe à chaleur" (silo Aide Énergétique), meme logique,
+# meme texte -- voir le branchement dans generer_tous_briefs() et le
+# commentaire de QUOTAS_SOUS_SILO pour le contexte complet. Renomme
+# (ex-ANGLE_TRANSACTIONNEL_SOLAIRE) a cette occasion : le nom precedent
+# suggerait a tort une portee limitee au seul silo Solaire.
+ANGLE_TRANSACTIONNEL_GENERIQUE = (
     "Quel que soit le mot-clé retenu, traite-le sous un angle TRANSACTIONNEL : "
     "prix/devis, rentabilité et temps de retour sur investissement, "
     "dimensionnement/budget, ou comparatif avec l'alternative la plus pertinente "
@@ -1078,7 +1100,14 @@ def generer_tous_briefs(df_final, client_bq, config):
             continue
         contexte = preparer_contexte_silo(df_silo_clean, silo_name)
         titres_existants = recuperer_titres_existants(silo_name, client_bq)
-        angle_force = ANGLE_TRANSACTIONNEL_SOLAIRE if silo_name == "4. Solaire" else None
+        # Sous-silo compare par prefixe (pas egalite stricte) : un sous-silo
+        # a quota > 1 peut arriver ici suffixe ' (2)'/' (3)' par l'anti-
+        # collision de selectionner_silos_a_traiter().
+        angle_force = None
+        if silo_name == "4. Solaire":
+            angle_force = ANGLE_TRANSACTIONNEL_GENERIQUE
+        elif silo_name == "3. Aide Énergétique" and str(sous_silo_name).startswith("Aide pompe à chaleur"):
+            angle_force = ANGLE_TRANSACTIONNEL_GENERIQUE
         brief, erreur = generer_brief_silo(contexte, config, titres_existants, angle_force=angle_force)
         if erreur:
             print(f"  ❌ {silo_name} : {erreur}")
