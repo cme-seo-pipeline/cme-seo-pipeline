@@ -135,6 +135,41 @@
  *    mesures du 28/10 au 04/11 (positions 1/2/3/5, taux d'abandon ~67%,
  *    cadence a 230 mots) : nouveau point de mesure prevu a 30 jours
  *    plutot qu'a 7-10 jours, decision explicite de l'operateur.
+ *
+ * CORRECTIF DU 04/11/2026, suite -- angle mort "bloc Colonnes" :
+ * la boucle de placement du formulaire "contact" ne regardait que les
+ * ENFANTS DIRECTS de .entry-content (zone.children), jamais une recherche
+ * recursive. Un article dont le corps est redige avec un bloc Gutenberg
+ * "Colonnes" (<div class="wp-block-columns"><div class="wp-block-column">
+ * ...<p>...</p>...</div></div>) a donc tous ses <p>/<ul>/<ol>/<table>/
+ * <figure>/<blockquote> reels NON eligibles (ce sont des enfants du <div>
+ * wp-block-column, jamais des enfants directs de .entry-content), quelle
+ * que soit la longueur totale de l'article -- confirme sur
+ * attestation-de-contrat-delectricite (4461 mots, 0 formulaire "contact"
+ * jamais pose) et 16 autres articles (audit exhaustif,
+ * scripts-maintenance/auditer_angle_mort_colonnes_cta.py). Le bloc "avant
+ * d'appeler" n'etait pas concerne (zone.appendChild(...) inconditionnel,
+ * sans condition de tag), ce qui expliquait l'ecart observe (le bloc
+ * "appel" apparait normalement, jamais le "contact", sur les memes
+ * articles).
+ * Corrige en "deplipant" (enfantsEffectifs()) tout <div class="wp-block-
+ * columns"> / <div class="wp-block-column"> avant de construire la liste
+ * de candidats -- la boucle de placement travaille desormais sur les
+ * elements reels (<p>, <table>...) qu'ils contiennent, pas sur le
+ * conteneur opaque. L'insertion elle-meme se fait sur le PARENT REEL de
+ * l'element de reference (suivantEl.parentNode), plus sur `zone`
+ * directement, puisque cet element peut desormais etre imbrique a
+ * l'interieur d'un wp-block-column -- Node.insertBefore exige que le
+ * noeud de reference soit un enfant DIRECT du noeud sur lequel on
+ * l'appelle. Totalement retro-compatible : un article sans bloc Colonnes
+ * n'a aucun <div> qui matche, enfantsEffectifs() renvoie alors exactement
+ * la meme liste que zone.children, et suivantEl.parentNode === zone dans
+ * ce cas (meme comportement qu'avant ce correctif).
+ * Perimetre volontairement restreint a wp-block-columns/wp-block-column
+ * (seule cause confirmee par l'audit) -- pas de generalisation a tout
+ * <div> (ex. wp-block-group, ou un div d'embed/widget) sans preuve
+ * similaire, pour ne pas inserer un formulaire a l'interieur d'un bloc
+ * qui n'aurait pas la meme nature purement structurelle.
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -228,6 +263,33 @@ add_action('wp_footer', function () {
   }
   function estVide(el) {
     return el.tagName === 'DIV' && el.children.length === 0 && !(el.textContent || '').trim();
+  }
+  // Correctif du 04/11/2026 (angle mort "bloc Colonnes", voir docblock) --
+  // un conteneur purement structurel (Gutenberg "Colonnes") ne doit jamais
+  // etre traite comme un bloc opaque : on "deplie" ses enfants a la place.
+  function estConteneurLayout(el) {
+    if (!el || el.tagName !== 'DIV') { return false; }
+    var classes = (el.className || '').split(/\s+/);
+    return classes.indexOf('wp-block-columns') !== -1 || classes.indexOf('wp-block-column') !== -1;
+  }
+  // Construit la liste de candidats en depliant recursivement tout
+  // conteneur de layout (cf. estConteneurLayout) -- tout le reste
+  // (formulaires CTA, divs non-layout, balises atomiques) reste un
+  // element unique, a sa place, exactement comme avant ce correctif.
+  function enfantsEffectifs(zone) {
+    var resultat = [];
+    function deplier(liste) {
+      for (var j = 0; j < liste.length; j++) {
+        var el = liste[j];
+        if (estConteneurLayout(el)) {
+          deplier(Array.prototype.slice.call(el.children));
+        } else {
+          resultat.push(el);
+        }
+      }
+    }
+    deplier(Array.prototype.slice.call(zone.children));
+    return resultat;
   }
   // Etats :focus/:hover impossibles a poser avec de simples attributs style="" :
   // une petite feuille de style injectee une seule fois (idempotent) pour toute
@@ -489,7 +551,7 @@ add_action('wp_footer', function () {
         return d;
       }
 
-      var enfants = Array.prototype.slice.call(zone.children);
+      var enfants = enfantsEffectifs(zone);   // "deplie" les blocs Colonnes -- voir docblock, correctif du 04/11/2026
       var i;
       // apres[i] : mots restant apres l'element i avant le prochain formulaire existant (ou la fin)
       var apres = [];
@@ -516,7 +578,11 @@ add_action('wp_footer', function () {
         var suivantEl = enfants[i + 1];
         if (!suivantEl || estCta(suivantEl) || estVide(suivantEl)) { continue; }
         if (apres[i] < MOTS_FIN_MIN) { continue; }   // trop pres d'un formulaire existant ou de la fin
-        zone.insertBefore(creer(poses + 1, 'contact'), suivantEl);
+        // suivantEl peut desormais etre imbrique dans un wp-block-column (voir
+        // enfantsEffectifs() plus haut) -- insertBefore exige le PARENT REEL
+        // de l'element de reference, jamais `zone` directement (qui echouerait
+        // silencieusement/leverait si suivantEl n'est pas son enfant direct).
+        suivantEl.parentNode.insertBefore(creer(poses + 1, 'contact'), suivantEl);
         poses++;
       }
 
