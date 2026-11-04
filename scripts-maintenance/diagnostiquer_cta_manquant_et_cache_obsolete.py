@@ -118,7 +118,7 @@ def volet2():
     query2 = f"""
         SELECT timestamp, type_evenement, etape, cible
         FROM `{PROJECT}.{DATASET}.{TABLE}`
-        WHERE source_post_id = {POST_ID_ATTESTATION}
+        WHERE CAST(source_post_id AS STRING) = '{POST_ID_ATTESTATION}'
         ORDER BY timestamp DESC
         LIMIT 20
     """
