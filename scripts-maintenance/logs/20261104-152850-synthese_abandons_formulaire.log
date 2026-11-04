@@ -1,0 +1,58 @@
+# Execution du 2026-11-04T15:28:50Z
+# Script    : scripts-maintenance/synthese_abandons_formulaire.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📅 Fenetre : depuis le 2026-10-28
+
+==========================================================================================
+1/ Abandons par variante (cible) et etape atteinte avant abandon
+==========================================================================================
+  (vide)       | etape=1          : 2 abandon(s), 2 session(s)
+  contact      | etape=1          : 4 abandon(s), 4 session(s)
+
+==========================================================================================
+2/ Abandons par silo
+==========================================================================================
+  aide-energetique       : 3 abandon(s)
+  gaz                    : 2 abandon(s)
+  electricite            : 1 abandon(s)
+
+==========================================================================================
+3/ Abandons par position d'occurrence du formulaire dans l'article
+==========================================================================================
+  occurrence n°1 : 5 abandon(s)
+  occurrence n°2 : 1 abandon(s)
+
+==========================================================================================
+4/ Detail ligne a ligne (volume encore faible -- lecture qualitative)
+==========================================================================================
+  2026-10-28 19:42:42.292000+00:00 | (vide) | etape=1 | aide-energetique | occ#1 | post_id=9355 | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1002/
+  2026-11-01 05:43:52.539000+00:00 | (vide) | etape=1 | aide-energetique | occ#1 | post_id=3947 | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-baremes-revenus-plafonds-2025/
+  2026-11-01 17:28:32.619000+00:00 | contact | etape=1 | gaz | occ#2 | post_id=13179 | https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-fournisseurs-gaz-tarifs-offres/
+  2026-11-04 08:05:09.815000+00:00 | contact | etape=1 | aide-energetique | occ#1 | post_id=8707 | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-delai-versement-suivi/
+  2026-11-04 11:15:24.039000+00:00 | contact | etape=1 | gaz | occ#1 | post_id=6278 | https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparer-prix-gaz-fournisseurs/
+  2026-11-04 14:09:21.852000+00:00 | contact | etape=1 | electricite | occ#1 | post_id=4745 | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/meilleur-fournisseur-electricite-2026-comparatif-tarifs/
+
+==========================================================================================
+5/ Contexte -- rapport abandon / etape-telephone-atteinte / soumis, par variante
+==========================================================================================
+  (vide)       | form_abandon   | etape=1          : 2
+  (vide)       | form_etape     | etape=1          : 3
+  (vide)       | form_etape     | etape=termine    : 1
+  appel        | form_etape     | etape=1          : 1
+  appel        | form_etape     | etape=termine    : 1
+  contact      | form_abandon   | etape=1          : 4
+  contact      | form_etape     | etape=1          : 6
+  contact      | form_etape     | etape=termine    : 2
