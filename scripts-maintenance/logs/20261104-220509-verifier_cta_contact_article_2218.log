@@ -1,0 +1,61 @@
+# Execution du 2026-11-04T22:05:09Z
+# Script    : scripts-maintenance/verifier_cta_contact_article_2218.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+Agregation complete des evenements interactions_contenu pour post_id=2218 :
+  clic_contenu     | cible='lien_interne' | position=4212 | 1 evt | 2026-11-04 21:51:06.868000+00:00 -> 2026-11-04 21:51:06.868000+00:00
+  form_abandon     | cible='appel'      | position=1 | 2 evt | 2026-11-04 21:51:08.204000+00:00 -> 2026-11-04 21:51:46.448000+00:00
+  form_etape       | cible=''           | position=1 | 1 evt | 2026-10-28 20:26:48.651000+00:00 -> 2026-10-28 20:26:48.651000+00:00
+  form_etape       | cible='appel'      | position=1 | 2 evt | 2026-11-01 17:24:24.527000+00:00 -> 2026-11-01 17:44:19.939000+00:00
+  form_etape       | cible='appel'      | position=2 | 4 evt | 2026-11-03 20:55:27.268000+00:00 -> 2026-11-04 10:44:15.157000+00:00
+  form_etape       | cible='contact'    | position=1 | 4 evt | 2026-11-03 20:55:27.267000+00:00 -> 2026-11-04 10:44:15.156000+00:00
+  form_vu          | cible='appel'      | position=1 | 2 evt | 2026-11-04 21:50:26.173000+00:00 -> 2026-11-04 21:51:18.745000+00:00
+  form_vu          | cible='appel'      | position=2 | 1 evt | 2026-11-04 10:44:38.835000+00:00 -> 2026-11-04 10:44:38.835000+00:00
+  form_vu          | cible='contact'    | position=1 | 1 evt | 2026-11-04 10:44:34.800000+00:00 -> 2026-11-04 10:44:34.800000+00:00
+  lecture_position | cible=''           | position=100 | 3 evt | 2026-11-01 17:24:26.545000+00:00 -> 2026-11-04 10:44:18.897000+00:00
+  lecture_position | cible=''           | position=200 | 3 evt | 2026-11-01 17:24:26.797000+00:00 -> 2026-11-04 10:44:19.045000+00:00
+  lecture_position | cible=''           | position=300 | 3 evt | 2026-11-01 17:24:26.877000+00:00 -> 2026-11-04 10:44:19.339000+00:00
+  lecture_position | cible=''           | position=400 | 3 evt | 2026-11-01 17:24:26.944000+00:00 -> 2026-11-04 10:44:19.912000+00:00
+  lecture_position | cible=''           | position=500 | 3 evt | 2026-11-01 17:24:27.028000+00:00 -> 2026-11-04 10:44:21.912000+00:00
+  lecture_position | cible=''           | position=600 | 3 evt | 2026-11-01 17:24:27.130000+00:00 -> 2026-11-04 10:44:21.942000+00:00
+  lecture_position | cible=''           | position=800 | 3 evt | 2026-11-01 17:24:27.164000+00:00 -> 2026-11-04 10:44:22.172000+00:00
+  lecture_position | cible=''           | position=900 | 3 evt | 2026-11-01 17:24:27.411000+00:00 -> 2026-11-04 10:44:22.705000+00:00
+  lecture_position | cible=''           | position=1000 | 3 evt | 2026-11-01 17:45:14.506000+00:00 -> 2026-11-04 10:44:22.763000+00:00
+  lecture_position | cible=''           | position=1100 | 3 evt | 2026-11-01 17:45:30.262000+00:00 -> 2026-11-04 10:44:22.795000+00:00
+  lecture_position | cible=''           | position=1200 | 3 evt | 2026-11-01 17:45:30.349000+00:00 -> 2026-11-04 10:44:23.072000+00:00
+  lecture_position | cible=''           | position=1300 | 4 evt | 2026-11-01 17:45:30.399000+00:00 -> 2026-11-04 21:50:24.791000+00:00
+  lecture_position | cible=''           | position=1400 | 2 evt | 2026-11-03 20:56:06.523000+00:00 -> 2026-11-04 10:44:24.206000+00:00
+  lecture_position | cible=''           | position=1500 | 4 evt | 2026-11-01 17:45:30.595000+00:00 -> 2026-11-04 21:50:24.882000+00:00
+  lecture_position | cible=''           | position=1600 | 4 evt | 2026-11-01 17:45:30.698000+00:00 -> 2026-11-04 21:50:24.931000+00:00
+  lecture_position | cible=''           | position=1700 | 4 evt | 2026-11-01 17:45:30.763000+00:00 -> 2026-11-04 21:50:24.946000+00:00
+  lecture_position | cible=''           | position=1800 | 2 evt | 2026-11-04 10:44:28.039000+00:00 -> 2026-11-04 21:50:25.317000+00:00
+  lecture_position | cible=''           | position=1900 | 2 evt | 2026-11-04 10:44:28.046000+00:00 -> 2026-11-04 21:50:25.336000+00:00
+  lecture_position | cible=''           | position=2000 | 1 evt | 2026-11-04 10:44:28.429000+00:00 -> 2026-11-04 10:44:28.429000+00:00
+  lecture_position | cible=''           | position=2100 | 1 evt | 2026-11-04 21:50:25.355000+00:00 -> 2026-11-04 21:50:25.355000+00:00
+  lecture_position | cible=''           | position=2200 | 2 evt | 2026-11-04 10:44:28.449000+00:00 -> 2026-11-04 21:50:25.649000+00:00
+  lecture_position | cible=''           | position=2300 | 1 evt | 2026-11-04 10:44:30.191000+00:00 -> 2026-11-04 10:44:30.191000+00:00
+  lecture_position | cible=''           | position=2400 | 1 evt | 2026-11-04 10:44:30.215000+00:00 -> 2026-11-04 10:44:30.215000+00:00
+  lecture_position | cible=''           | position=2500 | 2 evt | 2026-11-04 10:44:30.248000+00:00 -> 2026-11-04 21:50:25.684000+00:00
+  lecture_position | cible=''           | position=2600 | 2 evt | 2026-11-04 10:44:30.608000+00:00 -> 2026-11-04 21:50:25.702000+00:00
+  lecture_position | cible=''           | position=2700 | 1 evt | 2026-11-04 10:44:30.651000+00:00 -> 2026-11-04 10:44:30.651000+00:00
+  lecture_position | cible=''           | position=2800 | 2 evt | 2026-11-04 10:44:31.247000+00:00 -> 2026-11-04 21:50:25.753000+00:00
+  lecture_position | cible=''           | position=2900 | 1 evt | 2026-11-04 10:44:31.589000+00:00 -> 2026-11-04 10:44:31.589000+00:00
+  lecture_position | cible=''           | position=3000 | 2 evt | 2026-11-04 10:44:32.130000+00:00 -> 2026-11-04 21:50:25.787000+00:00
+  lecture_position | cible=''           | position=3100 | 2 evt | 2026-11-04 10:44:32.180000+00:00 -> 2026-11-04 21:50:25.804000+00:00
+  lecture_position | cible=''           | position=3200 | 2 evt | 2026-11-04 10:44:32.714000+00:00 -> 2026-11-04 21:50:26.059000+00:00
+  lecture_position | cible=''           | position=3300 | 2 evt | 2026-11-04 10:44:32.765000+00:00 -> 2026-11-04 21:50:26.086000+00:00
+  lecture_position | cible=''           | position=3400 | 2 evt | 2026-11-04 10:44:32.845000+00:00 -> 2026-11-04 21:50:26.092000+00:00
+  lecture_position | cible=''           | position=3500 | 1 evt | 2026-11-04 10:44:33.280000+00:00 -> 2026-11-04 10:44:33.280000+00:00
+  lecture_position | cible=''           | position=3600 | 2 evt | 2026-11-04 10:44:33.298000+00:00 -> 2026-11-04 21:50:26.118000+00:00
+  lecture_position | cible=''           | position=3700 | 1 evt | 2026-11-04 10:44:34.190000+00:00 -> 2026-11-04 10:44:34.190000+00:00
+  lecture_position | cible=''           | position=3800 | 2 evt | 2026-11-04 10:44:34.265000+00:00 -> 2026-11-04 21:50:26.150000+00:00
+  lecture_position | cible=''           | position=3900 | 1 evt | 2026-11-04 10:44:34.709000+00:00 -> 2026-11-04 10:44:34.709000+00:00
+  lecture_position | cible=''           | position=4000 | 1 evt | 2026-11-04 21:50:26.172000+00:00 -> 2026-11-04 21:50:26.172000+00:00
+  lecture_position | cible=''           | position=4100 | 3 evt | 2026-11-04 10:44:34.799000+00:00 -> 2026-11-04 21:51:18.673000+00:00
+  lecture_position | cible=''           | position=4200 | 3 evt | 2026-11-04 10:44:37.080000+00:00 -> 2026-11-04 21:51:26.748000+00:00
+  lecture_position | cible=''           | position=4300 | 1 evt | 2026-11-04 10:44:38.781000+00:00 -> 2026-11-04 10:44:38.781000+00:00
+  lecture_position | cible=''           | position=4400 | 1 evt | 2026-11-04 10:44:39.532000+00:00 -> 2026-11-04 10:44:39.532000+00:00
+
+✅ 2 ligne(s) agregee(s) avec cible='contact' trouvee(s) -- le mini-formulaire 'contact' est bien vu sur cet article.
