@@ -1,0 +1,19 @@
+# Execution du 2026-11-04T23:00:03Z
+# Script    : scripts-maintenance/inspecter_structure_3489_3387.py
+# Arguments : 
+
+==========================================================================================
+id=3489 (renovation-energetique)
+==========================================================================================
+  2 enfant(s) direct(s) :
+    [0] <p class=""> | 10 mots | 0 <p> imbrique(s)
+    [1] <article class=""> | 2731 mots | 48 <p> imbrique(s)
+
+==========================================================================================
+id=3387 (comparateur-electricite)
+==========================================================================================
+  4 enfant(s) direct(s) :
+    [0] <article class=""> | 2824 mots | 42 <p> imbrique(s)
+    [1] <p class=""> | 2 mots | 0 <p> imbrique(s)
+    [2] <style class=""> | 310 mots | 0 <p> imbrique(s)
+    [3] <div class=""> | 2 mots | 1 <p> imbrique(s)
