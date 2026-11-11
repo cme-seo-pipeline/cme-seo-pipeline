@@ -166,10 +166,39 @@
  * la meme liste que zone.children, et suivantEl.parentNode === zone dans
  * ce cas (meme comportement qu'avant ce correctif).
  * Perimetre volontairement restreint a wp-block-columns/wp-block-column
- * (seule cause confirmee par l'audit) -- pas de generalisation a tout
- * <div> (ex. wp-block-group, ou un div d'embed/widget) sans preuve
- * similaire, pour ne pas inserer un formulaire a l'interieur d'un bloc
- * qui n'aurait pas la meme nature purement structurelle.
+ * (seule cause confirmee par l'audit a cette date) -- pas de
+ * generalisation a tout <div> (ex. wp-block-group, ou un div d'embed/
+ * widget) sans preuve similaire, pour ne pas inserer un formulaire a
+ * l'interieur d'un bloc qui n'aurait pas la meme nature purement
+ * structurelle.
+ *
+ * CORRECTIF DU 11/11/2026, suite -- angle mort "<article> brute" :
+ * classer_cause_racine_17_angle_mort.py (04/11) avait identifie une DEUXIEME
+ * cause distincte, laissee de cote ce soir-la : 6 articles (id=3489, 3488,
+ * 3491, 3384, 3385, 3387) ont tout leur contenu reel enveloppe dans un
+ * UNIQUE <article class=""> imbrique -- probablement un artefact d'import/
+ * copie-collage, puisqu'une balise <article> a l'interieur du
+ * post_content stocke n'a rien de semantique ici (le theme pose deja sa
+ * propre balise <article class="type-post"> EN DEHORS de .entry-content,
+ * voir document.querySelector('article.type-post') plus bas -- celle-ci
+ * n'est jamais affectee par ce correctif). Resultat avant correctif :
+ * .entry-content n'a QU'UN SEUL enfant direct (cet <article>), de tagName
+ * 'ARTICLE' -- jamais P/UL/OL/TABLE/FIGURE/BLOCKQUOTE -- donc la boucle de
+ * placement s'arretait immediatement sans jamais poser le moindre
+ * formulaire "contact", quelle que soit la longueur reelle de l'article
+ * (confirme : 0 formulaire sur les 6, de 1994 a 2849 mots).
+ * Meme correctif, meme mecanisme que ci-dessus (enfantsEffectifs() deplie
+ * desormais aussi tout <article>, pas seulement wp-block-columns/
+ * wp-block-column) -- reutilise exactement la meme recursion et la meme
+ * insertion sur le parent reel (suivantEl.parentNode.insertBefore),
+ * aucune nouvelle mecanique necessaire. Totalement retro-compatible pour
+ * les memes raisons que le correctif du 04/11 : un article sans <article>
+ * imbrique n'est pas affecte. Perimetre etendu a <article> (sans
+ * condition de classe, par opposition a wp-block-columns qui exige la
+ * classe) car cette fois la preuve est specifique au TAG, observee sur
+ * les 6 articles cites, et le seul <article> jamais rencontre par ce
+ * script est soit le wrapper du theme (hors de .entry-content, jamais un
+ * candidat), soit cet artefact d'import -- aucun troisieme cas connu.
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -267,8 +296,13 @@ add_action('wp_footer', function () {
   // Correctif du 04/11/2026 (angle mort "bloc Colonnes", voir docblock) --
   // un conteneur purement structurel (Gutenberg "Colonnes") ne doit jamais
   // etre traite comme un bloc opaque : on "deplie" ses enfants a la place.
+  // Etendu le 11/11/2026 (angle mort "<article> brute", voir docblock) --
+  // meme logique pour une balise <article> imbriquee (artefact d'import,
+  // jamais le wrapper du theme qui vit en dehors de .entry-content).
   function estConteneurLayout(el) {
-    if (!el || el.tagName !== 'DIV') { return false; }
+    if (!el) { return false; }
+    if (el.tagName === 'ARTICLE') { return true; }
+    if (el.tagName !== 'DIV') { return false; }
     var classes = (el.className || '').split(/\s+/);
     return classes.indexOf('wp-block-columns') !== -1 || classes.indexOf('wp-block-column') !== -1;
   }
