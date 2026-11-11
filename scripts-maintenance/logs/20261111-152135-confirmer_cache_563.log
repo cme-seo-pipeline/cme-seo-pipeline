@@ -1,0 +1,23 @@
+# Execution du 2026-11-11T15:21:35Z
+# Script    : scripts-maintenance/confirmer_cache_563.py
+# Arguments : 
+
+================================================================================
+Requete SANS cache-buster (meme forme que le script precedent) :
+================================================================================
+  HTTP 200 | longueur contenu = 80430 | modified = 2026-10-26T14:23:10
+  Contient 'rank-math-block' ? True
+  Contient un bloc <script> imbrique ? True
+
+================================================================================
+Requete AVEC cache-buster (?t=$RANDOM en query) :
+================================================================================
+  HTTP 200 | longueur contenu = 80444 | modified = 2026-10-26T14:23:10
+  Contient 'rank-math-block' ? True
+  Contient un bloc <script> imbrique ? True
+
+================================================================================
+Conclusion
+================================================================================
+  ⚠️ Les deux reponses DIFFERENT -- confirme un cache perime sur l'endpoint
+  REST sans cache-buster. Le contenu reel et actuel est celui avec 't='.
