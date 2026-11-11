@@ -1,0 +1,448 @@
+# Execution du 2026-11-11T08:38:03Z
+# Script    : scripts-maintenance/investiguer_4_cas_isoles_cta.py
+# Arguments : 
+
+
+[notice] A new release of pip is available: 26.2.2 -> 26.3
+[notice] To update, run: pip install --upgrade pip
+Installing dependencies...
+Switching to root user to install dependencies...
+Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+Get:3 https://packages.microsoft.com/ubuntu/26.04/prod resolute InRelease [3964 B]
+Hit:2 http://azure.archive.ubuntu.com/ubuntu resolute InRelease
+Get:4 http://azure.archive.ubuntu.com/ubuntu resolute-updates InRelease [137 kB]
+Get:5 http://azure.archive.ubuntu.com/ubuntu resolute-backports InRelease [137 kB]
+Get:6 http://azure.archive.ubuntu.com/ubuntu resolute-security InRelease [137 kB]
+Get:7 https://packages.microsoft.com/ubuntu/26.04/prod resolute/main arm64 Packages [140 kB]
+Get:8 https://packages.microsoft.com/ubuntu/26.04/prod resolute/main amd64 Packages [154 kB]
+Get:9 https://packages.microsoft.com/ubuntu/26.04/prod resolute/main armhf Packages [1077 B]
+Get:10 http://azure.archive.ubuntu.com/ubuntu resolute-updates/main amd64v3 Packages [869 kB]
+Get:11 http://azure.archive.ubuntu.com/ubuntu resolute-updates/main Translation-en [195 kB]
+Get:12 http://azure.archive.ubuntu.com/ubuntu resolute-updates/universe amd64v3 Packages [390 kB]
+Get:13 http://azure.archive.ubuntu.com/ubuntu resolute-updates/universe Translation-en [122 kB]
+Get:14 http://azure.archive.ubuntu.com/ubuntu resolute-updates/restricted amd64v3 Packages [603 kB]
+Get:15 http://azure.archive.ubuntu.com/ubuntu resolute-updates/restricted Translation-en [125 kB]
+Get:16 http://azure.archive.ubuntu.com/ubuntu resolute-security/main amd64v3 Packages [718 kB]
+Get:17 http://azure.archive.ubuntu.com/ubuntu resolute-security/main Translation-en [157 kB]
+Get:18 http://azure.archive.ubuntu.com/ubuntu resolute-security/universe amd64v3 Packages [212 kB]
+Get:19 http://azure.archive.ubuntu.com/ubuntu resolute-security/universe Translation-en [70.7 kB]
+Get:20 http://azure.archive.ubuntu.com/ubuntu resolute-security/restricted amd64v3 Packages [586 kB]
+Get:21 http://azure.archive.ubuntu.com/ubuntu resolute-security/restricted Translation-en [121 kB]
+Fetched 4878 kB in 0s (11.3 MB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+libasound2t64 is already the newest version (1.2.15.3-1ubuntu1.1).
+libasound2t64 set to manually installed.
+libatk-bridge2.0-0t64 is already the newest version (2.60.4-0ubuntu0.1).
+libatk-bridge2.0-0t64 set to manually installed.
+libatk1.0-0t64 is already the newest version (2.60.4-0ubuntu0.1).
+libatk1.0-0t64 set to manually installed.
+libatspi2.0-0t64 is already the newest version (2.60.4-0ubuntu0.1).
+libatspi2.0-0t64 set to manually installed.
+libcairo2 is already the newest version (1.18.4-3).
+libcairo2 set to manually installed.
+libcups2t64 is already the newest version (2.4.16-1ubuntu1.3).
+libcups2t64 set to manually installed.
+libdbus-1-3 is already the newest version (1.16.2-2ubuntu4).
+libdbus-1-3 set to manually installed.
+libdrm2 is already the newest version (2.4.131-1).
+libdrm2 set to manually installed.
+libgbm1 is already the newest version (26.0.8-1ubuntu0.3).
+libgbm1 set to manually installed.
+libglib2.0-0t64 is already the newest version (2.88.0-1ubuntu0.1).
+libglib2.0-0t64 set to manually installed.
+libnspr4 is already the newest version (2:4.38.2-1ubuntu1).
+libnspr4 set to manually installed.
+libnss3 is already the newest version (2:3.120-1ubuntu2.2).
+libnss3 set to manually installed.
+libpango-1.0-0 is already the newest version (1.57.0-1).
+libpango-1.0-0 set to manually installed.
+libx11-6 is already the newest version (2:1.8.13-1ubuntu0.1).
+libx11-6 set to manually installed.
+libxcb1 is already the newest version (1.17.0-2ubuntu1).
+libxcb1 set to manually installed.
+libxcomposite1 is already the newest version (1:0.4.6-1build1).
+libxcomposite1 set to manually installed.
+libxdamage1 is already the newest version (1:1.1.7-1).
+libxdamage1 set to manually installed.
+libxext6 is already the newest version (2:1.3.4-1build3).
+libxext6 set to manually installed.
+libxfixes3 is already the newest version (1:6.0.0-2build2).
+libxfixes3 set to manually installed.
+libxkbcommon0 is already the newest version (1.13.1-1).
+libxkbcommon0 set to manually installed.
+libxrandr2 is already the newest version (2:1.5.4-1build1).
+libxrandr2 set to manually installed.
+xvfb is already the newest version (2:21.1.22-1ubuntu1.3).
+fonts-noto-color-emoji is already the newest version (2.051-1build1).
+libfontconfig1 is already the newest version (2.17.1-3ubuntu1).
+libfontconfig1 set to manually installed.
+libfreetype6 is already the newest version (2.14.2+dfsg-1ubuntu0.2).
+libfreetype6 set to manually installed.
+fonts-liberation is already the newest version (1:2.1.5-3build1).
+fonts-liberation set to manually installed.
+Solving dependencies...
+The following additional packages will be installed:
+  xfonts-encodings xfonts-utils
+Recommended packages:
+  fonts-ipafont-mincho fonts-tlwg-loma
+The following NEW packages will be installed:
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+0 upgraded, 9 newly installed, 0 to remove and 52 not upgraded.
+Need to get 21.9 MB of archives.
+After this operation, 80.2 MB of additional disk space will be used.
+Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+Get:2 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 fonts-ipafont-gothic all 00303-23ubuntu1 [3703 kB]
+Get:3 http://azure.archive.ubuntu.com/ubuntu resolute/main amd64v3 fonts-freefont-ttf all 20211204+svn4273-4build1 [5656 kB]
+Get:4 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 fonts-tlwg-loma-otf all 1:0.7.3-1build1 [106 kB]
+Get:5 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 fonts-unifont all 1:16.0.04-1build1 [3169 kB]
+Get:6 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 fonts-wqy-zenhei all 0.9.45-8build1 [7863 kB]
+Get:7 http://azure.archive.ubuntu.com/ubuntu resolute/main amd64v3 xfonts-encodings all 1:1.0.5-0ubuntu3 [576 kB]
+Get:8 http://azure.archive.ubuntu.com/ubuntu resolute/main amd64v3 xfonts-utils amd64 1:7.7+7build1 [97.3 kB]
+Get:9 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 xfonts-cyrillic all 1:1.0.5+nmu1build1 [384 kB]
+Get:10 http://azure.archive.ubuntu.com/ubuntu resolute/universe amd64v3 xfonts-scalable all 1:1.0.3-1.3build1 [304 kB]
+Fetched 21.9 MB in 2s (10.1 MB/s)
+Selecting previously unselected package fonts-ipafont-gothic.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 213197 files and directories currently installed.)
+Preparing to unpack .../0-fonts-ipafont-gothic_00303-23ubuntu1_all.deb ...
+Unpacking fonts-ipafont-gothic (00303-23ubuntu1) ...
+Selecting previously unselected package fonts-freefont-ttf.
+Preparing to unpack .../1-fonts-freefont-ttf_20211204+svn4273-4build1_all.deb ...
+Unpacking fonts-freefont-ttf (20211204+svn4273-4build1) ...
+Selecting previously unselected package fonts-tlwg-loma-otf.
+Preparing to unpack .../2-fonts-tlwg-loma-otf_1%3a0.7.3-1build1_all.deb ...
+Unpacking fonts-tlwg-loma-otf (1:0.7.3-1build1) ...
+Selecting previously unselected package fonts-unifont.
+Preparing to unpack .../3-fonts-unifont_1%3a16.0.04-1build1_all.deb ...
+Unpacking fonts-unifont (1:16.0.04-1build1) ...
+Selecting previously unselected package fonts-wqy-zenhei.
+Preparing to unpack .../4-fonts-wqy-zenhei_0.9.45-8build1_all.deb ...
+Unpacking fonts-wqy-zenhei (0.9.45-8build1) ...
+Selecting previously unselected package xfonts-encodings.
+Preparing to unpack .../5-xfonts-encodings_1%3a1.0.5-0ubuntu3_all.deb ...
+Unpacking xfonts-encodings (1:1.0.5-0ubuntu3) ...
+Selecting previously unselected package xfonts-utils.
+Preparing to unpack .../6-xfonts-utils_1%3a7.7+7build1_amd64v3.deb ...
+Unpacking xfonts-utils (1:7.7+7build1) ...
+Selecting previously unselected package xfonts-cyrillic.
+Preparing to unpack .../7-xfonts-cyrillic_1%3a1.0.5+nmu1build1_all.deb ...
+Unpacking xfonts-cyrillic (1:1.0.5+nmu1build1) ...
+Selecting previously unselected package xfonts-scalable.
+Preparing to unpack .../8-xfonts-scalable_1%3a1.0.3-1.3build1_all.deb ...
+Unpacking xfonts-scalable (1:1.0.3-1.3build1) ...
+Setting up fonts-wqy-zenhei (0.9.45-8build1) ...
+Setting up fonts-freefont-ttf (20211204+svn4273-4build1) ...
+Setting up fonts-tlwg-loma-otf (1:0.7.3-1build1) ...
+Setting up xfonts-encodings (1:1.0.5-0ubuntu3) ...
+Setting up fonts-ipafont-gothic (00303-23ubuntu1) ...
+update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+Setting up fonts-unifont (1:16.0.04-1build1) ...
+Setting up xfonts-utils (1:7.7+7build1) ...
+Setting up xfonts-cyrillic (1:1.0.5+nmu1build1) ...
+Setting up xfonts-scalable (1:1.0.3-1.3build1) ...
+Processing triggers for man-db (2.13.1-1build1) ...
+Not building database; man-db/auto-update is not 'true'.
+Processing triggers for fontconfig (2.17.1-3ubuntu1) ...
+
+Running kernel seems to be up-to-date.
+
+Restarting services...
+
+Service restarts being deferred:
+ systemctl restart hosted-compute-agent.service
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+Downloading Chrome for Testing 158.0.8127.18 (playwright chromium v1254) from https://cdn.playwright.dev/builds/cft/158.0.8127.18/linux64/chrome-linux64.zip
+|                                                                                |   0% of 197.8 MiB
+|■■■■■■■■                                                                        |  10% of 197.8 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 197.8 MiB
+Chrome for Testing 158.0.8127.18 (playwright chromium v1254) downloaded to /home/runner/.cache/ms-playwright/chromium-1254
+Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+|                                                                                |   0% of 2.2 MiB
+|■■■■■■■■                                                                        |  10% of 2.2 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+Downloading Chrome Headless Shell 158.0.8127.18 (playwright chromium-headless-shell v1254) from https://cdn.playwright.dev/builds/cft/158.0.8127.18/linux64/chrome-headless-shell-linux64.zip
+|                                                                                |   0% of 125.9 MiB
+|■■■■■■■■                                                                        |  10% of 125.9 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 125.9 MiB
+Chrome Headless Shell 158.0.8127.18 (playwright chromium-headless-shell v1254) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1254
+📦 Installation de playwright + chromium (one-shot, runner GitHub Actions)...
+==========================================================================================
+id=663 | compteur-linky
+==========================================================================================
+  1/ Structure brute actuelle (API REST) :
+    Modifie : 2026-10-26T14:23:00
+    691 mots au total | 32 enfant(s) direct(s) :
+      [0] <div class="wp-block-spacer"> | 0 mots
+      [1] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 7 mots
+      [2] <div class="wp-block-spacer"> | 0 mots
+      [3] <p class="wp-block-paragraph"> | 37 mots
+      [4] <p class="wp-block-paragraph"> | 20 mots
+      [5] <div class="wp-block-spacer"> | 0 mots
+      [6] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 7 mots
+      [7] <div class="wp-block-spacer"> | 0 mots
+      [8] <p class="has-medium-font-size wp-block-paragraph"> | 62 mots
+      [9] <div class="wp-block-spacer"> | 0 mots
+      [10] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 8 mots
+      [11] <div class="wp-block-spacer"> | 0 mots
+      [12] <p class="has-medium-font-size wp-block-paragraph"> | 69 mots
+      [13] <div class="wp-block-spacer"> | 0 mots
+      [14] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 10 mots
+      [15] <div class="wp-block-spacer"> | 0 mots
+      [16] <p class="has-medium-font-size wp-block-paragraph"> | 60 mots
+      [17] <div class="wp-block-spacer"> | 0 mots
+      [18] <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 80 mots
+      [19] <div class="wp-block-spacer"> | 0 mots
+      [20] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 9 mots
+      [21] <div class="wp-block-spacer"> | 0 mots
+      [22] <p class="has-medium-font-size wp-block-paragraph"> | 115 mots
+      [23] <div class="wp-block-spacer"> | 0 mots
+      [24] <div class="uagb-block-b036134c uagb-infobox__content-wrap uagb-infobox-icon-above-title uagb-infobox-image-valign-top wp-block-uagb-info-box--has-margin wp-block-uagb-info-box shadow-block"> | 116 mots
+      [25] <div class="wp-block-spacer"> | 0 mots
+      [26] <div class="wp-block-buttons is-content-justification-center is-layout-flex wp-container-core-buttons-is-layout-fe48e5de wp-block-buttons-is-layout-flex"> | 5 mots
+      [27] <div class="wp-block-spacer"> | 0 mots
+      [28] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 7 mots
+      [29] <div class="wp-block-spacer"> | 0 mots
+      [30] <p class="has-medium-font-size wp-block-paragraph"> | 79 mots
+      [31] <p class="wp-block-paragraph"> | 0 mots
+  2/ Rendu reel (Playwright + interaction simulee) :
+    2 formulaire(s) 'cme-cta60' trouve(s) dans le DOM rendu.
+      pos=1 | parent=DIV.wp-block-column is-layout-flow wp-block-column-is-layout-flow
+      pos=2 | parent=DIV.entry-content
+
+==========================================================================================
+id=4966 | installation-poele-masse
+==========================================================================================
+  1/ Structure brute actuelle (API REST) :
+    Modifie : 2026-10-26T14:13:57
+    2867 mots au total | 27 enfant(s) direct(s) :
+      [0] <h1 class=""> | 9 mots
+      [1] <p class=""> | 107 mots
+      [2] <h2 class=""> | 9 mots
+      [3] <p class=""> | 63 mots
+      [4] <p class=""> | 56 mots
+      [5] <p class=""> | 57 mots
+      [6] <h2 class=""> | 9 mots
+      [7] <p class=""> | 17 mots
+      [8] <h3 class=""> | 9 mots
+      [9] <p class=""> | 9 mots
+      [10] <ul class=""> | 77 mots
+      [11] <p class=""> | 17 mots
+      [12] <h3 class=""> | 7 mots
+      [13] <p class=""> | 10 mots
+      [14] <ul class=""> | 52 mots
+      [15] <p class=""> | 28 mots
+      [16] <h3 class=""> | 8 mots
+      [17] <p class=""> | 13 mots
+      [18] <ul class=""> | 55 mots
+      [19] <p class=""> | 32 mots
+      [20] <h3 class=""> | 10 mots
+      [21] <p class=""> | 13 mots
+      [22] <ul class=""> | 72 mots
+      [23] <p class=""> | 23 mots
+      [24] <h3 class=""> | 9 mots
+      [25] <p class=""> | 10 mots
+      [26] <ul class=""> | 2086 mots
+  2/ Rendu reel (Playwright + interaction simulee) :
+    4 formulaire(s) 'cme-cta60' trouve(s) dans le DOM rendu.
+      pos=1 | parent=DIV.entry-content
+      pos=2 | parent=DIV.entry-content
+      pos=3 | parent=DIV.entry-content
+      pos=4 | parent=DIV.entry-content
+
+==========================================================================================
+id=699 | justificatif-de-domicile
+==========================================================================================
+  1/ Structure brute actuelle (API REST) :
+    Modifie : 2026-09-05T14:02:53
+    1291 mots au total | 61 enfant(s) direct(s) :
+      [0] <div class="wp-block-spacer"> | 0 mots
+      [1] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 5 mots
+      [2] <div class="wp-block-spacer"> | 0 mots
+      [3] <p class="wp-block-paragraph"> | 128 mots
+      [4] <div class="wp-block-spacer"> | 0 mots
+      [5] <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex"> | 44 mots
+      [6] <div class="wp-block-spacer"> | 0 mots
+      [7] <div class="wp-block-buttons is-content-justification-center is-layout-flex wp-container-core-buttons-is-layout-fe48e5de wp-block-buttons-is-layout-flex"> | 6 mots
+      [8] <div class="wp-block-spacer"> | 0 mots
+      [9] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 8 mots
+      [10] <div class="wp-block-spacer"> | 0 mots
+      [11] <p class="wp-block-paragraph"> | 60 mots
+      [12] <div class="wp-block-spacer"> | 0 mots
+      [13] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 11 mots
+      [14] <div class="wp-block-spacer"> | 0 mots
+      [15] <p class="wp-block-paragraph"> | 128 mots
+      [16] <div class="wp-block-spacer"> | 0 mots
+      [17] <h3 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 8 mots
+      [18] <div class="wp-block-spacer"> | 0 mots
+      [19] <p class="wp-block-paragraph"> | 48 mots
+      [20] <div class="wp-block-spacer"> | 0 mots
+      [21] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 10 mots
+      [22] <div class="wp-block-spacer"> | 0 mots
+      [23] <p class="wp-block-paragraph"> | 55 mots
+      [24] <div class="wp-block-spacer"> | 0 mots
+      [25] <h2 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 12 mots
+      [26] <div class="wp-block-spacer"> | 0 mots
+      [27] <p class="wp-block-paragraph"> | 48 mots
+      [28] <div class="wp-block-spacer"> | 0 mots
+      [29] <h3 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 15 mots
+      [30] <div class="wp-block-spacer"> | 0 mots
+      [31] <p class="wp-block-paragraph"> | 58 mots
+      [32] <div class="wp-block-spacer"> | 0 mots
+      [33] <p class="wp-block-paragraph"> | 5 mots
+      [34] <ul class="wp-block-list"> | 152 mots
+      [35] <div class="wp-block-spacer"> | 0 mots
+      [36] <p class="wp-block-paragraph"> | 41 mots
+      [37] <div class="wp-block-spacer"> | 0 mots
+      [38] <h3 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 14 mots
+      [39] <div class="wp-block-spacer"> | 0 mots
+      [40] <p class="wp-block-paragraph"> | 32 mots
+      [41] <ul class="wp-block-list"> | 69 mots
+      [42] <div class="wp-block-spacer"> | 0 mots
+      [43] <p class="wp-block-paragraph"> | 9 mots
+      [44] <div class="wp-block-spacer"> | 0 mots
+      [45] <h3 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 12 mots
+      [46] <div class="wp-block-spacer"> | 0 mots
+      [47] <p class="wp-block-paragraph"> | 75 mots
+      [48] <div class="wp-block-spacer"> | 0 mots
+      [49] <p class="wp-block-paragraph"> | 25 mots
+      [50] <div class="wp-block-spacer"> | 0 mots
+      [51] <h3 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 11 mots
+      [52] <div class="wp-block-spacer"> | 0 mots
+      [53] <p class="wp-block-paragraph"> | 30 mots
+      [54] <ul class="wp-block-list"> | 95 mots
+      [55] <div class="wp-block-spacer"> | 0 mots
+      [56] <p class="wp-block-paragraph"> | 9 mots
+      [57] <div class="wp-block-spacer"> | 0 mots
+      [58] <h3 class="wp-block-heading has-text-align-center titre-souligne-vert"> | 4 mots
+      [59] <div class="wp-block-spacer"> | 0 mots
+      [60] <p class="wp-block-paragraph"> | 64 mots
+  2/ Rendu reel (Playwright + interaction simulee) :
+    4 formulaire(s) 'cme-cta60' trouve(s) dans le DOM rendu.
+      pos=1 | parent=DIV.entry-content
+      pos=2 | parent=DIV.entry-content
+      pos=3 | parent=DIV.entry-content
+      pos=4 | parent=DIV.entry-content
+
+==========================================================================================
+id=5804 | changement-fournisseur-electricite-procedure-0814
+==========================================================================================
+  1/ Structure brute actuelle (API REST) :
+    Modifie : 2026-10-26T14:08:52
+    2366 mots au total | 65 enfant(s) direct(s) :
+      [0] <h1 class=""> | 7 mots
+      [1] <p class=""> | 74 mots
+      [2] <h2 class=""> | 7 mots
+      [3] <figure class="wp-block-image size-large"> | 9 mots
+      [4] <p class=""> | 40 mots
+      [5] <h3 class=""> | 4 mots
+      [6] <p class=""> | 48 mots
+      [7] <h3 class=""> | 4 mots
+      [8] <p class=""> | 34 mots
+      [9] <h3 class=""> | 5 mots
+      [10] <p class=""> | 31 mots
+      [11] <h3 class=""> | 5 mots
+      [12] <p class=""> | 31 mots
+      [13] <h3 class=""> | 5 mots
+      [14] <p class=""> | 58 mots
+      [15] <h2 class=""> | 8 mots
+      [16] <figure class="wp-block-image size-large"> | 10 mots
+      [17] <p class=""> | 26 mots
+      [18] <h3 class=""> | 7 mots
+      [19] <p class=""> | 22 mots
+      [20] <ul class=""> | 36 mots
+      [21] <p class=""> | 31 mots
+      [22] <h3 class=""> | 7 mots
+      [23] <p class=""> | 58 mots
+      [24] <p class=""> | 23 mots
+      [25] <h3 class=""> | 9 mots
+      [26] <p class=""> | 44 mots
+      [27] <p class=""> | 25 mots
+      [28] <h3 class=""> | 7 mots
+      [29] <p class=""> | 24 mots
+      [30] <ul class=""> | 37 mots
+      [31] <p class=""> | 21 mots
+      [32] <h3 class=""> | 8 mots
+      [33] <p class=""> | 46 mots
+      [34] <p class=""> | 27 mots
+      [35] <h2 class=""> | 10 mots
+      [36] <p class=""> | 21 mots
+      [37] <h3 class=""> | 6 mots
+      [38] <p class=""> | 32 mots
+      [39] <ul class=""> | 47 mots
+      [40] <p class=""> | 35 mots
+      [41] <h3 class=""> | 9 mots
+      [42] <p class=""> | 48 mots
+      [43] <h3 class=""> | 4 mots
+      [44] <p class=""> | 8 mots
+      [45] <ul class=""> | 47 mots
+      [46] <h2 class=""> | 9 mots
+      [47] <figure class="wp-block-image size-large"> | 11 mots
+      [48] <p class=""> | 27 mots
+      [49] <h3 class=""> | 7 mots
+      [50] <p class=""> | 21 mots
+      [51] <ul class=""> | 19 mots
+      [52] <p class=""> | 24 mots
+      [53] <h3 class=""> | 9 mots
+      [54] <p class=""> | 38 mots
+      [55] <ul class=""> | 37 mots
+      [56] <h3 class=""> | 5 mots
+      [57] <p class=""> | 8 mots
+      [58] <h4 class=""> | 4 mots
+      [59] <p class=""> | 32 mots
+      [60] <h4 class=""> | 3 mots
+      [61] <p class=""> | 18 mots
+      [62] <h4 class=""> | 5 mots
+      [63] <p class=""> | 35 mots
+      [64] <h4 class=""> | 949 mots
+  2/ Rendu reel (Playwright + interaction simulee) :
+    8 formulaire(s) 'cme-cta60' trouve(s) dans le DOM rendu.
+      pos=1 | parent=DIV.entry-content
+      pos=2 | parent=DIV.entry-content
+      pos=3 | parent=DIV.entry-content
+      pos=4 | parent=DIV.entry-content
+      pos=5 | parent=DIV.entry-content
+      pos=6 | parent=DIV.entry-content
+      pos=7 | parent=DIV.entry-content
+      pos=8 | parent=DIV.entry-content
+
+==========================================================================================
+Resume
+==========================================================================================
+  id=663 | compteur-linky | ✅ 2 formulaire(s) deja present(s) -- deja corrige ou jamais casse
+  id=4966 | installation-poele-masse | ✅ 4 formulaire(s) deja present(s) -- deja corrige ou jamais casse
+  id=699 | justificatif-de-domicile | ✅ 4 formulaire(s) deja present(s) -- deja corrige ou jamais casse
+  id=5804 | changement-fournisseur-electricite-procedure-0814 | ✅ 8 formulaire(s) deja present(s) -- deja corrige ou jamais casse
