@@ -5185,16 +5185,20 @@ def _mesurer_largeur_texte_svg(texte, taille_px, gras):
     """Largeur reellement rendue de TEXTE a TAILLE_PX avec la police
     embarquee (identique a celle utilisee par cairosvg en prod, voir
     SVG_POLICE_FAMILLE ci-dessus) -- remplace toute estimation par
-    nombre de caracteres. Repli grossier (0.6*taille_px/caractere) si la
-    police n'est pas trouvee sur la machine qui execute ce code (ex. un
-    sandbox de dev sans fonts-liberation installe), pour ne jamais faire
-    planter la generation d'un schema."""
+    nombre de caracteres. Repli si la police n'est pas trouvee sur la
+    machine qui execute ce code (ex. un sandbox de dev sans
+    fonts-liberation installe, ou un echec ponctuel d'installation sur
+    le runner) : estimation DELIBEREMENT large (0.85-0.95*taille_px/car,
+    proche de la largeur reelle de DejaVu Sans mesuree le 11/11/2026 --
+    le repli constate en prod le jour du 1er correctif) pour tronquer
+    plutot trop que pas assez quand on ne peut pas mesurer precisement --
+    ne fait jamais planter la generation d'un schema."""
     try:
         from PIL import ImageFont
         chemin = SVG_POLICE_GRAS_TTF if gras else SVG_POLICE_REGULIER_TTF
         return ImageFont.truetype(chemin, taille_px).getlength(texte)
     except Exception:
-        return len(texte) * taille_px * 0.6
+        return len(texte) * taille_px * (0.95 if gras else 0.85)
 
 
 def ajuster_texte_svg(texte, taille_px, gras, largeur_max_px, marge=SVG_MARGE_SECURITE_PX):
