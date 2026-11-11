@@ -1,0 +1,64 @@
+# Execution du 2026-11-11T17:17:43Z
+# Script    : scripts-maintenance/diagnostiquer_troncature_svg.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+====================================================================================================
+Cas reels de generer_technique_svg (3 composants, budget label = 170px)
+====================================================================================================
+  nom (bold, 10px) (budget=170px, disponible apres marge=160px) :
+    texte source       : 'Disjoncteur differentiel'  (largeur PIL si non tronque : 108.9px)
+    texte apres troncature : 'Disjoncteur differentiel'
+    largeur PIL du texte tronque    : 108.9px  (doit etre <= 160px)
+    largeur CAIROSVG du texte tronque : 111px  <- CE QUI EST VRAIMENT RENDU EN PROD
+    OK -- le texte tronque rentre bien dans le budget au rendu reel (ecart -49px)
+
+  desc (regular, 9px) (budget=170px, disponible apres marge=160px) :
+    texte source       : 'Protege contre les surtensions electriques'  (largeur PIL si non tronque : 167.5px)
+    texte apres troncature : 'Protege contre les surtensions electri…'
+    largeur PIL du texte tronque    : 157.0px  (doit etre <= 160px)
+    largeur CAIROSVG du texte tronque : 164px  <- CE QUI EST VRAIMENT RENDU EN PROD
+    OK -- le texte tronque rentre bien dans le budget au rendu reel (ecart +4px)
+
+  nom (bold, 10px) (budget=170px, disponible apres marge=160px) :
+    texte source       : 'Compteur communicant Linky'  (largeur PIL si non tronque : 143.9px)
+    texte apres troncature : 'Compteur communicant Linky'
+    largeur PIL du texte tronque    : 143.9px  (doit etre <= 160px)
+    largeur CAIROSVG du texte tronque : 146px  <- CE QUI EST VRAIMENT RENDU EN PROD
+    OK -- le texte tronque rentre bien dans le budget au rendu reel (ecart -14px)
+
+  desc (regular, 9px) (budget=170px, disponible apres marge=160px) :
+    texte source       : 'Releve et transmet votre consommation'  (largeur PIL si non tronque : 159.0px)
+    texte apres troncature : 'Releve et transmet votre consommation'
+    largeur PIL du texte tronque    : 159.0px  (doit etre <= 160px)
+    largeur CAIROSVG du texte tronque : 168px  <- CE QUI EST VRAIMENT RENDU EN PROD
+    ⚠️ Le texte tronque DEBORDE QUAND MEME du budget de 8px au rendu reel (PIL sous-estime la largeur reelle)
+
+====================================================================================================
+Cas reels de generer_flowchart_svg (largeur_dispo_texte = 550, calculee par le code)
+====================================================================================================
+  label (bold, 12px) (budget=550px, disponible apres marge=540px) :
+    texte source       : 'Contacter votre fournisseur actuel'  (largeur PIL si non tronque : 196.0px)
+    texte apres troncature : 'Contacter votre fournisseur actuel'
+    largeur PIL du texte tronque    : 196.0px  (doit etre <= 540px)
+    largeur CAIROSVG du texte tronque : 197px  <- CE QUI EST VRAIMENT RENDU EN PROD
+    OK -- le texte tronque rentre bien dans le budget au rendu reel (ecart -343px)
+
+  desc (regular, 10px) (budget=550px, disponible apres marge=540px) :
+    texte source       : 'Preparez votre numero de contrat et vos coordonnees'  (largeur PIL si non tronque : 239.6px)
+    texte apres troncature : 'Preparez votre numero de contrat et vos coordonnees'
+    largeur PIL du texte tronque    : 239.6px  (doit etre <= 540px)
+    largeur CAIROSVG du texte tronque : 251px  <- CE QUI EST VRAIMENT RENDU EN PROD
+    OK -- le texte tronque rentre bien dans le budget au rendu reel (ecart -289px)
+
+====================================================================================================
+Cas reel de generer_comparatif_svg (entete colonne, budget = col_w-12 = 248)
+====================================================================================================
+  entete colonne (bold, 11px) (budget=248px, disponible apres marge=238px) :
+    texte source       : 'Offre Electricite Verte'  (largeur PIL si non tronque : 112.0px)
+    texte apres troncature : 'Offre Electricite Verte'
+    largeur PIL du texte tronque    : 112.0px  (doit etre <= 238px)
+    largeur CAIROSVG du texte tronque : 113px  <- CE QUI EST VRAIMENT RENDU EN PROD
+    OK -- le texte tronque rentre bien dans le budget au rendu reel (ecart -125px)
+
