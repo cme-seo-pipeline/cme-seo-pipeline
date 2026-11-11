@@ -127,10 +127,17 @@ def diagnostiquer_technique():
         # 3 bandes distinctes pour isoler la source d'un eventuel depassement :
         # icone seule (emoji, taille 22, pas de troncature possible -> glyphe
         # de remplacement potentiellement large si la police n'a pas l'emoji),
-        # puis nom et desc (tous deux passes par ajuster_texte_svg).
-        g_icone, d_icone = empan_horizontal_contenu(img, y - 28, y - 4, x_min_recherche=max(0, x - 140), x_max_recherche=min(680, x + 140))
-        g_nom, d_nom = empan_horizontal_contenu(img, y + 2, y + 14, x_min_recherche=max(0, x - 140), x_max_recherche=min(680, x + 140))
-        g_desc, d_desc = empan_horizontal_contenu(img, y + 16, y + 28, x_min_recherche=max(0, x - 140), x_max_recherche=min(680, x + 140))
+        # puis nom et desc (tous deux passes par ajuster_texte_svg). Fenetre
+        # de recherche plafonnee a la moitie de l'ecart au composant voisin
+        # le plus proche (positions 210px l'une de l'autre -> max 100px de
+        # rayon) : au-dela, on risque de capter le texte du composant
+        # d'a cote plutot qu'un vrai depassement du composant courant --
+        # corrige le 11/11/2026 (c'etait la cause du faux "depassement"
+        # mesure precedemment sur nom/desc malgre une troncature correcte).
+        rayon_fenetre = 100
+        g_icone, d_icone = empan_horizontal_contenu(img, y - 28, y - 4, x_min_recherche=max(0, x - rayon_fenetre), x_max_recherche=min(680, x + rayon_fenetre))
+        g_nom, d_nom = empan_horizontal_contenu(img, y + 2, y + 14, x_min_recherche=max(0, x - rayon_fenetre), x_max_recherche=min(680, x + rayon_fenetre))
+        g_desc, d_desc = empan_horizontal_contenu(img, y + 16, y + 28, x_min_recherche=max(0, x - rayon_fenetre), x_max_recherche=min(680, x + rayon_fenetre))
 
         def _rapport(label, g, d):
             if g is None:
@@ -164,7 +171,12 @@ def diagnostiquer_flowchart():
     marge = 35
     largeur = 680
     boite_gauche = marge + 52
-    boite_droite = largeur - marge - 15  # ~marge interne du rect (largeur-marge-72 a partir de x=marge+52)
+    # Geometrie REELLE du rect (corrige le 11/11/2026 -- l'ancienne valeur
+    # largeur-marge-15=630 etait une approximation qui sous-estimait le
+    # vrai bord droit de 30px, faisant passer le propre contour (stroke)
+    # colore du rect pour un "debordement" de texte) : rect_x=marge+52,
+    # largeur_rect=largeur-marge-72 -> bord droit = largeur-20 = 660.
+    boite_droite = largeur - 20
     for i in range(len(labels)):
         y = 50 + i * 85
         g, d = empan_horizontal_contenu(img, y + 4, y + 46, x_min_recherche=boite_gauche, x_max_recherche=680)
@@ -186,15 +198,45 @@ def diagnostiquer_comparatif():
     img, chemin = rendre_png(svg_bytes, "diag_comparatif_2items.png")
     print(f"  PNG sauvegarde : {chemin} ({img.width}x{img.height})")
 
+    # L'entete de colonne est un rect PLEIN colore (fill=cols[i], pas une
+    # couleur de fond connue de est_pixel_fond()) : chercher "tout pixel
+    # non-fond" dans ce rect detecterait le rect lui-meme sur toute sa
+    # largeur, pas le texte qu'il contient -- aucun rapport avec un vrai
+    # debordement. Le texte de l'entete est blanc (fill="white") : on
+    # cherche donc specifiquement des pixels BLANCS, le seul signal fiable
+    # de "texte", et on ne depasse jamais la frontiere de la colonne
+    # (les colonnes sont contigues, sans marge entre elles -- chercher
+    # au-dela reviendrait a lire la colonne voisine). Corrige le 11/11/2026
+    # (meme session que le fix de transparence) : le +30px de marge et le
+    # critere "non-fond" donnaient un faux "depassement" de 29px qui etait
+    # en realite juste le rect colore de la colonne suivante.
+    def est_pixel_blanc(rgba, tolerance=15):
+        r, g, b, a = rgba
+        return a >= 20 and r >= 255 - tolerance and g >= 255 - tolerance and b >= 255 - tolerance
+
+    def empan_texte_blanc(img, y_min, y_max, x_min_recherche, x_max_recherche):
+        gauche, droite = None, None
+        for y in range(max(0, y_min), min(img.height, y_max)):
+            for x in range(max(0, x_min_recherche), min(img.width, x_max_recherche)):
+                if est_pixel_blanc(img.getpixel((x, y))):
+                    if gauche is None or x < gauche:
+                        gauche = x
+                    if droite is None or x > droite:
+                        droite = x
+        return gauche, droite
+
     nb_items = 2
     col_w = (680 - 160) // nb_items
     for i in range(nb_items):
         boite_gauche = 160 + i * col_w
         boite_droite = boite_gauche + col_w
-        g, d = empan_horizontal_contenu(img, 44, 72, x_min_recherche=boite_gauche, x_max_recherche=boite_droite + 30)
-        depasse = max(0, (d or 0) - boite_droite)
+        g, d = empan_texte_blanc(img, 44, 72, x_min_recherche=boite_gauche, x_max_recherche=boite_droite)
+        if g is None:
+            print(f"  Colonne {i+1} '{items[i][:14]}' : aucun pixel de texte blanc detecte (inattendu)")
+            continue
+        depasse = max(0, boite_gauche - g) + max(0, d - boite_droite)
         statut = "⚠️ DEPASSEMENT" if depasse else "OK"
-        print(f"  Colonne {i+1} '{items[i][:14]}' : rect=[{boite_gauche},{boite_droite}]  contenu_reel=[{g},{d}]  -> {statut} ({depasse}px)")
+        print(f"  Colonne {i+1} '{items[i][:14]}' : rect=[{boite_gauche},{boite_droite}]  texte_reel=[{g},{d}]  -> {statut} ({depasse}px)")
 
 
 def main():
