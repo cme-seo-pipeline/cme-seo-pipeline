@@ -37,9 +37,16 @@ jobs:
       # Rend deterministe le rendu des schemas SVG (pipeline.py, CELLULE
       # 11B) : sans cette police, cairosvg retombe sur DejaVu Sans (plus
       # large qu'Arial) et les textes tronques par nombre de caracteres
-      # debordent de leur boite/cercle -- corrige le 11/11/2026.
-      - name: Installer la police Liberation Sans (schemas SVG)
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-liberation && sudo fc-cache -f
+      # debordent de leur boite/cercle -- corrige le 11/11/2026. Copie
+      # DEPUIS LE REPO (pipeline/assets/fonts/, licence SIL-OFL-1.1) --
+      # pas d'apt-get : constate flaky sur ce runner (DNS/miroirs apt
+      # intermittents), parfois present parfois non pour le meme commit.
+      # Zero dependance reseau ici.
+      - name: Installer la police Liberation Sans (schemas SVG, depuis le repo)
+        run: |
+          mkdir -p ~/.local/share/fonts
+          cp pipeline/assets/fonts/LiberationSans-*.ttf ~/.local/share/fonts/
+          fc-cache -f ~/.local/share/fonts
 
       - name: Installer les dependances
         run: pip install -r pipeline/requirements.txt

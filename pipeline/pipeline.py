@@ -5159,25 +5159,31 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
 # ============================================================
 # CELLULE 11B — SCHÉMAS SVG
 # ============================================================
-# Police embarquee pour un rendu deterministe (Liberation Sans, libre de
-# droit, metriquement equivalente a Arial) -- installee via apt
-# (fonts-liberation) dans les workflows qui generent ces schemas
-# (publication-quotidienne.yml, sync-indicateurs.yml,
-# maintenance-a-la-demande.yml). Corrige le bug signale par l'operateur
-# le 11/11/2026 ("les titres a l'interieur depassent leur petit bloc") :
-# le SVG declarait font-family="Arial,sans-serif", mais sur un runner
-# GitHub Actions nu (sans Arial ni Liberation installes), le rendu tombe
-# sur DejaVu Sans -- sensiblement plus large -- ce qui faisait deborder
-# tous les textes tronques par NOMBRE DE CARACTERES (ex: nom[:15]) de
-# leur boite/cercle reel. Mesure au pixel (sur le vrai runner, avant/apres)
-# par scripts-maintenance/diagnostiquer_overflow_schemas_svg.py.
+# Police embarquee pour un rendu deterministe (Liberation Sans, licence
+# SIL-OFL-1.1 libre de redistribution, metriquement equivalente a Arial)
+# -- fichiers livres DANS CE REPO (pipeline/assets/fonts/), pas installes
+# via apt. Corrige le bug signale par l'operateur le 11/11/2026 ("les
+# titres a l'interieur depassent leur petit bloc") en DEUX temps :
+# 1) le SVG declarait font-family="Arial,sans-serif", mais sur un runner
+#    GitHub Actions nu (sans Arial ni Liberation installes), le rendu
+#    tombe sur DejaVu Sans -- sensiblement plus large -- ce qui faisait
+#    deborder tous les textes tronques par NOMBRE DE CARACTERES
+#    (ex: nom[:15]) de leur boite/cercle reel.
+# 2) un premier essai a installe fonts-liberation via apt dans les
+#    workflows -- constate FLAKY (depend des miroirs apt/DNS du runner,
+#    deja vus en echec intermittent le meme jour) : parfois present,
+#    parfois non, d'un run a l'autre sur le MEME commit. D'ou le choix de
+#    livrer directement les .ttf dans le repo (zero dependance reseau) :
+#    les workflows copient juste ces fichiers dans un dossier de polices
+#    utilisateur et rafraichissent fc-cache -- aucun apt-get implique.
+# Mesure au pixel (sur le vrai runner, avant/apres chaque etape) par
+# scripts-maintenance/diagnostiquer_overflow_schemas_svg.py.
 #
-# Chemins/marge ajustables : si le package systeme change de nom/chemin,
-# ou si le rendu reste trop ou pas assez serre, modifier uniquement ces
-# constantes -- pas les fonctions ci-dessous.
+# Chemins/marge ajustables : si le rendu reste trop ou pas assez serre,
+# modifier uniquement ces constantes -- pas les fonctions ci-dessous.
 SVG_POLICE_FAMILLE = "'Liberation Sans', Arial, sans-serif"
-SVG_POLICE_REGULIER_TTF = "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"
-SVG_POLICE_GRAS_TTF = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+SVG_POLICE_REGULIER_TTF = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "fonts", "LiberationSans-Regular.ttf")
+SVG_POLICE_GRAS_TTF = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "fonts", "LiberationSans-Bold.ttf")
 SVG_MARGE_SECURITE_PX = 10  # marge interne avant troncature
 
 
