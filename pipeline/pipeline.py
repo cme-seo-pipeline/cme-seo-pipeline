@@ -232,7 +232,23 @@ def verifier_doublons(titre, mot_cle, client_bq, config):
         days=config['fenetre_anti_doublon_jours']
     )).strftime('%Y-%m-%d')
     # Vérification principale : historique_publications
-    titre_safe = titre[:20].replace("'", "\'")
+    # Correctif du 11/11/2026 -- BUG CONFIRME EN PROD : titre[:20] tronquait
+    # le titre a 20 caracteres avant le LIKE, ce qui est insuffisant pour
+    # les titres generes par Mode Actualite (construire_brief_actualite),
+    # au format deterministe "{sous_silo} : {sens} de {X}% en {mois_annee}"
+    # -- ex. "Facture Gaz : hausse de 6.6% en octobre 2026" vs "Facture Gaz
+    # : hausse de 5.8% en novembre 2026" partagent EXACTEMENT les 20
+    # premiers caracteres ("Facture Gaz : hausse"), donc le LIKE matchait
+    # a tort n'importe quel mois different comme "doublon" du precedent.
+    # Consequence reelle : la hausse du gaz de novembre 2026 (detectee le
+    # 10/11, +5.8%) a ete bloquee a tort car l'article d'octobre existait
+    # encore dans la fenetre anti-doublon de 90 jours -- sans ce correctif,
+    # decembre aurait ete bloque aussi, et ainsi de suite indefiniment pour
+    # toute actualite mensuelle recurrente (gaz, electricite). Utiliser le
+    # titre COMPLET (deterministe pour ce caller, voir construire_brief_
+    # actualite) elimine le faux positif sans affaiblir la detection d'un
+    # vrai doublon (meme titre exact republie).
+    titre_safe = titre.replace("'", "\'")
     mot_cle_safe = mot_cle.replace("'", "\'")
     query_hist = f"""
     SELECT COUNT(*) as nb
