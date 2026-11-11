@@ -1,0 +1,91 @@
+# Execution du 2026-11-11T15:36:24Z
+# Script    : scripts-maintenance/auditer_actualites_manquees_1111.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+================================================================================
+1/ Definition SQL reelle de vue_changements_indicateurs
+================================================================================
+WITH classees AS (
+  SELECT
+    domaine, indicateur, sous_categorie, valeur, unite,
+    date_debut_validite, date_verification,
+    LAG(valeur) OVER (
+      PARTITION BY indicateur, sous_categorie
+      ORDER BY date_verification
+    ) AS valeur_precedente,
+    ROW_NUMBER() OVER (
+      PARTITION BY indicateur, sous_categorie
+      ORDER BY date_verification DESC
+    ) AS rang
+  FROM `seo-data-hub-cme.04_pipeline_seo.indicateurs_reglementaires`
+)
+SELECT
+  domaine, indicateur, sous_categorie,
+  valeur_precedente, valeur AS valeur_actuelle, unite,
+  ROUND(SAFE_DIVIDE(valeur - valeur_precedente, valeur_precedente) * 100, 2) AS variation_pct,
+  date_debut_validite, date_verification
+FROM classees
+WHERE rang = 1
+  AND valeur_precedente IS NOT NULL
+  AND valeur_precedente != valeur
+ORDER BY date_verification DESC
+
+================================================================================
+2/ Historique brut des valeurs par indicateur (120 derniers jours)
+================================================================================
+  803 lignes recuperees
+
+  13 VRAIE(S) TRANSITION(S) DE VALEUR detectee(s) sur 120 jours :
+    [2026-09-25 17:25:47.872130+00:00] PRVG_moyen_TTC (nan) : 172.0495426360616 -> 182.87504064453185 €/MWh (periode validite : 2026-09-01 -> 2026-10-01)
+    [2026-10-14 09:17:20.729086+00:00] PRVG_moyen_TTC (nan) : 182.87504064453185 -> 194.90053865300212 €/MWh (periode validite : 2026-10-01 -> 2026-11-01)
+    [2026-11-10 12:05:54.694862+00:00] PRVG_moyen_TTC (nan) : 194.90053865300212 -> 206.25603666147236 €/MWh (periode validite : 2026-11-01 -> 2026-12-01)
+    [2026-08-27 02:00:02.621511+00:00] TRVE_part_fixe_TTC (12 kVA) : 281.5 -> 286.86 €/an (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.621639+00:00] TRVE_part_fixe_TTC (15 kVA) : 323.9 -> 330.57 €/an (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.618677+00:00] TRVE_part_fixe_TTC (3 kVA) : 144.5 -> 145.76 €/an (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.618728+00:00] TRVE_part_fixe_TTC (6 kVA) : 188.2 -> 190.81 €/an (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.618877+00:00] TRVE_part_fixe_TTC (9 kVA) : 235.9 -> 239.84 €/an (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.621496+00:00] TRVE_part_variable_TTC (12 kVA) : 0.19266 -> 0.1985 €/kWh (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.621634+00:00] TRVE_part_variable_TTC (15 kVA) : 0.19266 -> 0.1985 €/kWh (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.618665+00:00] TRVE_part_variable_TTC (3 kVA) : 0.19398 -> 0.2001 €/kWh (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.618721+00:00] TRVE_part_variable_TTC (6 kVA) : 0.19398 -> 0.2001 €/kWh (periode validite : 2026-02-01 -> 2026-08-01)
+    [2026-08-27 02:00:02.618870+00:00] TRVE_part_variable_TTC (9 kVA) : 0.19266 -> 0.1985 €/kWh (periode validite : 2026-02-01 -> 2026-08-01)
+
+================================================================================
+3/ Publications Mode Actualite deja faites (type_publication='actualite')
+================================================================================
+  12 publication(s) Mode Actualite au total, historique complet :
+    [2026-10-14 09:17:56.866156+00:00] post_id=9764 | Facture Gaz : hausse de 6.6% en octobre 2026 | sous-silo=Facture Gaz
+    [2026-09-25 17:26:15.138424+00:00] post_id=8340 | Facture Gaz : hausse de 6.3% en septembre 2026 | sous-silo=Facture Gaz
+    [2026-08-27 02:03:37.339474+00:00] post_id=7037 | Facture Électricité : hausse de 3.1% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:03:16.775505+00:00] post_id=7035 | Facture Électricité : hausse de 0.9% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:02:54.959226+00:00] post_id=7033 | Facture Électricité : hausse de 3.1% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:02:33.657489+00:00] post_id=7031 | Facture Électricité : hausse de 1.4% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:02:10.577303+00:00] post_id=7029 | Facture Électricité : hausse de 3.0% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:01:49.025959+00:00] post_id=7027 | Facture Électricité : hausse de 1.7% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:01:28.084294+00:00] post_id=7025 | Facture Électricité : hausse de 3.0% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:01:07.445507+00:00] post_id=7023 | Facture Électricité : hausse de 1.9% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:00:46.423491+00:00] post_id=7021 | Facture Électricité : hausse de 3.0% en août 2026 | sous-silo=Facture Électricité
+    [2026-08-27 02:00:24.497053+00:00] post_id=7019 | Facture Électricité : hausse de 2.1% en août 2026 | sous-silo=Facture Électricité
+
+================================================================================
+4/ Rapprochement -- transitions sans publication correspondante
+================================================================================
+  [2026-09-25 17:25:47.872130+00:00] PRVG_moyen_TTC : 172.0495426360616 -> 182.87504064453185 -- ✅ publication proche trouvee
+  [2026-10-14 09:17:20.729086+00:00] PRVG_moyen_TTC : 182.87504064453185 -> 194.90053865300212 -- ✅ publication proche trouvee
+  [2026-11-10 12:05:54.694862+00:00] PRVG_moyen_TTC : 194.90053865300212 -> 206.25603666147236 -- ⚠️ AUCUNE publication proche -- a investiguer
+  [2026-08-27 02:00:02.621511+00:00] TRVE_part_fixe_TTC : 281.5 -> 286.86 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.621639+00:00] TRVE_part_fixe_TTC : 323.9 -> 330.57 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.618677+00:00] TRVE_part_fixe_TTC : 144.5 -> 145.76 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.618728+00:00] TRVE_part_fixe_TTC : 188.2 -> 190.81 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.618877+00:00] TRVE_part_fixe_TTC : 235.9 -> 239.84 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.621496+00:00] TRVE_part_variable_TTC : 0.19266 -> 0.1985 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.621634+00:00] TRVE_part_variable_TTC : 0.19266 -> 0.1985 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.618665+00:00] TRVE_part_variable_TTC : 0.19398 -> 0.2001 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.618721+00:00] TRVE_part_variable_TTC : 0.19398 -> 0.2001 -- ✅ publication proche trouvee
+  [2026-08-27 02:00:02.618870+00:00] TRVE_part_variable_TTC : 0.19266 -> 0.1985 -- ✅ publication proche trouvee
