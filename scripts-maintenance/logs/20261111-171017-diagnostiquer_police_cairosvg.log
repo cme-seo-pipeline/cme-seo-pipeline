@@ -1,0 +1,17 @@
+# Execution du 2026-11-11T17:10:17Z
+# Script    : scripts-maintenance/diagnostiquer_police_cairosvg.py
+# Arguments : 
+
+cairosvg version : 2.7.1
+cairocffi version : 1.7.1
+Liberation dans fc-list : True
+
+Largeur mesuree par PIL (vrai TTF Liberation Sans Regular, 14px) : 189.5px
+
+  font-family="Liberation Sans" -> largeur rendue cairosvg = 193px  (ecart vs PIL Liberation : +3.5px)
+  font-family="'Liberation Sans'" -> largeur rendue cairosvg = 193px  (ecart vs PIL Liberation : +3.5px)
+  font-family=""Liberation Sans"" -> ERREUR : not well-formed (invalid token): line 3, column 36
+  font-family="'Liberation Sans', Arial, sans-serif" -> largeur rendue cairosvg = 193px  (ecart vs PIL Liberation : +3.5px)
+  font-family="Arial" -> largeur rendue cairosvg = 193px  (ecart vs PIL Liberation : +3.5px)
+  font-family="sans-serif" -> largeur rendue cairosvg = 221px  (ecart vs PIL Liberation : +31.5px)
+  font-family="DejaVu Sans" -> largeur rendue cairosvg = 221px  (ecart vs PIL Liberation : +31.5px)
