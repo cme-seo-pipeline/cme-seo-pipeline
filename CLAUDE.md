@@ -2287,3 +2287,44 @@ supprimees de `leads_convertis` via
 Sheet correspondant fait manuellement par l'operateur (meme precedent que
 les incidents "Lionel"/"QA-TEST popup header"). **Chantier entierement
 clos.**
+
+## Publication quotidienne — passage de 7j/7 a 5j/7 (11/11/2026)
+
+Demande explicite de l'operateur : le run quotidien de publication ne
+doit plus tourner que du lundi au vendredi, plus le week-end. Deux
+emplacements distincts, corriges ensemble pour rester coherents :
+
+1. **`.github/workflows/publication-quotidienne.yml`** : cron passe de
+   `'0 3 * * *'` (tous les jours) a `'0 3 * * 1-5'` (lundi a vendredi,
+   3h00 UTC inchange) — evite de consommer des minutes GitHub Actions
+   pour un run qui ne publierait rien le week-end.
+2. **`pipeline/pipeline.py`**, `CONFIG["JOURS_PUBLICATION"]` : deja un
+   garde-fou existant (fonction `est_jour_publication()`, verifiee au
+   tout debut de `run_pipeline()`) — passe de `[0, 1, 2, 3, 4, 5, 6]`
+   (7j/7) a `[0, 1, 2, 3, 4]` (lundi-vendredi, convention Python
+   `datetime.weekday()` : 0=lundi). Ce mecanisme existait deja avant ce
+   changement (vu dans l'historique git,
+   `scripts-maintenance/fix_planning_7j7.py`, qui avait fait exactement
+   l'inverse a une date anterieure -- passer de Lundi-Vendredi a 7j/7) :
+   ce correctif du 11/11 revient donc a une configuration deja connue du
+   projet, pas une nouveaute.
+
+**Double securite volontaire** : le cron empeche deja le run de se
+declencher le week-end, et `JOURS_PUBLICATION` empecherait aussi la
+publication meme si le workflow etait neanmoins declenche manuellement
+un samedi/dimanche (`workflow_dispatch` sans `--force`) -- dans ce cas,
+`run_pipeline()` affiche juste "⏸️ Pas un jour de publication" et
+s'arrete proprement (`return` sans article publie, code de sortie 0, pas
+un echec) ; `--force` (parametre `force` du workflow) reste disponible
+pour publier malgre tout un jour non prevu si necessaire.
+
+**Aucun autre impact de code** : le quota d'articles par jour ouvert
+(`QUOTAS_SOUS_SILO`, 22/jour -- Solaire 5, Aide Energetique 9, Gaz 4,
+Electricite 4) n'a pas ete modifie -- ce changement reduit uniquement le
+nombre de jours de publication par semaine, pas le volume par run. Si le
+volume mensuel total doit rester identique malgre la perte de 2
+jours/semaine, une hausse des quotas serait une decision separate, non
+demandee ici.
+
+`python3 -m py_compile` valide sur `pipeline.py` apres modification
+(seul le `SyntaxWarning` preexistant non lie, ligne 2040).

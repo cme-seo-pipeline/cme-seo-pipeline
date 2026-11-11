@@ -30,7 +30,7 @@ CONFIG = {
     "MODEL": "claude-haiku-4-5-20251001",
     "MAX_TOKENS": 1000,
     "MAX_CHARS_PAR_URL": 3000,
-    "JOURS_PUBLICATION": [0, 1, 2, 3, 4, 5, 6],  # 7j/7
+    "JOURS_PUBLICATION": [0, 1, 2, 3, 4],  # 5j/7 (Lundi-Vendredi) -- demande operateur du 11/11/2026
     "heure_publication": 8,
     "nb_articles_par_run": 9,  # 3 silos industrialises x 3 articles, 7j/7
     "fenetre_anti_doublon_jours": 90,
