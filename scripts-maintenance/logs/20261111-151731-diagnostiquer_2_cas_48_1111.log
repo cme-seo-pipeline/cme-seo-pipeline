@@ -1,0 +1,83 @@
+# Execution du 2026-11-11T15:17:31Z
+# Script    : scripts-maintenance/diagnostiquer_2_cas_48_1111.py
+# Arguments : 
+
+================================================================================
+id=8816 -- pourquoi l'API REST ne repond pas 200 ?
+================================================================================
+  params={'_fields': 'id,content,status,link'} -> HTTP 200
+    status=publish link=https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montant-calcul/
+  params={'_fields': 'id,content,status,link', 'status': 'publish,draft,pending,future,private,trash', 'context': 'edit'} -> HTTP 401
+    corps (300 premiers car.) : {"code":"rest_forbidden_context","message":"D\u00e9sol\u00e9, vous n\u2019avez pas l\u2019autorisation de modifier cet article.","data":{"status":401}}
+  recherche search=8816 -> HTTP 200, 0 resultat(s)
+
+================================================================================
+id=563 -- pourquoi 4 rendus / 7 attendus ?
+================================================================================
+  Derniere modification : 2026-10-26T14:23:10
+  Nombre d'enfants effectifs (apres depliage Colonnes/<article>) : 53
+  Total mots (hors CTA) : 2557
+  Blocs deja marques 'CTA' dans le contenu stocke : 0
+  Detail des enfants effectifs :
+    [  0] <p> 61 mots
+    [  1] <figure> 8 mots
+    [  2] <div> 0 mots [VIDE]
+    [  3] <h2> 9 mots
+    [  4] <p> 37 mots
+    [  5] <div> 0 mots [VIDE]
+    [  6] <h3> 10 mots
+    [  7] <script> 0 mots
+    [  8] <script> 0 mots
+    [  9] <script> 0 mots
+    [ 10] <script> 0 mots
+    [ 11] <script> 0 mots
+    [ 12] <script> 0 mots
+    [ 13] <script> 14 mots
+    [ 14] <script> 0 mots
+    [ 15] <script> 0 mots
+    [ 16] <script> 0 mots
+    [ 17] <pre> 0 mots
+    [ 18] <link> 0 mots
+    [ 19] <script> 0 mots
+    [ 20] <style> 1600 mots
+    [ 21] <style> 5 mots
+    [ 22] <form> 11 mots
+    [ 23] <hr> 0 mots
+    [ 24] <blockquote> 22 mots
+    [ 25] <h2> 13 mots
+    [ 26] <div> 0 mots [VIDE]
+    [ 27] <p> 67 mots
+    [ 28] <ol> 67 mots
+    [ 29] <p> 48 mots
+    [ 30] <p> 35 mots
+    [ 31] <ul> 76 mots
+    [ 32] <div> 0 mots [VIDE]
+    [ 33] <h2> 9 mots
+    [ 34] <div> 0 mots [VIDE]
+    [ 35] <p> 36 mots
+    [ 36] <div> 19 mots
+    [ 37] <div> 30 mots
+    [ 38] <div> 25 mots
+    [ 39] <figure> 26 mots
+    [ 40] <div> 143 mots
+    [ 41] <div> 8 mots
+    [ 42] <blockquote> 14 mots
+    [ 43] <hr> 0 mots
+    [ 44] <h2> 8 mots
+    [ 45] <div> 0 mots [VIDE]
+    [ 46] <div> 51 mots
+    [ 47] <div> 3 mots
+    [ 48] <div> 48 mots
+    [ 49] <div> 3 mots
+    [ 50] <div> 48 mots
+    [ 51] <div> 3 mots
+    [ 52] <p> 0 mots
+
+  HTML brut (1500 premiers caracteres) :
+  
+<div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<p class="has-medium-font-size wp-block-paragraph">En 2026, payer son électricité au prix fort n&rsquo;est plus une fatalité. Opter pour un nouveau fournisseur est devenu une démarche <strong>simple, gratuite et garantie sans aucune intervention technique</strong>. Contrairement aux idées reçues, cette transition ne provoque jamais de coupure : c&rsquo;est le même gestionnaire de réseau, <strong>Enedis</strong>, qui assure la continuité de votre service avec la même fiabilité.</p>
+
+
+<figure class="wp-block-image size-large is-resized"><img decoding="async" width="1024" height="576" alt="Optimiser son budget en apprenant comment changer de fournisseur d'électricité - Mon Électricité" class="wp-image-1013" src="https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/02/Epargne-dargent-energie-1024x576.jpg" style="aspect-ratio:1.7778682075906784;width:1465px;height:auto" srcset="https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/02/Epargne-dargent-energie-1024x576.jpg 1024w, https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/02/Epargne-dargent-energie-300x169.jpg 300w, https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/02/Epargne-dargent-energie-768x432.jpg 768w, https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/02/Epargne-dargent-e
