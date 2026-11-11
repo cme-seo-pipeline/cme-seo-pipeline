@@ -56,14 +56,27 @@ def rendre_png(svg_bytes, nom_fichier):
     chemin = os.path.join(OUT_DIR, nom_fichier)
     with open(chemin, "wb") as f:
         f.write(png_bytes)
-    return Image.open(chemin).convert("RGB"), chemin
+    # RGBA, pas RGB : les 3 generateurs ne remplissent pas tout le canevas
+    # (ex. flowchart n'a pas de rect de fond plein, seul le bandeau titre
+    # + les cartes d'etape sont dessines -- "background:#FAFAFA" en CSS
+    # sur la racine <svg> n'est PAS une propriete SVG standard et n'est
+    # pas honoree par cairosvg). Les zones non dessinees restent donc
+    # TRANSPARENTES, et un .convert("RGB") direct les aplatit en noir --
+    # un faux "contenu" detecte jusqu'au bord du canevas, sans rapport
+    # avec un vrai debordement de texte. Corrige le 11/11/2026 (meme
+    # session que le bundling des polices) : traiter alpha~0 comme fond,
+    # peu importe la couleur RGB sous-jacente.
+    return Image.open(chemin).convert("RGBA"), chemin
 
 
-def est_pixel_fond(rgb, tolerance=10):
-    """Fond = blanc pur, #FAFAFA (250,250,250), ou dans le degrade
-    #F8F9FA -> #E8F0FE (schema technique). Tout pixel sensiblement
-    different (texte, icone, trait) est considere 'contenu'."""
-    r, g, b = rgb
+def est_pixel_fond(rgba, tolerance=10):
+    """Fond = pixel transparent (zone non dessinee par le SVG), OU blanc
+    pur, #FAFAFA (250,250,250), ou dans le degrade #F8F9FA -> #E8F0FE
+    (schema technique). Tout pixel opaque sensiblement different
+    (texte, icone, trait) est considere 'contenu'."""
+    r, g, b, a = rgba
+    if a < 20:
+        return True
     fonds = [(255, 255, 255), (250, 250, 250), (248, 249, 250), (232, 240, 254)]
     return any(abs(r - fr) <= tolerance and abs(g - fg) <= tolerance and abs(b - fb) <= tolerance
                for fr, fg, fb in fonds)
@@ -71,8 +84,9 @@ def est_pixel_fond(rgb, tolerance=10):
 
 def empan_horizontal_contenu(img, y_min, y_max, x_min_recherche=0, x_max_recherche=None):
     """Dans la bande verticale [y_min, y_max], trouve le x le plus a
-    gauche et le plus a droite ou un pixel 'contenu' (non-fond) existe --
-    c'est l'empan horizontal reel du texte/icone dessine a cet endroit."""
+    gauche et le plus a droite ou un pixel 'contenu' (non-fond, opaque)
+    existe -- c'est l'empan horizontal reel du texte/icone dessine a cet
+    endroit."""
     largeur = img.width
     x_max_recherche = x_max_recherche or largeur
     gauche, droite = None, None
@@ -100,19 +114,36 @@ def diagnostiquer_technique():
     img, chemin = rendre_png(svg_bytes, "diag_technique_3comp.png")
     print(f"  PNG sauvegarde : {chemin} ({img.width}x{img.height})")
 
+    # Budget de label reel du code pour 3 composants (LARGEUR_LABEL_TECHNIQUE_PAR_NB[3] = 170,
+    # texte centre sur x) -- design assume : le texte DEBORDE INTENTIONNELLEMENT du cercle
+    # (pas de boite reelle), donc le vrai critere n'est PAS le cercle mais ce budget.
+    largeur_label = 170
     # 3 composants -> positions = [(130,200),(340,200),(550,200)], cercle rayon 52
     positions = [(130, 200), (340, 200), (550, 200)]
     for i, (x, y) in enumerate(positions):
         boite_gauche, boite_droite = x - 52, x + 52
-        # bande verticale couvrant icone+nom+desc : y-30 a y+30
-        gauche, droite = empan_horizontal_contenu(img, y - 30, y + 30, x_min_recherche=max(0, x - 140), x_max_recherche=min(680, x + 140))
-        if gauche is None:
-            print(f"  Composant {i+1} ({composants[i]['nom'][:15]}...) : aucun pixel detecte (inattendu)")
-            continue
-        depasse_gauche = max(0, boite_gauche - gauche)
-        depasse_droite = max(0, droite - boite_droite)
-        statut = "⚠️ DEPASSEMENT" if (depasse_gauche or depasse_droite) else "OK"
-        print(f"  Composant {i+1} '{composants[i]['nom'][:15]}' : cercle=[{boite_gauche},{boite_droite}]  contenu_reel=[{gauche},{droite}]  -> {statut} (gauche:{depasse_gauche}px, droite:{depasse_droite}px)")
+        budget_gauche, budget_droite = x - largeur_label // 2, x + largeur_label // 2
+
+        # 3 bandes distinctes pour isoler la source d'un eventuel depassement :
+        # icone seule (emoji, taille 22, pas de troncature possible -> glyphe
+        # de remplacement potentiellement large si la police n'a pas l'emoji),
+        # puis nom et desc (tous deux passes par ajuster_texte_svg).
+        g_icone, d_icone = empan_horizontal_contenu(img, y - 28, y - 4, x_min_recherche=max(0, x - 140), x_max_recherche=min(680, x + 140))
+        g_nom, d_nom = empan_horizontal_contenu(img, y + 2, y + 14, x_min_recherche=max(0, x - 140), x_max_recherche=min(680, x + 140))
+        g_desc, d_desc = empan_horizontal_contenu(img, y + 16, y + 28, x_min_recherche=max(0, x - 140), x_max_recherche=min(680, x + 140))
+
+        def _rapport(label, g, d):
+            if g is None:
+                return f"    {label} : aucun pixel detecte"
+            dep_cercle = max(0, boite_gauche - g) + max(0, d - boite_droite)
+            dep_budget = max(0, budget_gauche - g) + max(0, d - budget_droite)
+            statut = "⚠️ hors budget label" if dep_budget else ("ok (deborde le cercle par design)" if dep_cercle else "OK")
+            return f"    {label} : [{g},{d}]  vs cercle=[{boite_gauche},{boite_droite}] (depasse:{dep_cercle}px)  vs budget_label=[{budget_gauche},{budget_droite}] (depasse:{dep_budget}px)  -> {statut}"
+
+        print(f"  Composant {i+1} '{composants[i]['nom'][:20]}' (icone={composants[i]['icone']}) :")
+        print(_rapport("icone", g_icone, d_icone))
+        print(_rapport("nom  ", g_nom, d_nom))
+        print(_rapport("desc ", g_desc, d_desc))
 
     # Titre header : bande y=10 a y=30, boite = 0..680
     g, d = empan_horizontal_contenu(img, 8, 30)
