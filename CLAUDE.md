@@ -2328,3 +2328,128 @@ demandee ici.
 
 `python3 -m py_compile` valide sur `pipeline.py` apres modification
 (seul le `SyntaxWarning` preexistant non lie, ligne 2040).
+
+## Schemas SVG — titres qui depassent leur bloc (11/11/2026)
+
+Signale par l'operateur : dans les images schema generees a l'interieur
+des articles (CELLULE 11B, `pipeline/pipeline.py` --
+`generer_flowchart_svg`/`generer_technique_svg`/`generer_comparatif_svg`),
+les titres depassaient souvent leur petit bloc. Diagnostic demande
+explicitement en lecture seule avant toute correction.
+
+**Deux root causes distinctes, cumulatives** :
+1. Troncature par **nombre de caracteres** (`texte[:28]`, `[:45]`, etc.)
+   comme approximation de "ca rentre dans la boite" -- le nombre de
+   caracteres n'est pas proportionnel a la largeur en pixels reellement
+   rendue (une ligne de "i" tient bien plus de caracteres qu'une ligne
+   de "M" dans la meme largeur).
+2. Substitution de police silencieuse sur le runner GitHub Actions : le
+   SVG declarait `font-family:Arial,sans-serif`, mais Arial n'est pas
+   installee sur `ubuntu-latest` -- cairosvg retombe sur DejaVu Sans,
+   mesurablement plus large qu'Arial/Liberation Sans. Confirme en
+   rendant les 3 generateurs via le MEME appel que la prod
+   (`upload_svg_wordpress()` : `cairosvg.svg2png(dpi=150,
+   output_width=680)`) et en mesurant au pixel l'empan reel du texte vs
+   la geometrie prevue par le code (`scripts-maintenance/diagnostiquer_overflow_schemas_svg.py`).
+
+**Corrige** (`pipeline.py`, commit `df0c9ae` puis `1bdc241`) :
+- Nouvelle fonction `ajuster_texte_svg(texte, taille_px, gras,
+  largeur_max_px)` : mesure la largeur REELLE du texte via PIL
+  (`ImageFont.truetype(...).getlength()`) avec le vrai fichier TTF
+  Liberation Sans, et tronque caractere par caractere (ajoute "…") jusqu'a
+  rentrer dans le budget -- remplace TOUTES les troncatures par nombre de
+  caracteres dans les 3 generateurs. Marge de securite interne
+  configurable (`SVG_MARGE_SECURITE_PX`, 18px apres ajustement, voir
+  plus bas).
+- `font-family` des 3 SVG passe a `SVG_POLICE_FAMILLE = "'Liberation
+  Sans', Arial, sans-serif"` (Liberation Sans est metriquement compatible
+  avec Arial, et un test dedie -- voir plus bas -- a confirme que
+  cairosvg resout aussi bien "Arial" que "Liberation Sans" vers le meme
+  rendu sur ce runner, les deux donnant 193px pour la meme chaine de
+  test).
+- Largeurs de texte disponibles calculees a partir de la **geometrie
+  reelle** du schema (pas devinees) pour `generer_flowchart_svg` et
+  `generer_comparatif_svg` ; pour `generer_technique_svg` (schema SANS
+  boite reelle, texte flottant autour d'un cercle par design), nouveau
+  dict ajustable `LARGEUR_LABEL_TECHNIQUE_PAR_NB = {1: 220, 2: 220, 3:
+  170, 4: 140, 5: 130}` (budget de mise en page par nombre de
+  composants affiches, pas un calcul geometrique puisqu'il n'y a pas de
+  boite a mesurer).
+
+**Piege rencontre et corrige en cours de route : `apt-get install
+fonts-liberation` au runtime du workflow n'est PAS fiable**. Premiere
+tentative (commit `df0c9ae`) : ajouter une etape `apt-get install
+fonts-liberation` dans les 3 workflows qui rendent des schemas
+(`maintenance-a-la-demande.yml`, `publication-quotidienne.yml`,
+`sync-indicateurs.yml`). Deux executions de verification consecutives
+(`diagnostiquer_overflow_schemas_svg.py` via le pont) ont montre des
+chiffres de depassement **identiques au octet** a l'etat non corrige,
+avec **zero police Liberation** dans `fc-list` -- meme apres avoir
+ajoute `&& fc-cache -f` (commit `2141eb1`) en supposant une course de
+cache. Un diagnostic dedie
+(`scripts-maintenance/diagnostiquer_install_fonts_liberation.py`) a
+confirme que l'installation PEUT reussir sur certains runs (vue
+reussie une fois) -- **chaque `gh workflow run`/execution de workflow
+provisionne une VM ephemere independante, sans aucun etat partage (cache
+apt, DNS, miroirs) entre deux executions meme sur le meme commit** :
+l'acces reseau aux miroirs apt est intermittent et non reproductible
+d'un run a l'autre sur ce type de runner GitHub-hosted.
+
+**Solution retenue** (commit `1bdc241`) : bundler directement les
+fichiers TTF de Liberation Sans **dans le repo**
+(`pipeline/assets/fonts/LiberationSans-{Regular,Bold}.ttf` + licence
+SIL-OFL-1.1, qui autorise explicitement la redistribution) plutot que
+de les installer a l'execution :
+- `pipeline.py` : `SVG_POLICE_REGULIER_TTF`/`SVG_POLICE_GRAS_TTF`
+  pointent vers ces fichiers bundles (chemin relatif a `pipeline.py`
+  via `os.path.dirname(os.path.abspath(__file__))`), au lieu des
+  chemins systeme `/usr/share/fonts/...`.
+- Les 3 workflows : l'etape copie desormais ces fichiers depuis le repo
+  (deja present via `actions/checkout`) vers `~/.local/share/fonts/`
+  puis lance `fc-cache -f` localement -- **zero appel reseau**, donc
+  deterministe a 100% a chaque run, contrairement a `apt-get`.
+
+**Verification en conditions reelles (pont GitHub Actions), en
+plusieurs passes** -- la premiere repasse du diagnostic corrige a
+montre des depassements qui semblaient persister (jusqu'a 109px sur
+certains champs), mais une investigation plus poussee a revele que
+c'etaient des **faux positifs du script de diagnostic lui-meme**, pas
+du code de production :
+1. `scripts-maintenance/diagnostiquer_police_cairosvg.py` (nouveau,
+   lecture seule) a confirme que cairosvg rend bien avec Liberation
+   Sans une fois bundlee (193px rendu vs 189.5px mesure par PIL pour la
+   meme chaine -- ecart negligeable, largement sous la marge de
+   securite) -- la police n'etait donc plus en cause pour la suite.
+2. `scripts-maintenance/diagnostiquer_troncature_svg.py` (nouveau,
+   lecture seule) a confirme, en rendant isolement chaque texte
+   REELLEMENT tronque par `ajuster_texte_svg()` dans les 3 vrais
+   appels de generateurs, que la troncature elle-meme fonctionne
+   correctement (5 cas sur 6 dans le budget, 1 edge-case a 8px --
+   d'ou la marge de securite remontee de 10 a 18px, commit `10baa71`).
+3. Le depassement encore mesure par
+   `diagnostiquer_overflow_schemas_svg.py` provenait de **3 defauts du
+   script de diagnostic lui-meme** (corriges, commits `8356425` et
+   `46d1e99`) : (a) image ouverte en RGB au lieu de RGBA -- les zones
+   transparentes du canevas (schemas qui ne remplissent pas tout le
+   fond, le `background:#FAFAFA` en CSS sur la racine `<svg>` n'etant
+   pas honore par cairosvg) etaient aplaties en noir et comptees comme
+   "contenu" jusqu'au bord du canevas ; (b) fenetres de recherche par
+   composant qui se chevauchaient entre composants voisins du schema
+   technique (positions espacees de 210px, fenetres de ±140px) --
+   le texte du composant d'a cote etait capte par erreur ; (c)
+   l'entete de colonne du schema comparatif est un rect colore plein
+   (pas une couleur de fond connue), donc "tout pixel non-fond" le
+   detectait lui-meme sur toute sa largeur plutot que le texte qu'il
+   contient, en plus d'une marge de recherche qui empietait sur la
+   colonne voisine (colonnes contigues, sans espace entre elles).
+
+**Resultat final, confirme sur le run `43067280700`** : les 3 schemas
+(technique, flowchart, comparatif) rapportent **0px de depassement sur
+tous les elements** par rapport a leur geometrie reelle. Chantier clos.
+
+**Configuration ajustable si le rendu reste trop/pas assez serre**
+(demande operateur explicite -- "comme d'habitude avec des endpoints") :
+`SVG_MARGE_SECURITE_PX` (marge avant troncature, 18px), et
+`LARGEUR_LABEL_TECHNIQUE_PAR_NB` (budget de label par nombre de
+composants du schema technique), tous deux en haut de la section
+CELLULE 11B de `pipeline.py`.
