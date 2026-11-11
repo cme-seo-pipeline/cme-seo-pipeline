@@ -1,0 +1,52 @@
+# Execution du 2026-11-11T17:07:01Z
+# Script    : scripts-maintenance/diagnostiquer_overflow_schemas_svg.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+Polices disponibles sur ce runner (extrait) :
+  /home/runner/.local/share/fonts/LiberationSans-Bold.ttf: Liberation Sans:style=Bold
+  /home/runner/.local/share/fonts/LiberationSans-Regular.ttf: Liberation Sans:style=Regular
+  /usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf: DejaVu Math TeX Gyre:style=Regular
+  /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf: DejaVu Sans:style=Bold
+  /usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf: DejaVu Sans:style=Bold Oblique
+  /usr/share/fonts/truetype/dejavu/DejaVuSans-ExtraLight.ttf: DejaVu Sans,DejaVu Sans Light:style=ExtraLight
+  /usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf: DejaVu Sans:style=Oblique
+  /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf: DejaVu Sans:style=Book
+  /usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf: DejaVu Sans,DejaVu Sans Condensed:style=Condensed Bold,Bold
+  /usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-BoldOblique.ttf: DejaVu Sans,DejaVu Sans Condensed:style=Condensed Bold Oblique,Bold Oblique
+  /usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf: DejaVu Sans,DejaVu Sans Condensed:style=Condensed Oblique,Oblique
+  /usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf: DejaVu Sans,DejaVu Sans Condensed:style=Condensed,Book
+  /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf: DejaVu Sans Mono:style=Bold
+  /usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf: DejaVu Sans Mono:style=Bold Oblique
+  /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf: DejaVu Sans Mono:style=Oblique
+  /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf: DejaVu Sans Mono:style=Book
+  /usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf: DejaVu Serif:style=Bold
+  /usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf: DejaVu Serif:style=Bold Italic
+  /usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf: DejaVu Serif:style=Italic
+  /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf: DejaVu Serif:style=Book
+
+====================================================================================================
+1/ generer_technique_svg -- texte flottant autour d'un cercle (pas de boite rect)
+====================================================================================================
+  PNG sauvegarde : /home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/logs/diag_technique_3comp.png (680x380)
+  Composant 1 'Disjoncteur dif' : cercle=[78,182]  contenu_reel=[48,269]  -> ⚠️ DEPASSEMENT (gauche:30px, droite:87px)
+  Composant 2 'Compteur commun' : cercle=[288,392]  contenu_reel=[200,479]  -> ⚠️ DEPASSEMENT (gauche:88px, droite:87px)
+  Composant 3 'Tableau de repa' : cercle=[498,602]  contenu_reel=[410,631]  -> ⚠️ DEPASSEMENT (gauche:88px, droite:29px)
+
+  Titre header : contenu_reel=[0,679] (largeur 679px) sur bandeau 680px -> OK
+
+====================================================================================================
+2/ generer_flowchart_svg -- texte dans un rect explicite
+====================================================================================================
+  PNG sauvegarde : /home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/logs/diag_flowchart_3etapes.png (680x335)
+  Etape 1 : rect=[87,630]  contenu_reel=[87,679]  -> ⚠️ DEPASSEMENT (49px)
+  Etape 2 : rect=[87,630]  contenu_reel=[87,679]  -> ⚠️ DEPASSEMENT (49px)
+  Etape 3 : rect=[87,630]  contenu_reel=[87,679]  -> ⚠️ DEPASSEMENT (49px)
+
+====================================================================================================
+3/ generer_comparatif_svg -- entetes de colonnes dans un rect explicite
+====================================================================================================
+  PNG sauvegarde : /home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/logs/diag_comparatif_2items.png (680x158)
+  Colonne 1 'Offre Electric' : rect=[160,420]  contenu_reel=[160,449]  -> ⚠️ DEPASSEMENT (29px)
+  Colonne 2 'Offre Standard' : rect=[420,680]  contenu_reel=[420,679]  -> OK (0px)
