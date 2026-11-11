@@ -5184,7 +5184,13 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
 SVG_POLICE_FAMILLE = "'Liberation Sans', Arial, sans-serif"
 SVG_POLICE_REGULIER_TTF = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "fonts", "LiberationSans-Regular.ttf")
 SVG_POLICE_GRAS_TTF = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "fonts", "LiberationSans-Bold.ttf")
-SVG_MARGE_SECURITE_PX = 10  # marge interne avant troncature
+SVG_MARGE_SECURITE_PX = 18  # marge interne avant troncature -- 10 -> 18 le
+# 11/11/2026 : verification en conditions reelles (diagnostiquer_troncature_svg.py,
+# pont GitHub Actions) a confirme que PIL (utilise pour mesurer, voir
+# _mesurer_largeur_texte_svg) sous-estime legerement la largeur reelle
+# rendue par cairosvg sur certains textes proches de la limite (ecart
+# constate jusqu'a ~8px sur un cas) -- marge augmentee par precaution,
+# ajustable ici si le rendu reste trop/pas assez serre.
 
 
 def _mesurer_largeur_texte_svg(texte, taille_px, gras):
