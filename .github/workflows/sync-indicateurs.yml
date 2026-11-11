@@ -18,6 +18,13 @@ jobs:
         with:
           python-version: '3.11'
 
+      # Rend deterministe le rendu des schemas SVG (pipeline.py, CELLULE
+      # 11B) : sans cette police, cairosvg retombe sur DejaVu Sans (plus
+      # large qu'Arial) et les textes tronques par nombre de caracteres
+      # debordent de leur boite/cercle -- corrige le 11/11/2026.
+      - name: Installer la police Liberation Sans (schemas SVG)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-liberation
+
       - name: Installer les dependances
         run: pip install -r pipeline/requirements.txt
 

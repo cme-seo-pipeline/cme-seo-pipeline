@@ -5159,6 +5159,60 @@ def rediger_et_publier(all_briefs_finaux, silos_a_traiter, wp_config, client_bq,
 # ============================================================
 # CELLULE 11B — SCHÉMAS SVG
 # ============================================================
+# Police embarquee pour un rendu deterministe (Liberation Sans, libre de
+# droit, metriquement equivalente a Arial) -- installee via apt
+# (fonts-liberation) dans les workflows qui generent ces schemas
+# (publication-quotidienne.yml, sync-indicateurs.yml,
+# maintenance-a-la-demande.yml). Corrige le bug signale par l'operateur
+# le 11/11/2026 ("les titres a l'interieur depassent leur petit bloc") :
+# le SVG declarait font-family="Arial,sans-serif", mais sur un runner
+# GitHub Actions nu (sans Arial ni Liberation installes), le rendu tombe
+# sur DejaVu Sans -- sensiblement plus large -- ce qui faisait deborder
+# tous les textes tronques par NOMBRE DE CARACTERES (ex: nom[:15]) de
+# leur boite/cercle reel. Mesure au pixel (sur le vrai runner, avant/apres)
+# par scripts-maintenance/diagnostiquer_overflow_schemas_svg.py.
+#
+# Chemins/marge ajustables : si le package systeme change de nom/chemin,
+# ou si le rendu reste trop ou pas assez serre, modifier uniquement ces
+# constantes -- pas les fonctions ci-dessous.
+SVG_POLICE_FAMILLE = "'Liberation Sans', Arial, sans-serif"
+SVG_POLICE_REGULIER_TTF = "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"
+SVG_POLICE_GRAS_TTF = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+SVG_MARGE_SECURITE_PX = 10  # marge interne avant troncature
+
+
+def _mesurer_largeur_texte_svg(texte, taille_px, gras):
+    """Largeur reellement rendue de TEXTE a TAILLE_PX avec la police
+    embarquee (identique a celle utilisee par cairosvg en prod, voir
+    SVG_POLICE_FAMILLE ci-dessus) -- remplace toute estimation par
+    nombre de caracteres. Repli grossier (0.6*taille_px/caractere) si la
+    police n'est pas trouvee sur la machine qui execute ce code (ex. un
+    sandbox de dev sans fonts-liberation installe), pour ne jamais faire
+    planter la generation d'un schema."""
+    try:
+        from PIL import ImageFont
+        chemin = SVG_POLICE_GRAS_TTF if gras else SVG_POLICE_REGULIER_TTF
+        return ImageFont.truetype(chemin, taille_px).getlength(texte)
+    except Exception:
+        return len(texte) * taille_px * 0.6
+
+
+def ajuster_texte_svg(texte, taille_px, gras, largeur_max_px, marge=SVG_MARGE_SECURITE_PX):
+    """Tronque TEXTE avec des points de suspension SEULEMENT si sa
+    largeur reellement mesuree depasse largeur_max_px - marge. Remplace
+    les anciennes troncatures texte[:N] (nombre de caracteres), qui ne
+    garantissaient rien sur la largeur reellement rendue une fois
+    dessinee par cairosvg."""
+    texte = str(texte or "")
+    disponible = max(0, largeur_max_px - marge)
+    if _mesurer_largeur_texte_svg(texte, taille_px, gras) <= disponible:
+        return texte
+    tronque = texte
+    while tronque and _mesurer_largeur_texte_svg(tronque + "…", taille_px, gras) > disponible:
+        tronque = tronque[:-1]
+    return (tronque + "…") if tronque else texte[:1]
+
+
 def get_couleur_silo(silo_name):
     silo_lower = str(silo_name).lower()
     for key, couleur in COULEURS_SILO.items():
@@ -5233,8 +5287,18 @@ def generer_flowchart_svg(labels, descriptions, couleur, index=0):
     ]
     couleurs = PALETTES[index % len(PALETTES)]
 
+    # Largeur reellement disponible pour le texte a l'interieur du rect
+    # d'etape (bord droit du rect moins le point de depart du texte, moins
+    # une petite marge avant le bord) -- calculee a partir de la geometrie
+    # reelle du rect ci-dessous, pas devinee : si marge/largeur changent un
+    # jour, cette valeur reste juste.
+    rect_x = marge + 52
+    rect_largeur = largeur - marge - 72
+    texte_x = marge + 67
+    largeur_dispo_texte = (rect_x + rect_largeur) - texte_x - 8
+
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {largeur} {hauteur}"
-     style="font-family:Arial,sans-serif;background:#FAFAFA;border-radius:8px;">
+     style="font-family:{SVG_POLICE_FAMILLE};background:#FAFAFA;border-radius:8px;">
   <rect x="0" y="0" width="{largeur}" height="38" rx="8" fill="{couleur}"/>
   <rect x="0" y="28" width="{largeur}" height="10" fill="{couleur}"/>
   <text x="{largeur//2}" y="24" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Processus étape par étape</text>'''
@@ -5251,8 +5315,8 @@ def generer_flowchart_svg(labels, descriptions, couleur, index=0):
   <circle cx="{marge+22}" cy="{y+24}" r="16" fill="{c}"/>
   <text x="{marge+22}" y="{y+29}" text-anchor="middle" fill="white" font-size="13" font-weight="bold">{i+1}</text>
   <rect x="{marge+52}" y="{y+4}" width="{largeur-marge-72}" height="42" rx="6" fill="white" stroke="{c}" stroke-width="1.5"/>
-  <text x="{marge+67}" y="{y+22}" fill="#202124" font-size="12" font-weight="bold">{label[:28]}</text>
-  <text x="{marge+67}" y="{y+37}" fill="#5F6368" font-size="10">{desc[:48]}</text>'''
+  <text x="{marge+67}" y="{y+22}" fill="#202124" font-size="12" font-weight="bold">{ajuster_texte_svg(label, 12, True, largeur_dispo_texte)}</text>
+  <text x="{marge+67}" y="{y+37}" fill="#5F6368" font-size="10">{ajuster_texte_svg(desc, 10, False, largeur_dispo_texte)}</text>'''
 
     svg += '\n</svg>'
     return svg.encode('utf-8')
@@ -5278,8 +5342,16 @@ def generer_technique_svg(titre, composants, couleur, index=0):
     else:
         positions = [(110, 160), (290, 160), (470, 160), (200, 290), (480, 290)]
 
+    # Largeur de texte disponible par composant (nom+desc, texte flottant
+    # CENTRE sur chaque icone, sans rect pour le contenir) : ce schema n'a
+    # structurellement pas de boite reelle, donc on fixe un budget par
+    # mise en page (nombre de composants affiches) plutot qu'un vrai calcul
+    # geometrique -- ajustable ici si le rendu reste trop/pas assez serre.
+    LARGEUR_LABEL_TECHNIQUE_PAR_NB = {1: 220, 2: 220, 3: 170, 4: 140, 5: 130}
+    largeur_label = LARGEUR_LABEL_TECHNIQUE_PAR_NB.get(nb, 130)
+
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {largeur} {hauteur}"
-     style="font-family:Arial,sans-serif;background:#FAFAFA;border-radius:8px;">
+     style="font-family:{SVG_POLICE_FAMILLE};background:#FAFAFA;border-radius:8px;">
   <defs><linearGradient id="grad{index}" x1="0%" y1="0%" x2="100%" y2="100%">
     <stop offset="0%" style="stop-color:#F8F9FA;stop-opacity:1"/>
     <stop offset="100%" style="stop-color:#E8F0FE;stop-opacity:1"/>
@@ -5287,7 +5359,7 @@ def generer_technique_svg(titre, composants, couleur, index=0):
   <rect width="{largeur}" height="{hauteur}" fill="url(#grad{index})" rx="8"/>
   <rect x="0" y="0" width="{largeur}" height="38" rx="8" fill="{couleur}"/>
   <rect x="0" y="28" width="{largeur}" height="10" fill="{couleur}"/>
-  <text x="{largeur//2}" y="24" text-anchor="middle" fill="white" font-size="13" font-weight="bold">{titre[:45]}</text>'''
+  <text x="{largeur//2}" y="24" text-anchor="middle" fill="white" font-size="13" font-weight="bold">{ajuster_texte_svg(titre, 13, True, largeur - 40)}</text>'''
 
     for i in range(len(positions) - 1):
         x1, y1 = positions[i]
@@ -5303,8 +5375,8 @@ def generer_technique_svg(titre, composants, couleur, index=0):
   <circle cx="{x}" cy="{y}" r="52" fill="white" stroke="{c}" stroke-width="2.5"/>
   <circle cx="{x}" cy="{y}" r="44" fill="{c}" opacity="0.08"/>
   <text x="{x}" y="{y-12}" text-anchor="middle" font-size="22">{comp.get('icone','⚙️')}</text>
-  <text x="{x}" y="{y+8}" text-anchor="middle" fill="{c}" font-size="10" font-weight="bold">{comp.get('nom','')[:15]}</text>
-  <text x="{x}" y="{y+22}" text-anchor="middle" fill="#5F6368" font-size="9">{comp.get('desc','')[:22]}</text>'''
+  <text x="{x}" y="{y+8}" text-anchor="middle" fill="{c}" font-size="10" font-weight="bold">{ajuster_texte_svg(comp.get('nom',''), 10, True, largeur_label)}</text>
+  <text x="{x}" y="{y+22}" text-anchor="middle" fill="#5F6368" font-size="9">{ajuster_texte_svg(comp.get('desc',''), 9, False, largeur_label)}</text>'''
 
     svg += '\n</svg>'
     return svg.encode('utf-8')
@@ -5324,8 +5396,15 @@ def generer_comparatif_svg(items, criteres, couleur, index=0):
     ]
     cols = COULEURS_ITEMS[index % len(COULEURS_ITEMS)]
 
+    # Largeurs de texte reellement disponibles, calculees a partir de la
+    # geometrie reelle ci-dessous (pas devinees) : si col_w ou la zone de
+    # gauche changent un jour, ces valeurs restent justes.
+    largeur_entete_colonne = col_w - 12  # rect entete, moins marge interne (6px chaque cote)
+    largeur_nom_critere = 150 - 8        # zone avant les colonnes (x=10 a x=160), moins marge droite
+    largeur_valeur_cellule = col_w - 16  # meme largeur que la barre de score
+
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {largeur} {hauteur}"
-     style="font-family:Arial,sans-serif;background:#FAFAFA;border-radius:8px;">
+     style="font-family:{SVG_POLICE_FAMILLE};background:#FAFAFA;border-radius:8px;">
   <rect x="0" y="0" width="{largeur}" height="38" rx="8" fill="{couleur}"/>
   <rect x="0" y="28" width="{largeur}" height="10" fill="{couleur}"/>
   <text x="{largeur//2}" y="24" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Tableau comparatif</text>'''
@@ -5334,14 +5413,14 @@ def generer_comparatif_svg(items, criteres, couleur, index=0):
         x = 160 + i * col_w + col_w // 2
         svg += f'''
   <rect x="{160+i*col_w}" y="42" width="{col_w}" height="32" fill="{cols[i]}" opacity="0.9"/>
-  <text x="{x}" y="62" text-anchor="middle" fill="white" font-size="11" font-weight="bold">{items[i][:14]}</text>'''
+  <text x="{x}" y="62" text-anchor="middle" fill="white" font-size="11" font-weight="bold">{ajuster_texte_svg(items[i], 11, True, largeur_entete_colonne)}</text>'''
 
     for j, critere in enumerate(criteres[:nb_criteres]):
         y = 78 + j * ligne_h
         bg = '#FFFFFF' if j % 2 == 0 else '#F8F9FA'
         svg += f'''
   <rect x="0" y="{y}" width="{largeur}" height="{ligne_h}" fill="{bg}"/>
-  <text x="10" y="{y+20}" fill="#202124" font-size="11" font-weight="bold">{critere.get('nom','')[:22]}</text>'''
+  <text x="10" y="{y+20}" fill="#202124" font-size="11" font-weight="bold">{ajuster_texte_svg(critere.get('nom',''), 11, True, largeur_nom_critere)}</text>'''
         for i in range(nb_items):
             x = 160 + i * col_w + col_w // 2
             valeur = critere.get(f'item_{i}', '—')
@@ -5351,9 +5430,9 @@ def generer_comparatif_svg(items, criteres, couleur, index=0):
                 svg += f'''
   <rect x="{160+i*col_w+6}" y="{y+24}" width="{col_w-12}" height="12" rx="6" fill="#EEEEEE"/>
   <rect x="{160+i*col_w+6}" y="{y+24}" width="{bar_w}" height="12" rx="6" fill="{cols[i]}" opacity="0.85"/>
-  <text x="{x}" y="{y+17}" text-anchor="middle" fill="#202124" font-size="9">{str(valeur)[:12]}</text>'''
+  <text x="{x}" y="{y+17}" text-anchor="middle" fill="#202124" font-size="9">{ajuster_texte_svg(str(valeur), 9, False, largeur_valeur_cellule)}</text>'''
             else:
-                svg += f'\n  <text x="{x}" y="{y+30}" text-anchor="middle" fill="#202124" font-size="10">{str(valeur)[:12]}</text>'
+                svg += f'\n  <text x="{x}" y="{y+30}" text-anchor="middle" fill="#202124" font-size="10">{ajuster_texte_svg(str(valeur), 10, False, largeur_valeur_cellule)}</text>'
         svg += f'\n  <line x1="0" y1="{y+ligne_h}" x2="{largeur}" y2="{y+ligne_h}" stroke="#E8EAED" stroke-width="1"/>'
 
     svg += '\n</svg>'
