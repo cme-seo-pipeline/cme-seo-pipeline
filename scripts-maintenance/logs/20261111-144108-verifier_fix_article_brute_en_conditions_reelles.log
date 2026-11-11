@@ -1,0 +1,132 @@
+# Execution du 2026-11-11T14:41:08Z
+# Script    : scripts-maintenance/verifier_fix_article_brute_en_conditions_reelles.py
+# Arguments : 
+
+
+[notice] A new release of pip is available: 26.2.2 -> 26.3
+[notice] To update, run: pip install --upgrade pip
+Downloading Chrome for Testing 158.0.8127.18 (playwright chromium v1254) from https://cdn.playwright.dev/builds/cft/158.0.8127.18/linux64/chrome-linux64.zip
+|                                                                                |   0% of 197.8 MiB
+|■■■■■■■■                                                                        |  10% of 197.8 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 197.8 MiB
+Chrome for Testing 158.0.8127.18 (playwright chromium v1254) downloaded to /home/runner/.cache/ms-playwright/chromium-1254
+Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+|                                                                                |   0% of 2.2 MiB
+|■■■■■■■■                                                                        |  10% of 2.2 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+Downloading Chrome Headless Shell 158.0.8127.18 (playwright chromium-headless-shell v1254) from https://cdn.playwright.dev/builds/cft/158.0.8127.18/linux64/chrome-headless-shell-linux64.zip
+|                                                                                |   0% of 125.9 MiB
+|■■■■■■■■                                                                        |  10% of 125.9 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 125.9 MiB
+Chrome Headless Shell 158.0.8127.18 (playwright chromium-headless-shell v1254) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1254
+📦 Installation de playwright + chromium (one-shot, runner GitHub Actions)...
+==========================================================================================
+id=3489 | renovation-energetique
+==========================================================================================
+  8 formulaire(s) 'cme-cta60' trouve(s) dans le DOM :
+    pos=1 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=2 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=3 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=4 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=5 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=6 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=7 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=8 | parent=DIV.entry-content
+
+==========================================================================================
+id=3488 | entretien-chaudiere-gaz
+==========================================================================================
+  8 formulaire(s) 'cme-cta60' trouve(s) dans le DOM :
+    pos=1 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=2 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=3 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=4 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=5 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=6 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=7 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=8 | parent=DIV.entry-content
+
+==========================================================================================
+id=3491 | installation-panneaux-solaires
+==========================================================================================
+  8 formulaire(s) 'cme-cta60' trouve(s) dans le DOM :
+    pos=1 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=2 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=3 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=4 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=5 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=6 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=7 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=8 | parent=DIV.entry-content
+
+==========================================================================================
+id=3384 | aides-renovation-energetique
+==========================================================================================
+  6 formulaire(s) 'cme-cta60' trouve(s) dans le DOM :
+    pos=1 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=2 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=3 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=4 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=5 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=6 | parent=DIV.entry-content
+
+==========================================================================================
+id=3385 | aides-energetiques-guide-2
+==========================================================================================
+  8 formulaire(s) 'cme-cta60' trouve(s) dans le DOM :
+    pos=1 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=2 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=3 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=4 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=5 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=6 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=7 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=8 | parent=DIV.entry-content
+
+==========================================================================================
+id=3387 | comparateur-electricite
+==========================================================================================
+  8 formulaire(s) 'cme-cta60' trouve(s) dans le DOM :
+    pos=1 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=2 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=3 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=4 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=5 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=6 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=7 | parent=ARTICLE. <-- a l'interieur de l'<article> imbrique
+    pos=8 | parent=DIV.entry-content
+
+==========================================================================================
+Resume
+==========================================================================================
+  id=3489 | renovation-energetique | ✅ 8 formulaire(s) -- correctif confirme fonctionnel
+  id=3488 | entretien-chaudiere-gaz | ✅ 8 formulaire(s) -- correctif confirme fonctionnel
+  id=3491 | installation-panneaux-solaires | ✅ 8 formulaire(s) -- correctif confirme fonctionnel
+  id=3384 | aides-renovation-energetique | ✅ 6 formulaire(s) -- correctif confirme fonctionnel
+  id=3385 | aides-energetiques-guide-2 | ✅ 8 formulaire(s) -- correctif confirme fonctionnel
+  id=3387 | comparateur-electricite | ✅ 8 formulaire(s) -- correctif confirme fonctionnel
