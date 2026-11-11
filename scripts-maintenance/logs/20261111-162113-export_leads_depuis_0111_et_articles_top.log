@@ -1,0 +1,74 @@
+# Execution du 2026-11-11T16:21:13Z
+# Script    : scripts-maintenance/export_leads_depuis_0111_et_articles_top.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+==============================================================================================================
+1/ Leads depuis le 2026-11-01 -- colonnes alignees sur l'onglet Sheets 'Leads Formulaire Article'
+==============================================================================================================
+
+  11 lead(s) qui DOIVENT apparaitre dans le Sheet (meme filtre que le relais reel) :
+--------------------------------------------------------------------------------------------------------------
+  Date & Heure (UTC)   | Prenom               | Telephone     | Email                  | CP     | Silo                   | Position   | CTA                       
+  ------------------------------------------------------------------------------------------------------------
+  2026-11-01 15:19:20  | Walter Auguste       | 0636458741    |                        |        | aide-energetique       | 1          | contact-expert-inline     
+      URL : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/fonctionnement-prime-energie/
+  2026-11-02 13:08:22  |                      |               |                        |        |                        |            | contact-expert-formulaire 
+      URL : https://www.comprendre-mon-energie.fr/contactez-un-expert/
+  2026-11-02 13:08:23  |                      |               |                        |        |                        |            | contact-expert-formulaire 
+      URL : https://www.comprendre-mon-energie.fr/demande-confirmee/
+  2026-11-02 13:31:32  |                      |               |                        |        |                        |            | contact-expert-formulaire 
+      URL : https://www.comprendre-mon-energie.fr/contactez-un-expert/
+  2026-11-02 13:31:32  |                      |               |                        |        |                        |            | contact-expert-formulaire 
+      URL : https://www.comprendre-mon-energie.fr/demande-confirmee/
+  2026-11-04 16:09:54  | corset ornella       | 0673233708    |                        |        | electricite            | 2          | contact-expert-inline     
+      URL : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aide-electricite-dispositifs-2026/
+  2026-11-05 09:24:51  | MADEC Jean           | 0297524964    |                        |        | gaz                    | 1          | contact-expert-inline     
+      URL : https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chauffage-gaz/
+  2026-11-06 06:33:29  | maudet herve         | 0671561064    |                        |        | gaz                    |            | appel-header-formulaire   
+      URL : https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilition-contrat-gaz-droits-demarches/
+  2026-11-06 17:38:54  | Viaud Henri          | 0619486047    |                        |        | solaire                | 1          | contact-expert-inline     
+      URL : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/entretien-chauffe-eau-solaire/
+  2026-11-06 17:41:16  | Viaud Henri          | 0619486047    |                        |        | solaire                | 4          | contact-expert-inline     
+      URL : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/entretien-chauffe-eau-solaire/
+  2026-11-10 10:18:55  | Danielle ST LEGER    | 0745187177    |                        |        | electricite            | 1          | contact-expert-inline     
+      URL : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-social-electricite-conditions-demande/
+
+  + 4 lead(s) HORS Sheet par design (outil non relaye, ex. appel-telephone) :
+--------------------------------------------------------------------------------------------------------------
+  2026-11-01 16:58:26  tool=appel-telephone  tel=+33189713648  page=https://www.comprendre-mon-energie.fr/
+  2026-11-01 17:23:47  tool=appel-telephone  tel=+33189713648  page=https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/utiliser-cheque-energie-fournisseur/
+  2026-11-01 17:24:30  tool=appel-telephone  tel=+33189713648  page=https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  2026-11-01 17:39:01  tool=appel-telephone  tel=+33189713648  page=https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs-1101/
+
+  Total toutes lignes depuis le 2026-11-01 : 15 (11 dans le Sheet + 4 hors Sheet)
+
+==============================================================================================================
+2/ Articles qui convertissent le mieux (meme fenetre)
+==============================================================================================================
+
+  12 article(s) distinct(s) avec au moins 1 lead sur la fenetre :
+
+   2 lead(s)  |  silo=(vide)                  |  https://www.comprendre-mon-energie.fr/demande-confirmee/
+   2 lead(s)  |  silo=solaire                 |  https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/entretien-chauffe-eau-solaire/
+   2 lead(s)  |  silo=(vide)                  |  https://www.comprendre-mon-energie.fr/contactez-un-expert/
+   1 lead(s)  |  silo=(vide)                  |  https://www.comprendre-mon-energie.fr/
+   1 lead(s)  |  silo=aide-energetique        |  https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/fonctionnement-prime-energie/
+   1 lead(s)  |  silo=(vide)                  |  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/utiliser-cheque-energie-fournisseur/
+   1 lead(s)  |  silo=(vide)                  |  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs-1101/
+   1 lead(s)  |  silo=electricite             |  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aide-electricite-dispositifs-2026/
+   1 lead(s)  |  silo=(vide)                  |  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+   1 lead(s)  |  silo=electricite             |  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-social-electricite-conditions-demande/
+   1 lead(s)  |  silo=gaz                     |  https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chauffage-gaz/
+   1 lead(s)  |  silo=gaz                     |  https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilition-contrat-gaz-droits-demarches/
+
+  Repartition par silo (leads avec source_page, tous outils) :
+silo
+                    8
+electricite         2
+gaz                 2
+solaire             2
+aide-energetique    1
