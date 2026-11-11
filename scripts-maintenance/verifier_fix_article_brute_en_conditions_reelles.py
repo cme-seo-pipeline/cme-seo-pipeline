@@ -59,7 +59,13 @@ def verifier(page, post_id, nom, chemin):
 def main():
     print("📦 Installation de playwright + chromium (one-shot, runner GitHub Actions)...")
     subprocess.run([sys.executable, "-m", "pip", "install", "--quiet", "playwright"], check=True)
-    subprocess.run([sys.executable, "-m", "playwright", "install", "--with-deps", "chromium"], check=True)
+    # Pas de --with-deps : deux runs consecutifs ont echoue a joindre
+    # security.ubuntu.com (panne reseau cote infra GitHub, hors de notre
+    # controle) pour des polices optionnelles (fonts-ipafont-gothic etc.)
+    # -- les bibliotheques essentielles de Chromium sont deja presentes sur
+    # l'image du runner (confirme par les runs precedents), et ce script ne
+    # fait que lire le DOM, aucun rendu visuel de glyphes exotiques requis.
+    subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
     from playwright.sync_api import sync_playwright
 
     resumes = []
