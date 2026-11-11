@@ -1,0 +1,35 @@
+# Execution du 2026-11-11T15:32:13Z
+# Script    : scripts-maintenance/verifier_sante_apis_1111.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+======================================================================
+BigQuery
+======================================================================
+  ✅ Requete SELECT 1 : OK (1)
+
+======================================================================
+Anthropic API (api.anthropic.com)
+======================================================================
+  HTTP 200
+  ✅ Reponse recue : 'OK'
+
+======================================================================
+OpenAI API (images mises en avant)
+======================================================================
+  ❌ OPENAI_API_KEY absente de l'environnement
+
+======================================================================
+API REST WordPress (publication)
+======================================================================
+  HTTP 200
+  ✅ Authentifie en tant que : Oussama Blal (id=1)
+
+======================================================================
+SearchApi.io (contexte general -- PAS utilise par Mode Actualite)
+======================================================================
+  HTTP 200
+  ✅ Requete de recherche OK (quota disponible)
