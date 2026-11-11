@@ -1,0 +1,44 @@
+# Execution du 2026-11-11T15:41:35Z
+# Script    : scripts-maintenance/rattraper_actualite_gaz_novembre_1111.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+Changement reconstruit : {'domaine': 'Gaz', 'indicateur': 'PRVG_moyen_TTC', 'sous_categorie': None, 'valeur_precedente': 194.90053865300212, 'valeur_actuelle': 206.25603666147236, 'unite': '€/MWh', 'variation_pct': 5.83, 'date_debut_validite': '2026-12-01', 'date_verification': '2026-11-10'}
+✍️ Brief construit : Facture Gaz : hausse de 5.8% en novembre 2026
+✅ verifier_doublons() : pas de doublon, le correctif fonctionne -- on continue
+  🔎 Donnees officielles pour 1. Gaz | Facture Gaz : TROUVEES
+✅ Article redige (6089 caracteres HTML)
+  ✅ Publié : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-novembre-2026/
+  🆔 Post ID : 13383
+✅ ARTICLE PUBLIE : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-novembre-2026/ (post_id=13383)
+✅ type_publication marque 'actualite'
+🎨 GÉNÉRATION SCHÉMAS SVG...
+
+📂 1. Gaz — Facture Gaz : hausse de 5.8% en novembre 2026
+  🔍 H2 1 : Ce qui change : une hausse de 5,8% effec... → flowchart
+  ✅ https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/11/1__Gaz_1_flowchart-4.png
+  🔍 H2 2 : Pourquoi ce changement : le cadre réglem... → technique
+  ✅ https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/11/1__Gaz_2_technique-4.png
+  🔍 H2 3 : Impact concret pour vous : un exemple ca... → comparatif
+    ⚠️ Extraction SVG échouée : Extra data: line 47 column 1 (char 962)
+  🔍 H2 4 : Ce qu’il faut retenir... → comparatif
+    ⚠️ Extraction SVG échouée : Expecting value: line 1 column 1 (char 0)
+  🔍 H2 5 : Questions fréquemment posées... → comparatif
+    ⚠️ Extraction SVG échouée : Expecting value: line 1 column 1 (char 0)
+  ✅ 2 schémas injectés
+✅ Schemas generes
+🎨 FEATURED IMAGES (cartes titre)...
+
+📂 1. Gaz | Facture Gaz
+  ✅ https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/11/carte_Facture_Gaz_13383.png
+✅ Image mise en avant generee
+✅ Notification envoyee
+
+🎉 RATTRAPAGE TERMINE : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-novembre-2026/
