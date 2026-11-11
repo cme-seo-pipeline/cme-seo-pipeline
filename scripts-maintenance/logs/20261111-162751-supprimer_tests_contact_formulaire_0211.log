@@ -1,0 +1,20 @@
+# Execution du 2026-11-11T16:27:51Z
+# Script    : scripts-maintenance/supprimer_tests_contact_formulaire_0211.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 Lignes correspondant au filtre (contact-expert-formulaire, 02/11, champs vides) :
+
+====================================================================================================
+  2026-11-02 13:08:22.629000+00:00  tool='contact-expert-formulaire'  prenom=''  telephone=''  page='https://www.comprendre-mon-energie.fr/contactez-un-expert/'
+  2026-11-02 13:08:23.317000+00:00  tool='contact-expert-formulaire'  prenom=''  telephone=''  page='https://www.comprendre-mon-energie.fr/demande-confirmee/'
+  2026-11-02 13:31:32.173000+00:00  tool='contact-expert-formulaire'  prenom=''  telephone=''  page='https://www.comprendre-mon-energie.fr/contactez-un-expert/'
+  2026-11-02 13:31:32.975000+00:00  tool='contact-expert-formulaire'  prenom=''  telephone=''  page='https://www.comprendre-mon-energie.fr/demande-confirmee/'
+====================================================================================================
+
+✅ 4 ligne(s) trouvee(s) (attendu : 4, voir le constat du 02/11 -- 4 lignes au total pour ce tool, toutes ce jour-la).
+
+(dry-run -- relancer avec --apply --confirmation=SUPPRESSION-TEST-0211 pour supprimer reellement ces lignes)
