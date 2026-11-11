@@ -1,0 +1,76 @@
+# Execution du 2026-11-11T15:56:25Z
+# Script    : scripts-maintenance/auditer_signal_pays_expansion_1111.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+38 jour(s) de donnees 'Country' recuperes
+
+Fenetre : 38 jours distincts avec des donnees
+================================================================================
+Pays                           |  Sessions cumulees |   Moy/jour |  Jours presents
+================================================================================
+France                         |               3097 |      81.50 |              38
+Germany                        |                440 |      11.58 |              13
+Morocco                        |                108 |       2.84 |              34
+Belgium                        |                 67 |       1.76 |              27
+United States                  |                 51 |       1.34 |              20
+China                          |                 24 |       0.63 |              15
+Canada                         |                 21 |       0.55 |              14
+Réunion                        |                 17 |       0.45 |              14
+Netherlands                    |                 11 |       0.29 |               8
+Spain                          |                  9 |       0.24 |               7
+Switzerland                    |                  9 |       0.24 |               8
+United Kingdom                 |                  8 |       0.21 |               5
+Italy                          |                  7 |       0.18 |               7
+Luxembourg                     |                  7 |       0.18 |               4
+Algeria                        |                  6 |       0.16 |               5
+Cameroon                       |                  5 |       0.13 |               4
+Guadeloupe                     |                  5 |       0.13 |               4
+Tunisia                        |                  5 |       0.13 |               4
+Martinique                     |                  4 |       0.11 |               4
+Guinea                         |                  4 |       0.11 |               4
+Romania                        |                  3 |       0.08 |               3
+Burkina Faso                   |                  3 |       0.08 |               3
+Israel                         |                  3 |       0.08 |               3
+Poland                         |                  3 |       0.08 |               3
+Côte d'Ivoire                  |                  3 |       0.08 |               3
+Madagascar                     |                  3 |       0.08 |               2
+Benin                          |                  2 |       0.05 |               2
+Mali                           |                  2 |       0.05 |               2
+Philippines                    |                  2 |       0.05 |               1
+Turkey                         |                  2 |       0.05 |               2
+Saint Martin (French part)     |                  2 |       0.05 |               2
+Norway                         |                  2 |       0.05 |               2
+Portugal                       |                  2 |       0.05 |               2
+New Caledonia                  |                  2 |       0.05 |               2
+Singapore                      |                  2 |       0.05 |               2
+Andorra                        |                  2 |       0.05 |               1
+Senegal                        |                  2 |       0.05 |               2
+Hong Kong                      |                  1 |       0.03 |               1
+Australia                      |                  1 |       0.03 |               1
+Burundi                        |                  1 |       0.03 |               1
+Czech Republic                 |                  1 |       0.03 |               1
+New Zealand                    |                  1 |       0.03 |               1
+Sudan                          |                  1 |       0.03 |               1
+French Guiana                  |                  1 |       0.03 |               1
+Brazil                         |                  1 |       0.03 |               1
+Ireland                        |                  1 |       0.03 |               1
+Congo, the Democratic Republic of the |                  1 |       0.03 |               1
+Latvia                         |                  1 |       0.03 |               1
+Hungary                        |                  1 |       0.03 |               1
+Togo                           |                  1 |       0.03 |               1
+South Africa                   |                  1 |       0.03 |               1
+French Polynesia               |                  1 |       0.03 |               1
+Peru                           |                  1 |       0.03 |               1
+Nigeria                        |                  1 |       0.03 |               1
+
+================================================================================
+Focus pays candidats a l'expansion
+================================================================================
+  France : 3097 sessions cumulees sur 38j (81.50/jour), present 38 jour(s)
+  Belgium : 67 sessions cumulees sur 38j (1.76/jour), present 27 jour(s)
+  Belgique : absent du top des pays remontes par Clarity sur la fenetre
+  Canada : 21 sessions cumulees sur 38j (0.55/jour), present 14 jour(s)
