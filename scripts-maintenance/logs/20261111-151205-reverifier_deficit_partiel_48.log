@@ -1,0 +1,107 @@
+# Execution du 2026-11-11T15:12:05Z
+# Script    : scripts-maintenance/reverifier_deficit_partiel_48.py
+# Arguments : 
+
+
+[notice] A new release of pip is available: 26.2.2 -> 26.3
+[notice] To update, run: pip install --upgrade pip
+Downloading Chrome for Testing 158.0.8127.18 (playwright chromium v1254) from https://cdn.playwright.dev/builds/cft/158.0.8127.18/linux64/chrome-linux64.zip
+|                                                                                |   0% of 197.8 MiB
+|■■■■■■■■                                                                        |  10% of 197.8 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 197.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 197.8 MiB
+Chrome for Testing 158.0.8127.18 (playwright chromium v1254) downloaded to /home/runner/.cache/ms-playwright/chromium-1254
+Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+|                                                                                |   0% of 2.2 MiB
+|■■■■■■■■                                                                        |  10% of 2.2 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+Downloading Chrome Headless Shell 158.0.8127.18 (playwright chromium-headless-shell v1254) from https://cdn.playwright.dev/builds/cft/158.0.8127.18/linux64/chrome-headless-shell-linux64.zip
+|                                                                                |   0% of 125.9 MiB
+|■■■■■■■■                                                                        |  10% of 125.9 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 125.9 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 125.9 MiB
+Chrome Headless Shell 158.0.8127.18 (playwright chromium-headless-shell v1254) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1254
+📦 Installation de playwright + chromium (one-shot, runner GitHub Actions)...
+====================================================================================================
+     id |  attendu realiste | reel en live | statut
+====================================================================================================
+  13177 |                 6 |            7 | ✅ OK
+  12390 |                 6 |            7 | ✅ OK
+  11248 |                 6 |            7 | ✅ OK
+  11240 |                 6 |            7 | ✅ OK
+   9798 |                 6 |            7 | ✅ OK
+   9764 |                 3 |            4 | ✅ OK
+   9677 |                 6 |            7 | ✅ OK
+   9454 |                 6 |            7 | ✅ OK
+   8816 |              None |            0 | ❌ erreur
+   8375 |                 6 |            7 | ✅ OK
+   8357 |                 6 |            7 | ✅ OK
+   8340 |                 1 |            2 | ✅ OK
+   7984 |                 5 |            6 | ✅ OK
+   7488 |                 6 |            7 | ✅ OK
+   7476 |                 6 |            7 | ✅ OK
+   7270 |                 6 |            7 | ✅ OK
+   7069 |                 6 |            7 | ✅ OK
+   7067 |                 6 |            7 | ✅ OK
+   7059 |                 6 |            7 | ✅ OK
+   7037 |                 1 |            2 | ✅ OK
+   7035 |                 1 |            2 | ✅ OK
+   7033 |                 1 |            2 | ✅ OK
+   7031 |                 1 |            2 | ✅ OK
+   7029 |                 1 |            2 | ✅ OK
+   7027 |                 1 |            2 | ✅ OK
+   7025 |                 1 |            2 | ✅ OK
+   7023 |                 1 |            2 | ✅ OK
+   7021 |                 1 |            2 | ✅ OK
+   7019 |                 1 |            2 | ✅ OK
+   6675 |                 6 |            7 | ✅ OK
+   6671 |                 6 |            7 | ✅ OK
+   6615 |                 6 |            7 | ✅ OK
+   6547 |                 6 |            7 | ✅ OK
+   6533 |                 6 |            7 | ✅ OK
+   6266 |                 1 |            8 | ✅ OK
+   6263 |                 1 |            2 | ✅ OK
+   5945 |                 6 |            7 | ✅ OK
+   5804 |                 5 |            8 | ✅ OK [verifie en live ce matin (deja bon)]
+   5633 |                 6 |            7 | ✅ OK
+   4966 |                 3 |            4 | ✅ OK [verifie en live ce matin (deja bon)]
+   4745 |                 5 |            6 | ✅ OK
+   4364 |                 6 |            7 | ✅ OK
+   3661 |                 6 |            7 | ✅ OK
+   3387 |                 7 |            8 | ✅ OK [corrige aujourd'hui (<article> brute)]
+    840 |                 1 |            2 | ✅ OK
+    709 |                 0 |            1 | ✅ OK [deja explique : 362 mots, sous le seuil, comportement attendu]
+    699 |                 3 |            4 | ✅ OK [verifie en live ce matin (deja bon)]
+    563 |                 7 |            4 | ⚠️ DEFICIT REEL (4/7) [corrige le 04/11 (bloc Colonnes)]
+====================================================================================================
+Resume
+====================================================================================================
+  Total verifie       : 48
+  OK (pas de bug)     : 46
+  Deficit reel confirme : 1
+
+  Articles en deficit reel confirme (a investiguer individuellement) :
+    id=563 | 4/7 | https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/changer-fournisseur-electricite/
