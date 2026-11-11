@@ -1,0 +1,170 @@
+# Execution du 2026-11-11T16:08:53Z
+# Script    : scripts-maintenance/etat_tunnel_conversion_1111.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+==========================================================================================
+1/ Leads reels par jour et par outil (20 derniers jours)
+==========================================================================================
+tool        appel-header-formulaire  appel-telephone  contact-expert-formulaire  contact-expert-inline
+jour                                                                                                  
+2026-10-25                        0                0                          0                      1
+2026-10-26                        0                3                          0                      0
+2026-10-27                        0                0                          0                      1
+2026-10-28                        0                0                          0                      2
+2026-10-29                        0                3                          0                      0
+2026-10-30                        0                1                          0                      0
+2026-11-01                        0                4                          0                      1
+2026-11-02                        0                0                          4                      0
+2026-11-04                        0                0                          0                      1
+2026-11-05                        0                0                          0                      1
+2026-11-06                        1                0                          0                      2
+2026-11-10                        0                0                          0                      1
+
+  Total par outil sur la fenetre :
+tool
+appel-telephone              11
+contact-expert-inline        10
+contact-expert-formulaire     4
+appel-header-formulaire       1
+
+==========================================================================================
+Resume par fenetre
+==========================================================================================
+  11 derniers jours calendaires (2026-10-31 -> aujourd'hui, 11j) : 15 lead(s) -> 1.36/jour -> projection 41/mois
+  Depuis le commit 'un seul ecran' (04/11) (2026-11-04 -> aujourd'hui, 7j) : 6 lead(s) -> 0.86/jour -> projection 26/mois
+  Depuis l'ancienne fenetre de mesure (28/10) (2026-10-28 -> aujourd'hui, 14j) : 21 lead(s) -> 1.50/jour -> projection 45/mois
+
+==========================================================================================
+2/ Funnel du mini-formulaire inline (interactions_contenu, 20 derniers jours)
+==========================================================================================
+      jour type_evenement   cible   etape   nb
+2026-10-24     form_etape   appel       0    1
+2026-10-24     form_etape contact       0   11
+2026-10-24        form_vu contact            6
+2026-10-28     form_etape               1    1
+2026-10-28        form_vu                  301
+2026-10-28     form_etape               0  884
+2026-10-28   form_abandon               1    1
+2026-10-29     form_etape               0 1701
+2026-10-29        form_vu                  548
+2026-10-30        form_vu                  504
+2026-10-30     form_etape               0 1620
+2026-10-31     form_etape               0 1691
+2026-10-31        form_vu                  404
+2026-11-01   form_abandon               1    1
+2026-11-01     form_etape               1    2
+2026-11-01        form_vu contact          144
+2026-11-01     form_etape contact       0  425
+2026-11-01     form_etape contact termine    1
+2026-11-01     form_etape               0 1868
+2026-11-01     form_etape   appel       0   46
+2026-11-01        form_vu                  393
+2026-11-01     form_etape         termine    1
+2026-11-01   form_abandon contact       1    1
+2026-11-01     form_etape contact       1    2
+2026-11-01        form_vu   appel            9
+2026-11-02        form_vu   appel           24
+2026-11-02        form_vu contact          589
+2026-11-02     form_etape   appel       1    1
+2026-11-02     form_etape contact termine    1
+2026-11-02     form_etape   appel       0  195
+2026-11-02     form_etape   appel termine    1
+2026-11-02     form_etape contact       0 1749
+2026-11-02     form_etape contact       1    1
+2026-11-02     form_etape               0   16
+2026-11-03        form_vu contact          655
+2026-11-03     form_etape   appel       0  212
+2026-11-03     form_etape contact       0 1883
+2026-11-03        form_vu   appel           21
+2026-11-04     form_etape contact       0 1815
+2026-11-04     form_etape contact termine    2
+2026-11-04   form_abandon contact      vu   29
+2026-11-04     form_etape contact       1    4
+2026-11-04     form_etape   appel termine    1
+2026-11-04   form_abandon contact       1    3
+2026-11-04   form_abandon   appel      vu   19
+2026-11-04        form_vu contact          760
+2026-11-04     form_etape   appel       0  198
+2026-11-04        form_vu   appel           40
+2026-11-05   form_abandon contact      vu  126
+2026-11-05     form_etape contact       0   30
+2026-11-05        form_vu contact          546
+2026-11-05        form_vu   appel           18
+2026-11-05     form_etape contact termine    1
+2026-11-05     form_etape   appel       0    3
+2026-11-05   form_abandon   appel      vu   18
+2026-11-06   form_abandon   appel      vu   25
+2026-11-06   form_abandon contact      vu   88
+2026-11-06        form_vu   appel           26
+2026-11-06     form_etape contact termine    2
+2026-11-06        form_vu contact          462
+2026-11-07   form_abandon   appel      vu   19
+2026-11-07     form_etape               0   12
+2026-11-07        form_vu   appel           22
+2026-11-07        form_vu contact          434
+2026-11-07   form_abandon contact      vu   84
+2026-11-08        form_vu contact          364
+2026-11-08   form_abandon   appel      vu   18
+2026-11-08   form_abandon contact      vu   72
+2026-11-08        form_vu   appel           21
+2026-11-09   form_abandon   appel      vu   21
+2026-11-09        form_vu   appel           21
+2026-11-09        form_vu contact          539
+2026-11-09   form_abandon contact      vu  130
+2026-11-10   form_abandon   appel      vu   22
+2026-11-10     form_etape contact termine    1
+2026-11-10   form_abandon contact      vu  112
+2026-11-10        form_vu   appel           22
+2026-11-10        form_vu contact          527
+2026-11-11        form_vu   appel           19
+2026-11-11   form_abandon contact      vu   67
+2026-11-11        form_vu contact          306
+2026-11-11   form_abandon   appel      vu   17
+
+  Totaux par type d'evenement / variante (cible) / etape :
+type_evenement  cible    etape  
+form_abandon             1             2
+                appel    vu          159
+                contact  1             4
+                         vu          708
+form_etape               0          7792
+                         1             3
+                         termine       1
+                appel    0           655
+                         1             1
+                         termine       2
+                contact  0          5913
+                         1             7
+                         termine       8
+form_vu                             2150
+                appel                243
+                contact             5332
+
+  Taux d'abandon global (form_abandon / (form_etape ou idx>0)) :
+    form_vu total      : 7725
+    form_etape=termine : 11
+    form_abandon       : 873
+    taux de completion (termine/vu) : 0.1%
+
+==========================================================================================
+3/ Sessions GA4 par silo (approx. via pages vues, 11 derniers jours)
+==========================================================================================
+                     silo  sessions  vues  conversions_ga4
+                   1. Gaz       632  1009                0
+           5. Electricite       502   804                6
+      3. Aide Energetique       257   419                0
+               4. Solaire        95   143                0
+2. Renovation Energetique        74   108                0
+                                 38    55                0
+      contactez-un-expert         3     7                4
+        demande-confirmee         3     3                1
+                  contact         1     1                0
+  politique-de-cookies-ue         1     1                0
