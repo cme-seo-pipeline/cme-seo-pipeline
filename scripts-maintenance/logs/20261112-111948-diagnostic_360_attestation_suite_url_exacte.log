@@ -1,0 +1,60 @@
+# Execution du 2026-11-12T11:19:48Z
+# Script    : scripts-maintenance/diagnostic_360_attestation_suite_url_exacte.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+====================================================================================================
+1. GSC mensuel (12 mois) -- URL LONGUE exacte uniquement
+====================================================================================================
+  (0 ligne)
+
+====================================================================================================
+2. GSC mensuel (12 mois) -- URL COURTE exacte uniquement
+====================================================================================================
+   mois  clics  impressions  position_moy
+2026-07      4         1748          13.3
+2026-08      0          208          14.3
+2026-09      0          346          13.5
+2026-10      1          377          12.1
+2026-11      0          413          11.1
+
+====================================================================================================
+3. GA4 mensuel (12 mois) -- page_path LONG exact uniquement
+====================================================================================================
+   mois  sessions  conversions
+2026-06         6            0
+2026-07        22            0
+2026-08         9            0
+2026-09         2            0
+2026-10        18            0
+2026-11        19            6
+
+====================================================================================================
+4. GA4 mensuel (12 mois) -- page_path COURT exact uniquement
+====================================================================================================
+   mois  sessions  conversions
+2026-04         1            0
+2026-05        25            0
+2026-06        11            0
+
+====================================================================================================
+5. Premiere et derniere date GSC vue pour chacune des 2 URLs exactes (tout l'historique)
+====================================================================================================
+                                                                      page premiere_date derniere_date  nb_lignes
+https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/    2026-07-04    2026-11-09       1026
+
+====================================================================================================
+FIN
+====================================================================================================
