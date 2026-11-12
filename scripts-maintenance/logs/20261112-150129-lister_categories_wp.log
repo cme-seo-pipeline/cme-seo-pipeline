@@ -1,0 +1,52 @@
+# Execution du 2026-11-12T15:01:29Z
+# Script    : scripts-maintenance/lister_categories_wp.py
+# Arguments : 
+
+✅ 44 categories recuperees
+
+    ID | parent | count | slug                                     | nom                                      | chemin
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    61 |      0 |     0 | aide-energetique                         | Aide Énergétique                         | /aide-energetique/
+    69 |     61 |     0 | aide-isolation                           | Aide isolation                           | /aide-energetique/aide-isolation/
+    68 |     61 |     5 | aide-pompe-a-chaleur                     | Aide pompe à chaleur                     | /aide-energetique/aide-pompe-a-chaleur/
+    36 |     61 |    15 | aides-chaudiere                          | Aides chaudière                          | /aide-energetique/aides-chaudiere/
+    39 |     61 |    68 | aides-chauffe-eau-thermodynamique        | Aides chauffe-eau thermodynamique        | /aide-energetique/aides-chauffe-eau-thermodynamique/
+    38 |     61 |    16 | aides-combles-perdus                     | Aides combles perdus                     | /aide-energetique/aides-combles-perdus/
+    37 |     61 |    18 | aides-renovation-toiture                 | Aides rénovation toiture                 | /aide-energetique/aides-renovation-toiture/
+    42 |     61 |    69 | cheque-energie                           | Chèque énergie                           | /aide-energetique/cheque-energie/
+    44 |     61 |    16 | eco-pret-a-taux-zero                     | Eco-prêt à taux zéro                     | /aide-energetique/eco-pret-a-taux-zero/
+    41 |     61 |    72 | maprimerenov                             | MaPrimeRénov'                            | /aide-energetique/maprimerenov/
+    40 |     61 |    20 | prime-energie                            | Prime Énergie                            | /aide-energetique/prime-energie/
+    43 |     61 |    14 | tva-reduite                              | TVA réduite                              | /aide-energetique/tva-reduite/
+    46 |      0 |     0 | electricite                              | Électricité                              | /electricite/
+    53 |     46 |    25 | chauffage-electricite                    | Chauffage Électricité                    | /electricite/chauffage-electricite/
+    47 |     46 |    25 | comparatifs-fournisseurs-electricite     | Comparatifs Fournisseurs Électricité     | /electricite/comparatifs-fournisseurs-electricite/
+    51 |     46 |    23 | compteur                                 | Compteur                                 | /electricite/compteur/
+    50 |     46 |    78 | contrat-electricite                      | Contrat Électricité                      | /electricite/contrat-electricite/
+    52 |     46 |    20 | demenagement                             | Déménagement                             | /electricite/demenagement/
+    49 |     46 |    90 | facture-electricite                      | Facture Électricité                      | /electricite/facture-electricite/
+    63 |     46 |     0 | general                                  | general                                  | /electricite/general/
+    48 |     46 |    20 | heures-pleines-creuses                   | Heures Pleines/Creuses                   | /electricite/heures-pleines-creuses/
+    45 |      0 |     0 | gaz                                      | Gaz                                      | /gaz/
+    57 |     45 |   108 | bouteilles                               | Bouteilles                               | /gaz/bouteilles/
+    58 |     45 |    31 | chauffage-gaz                            | Chauffage Gaz                            | /gaz/chauffage-gaz/
+    56 |     45 |    26 | comparatifs-fournisseurs-gaz             | Comparatifs Fournisseurs Gaz             | /gaz/comparatifs-fournisseurs-gaz/
+    55 |     45 |    26 | contrat-gaz                              | Contrat Gaz                              | /gaz/contrat-gaz/
+    65 |     45 |    21 | demenagement-gaz                         | Déménagement gaz                         | /gaz/demenagement-gaz/
+    54 |     45 |    55 | facture-gaz                              | Facture Gaz                              | /gaz/facture-gaz/
+    28 |      0 |     1 | renovation-energetique                   | Rénovation Énergétique                   | /renovation-energetique/
+    26 |     28 |     6 | audit-energetique                        | Audit énergétique                        | /renovation-energetique/audit-energetique/
+    27 |     28 |     6 | bilan-energetique                        | Bilan énergétique                        | /renovation-energetique/bilan-energetique/
+    24 |     28 |     6 | chaudiere                                | Chaudière                                | /renovation-energetique/chaudiere/
+    25 |     28 |     6 | chauffe-eau-thermodynamique              | Chauffe-eau thermodynamique              | /renovation-energetique/chauffe-eau-thermodynamique/
+    20 |     28 |     7 | isolation                                | Isolation                                | /renovation-energetique/isolation/
+    23 |     28 |     6 | poele                                    | Poêle                                    | /renovation-energetique/poele/
+    19 |     28 |    10 | pompe-a-chaleur                          | Pompe à chaleur                          | /renovation-energetique/pompe-a-chaleur/
+    22 |     28 |     9 | renovation-globale                       | Rénovation globale                       | /renovation-energetique/renovation-globale/
+    29 |      0 |     1 | solaire                                  | Solaire                                  | /solaire/
+    34 |     29 |    20 | batterie-panneaux-solaires               | Batterie panneaux solaires               | /solaire/batterie-panneaux-solaires/
+    33 |     29 |    20 | chauffe-eau-solaire                      | Chauffe-eau solaire                      | /solaire/chauffe-eau-solaire/
+    30 |     29 |    19 | kit-solaire                              | Kit solaire                              | /solaire/kit-solaire/
+    31 |     29 |    21 | panneaux-solaires                        | Panneaux solaires                        | /solaire/panneaux-solaires/
+    32 |     29 |    20 | systeme-solaire-combine                  | Système solaire combiné                  | /solaire/systeme-solaire-combine/
+     1 |      0 |     0 | uncategorized                            | Uncategorized                            | /uncategorized/
