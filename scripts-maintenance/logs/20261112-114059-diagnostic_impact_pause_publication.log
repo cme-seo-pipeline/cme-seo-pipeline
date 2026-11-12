@@ -1,0 +1,90 @@
+# Execution du 2026-11-12T11:40:59Z
+# Script    : scripts-maintenance/diagnostic_impact_pause_publication.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+====================================================================================================
+1. Ecarts > 3 jours entre deux dates de publication consecutives (tout l'historique)
+====================================================================================================
+jour_precedent       jour  ecart_jours
+    2026-09-10 2026-09-24           14
+    2026-10-03 2026-10-13           10
+    2026-11-01 2026-11-11           10
+
+====================================================================================================
+2. Nombre d'articles publies par semaine (tout l'historique) -- pour voir le rythme global
+====================================================================================================
+   semaine  nb_articles
+2026-06-15           14
+2026-06-22           15
+2026-06-29            8
+2026-07-06           10
+2026-07-13           34
+2026-07-20           34
+2026-07-27           36
+2026-08-03           35
+2026-08-10           87
+2026-08-17           70
+2026-08-24           66
+2026-08-31           59
+2026-09-07           37
+2026-09-21           45
+2026-09-28           84
+2026-10-12           83
+2026-10-19           82
+2026-10-26          127
+2026-11-09           44
+
+====================================================================================================
+3. Trafic SITE ENTIER jour par jour (GSC) autour de l'incident SearchApi du 08-10/11 (0 article publie ces 3 jours)
+====================================================================================================
+      date      jour  clics  impressions  position_moyenne
+2026-11-01    Sunday      3         1583              45.3
+2026-11-02    Monday      2         3330              58.6
+2026-11-03   Tuesday      1         3155              55.8
+2026-11-04 Wednesday      1         2065              51.0
+2026-11-05  Thursday      0         1834              50.3
+2026-11-06    Friday      0         1832              50.6
+2026-11-07  Saturday      2         1824              52.2
+2026-11-08    Sunday      1         2143              54.2
+2026-11-09    Monday      5         2163              51.5
+
+====================================================================================================
+4. Trafic SITE ENTIER jour par jour (GA4) autour du meme incident
+====================================================================================================
+      date      jour  sessions
+2026-11-01    Sunday       117
+2026-11-02    Monday       150
+2026-11-03   Tuesday       133
+2026-11-04 Wednesday       158
+2026-11-05  Thursday       135
+2026-11-06    Friday       105
+2026-11-07  Saturday       204
+2026-11-08    Sunday        79
+2026-11-09    Monday       159
+2026-11-10   Tuesday       268
+2026-11-11 Wednesday       104
+
+====================================================================================================
+5. Repartition des clics GSC (30 derniers jours) par anciennete de l'article (si post_id retrouvable via url_wp)
+====================================================================================================
+anciennete_article  clics_30j  impressions_30j  nb_pages
+       31-90 jours          1             9093       186
+        8-30 jours         22            13905       256
+         90+ jours          7             5528       122
+
+====================================================================================================
+FIN
+====================================================================================================
