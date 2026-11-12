@@ -1,0 +1,225 @@
+# Execution du 2026-11-12T11:16:12Z
+# Script    : scripts-maintenance/diagnostic_360_attestation_contrat_electricite.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+Diagnostic 360 -- https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+Execute le 2026-11-12T11:16:13.717989+00:00
+
+====================================================================================================
+1. Identite de la page (historique_publications)
+====================================================================================================
+  (0 ligne)
+
+  ATTENTION : aucune ligne dans historique_publications pour cette URL -- vérifier si elle a été publiée par un autre mécanisme (pilier historique, page manuelle).
+
+====================================================================================================
+2. Statut technique live (requete directe depuis le runner GitHub Actions)
+====================================================================================================
+  URL demandee   : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  Statut final   : 200
+  URL finale     : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+  <title>        : Attestation de Contrat d&#039;Électricité : votre copie en 2 min
+  meta robots    : follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large
+  canonical      : https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+  ATTENTION : le canonical ne pointe PAS vers cette URL elle-meme -- Google peut consolider le classement sur une autre page.
+  Longueur HTML  : 195310 caracteres
+
+====================================================================================================
+3a. Tendance GSC mensuelle (12 derniers mois) pour cette page
+====================================================================================================
+   mois  clics  impressions  ctr_pct  position_moyenne
+2026-07      4         1748     0.23              13.3
+2026-08      0          208     0.00              14.3
+2026-09      0          346     0.00              13.5
+2026-10      1          377     0.27              12.1
+2026-11      0          413     0.00              11.1
+
+====================================================================================================
+3b. Tendance GSC hebdomadaire (16 dernieres semaines) pour cette page
+====================================================================================================
+   semaine  clics  impressions  position_moyenne
+2026-07-20      0            9              11.7
+2026-07-27      0           81              16.7
+2026-08-03      0           80              16.1
+2026-08-10      0           45              10.0
+2026-08-17      0           35              15.1
+2026-08-24      0           48              14.7
+2026-09-21      0          155              13.0
+2026-09-28      0          191              13.9
+2026-10-12      1          165              12.2
+2026-10-19      0          144              13.2
+2026-10-26      0           98              10.3
+2026-11-02      0          323              11.1
+2026-11-09      0           60              10.7
+
+====================================================================================================
+4a. Tendance GA4 mensuelle (12 derniers mois) pour cette page
+====================================================================================================
+   mois  sessions  conversions
+2026-04         1            0
+2026-05        25            0
+2026-06        28            0
+2026-07        22            0
+2026-08         9            0
+2026-09         2            0
+2026-10        18            0
+2026-11        19            6
+
+====================================================================================================
+4b. Tendance GA4 hebdomadaire (16 dernieres semaines) pour cette page
+====================================================================================================
+   semaine  sessions
+2026-07-20         1
+2026-07-27         5
+2026-08-03         3
+2026-08-10         1
+2026-08-17         2
+2026-08-24         3
+2026-09-28         6
+2026-10-12         4
+2026-10-19         5
+2026-10-26         6
+2026-11-02        10
+2026-11-09         8
+
+====================================================================================================
+5. Comparaison par requete -- avant (S-16 a S-9) vs apres (S-8 a S-1)
+====================================================================================================
+                                                          query  clics_avant  clics_apres  impr_avant  impr_apres  position_avant  position_apres
+                                           attestation edf 2026            0            0          30          10             6.9             6.2
+                                  attestation d'hébergement edf            0            0          26          15             3.9             3.3
+                                     attestation de contrat edf            0            0          20         105            10.8             6.8
+copie d'attestation de contrat d'électricité de moins de 3 mois            0            0          17           2            10.3             7.5
+                               attestation de contrat d'énergie            0            0          17          25            12.7             9.4
+                           attestation de contrat d'électricité            0            0          14          57            12.3             7.7
+                                                attestation edf            0            0          11          58            27.8            10.6
+                                        attestation contrat edf            0            0          11          69            16.2             7.1
+                                   justificatif de domicile edf            0            0          10          51            29.8            23.4
+                                   edf justificatif de domicile            0            0          10          20            27.4            30.4
+                     attestation edf pour justificatif domicile            0            0           6          57            14.6             7.2
+                                               justificatif edf            0            0           5          14            30.8            15.1
+                               abonnement électricité documents            0            0           5           7            35.0            24.1
+                               attestation titulaire de contrat            0            0           5           7             6.4             5.8
+                  attestation de contrat électricité entreprise            0            0           4          11            14.0            11.1
+                                    attestation de domicile edf            0            0           4          11            33.0            15.8
+                            attestation de contrat d'électrcité            0            0           4           9            21.0            15.5
+                                    facture edf moins de 3 mois            0            0           4           0             5.7             NaN
+                                                  quittance edf            0            0           4          15            31.3            25.1
+                                        attestation électricité            0            0           3           5            27.8            15.6
+                                      edf justificatif domicile            0            0           3           7            26.7            31.8
+                         co-titulaire edf justificatif domicile            0            0           3           1            29.5            23.0
+                                               edf justificatif            0            0           3           2            28.3             8.0
+                                     edf attestation de contrat            0            0           3          39            21.7             8.3
+                                       attestation edf en ligne            0            0           3           5             7.0             5.8/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+
+====================================================================================================
+6a. Top 8 requetes historiques de la page (180 jours, toutes periodes confondues)
+====================================================================================================
+                                     query  impressions  clics
+      attestation de contrat d'électricité          312      1
+                attestation de contrat edf          198      1
+             attestation d'hébergement edf          159      0
+                   attestation contrat edf          145      0
+      attestation titulaire de contrat edf          142      0
+                           attestation edf          119      0
+          attestation de contrat d'énergie          118      0
+attestation edf pour justificatif domicile           98      0
+
+====================================================================================================
+6b. Pour ces requetes, TOUTES les pages du site en concurrence, avant (S-16 a S-9) vs apres (S-8 a S-1)
+====================================================================================================
+                                     query                                                                                            page  clics_avant  clics_apres  impr_avant  impr_apres  position_avant  position_apres
+                   attestation contrat edf                      https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/            0            0          11          69            16.2             7.1
+                   attestation contrat edf https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/            0            0           7           2            57.9            55.0
+             attestation d'hébergement edf                      https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/            0            0          26          15             3.9             3.3
+      attestation de contrat d'électricité                      https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/            0            0          14          57            12.3             7.7
+      attestation de contrat d'électricité https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/            0            0           3           8            54.3             4.1
+      attestation de contrat d'électricité             https://www.comprendre-mon-energie.fr/electricite/facture/justificatif-de-domicile/            0            0           1           0            29.0             NaN
+          attestation de contrat d'énergie                      https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/            0            0          17          25            12.7             9.4
+          attestation de contrat d'énergie https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/            0            0           4           7            49.3            15.4
+                attestation de contrat edf                      https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/            0            0          20         105            10.8             6.8
+                attestation de contrat edf https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/            0            0           2           7            55.0            52.8
+                           attestation edf                      https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/            0            0          11          58            27.8            10.6
+                           attestation edf https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/            0            0           3           3            59.0            59.0
+                           attestation edf             https://www.comprendre-mon-energie.fr/electricite/facture/justificatif-de-domicile/            0            0           1           0            61.0             NaN
+attestation edf pour justificatif domicile                      https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/            0            0           6          57            14.6             7.2
+attestation edf pour justificatif domicile https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/            0            0           2           1            64.5            60.0
+      attestation titulaire de contrat edf                      https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/            0            0           3          53            18.3             9.2
+      attestation titulaire de contrat edf https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/            0            0           0           2             NaN            49.0
+
+====================================================================================================
+7. Etat d'indexation Google connu (04_pipeline_seo.indexation_google -- rempli manuellement, peut etre absent/perime)
+====================================================================================================
+ post_id                                                                                                        url                           coverage_state verdict robots_txt_state   indexing_state page_fetch_state           last_crawl_time crawled_as                       checked_at
+    2218 https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/ Alternate page with proper canonical tag NEUTRAL          ALLOWED INDEXING_ALLOWED       SUCCESSFUL 2026-08-31 12:25:27+00:00     MOBILE 2026-09-03 11:58:13.368159+00:00
+    2218                                 https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/                    Submitted and indexed    PASS          ALLOWED INDEXING_ALLOWED       SUCCESSFUL 2026-08-25 12:24:56+00:00     MOBILE 2026-09-03 11:58:23.046670+00:00
+
+====================================================================================================
+8a. Scan complet du contenu publie -- qui pointe vraiment vers cette page ?
+====================================================================================================
+  1010 article(s) publie(s) recupere(s).
+
+  TOTAL : 50 article(s) pointent reellement vers la page pilier.
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilition-contrat-electricite-delais-procedure/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-conditions/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/droits-obligations-contrat-electricite/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/duree-conditions-legales-contrat-electricite/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-demarches-1030/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparer-contrats-electricite-guide-pratique/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-procedures/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilition-contrat-electricite-delais-legaux/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparer-contrats-electricite-criteres-pieges/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparer-contrats-electricite-tarifs-offres/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-demarches-delais/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/types-contrats-electricite-conditions/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-procedure-1024//opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-delais-demarches-1024/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-reductions-cheques/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparateur-electricite-meilleure-offre/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1022/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-guide-1022/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-droits-procedure-1021/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-guide-complet/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/installation-electricite-delais-demarches/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tarif-fixe-ou-variable-contrat-electricite/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1019/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-guide/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-economies/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilience-contrat-electricite-delais-procedures/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/installation-electricite-etapes-delais-couts/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1016-2/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1016/
+    - https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-1015/
+    ... (+20 autres)
+
+====================================================================================================
+8b. Nombre total d'articles publies dans le sous-silo 'Contrat Electricite' (pour comparer au nb de liens trouves ci-dessus)
+====================================================================================================
+ nb_articles             premiere_publication             derniere_publication
+          72 2026-06-18 07:48:57.082279+00:00 2026-11-11 10:51:26.331027+00:00
+
+====================================================================================================
+FIN DU DIAGNOSTIC
+====================================================================================================
