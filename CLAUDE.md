@@ -2575,3 +2575,72 @@ depuis ce sandbox -- diagnostic uniquement, meme limite deja documentee
 pour les redirections 301 (section "32 liens morts... pas automatisable
 via RankMath" plus haut : pas d'acces API/ajax authentifie depuis ce
 pipeline pour creer une redirection).
+
+**Note (12/11/2026)** : l'operateur indique que le correctif cote
+RankMath (canonical) est deja fait depuis le 11 juin -- non reverifie
+depuis ce sandbox apres cette indication (le dernier check live direct,
+fait juste avant cette remarque, montrait encore le canonical de l'URL
+longue pointant vers l'URL courte). A reverifier avec un nouveau
+`curl -s ".../attestation-de-contrat-delectricite/" | grep canonical`
+si ce dossier redevient d'actualite, plutot que de supposer l'un ou
+l'autre etat.
+
+## Schemas SVG — bug distinct trouve en verifiant le correctif du 11/11 sur la prod (12/11/2026)
+
+Demande operateur : le correctif des titres de schemas qui depassaient
+leur bloc (section "Schemas SVG — titres qui depassent leur bloc"
+plus haut, 11/11) a-t-il ete confirme en conditions reelles ?
+
+**Le correctif du 11/11 est confirme applique sur de vrais articles
+publies le 12/11** : `scripts-maintenance/verifier_schemas_svg_production_1211.py`
+(lecture seule, pont GitHub Actions) a recupere 3 vrais schemas (un de
+chaque type : technique, flowchart, comparatif) parmi les 21 articles
+publies le jour meme, en lisant le contenu BRUT stocke via l'API REST
+(`?context=edit`) plutot que la page live -- **piege rencontre** : la
+page live reste souvent servie depuis le cache LiteSpeed d'AVANT
+l'injection des schemas (qui a lieu apres la publication initiale), donc
+un premier essai scrapant la page publique n'a rien trouve a tort (0 image)
+malgre des injections confirmees reussies dans le log de
+`publication-quotidienne.yml` -- toujours lire le contenu stocke
+(`context=edit`) pour ce genre de verification, jamais la page rendue.
+**Second piege** : le nom de fichier des schemas (`{silo}_{index}_{type}.png`,
+voir `nettoyer_et_generer_schemas()`) ne contient ni `post_id` ni slug
+d'article -- avec plusieurs articles du meme silo publies le meme jour,
+WordPress renomme les collisions avec un suffixe `-N` (`..._comparatif-1.png`,
+`..._flowchart-8.png`...) qu'un filtre par nom de fichier exact doit
+tolerer. Les 3 images recuperees et inspectees visuellement (base64 dans
+le log texte, decode cote sandbox) : titres et textes correctement
+contenus dans leurs boites/cercles sur les 3 types -- aucun depassement.
+
+**Bug DISTINCT trouve en creusant pourquoi certains des 21 articles
+n'avaient aucun schema** : le run du 12/11 a plante au 8e article
+("Chèque énergie : tableau comparatif...", H2 "Points clés à retenir",
+type comparatif) avec `integer division or modulo by zero` --
+`generer_comparatif_svg()` (`pipeline.py`) divise `(680-160) // nb_items`
+sans garde, et le LLM avait renvoye un JSON valide mais `"items": []`.
+Comme `nettoyer_et_generer_schemas()` n'a qu'un seul try/except GLOBAL
+autour de toute la boucle (meme garde-fou que celui pose le 31/10 pour
+`rediger_et_publier()`), ce seul plantage a fait perdre les schemas des
+**13 articles restants** du jour (articles 9 a 21), pas seulement celui
+qui a plante -- exactement le meme risque de "panne en cascade" deja
+identifie et corrige ailleurs dans le pipeline.
+
+**Corrige** (meme session, commit `415405d`), deux garde-fous
+complementaires (meme philosophie que le correctif structurel des liens
+morts du 02/11 -- ne pas supposer comment le cas degenere pourrait se
+reproduire a l'avenir) :
+- `generer_comparatif_svg()` : le diviseur ne peut plus etre nul
+  (`max(nb_items, 1)`) -- la fonction elle-meme ne plante plus jamais sur
+  des items vides, quel que soit l'appelant futur.
+- `nettoyer_et_generer_schemas()` : si `items` est vide, le H2 est ignore
+  (`continue`) plutot que de publier un tableau comparatif degenere sans
+  colonnes.
+
+Teste en local (mock BigQuery/requests/bs4/cairosvg, aucun appel reseau) :
+le cas qui plantait (`items=[]`) renvoie desormais un SVG valide ; cas
+normal non regresse. `python3 -m py_compile` OK. **Pas encore valide en
+conditions reelles** -- a confirmer au prochain run de
+`publication-quotidienne.yml` que la ligne `⚠️ Erreur schemas SVG :` (ou
+le plus specifique `⚠️ Comparatif sans items, schema ignore`) n'apparait
+plus comme cause d'interruption globale, et que les articles suivant un
+cas degenere recoivent bien leurs schemas normalement.
