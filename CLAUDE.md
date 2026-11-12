@@ -2454,25 +2454,50 @@ tous les elements** par rapport a leur geometrie reelle. Chantier clos.
 composants du schema technique), tous deux en haut de la section
 CELLULE 11B de `pipeline.py`.
 
-## SearchApi.io — quota mensuel epuise, 3 runs quotidiens perdus (08-10/11/2026)
+## SearchApi.io — quota mensuel epuise, correction du nombre reel de jours perdus (02-10/11/2026)
 
-Demande operateur : verifier l'etat du run du 12/11. `gh run list` a
-montre **3 echecs consecutifs** (08/11, 09/11, 10/11, 0 article publie
-chacun) avant un retour au vert le 11/11. **Cause identique sur les 3
-echecs**, trouvee par lecture directe du log (`gh run view --log`,
-exceptionnellement accessible pour ces runs) : `Erreur pipeline : SearchApi
-inutilisable (HTTP 429) : You have used all of the searches for the month.`
--- credit mensuel SearchApi.io (scraping concurrents, avant la boucle de
-redaction) tombe a 0, plantant tout le run des le premier appel (exit code
-1, aucun try/except a cette etape, contrairement aux garde-fous du 31/10
-qui couvrent la boucle par-brief mais pas le scraping qui la precede).
-**Confirme par l'operateur** : credit epuise, desormais corrige (plan/
-credit renouvele) -- run du 11/11 sans la moindre erreur SearchApi dans
-son log, run du 12/11 reparti normalement. **Aucun correctif de code
-applique** -- pas demande, cause externe (facturation SearchApi.io), pas
-un bug du pipeline. A garder en tete si le run quotidien replante en debut
-de mois suivant avec la meme signature : verifier le quota SearchApi.io
-avant de chercher un bug cote code.
+Demande operateur initiale : verifier l'etat du run du 12/11. Premier
+`gh run list --limit 5` n'avait montre que **3 echecs** (08/11, 09/11,
+10/11). **Recompte le meme jour, plus tard, a `--limit 15`** (demande
+operateur sur l'impact d'une pause de publication a creuse ce point plus
+loin) : en realite **8 jours consecutifs** (03/11 au 10/11 inclus,
+0 article publie chacun) ont echoue avec la meme signature, trouvee par
+lecture directe du log (`gh run view --log`, exceptionnellement
+accessible pour ces runs) : `Erreur pipeline : SearchApi inutilisable
+(HTTP 429) : You have used all of the searches for the month.` -- credit
+mensuel SearchApi.io (scraping concurrents, avant la boucle de redaction)
+tombe a 0, plantant tout le run des le premier appel (exit code 1, aucun
+try/except a cette etape, contrairement aux garde-fous du 31/10 qui
+couvrent la boucle par-brief mais pas le scraping qui la precede).
+
+**Plus un 9e jour, cause DIFFERENTE** : le 02/11, le run a egalement
+echoue (0 article), mais avec une erreur distincte, AVANT meme d'atteindre
+le scraping SearchApi -- `❌ 5. Électricité : ❌ Erreur : 400 Client Error:
+Bad Request for url: https://api.anthropic.com/v1/messages` suivi de
+`❌ Aucun brief généré`. Cause exacte non investiguee (pas demande, run
+isole, jamais revu depuis) -- a diagnostiquer si le meme signature
+(échec à la génération de brief, 400 sur l'API Anthropic) reapparaissait.
+
+**Au total : 9 jours calendaires sans AUCUN article publie, du 02/11 au
+10/11 inclus** (confirme independamment par un ecart de 10 jours entre
+deux dates distinctes de `historique_publications` : 01/11 -> 11/11) --
+pas 3 jours comme documente dans une premiere passe de ce meme jour.
+**Confirme par l'operateur** : credit SearchApi.io epuise, desormais
+corrige (plan/credit renouvele) -- run du 11/11 sans la moindre erreur
+SearchApi dans son log, run du 12/11 reparti normalement. **Aucun
+correctif de code applique** -- pas demande, cause externe (facturation
+SearchApi.io) pour les 8 jours SearchApi ; cause de l'echec isole du
+02/11 non diagnostiquee, pas un bug confirme du pipeline. A garder en
+tete si le run quotidien replante en debut de mois suivant avec la meme
+signature SearchApi : verifier le quota SearchApi.io avant de chercher un
+bug cote code.
+
+**Impact reel sur le trafic organique, mesure (voir section suivante,
+meme jour)** : malgre 9 jours calendaires sans nouvelle publication, le
+trafic SITE ENTIER (GSC + GA4) pendant et apres cette fenetre n'a montre
+aucun effondrement -- cause par ce que le flux organique vient a plus de
+99% des >1000 articles deja publies et deja indexes, pas des publications
+de la semaine en cours.
 
 ## Page pilier attestation-de-contrat-delectricite — perte de trafic, diagnostic 360 (12/11/2026)
 
