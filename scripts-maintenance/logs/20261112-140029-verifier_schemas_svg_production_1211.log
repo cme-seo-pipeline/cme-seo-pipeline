@@ -1,0 +1,39 @@
+# Execution du 2026-11-12T14:00:29Z
+# Script    : scripts-maintenance/verifier_schemas_svg_production_1211.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+====================================================================================================
+1. Articles publies aujourd'hui (historique_publications)
+====================================================================================================
+ post_id                silo                                                       titre
+   13389              1. Gaz Installer une bouteille de gaz : erreurs courantes à éviter
+   13390              1. Gaz         Détendeur de gaz : guide de dépannage et réparation
+   13391              1. Gaz         Bouteille de gaz : dépannage des dysfonctionnements
+   13392              1. Gaz     Facture gaz : décoder les codes et symboles pour éviter
+   13393 3. Aide Énergétique      Pompe à chaleur géothermique vs air-eau : installation
+   13394 3. Aide Énergétique      Pompe à chaleur géothermique : dimensionnement, forage
+   13395 3. Aide Énergétique             Chauffe-eau thermodynamique : payback et retour
+   13396 3. Aide Énergétique    Chauffe-eau thermodynamique vs électrique : consommation
+   13397 3. Aide Énergétique Chèque énergie : tableau comparatif des montants par revenu
+   13398 3. Aide Énergétique              Chèque énergie 2026 : calculatrice interactive
+   13399 3. Aide Énergétique MaPrimeRénov' : tableau récapitulatif des aides compatibles
+   13400 3. Aide Énergétique       MaPrimeRénov' : checklist complète avant de soumettre
+   13401          4. Solaire          Batterie solaire : calculateur de ROI personnalisé
+   13402          4. Solaire   Chauffe-eau solaire : budget réel 2026 selon votre région
+   13403          4. Solaire      Installation kit solaire avec batterie : étapes, coûts
+   13404          4. Solaire         Panneaux solaires 300W : coûts d'installation réels
+   13405          4. Solaire              Système solaire combiné : budget 2026 par type
+   13406      5. Électricité           Changement fournisseur électricité : coûts cachés
+   13407      5. Électricité     Changement fournisseur électricité : checklist complète
+   13408      5. Électricité          Facture électricité : erreurs courantes et comment
+   13409      5. Électricité      Facture électricité : guide interactif avec simulateur
+
+====================================================================================================
+2. Recherche de schemas SVG (image <img> _flowchart/_technique/_comparatif) dans ces articles
+====================================================================================================
+  (aucun schema trouve dans les articles publies aujourd'hui -- rien a telecharger)
