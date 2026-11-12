@@ -5358,13 +5358,39 @@ def generer_technique_svg(titre, composants, couleur, index=0):
     else:
         positions = [(110, 160), (290, 160), (470, 160), (200, 290), (480, 290)]
 
+    # Rayon des cercles -- 52/44 -> 58/50 le 12/11/2026 (voir ci-dessous) :
+    # ajustable ici, mais verifier d'abord qu'aucune paire de positions
+    # (toutes valeurs de nb) n'a une distance inferieure a 2x ce rayon,
+    # sinon deux cercles se chevauchent. Au 12/11, la distance minimale
+    # entre deux centres est 130px (cas nb=5) -- marge de 14px a r=58,
+    # donc tout rayon <= 65 reste sans risque de chevauchement.
+    SVG_RAYON_CERCLE_TECHNIQUE = 58
+    SVG_RAYON_CERCLE_TECHNIQUE_INTERIEUR = 50
+
     # Largeur de texte disponible par composant (nom+desc, texte flottant
     # CENTRE sur chaque icone, sans rect pour le contenir) : ce schema n'a
     # structurellement pas de boite reelle, donc on fixe un budget par
-    # mise en page (nombre de composants affiches) plutot qu'un vrai calcul
-    # geometrique -- ajustable ici si le rendu reste trop/pas assez serre.
-    LARGEUR_LABEL_TECHNIQUE_PAR_NB = {1: 220, 2: 220, 3: 170, 4: 140, 5: 130}
-    largeur_label = LARGEUR_LABEL_TECHNIQUE_PAR_NB.get(nb, 130)
+    # mise en page plutot qu'un vrai calcul geometrique -- ajustable ici
+    # si le rendu reste trop/pas assez serre.
+    #
+    # Corrige le 12/11/2026 (signale par l'operateur sur un vrai schema
+    # en prod, confirme par mesure au pixel : la ligne "desc" depassait le
+    # cercle de 3 a 6px de chaque cote) : les anciennes valeurs (jusqu'a
+    # 220px pour nb<=2) etaient pensees pour eviter que le texte d'un
+    # composant ne chevauche celui du composant VOISIN (d'ou un budget
+    # plus genereux quand les composants sont plus espaces), pas pour
+    # rester a l'INTERIEUR du cercle qui l'entoure visuellement -- les
+    # deux contraintes sont differentes et celle qui compte pour l'oeil
+    # est la seconde. Avec SVG_RAYON_CERCLE_TECHNIQUE fixe (pas de
+    # variation par nb), le budget de contention est desormais le MEME
+    # pour tout nb. ajuster_texte_svg() soustrait deja en interne
+    # SVG_MARGE_SECURITE_PX (18px) a la valeur passee ici avant de
+    # tronquer -- donc la largeur REELLEMENT rendue au maximum est
+    # largeur_label - 18. Vise : largeur rendue max <= diametre du
+    # cercle (2*58=116) - 14 (marge visuelle de securite, ~7px de
+    # chaque cote) = 102, soit largeur_label = 102 + 18 = 120.
+    LARGEUR_LABEL_TECHNIQUE_PAR_NB = {1: 120, 2: 120, 3: 120, 4: 120, 5: 120}
+    largeur_label = LARGEUR_LABEL_TECHNIQUE_PAR_NB.get(nb, 120)
 
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {largeur} {hauteur}"
      style="font-family:{SVG_POLICE_FAMILLE};background:#FAFAFA;border-radius:8px;">
@@ -5388,8 +5414,8 @@ def generer_technique_svg(titre, composants, couleur, index=0):
         x, y = positions[i]
         c = cols[i % len(cols)]
         svg += f'''
-  <circle cx="{x}" cy="{y}" r="52" fill="white" stroke="{c}" stroke-width="2.5"/>
-  <circle cx="{x}" cy="{y}" r="44" fill="{c}" opacity="0.08"/>
+  <circle cx="{x}" cy="{y}" r="{SVG_RAYON_CERCLE_TECHNIQUE}" fill="white" stroke="{c}" stroke-width="2.5"/>
+  <circle cx="{x}" cy="{y}" r="{SVG_RAYON_CERCLE_TECHNIQUE_INTERIEUR}" fill="{c}" opacity="0.08"/>
   <text x="{x}" y="{y-12}" text-anchor="middle" font-size="22">{comp.get('icone','⚙️')}</text>
   <text x="{x}" y="{y+8}" text-anchor="middle" fill="{c}" font-size="10" font-weight="bold">{ajuster_texte_svg(comp.get('nom',''), 10, True, largeur_label)}</text>
   <text x="{x}" y="{y+22}" text-anchor="middle" fill="#5F6368" font-size="9">{ajuster_texte_svg(comp.get('desc',''), 9, False, largeur_label)}</text>'''
