@@ -92,18 +92,19 @@ def main():
         contenu_brut = r.json().get("content", {}).get("raw", "")
         soup = BeautifulSoup(contenu_brut, "html.parser")
         imgs = soup.find_all("img")
-        nb_schemas_article = sum(
-            1 for img in imgs
-            if any(f"_{t}.png" in img.get("src", "") for t in TYPES_SCHEMA)
-        )
-        if nb_schemas_article:
-            print(f"  📄 post_id={post_id} ({row['titre'][:50]}) -- {nb_schemas_article} schema(s) trouve(s)")
-        for img in imgs:
-            src = img.get("src", "")
+        srcs = [img.get("src", "") for img in imgs]
+        if srcs:
+            print(f"  📄 post_id={post_id} ({row['titre'][:40]}) -- {len(srcs)} <img> au total :")
+            for s in srcs:
+                print(f"      {s}")
+        # Tolere un suffixe anti-collision WordPress (-1, -2...) ajoute par
+        # WP quand plusieurs articles du meme silo le meme jour produisent
+        # un nom de fichier identique (type_schema + index H2, sans post_id).
+        for src in srcs:
             for t in TYPES_SCHEMA:
                 if t in trouves:
                     continue
-                if f"_{t}.png" in src:
+                if re.search(rf"_{t}(-\d+)?\.png", src, re.IGNORECASE):
                     trouves[t] = (row["titre"], src)
                     print(f"    ✅ {t} retenu -- {src}")
 
