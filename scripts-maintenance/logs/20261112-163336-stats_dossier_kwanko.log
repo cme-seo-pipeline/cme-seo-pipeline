@@ -1,0 +1,16 @@
+# Execution du 2026-11-12T16:33:36Z
+# Script    : scripts-maintenance/stats_dossier_kwanko.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+📥 Nombre total d'articles publies (historique_publications)...
+📥 Sessions GA4 des 30 derniers jours (01_raw.ga4_pages)...
+📥 Leads reels des 30 derniers jours (leads_convertis)...
+
+============================================================
+SYNTHESE -- DOSSIER KWANKO
+============================================================
+Articles publies (total)       : 970
+Sessions GA4 (30 derniers jours): 3626
+Leads reels (30 derniers jours) : 28
