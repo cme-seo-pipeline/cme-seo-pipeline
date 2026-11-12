@@ -363,16 +363,34 @@ def selectionner_silos_a_traiter(client_bq, config):
 
     Total vise desormais 22 articles/jour (14 existants + 5 Solaire + 3
     Aide pompe à chaleur).
+
+    Nouveau sous-silo "Aide isolation" ajoute le 12/11/2026 (decision
+    operateur, categorie WordPress deja creee manuellement par l'operateur
+    avant ce changement, parente "Aide Énergétique", confirmee a l'URL
+    https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/) :
+    +2/jour, finance par -1 sur "Chèque énergie" (2 -> 1) et -1 sur
+    "Bouteilles" (Gaz, 3 -> 2), pour garder le total a 22/jour inchange --
+    demande operateur explicite : meme volume quotidien, juste une
+    redistribution. MEME mecanisme de selection dynamique que les autres
+    sous-silos du quota (GSC en priorite, fallback anciennete, aucune
+    liste figee). Angle impose EXPLICITEMENT demande identique a "Aide
+    pompe à chaleur" ("absolument le même angle", confirmation operateur) :
+    voir le branchement etendu dans generer_tous_briefs() --
+    ANGLE_TRANSACTIONNEL_GENERIQUE s'applique desormais a ce sous-silo
+    precis aussi, pas a tout le silo Aide Énergétique (MaPrimeRénov'/
+    Chèque énergie/Aides chauffe-eau thermodynamique restent sur l'angle
+    informationnel habituel, inchange).
     """
     QUOTAS_SOUS_SILO = [
-        ("1. Gaz", "Bouteilles", 3),
+        ("1. Gaz", "Bouteilles", 2),
         ("1. Gaz", "Facture Gaz", 1),
         ("5. Électricité", "Contrat Électricité", 2),
         ("5. Électricité", "Facture Électricité", 2),
         ("3. Aide Énergétique", "MaPrimeRénov'", 2),
-        ("3. Aide Énergétique", "Chèque énergie", 2),
+        ("3. Aide Énergétique", "Chèque énergie", 1),
         ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 2),
         ("3. Aide Énergétique", "Aide pompe à chaleur", 3),
+        ("3. Aide Énergétique", "Aide isolation", 2),
         ("4. Solaire", "Kit solaire", 1),
         ("4. Solaire", "Panneaux solaires", 1),
         ("4. Solaire", "Batterie panneaux solaires", 1),
@@ -1122,7 +1140,14 @@ def generer_tous_briefs(df_final, client_bq, config):
         angle_force = None
         if silo_name == "4. Solaire":
             angle_force = ANGLE_TRANSACTIONNEL_GENERIQUE
-        elif silo_name == "3. Aide Énergétique" and str(sous_silo_name).startswith("Aide pompe à chaleur"):
+        elif silo_name == "3. Aide Énergétique" and (
+            str(sous_silo_name).startswith("Aide pompe à chaleur")
+            or str(sous_silo_name).startswith("Aide isolation")
+        ):
+            # Aide isolation ajoutee le 12/11/2026, meme angle que Aide
+            # pompe a chaleur (demande operateur explicite) -- voir
+            # QUOTAS_SOUS_SILO dans selectionner_silos_a_traiter() pour le
+            # detail du changement de quota.
             angle_force = ANGLE_TRANSACTIONNEL_GENERIQUE
         brief, erreur = generer_brief_silo(contexte, config, titres_existants, angle_force=angle_force)
         if erreur:
