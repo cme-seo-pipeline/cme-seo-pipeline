@@ -2741,3 +2741,77 @@ avant) :
 **Conclusion** : le defaut reellement signale par l'operateur (texte
 "desc" hors du cercle) est corrige et confirme par un rendu reel du
 code production, pas seulement par un calcul theorique. Chantier clos.
+
+## Nouveau sous-silo "Aide isolation" (12/11/2026)
+
+Demande operateur : ajouter la production sur un nouveau sous-silo,
+**"Aide isolation"** (silo "3. Aide Énergétique"), a **+2 articles/jour**,
+en gardant le volume total quotidien inchange -- finance par **-1 sur
+"Chèque énergie"** et **-1 sur "Bouteilles"** (Gaz). Categorie WordPress
+**deja creee manuellement par l'operateur** avant ce changement (confirme
+par l'operateur, URL
+`https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/`,
+parente "Aide Énergétique") -- aucune creation de categorie necessaire
+cote pipeline.
+
+**Deux questions posees a l'operateur avant d'appliquer le changement**
+(cout d'une erreur en prod trop eleve pour deviner) :
+1. La categorie WordPress existe-t-elle deja ? -- **Confirmee**, creee
+   manuellement, meme URL que ci-dessus.
+2. Quel angle editorial pour ce nouveau sous-silo -- le meme angle
+   transactionnel que "Aide pompe à chaleur"/Solaire (prix/devis, ROI,
+   budget, comparatif, lecteur pret a convertir), ou l'angle
+   informationnel standard des autres sous-silos Aide Énergétique
+   (MaPrimeRénov'/Chèque énergie/Aides chauffe-eau thermodynamique) ?
+   -- **Reponse operateur : "Absolument le même angle"** (= angle
+   transactionnel, comme Aide pompe à chaleur).
+
+**Nouveau quota `QUOTAS_SOUS_SILO`** (`pipeline/pipeline.py`,
+`selectionner_silos_a_traiter()`), total **toujours 22/jour** :
+
+| Silo | Sous-silo | Avant | Après |
+|---|---|---|---|
+| 1. Gaz | Bouteilles | 3 | **2** |
+| 1. Gaz | Facture Gaz | 1 | 1 |
+| 5. Électricité | Contrat Électricité | 2 | 2 |
+| 5. Électricité | Facture Électricité | 2 | 2 |
+| 3. Aide Énergétique | MaPrimeRénov' | 2 | 2 |
+| 3. Aide Énergétique | Chèque énergie | 2 | **1** |
+| 3. Aide Énergétique | Aides chauffe-eau thermodynamique | 2 | 2 |
+| 3. Aide Énergétique | Aide pompe à chaleur | 3 | 3 |
+| 3. Aide Énergétique | **Aide isolation** | — | **2 (nouveau)** |
+| 4. Solaire | Kit solaire / Panneaux solaires / Batterie panneaux solaires / Système solaire combiné / Chauffe-eau solaire | 1 chacun | 1 chacun (inchange) |
+
+**Implementation** (commit `6310e5b`) :
+- `QUOTAS_SOUS_SILO` : ligne "Bouteilles" 3→2, ligne "Chèque énergie"
+  2→1, nouvelle ligne `("3. Aide Énergétique", "Aide isolation", 2)`.
+  Meme mecanisme de selection dynamique que tous les autres sous-silos du
+  quota (GSC en priorite pour le mot-cle, fallback anciennete, aucune
+  liste de sujets figee) -- rien de specifique a coder pour la selection
+  elle-meme.
+- `generer_tous_briefs()` : le branchement qui force
+  `ANGLE_TRANSACTIONNEL_GENERIQUE` (jusqu'ici `silo == "4. Solaire"` OU
+  sous-silo commencant par "Aide pompe à chaleur") etendu pour couvrir
+  aussi `str(sous_silo_name).startswith("Aide isolation")` -- meme
+  `.startswith()` (pas egalite stricte) que l'existant, necessaire car un
+  sous-silo a quota > 1 arrive ici avec le suffixe anti-collision
+  (`" (2)"`) ajoute par `selectionner_silos_a_traiter()`. Le reste du silo
+  Aide Énergétique (MaPrimeRénov'/Chèque énergie/Aides chauffe-eau
+  thermodynamique) reste explicitement sur l'angle informationnel
+  habituel -- inchange.
+- Docstring de `selectionner_silos_a_traiter()` mise a jour (meme
+  convention que les evolutions precedentes de `QUOTAS_SOUS_SILO`,
+  "Aide pompe à chaleur" du 04/11 notamment).
+
+**Validation** : `python3 -m py_compile pipeline/pipeline.py` OK (seul le
+`SyntaxWarning` preexistant non lie, ligne ~2081) + verification
+programmatique que le total reste exactement 22 et que les 3 lignes
+modifiees ont les valeurs attendues. **Pas encore valide en conditions
+reelles** -- prend effet automatiquement au prochain run de
+`publication-quotidienne.yml` (modification pure de `pipeline/pipeline.py`,
+pas de fichier mu-plugin PHP : aucune etape de deploiement manuel cPanel
+necessaire ici, a la difference des chantiers CTA/tracking). A confirmer
+apres ce run que 2 articles "Aide isolation" sont bien publies avec
+l'angle transactionnel attendu, et que le volume des 3 sous-silos
+touches (Bouteilles, Chèque énergie, Aide isolation) correspond au
+nouveau quota.
