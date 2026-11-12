@@ -2815,3 +2815,94 @@ apres ce run que 2 articles "Aide isolation" sont bien publies avec
 l'angle transactionnel attendu, et que le volume des 3 sous-silos
 touches (Bouteilles, Chèque énergie, Aide isolation) correspond au
 nouveau quota.
+
+## Personnalisation des messages CTA (12/11/2026) — chantier en deux niveaux
+
+Demande operateur : les mini-formulaires inline des articles portent deja
+une promesse qui pousse au remplissage, mais elle est **generique par
+silo** (4 messages pour ~1000 articles) -- objectif : un message plus
+"frappant", avec une promesse de prise en charge specifique au sujet reel
+de chaque article, pour ameliorer le taux de conversion. Propose et
+valide avec l'operateur en deux niveaux distincts avant de coder quoi que
+ce soit (cout d'une mauvaise implementation trop eleve pour deviner) :
+
+- **Niveau 1 — par SOUS-SILO** : rapide, zero nouvelle donnee backend (le
+  sous-silo est deja dans le 2e segment de l'URL). **Decision operateur :
+  applique immediatement.**
+- **Niveau 2 — par ARTICLE** : promesse unique par article (le mot-cle/
+  angle reel), necessite une nouvelle brique (champ pipeline + stockage +
+  lecture PHP + repli). **Decision operateur : prevu comme chantier
+  separe, mise en prod dans quelques semaines**, avec generation **sur
+  les nouveaux articles ET retroactif sur l'historique deja publie**
+  ("il y a du trafic dessus").
+
+### Niveau 1 — fait, deploye cote code (commit `577acc4`)
+
+`wordpress-mu-plugins/cme-cta-progressifs.php` : avant ce commit, le choix
+du message (`PAR_PREFIXE`, GAZ/ELEC/AIDES/SOLAIRE) ne lisait que le 1er
+segment de l'URL (le silo). Nouvelle table `PAR_SOUS_SILO` (cle
+`'{prefixe-silo}/{slug-sous-silo}'` → texte d'accroche), consultee en
+priorite ; si le sous-silo n'y figure pas, repli silencieux sur le
+message de silo existant -- aucun risque de regression, un sous-silo
+absent se comporte exactement comme avant ce commit.
+
+**Slugs VERIFIES, pas devinees** : `scripts-maintenance/lister_categories_wp.py`
+(nouveau, lecture seule, pont GitHub Actions -- liste les 44 categories
+WordPress reelles via `/wp-json/wp/v2/categories`) a confirme les slugs
+exacts de tous les sous-silos avant d'ecrire la table JS. Necessaire car
+certaines categories "Aide Énergétique" ont ete creees **manuellement**
+en wp-admin (`Aide pompe à chaleur`, `Aide isolation`) -- rien ne
+garantissait que leur slug WordPress reel soit identique a une simple
+sanitisation du nom (accents, apostrophes). Resultat : les slugs
+correspondent exactement a `to_slug()` (`pipeline.py`) sur les 44 cas
+verifies -- aucune divergence trouvee, mais verifie plutot que suppose.
+
+**Couverture volontairement plus large que le quota quotidien** : la
+table couvre les **~34 sous-silos ayant deja des articles publies**
+(`count > 0` dans la liste des categories), pas seulement les 14
+sous-silos de `QUOTAS_SOUS_SILO` -- ca inclut aussi le silo distinct
+"Rénovation Énergétique" (isolation/pompe-a-chaleur/chaudiere/poele/
+chauffe-eau-thermodynamique/audit-energetique/bilan-energetique/
+renovation-globale) et plusieurs sous-silos Gaz/Électricité/Aide
+Énergétique qui ne sont plus dans le quota actif mais qui ont du trafic
+reel sur leurs articles deja publies (ex. `facture-electricite` 90
+articles, `bouteilles` 108, `maprimerenov` 72).
+
+**Validation** : `php -l` + extraction et `node --check` du bloc JS, les
+deux OK. **Pas encore deploye en prod** -- meme contrainte que d'habitude
+pour ce fichier : `cloudshell download`, `.bak` horodate en cPanel,
+upload dans `/wp-content/mu-plugins/`, purge des 2 caches LiteSpeed,
+verifier avec `?t=$RANDOM` sur un article d'un sous-silo couvert (le
+nouveau message doit remplacer le message de silo generique).
+
+### Niveau 2 — chantier planifie, PAS encore implemente
+
+A faire quand l'operateur donne le feu vert pour le demarrer (annonce :
+"dans quelques semaines") :
+1. **Pipeline** (`pipeline/pipeline.py`) : un champ de plus dans le brief
+   genere par le LLM (comme `titre_seo`), une promesse courte adaptee au
+   `mot_cle_principal`/angle reel de l'article (pas le sous-silo).
+2. **Stockage** : post meta WordPress au moment de `publier_article()`
+   (necessite d'enregistrer le meta avec `show_in_rest` pour pouvoir
+   l'ecrire via l'API REST, ou un champ ACF/natif existant a verifier).
+3. **Lecture cote mu-plugin** : meme technique que `CME_POST_ID` (deja
+   interpole cote PHP via `get_the_ID()`) -- `get_post_meta(get_the_ID(),
+   '_cme_cta_promesse', true)` expose dans un petit `<script>` interpole,
+   lu par le JS avec repli sur le message de sous-silo (niveau 1) puis de
+   silo si absent -- jamais de regression, degradation progressive a 3
+   niveaux.
+4. **Retroactif sur l'historique** (decision operateur confirmee : oui,
+   "il y a du trafic dessus") : script par lot du meme type que les
+   autres chantiers retroactifs de ce projet (dry-run par defaut,
+   `--apply`, pont GitHub Actions, canari `--limite=N` avant le lot
+   complet) -- genere la promesse via LLM a partir du `mot_cle_principal`/
+   `titre_seo` deja en base dans `historique_publications`, pas besoin de
+   relire le contenu complet de chaque article. Ordre de grandeur
+   similaire aux autres lots IA du projet (~1000 appels Haiku, cout
+   modeste, meme famille que l'audit reglementaire mensuel).
+5. **Deploiement** : comme toujours pour ce fichier -- cPanel manuel,
+   `.bak` horodate, purge des 2 caches LiteSpeed. Prevoir eventuellement
+   un canari `MODE='apercu'` + `?cta60=1` avant le passage en `'actif'`
+   (meme precaution que pour le tout premier deploiement du formulaire
+   progressif en octobre), puisque c'est une nouvelle source de donnee
+   affichee directement aux visiteurs.
