@@ -5402,7 +5402,14 @@ def generer_comparatif_svg(items, criteres, couleur, index=0):
     nb_items = min(len(items), 3)
     nb_criteres = min(len(criteres), 5)
     largeur = 680
-    col_w = (largeur - 160) // nb_items
+    # Garde-fou structurel : si items est vide (LLM ayant renvoye un JSON
+    # valide mais avec "items": []), nb_items vaut 0 -- la division levait
+    # ZeroDivisionError, qui faisait perdre les schemas de TOUS les
+    # articles restants du run (la boucle appelante n'a qu'un seul
+    # try/except global, voir nettoyer_et_generer_schemas()). Le
+    # diviseur ne doit jamais etre nul ; nb_items reste 0 pour que les
+    # boucles sur les items plus bas fassent bien 0 iteration.
+    col_w = (largeur - 160) // max(nb_items, 1)
     ligne_h = 48
     hauteur = nb_criteres * ligne_h + 110
     COULEURS_ITEMS = [
@@ -5542,6 +5549,12 @@ def nettoyer_et_generer_schemas(df_publications, wp_config, config):
 
             data = extraire_donnees_svg(html_article, h2_texte, type_schema, config)
             if not data:
+                continue
+            if type_schema == 'comparatif' and not data.get('items'):
+                # JSON valide mais "items": [] -- pas de table a afficher,
+                # on passe au H2 suivant plutot que publier un schema
+                # degenere (voir le garde-fou cote generer_comparatif_svg).
+                print(f"    ⚠️ Comparatif sans items, schema ignore")
                 continue
 
             schema_index = len(images_generees)
