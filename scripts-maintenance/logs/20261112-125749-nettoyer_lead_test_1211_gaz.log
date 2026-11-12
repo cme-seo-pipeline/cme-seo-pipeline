@@ -1,0 +1,16 @@
+# Execution du 2026-11-12T12:57:49Z
+# Script    : scripts-maintenance/nettoyer_lead_test_1211_gaz.py
+# Arguments : --apply --attendu=1
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📋 Lignes candidates dans leads_convertis :
+                       timestamp                  tool prenom  telephone                                                                      source_page                             details
+2026-11-12 11:04:22.862139+00:00 contact-expert-inline   test 0695410020 https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-novembre-2026/ "{\"position\":1,\"silo\":\"gaz\"}"
+
+Total : 1 ligne(s) candidate(s) a la suppression.
+
+✍️ Suppression de 1 ligne(s) dans leads_convertis...
+✅ 1 ligne(s) supprimee(s) dans leads_convertis.
