@@ -9,10 +9,20 @@ Rend REELLEMENT le schema via cairosvg (comme en prod, pas un calcul
 theorique) avec des composants representatifs (noms/descriptions de
 longueur realiste, dont le cas le plus long deja identifie comme
 provoquant un depassement avec les anciens reglages), puis mesure au
-pixel le depassement eventuel du texte "desc" hors du cercle qui
-l'entoure -- meme methodologie (fenetre de scan serree par cercle,
-heuristique min(r,g,b)<200 ou saturation>60) que celle utilisee pour
-confirmer le bug signale par l'operateur sur l'image en prod.
+pixel le depassement eventuel du texte "nom"/"desc" hors du cercle qui
+l'entoure -- UNIQUEMENT sur les bandes horizontales ou ce texte est
+reellement dessine (y=cy+8 pour "nom", y=cy+22 pour "desc"), en
+comparant a la courbe reelle de l'anneau du cercle (rayon + la moitie du
+stroke-width, pas un rayon plat).
+
+Piege trouve et corrige le 12/11/2026 (premiere version de ce script) :
+scanner toute la hauteur du cercle contre un rayon plat compte a tort
+l'anneau du cercle lui-meme (son bord EXTERIEUR reel est a
+rayon + stroke/2, pas rayon) comme un "depassement de texte" sur
+presque toute la hauteur du cercle -- confirme en inspectant l'image
+ligne par ligne (le "depassement" mesure etait un 1-2px QUASI UNIFORME
+de cy-11 a cy+10, signature typique d'un trait de cercle, pas de texte,
+qui a des bords irreguliers).
 
 Encode l'image rendue en base64 dans ce log (le seul canal lisible par
 Claude Code depuis ce sandbox, voir CLAUDE.md) pour une verification
@@ -60,25 +70,48 @@ def est_pixel_contenu(px):
     return mn < 200 or sat > 60
 
 
-def mesurer_depassement(img, cx, cy, rayon, fenetre_x=100):
-    """Scanne une fenetre etroite autour du centre (cx,cy) et renvoie le
-    depassement en px du contenu (texte/trait) hors du rayon donne, a
-    gauche et a droite. Fenetre volontairement etroite pour ne pas capter
-    les composants voisins (meme piege que lors de la premiere mesure, le
-    12/11, qui scannait toute la largeur de l'image)."""
+import math
+
+STROKE_ANNEAU = 2.5  # stroke-width du cercle exterieur dans generer_technique_svg()
+
+
+def mesurer_depassement_ligne(img, cx, cy, rayon, y_offset, demi_hauteur=4, fenetre_x=100):
+    """Mesure le depassement de TEXTE hors du cercle, sur une bande
+    horizontale etroite centree sur y = cy + y_offset (une ligne de texte
+    precise : nom a y_offset=8, desc a y_offset=22 dans generer_technique_svg()).
+
+    Piege trouve et corrige le 12/11/2026 en analysant ligne par ligne une
+    image reellement rendue : une premiere version de ce script scannait
+    toute la hauteur du cercle (cy-rayon a cy+rayon) et mesurait a tort un
+    "depassement" de 1-2px QUASI UNIFORME sur presque toute cette hauteur --
+    pas du texte, mais l'anneau du cercle lui-meme (stroke-width=2.5,
+    centre sur le rayon nominal, donc son bord EXTERIEUR reel est a
+    rayon + 1.25px, pas rayon). La borne de comparaison est donc ici la
+    courbe reelle de l'anneau (cercle de rayon rayon+1.25), pas un rayon
+    plat -- jamais un flux de pixels "normal" au trait du cercle n'est
+    compte comme depassement de texte.
+    """
     largeur, hauteur = img.size
-    x0 = max(0, cx - fenetre_x)
-    x1 = min(largeur, cx + fenetre_x)
-    gauche_min = cx
-    droite_max = cx
-    for y in range(max(0, cy - rayon - 5), min(hauteur, cy + rayon + 10)):
-        for x in range(x0, x1):
-            if est_pixel_contenu(img.getpixel((x, y))):
-                gauche_min = min(gauche_min, x)
-                droite_max = max(droite_max, x)
-    depassement_gauche = max(0, (cx - rayon) - gauche_min)
-    depassement_droite = max(0, droite_max - (cx + rayon))
-    return depassement_gauche, depassement_droite, gauche_min, droite_max
+    rayon_anneau_ext = rayon + STROKE_ANNEAU / 2
+    gauche_min, droite_max = None, None
+    y0 = max(0, cy + y_offset - demi_hauteur)
+    y1 = min(hauteur, cy + y_offset + demi_hauteur)
+    for y in range(y0, y1):
+        dy = y - cy
+        if abs(dy) >= rayon_anneau_ext:
+            borne = rayon  # hors de l'anneau, le rayon nominal suffit
+        else:
+            borne = math.sqrt(rayon_anneau_ext ** 2 - dy ** 2)
+        for x in range(max(0, cx - fenetre_x), min(largeur, cx + fenetre_x)):
+            if not est_pixel_contenu(img.getpixel((x, y))):
+                continue
+            if x < cx - borne:
+                gauche_min = x if gauche_min is None else min(gauche_min, x)
+            if x > cx + borne:
+                droite_max = x if droite_max is None else max(droite_max, x)
+    depassement_gauche = 0 if gauche_min is None else (cx - rayon) - gauche_min
+    depassement_droite = 0 if droite_max is None else droite_max - (cx + rayon)
+    return max(0, depassement_gauche), max(0, depassement_droite)
 
 
 def main():
@@ -108,7 +141,7 @@ def main():
     img = Image.open(tmp_path).convert("RGB")
     print(f"Dimensions : {img.size}")
 
-    section("2. Mesure au pixel du depassement (rayon reel = 58, meme methodologie que le diagnostic initial)")
+    section("2. Mesure au pixel du depassement de TEXTE (rayon reel = 58), ligne par ligne")
     # Positions nb=5 (voir pipeline.py) : [(110,160),(290,160),(470,160),(200,290),(480,290)]
     positions = [(110, 160), (290, 160), (470, 160), (200, 290), (480, 290)]
     # SVG_RAYON_CERCLE_TECHNIQUE est une variable LOCALE a la fonction (pas
@@ -118,10 +151,13 @@ def main():
     print(f"Rayon utilise pour la mesure : {rayon}")
     pire = 0
     for i, (cx, cy) in enumerate(positions):
-        dg, dd, gmin, dmax = mesurer_depassement(img, cx, cy, rayon)
-        pire = max(pire, dg, dd)
-        tag = "✅ aucun depassement" if (dg == 0 and dd == 0) else f"❌ DEPASSEMENT gauche={dg}px droite={dd}px"
-        print(f"  Composant {i+1} ({composants[i]['nom']!r}) centre=({cx},{cy}) -- {tag}")
+        dg_nom, dd_nom = mesurer_depassement_ligne(img, cx, cy, rayon, y_offset=8)
+        dg_desc, dd_desc = mesurer_depassement_ligne(img, cx, cy, rayon, y_offset=22)
+        pire = max(pire, dg_nom, dd_nom, dg_desc, dd_desc)
+        tag_nom = "✅" if (dg_nom == 0 and dd_nom == 0) else f"❌ gauche={dg_nom}px droite={dd_nom}px"
+        tag_desc = "✅" if (dg_desc == 0 and dd_desc == 0) else f"❌ gauche={dg_desc}px droite={dd_desc}px"
+        print(f"  Composant {i+1} ({composants[i]['nom']!r}) centre=({cx},{cy}) -- "
+              f"ligne nom: {tag_nom} -- ligne desc: {tag_desc}")
 
     section("3. Verdict")
     if pire == 0:
