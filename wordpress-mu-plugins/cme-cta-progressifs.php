@@ -266,6 +266,72 @@ add_action('wp_footer', function () {
   // retire reste dans l'historique git si l'un ou l'autre devait reprendre un jour.
   var PAR_PREFIXE = { 'gaz': [GAZ], 'electricite': [ELEC], 'aide-energetique': [AIDES], 'renovation-energetique': [AIDES], 'solaire': [SOLAIRE] };
 
+  // Personnalisation par SOUS-SILO (12/11/2026, demande operateur : messages
+  // plus "frappants", avec une promesse de prise en charge specifique au
+  // sujet reel de l'article, plutot que le message generique par silo
+  // ci-dessus qui reste identique sur ~1000 articles). Niveau 1 d'un
+  // chantier en deux temps (voir CLAUDE.md, section "Personnalisation des
+  // messages CTA") : ceci est purement cote client, sans nouvelle donnee
+  // backend -- le sous-silo est deja dans le 2e segment du chemin d'URL
+  // (ex. /aide-energetique/aide-isolation/). Niveau 2 (promesse unique par
+  // ARTICLE, pas par sous-silo) prevu comme chantier separe ulterieurement.
+  //
+  // Cles au format 'prefixe-silo/slug-sous-silo', VERIFIEES contre les
+  // vrais slugs WordPress le 12/11/2026 (scripts-maintenance/lister_categories_wp.py,
+  // pont GitHub Actions) -- pas devinees : certaines categories "Aide
+  // Énergétique" ont ete creees manuellement en wp-admin (ex. "Aide pompe
+  // à chaleur", "Aide isolation"), donc leur slug WordPress reel n'etait
+  // pas garanti identique a une simple sanitisation du nom. Couvre TOUS
+  // les sous-silos ayant deja des articles publies (pas seulement les
+  // sous-silos du quota quotidien QUOTAS_SOUS_SILO, qui n'en est qu'un
+  // sous-ensemble) -- un sous-silo absent de cette table retombe
+  // simplement sur le message de silo generique ci-dessus (PAR_PREFIXE),
+  // jamais d'erreur ni de formulaire manquant.
+  var PAR_SOUS_SILO = {
+    // Gaz
+    'gaz/bouteilles': 'Trouvez le meilleur prix de bouteille de gaz près de chez vous',
+    'gaz/chauffage-gaz': 'Optimisez votre chauffage au gaz : comparez et économisez',
+    'gaz/comparatifs-fournisseurs-gaz': 'Comparez les fournisseurs de gaz et changez en 5 minutes',
+    'gaz/contrat-gaz': 'Votre contrat de gaz est-il encore le plus avantageux ?',
+    'gaz/demenagement-gaz': 'Déménagement : ouvrez votre nouveau contrat gaz sans coupure',
+    'gaz/facture-gaz': 'Facture de gaz trop élevée ? Obtenez votre comparatif gratuit',
+    // Électricité
+    'electricite/chauffage-electricite': 'Réduisez votre facture de chauffage électrique : comparez',
+    'electricite/comparatifs-fournisseurs-electricite': 'Comparez les fournisseurs d’électricité et économisez',
+    'electricite/compteur': 'Un souci avec votre compteur électrique ? Un conseiller vous guide',
+    'electricite/contrat-electricite': 'Votre contrat d’électricité est-il toujours le plus avantageux ?',
+    'electricite/demenagement': 'Déménagement : activez votre électricité sans interruption',
+    'electricite/facture-electricite': 'Facture d’électricité en hausse ? Comparez en 2 minutes',
+    'electricite/heures-pleines-creuses': 'Heures pleines/creuses : optimisez votre contrat et économisez',
+    // Aide Énergétique
+    'aide-energetique/aide-isolation': 'Isolation : vérifiez votre éligibilité aux aides en 2 minutes',
+    'aide-energetique/aide-pompe-a-chaleur': 'Pompe à chaleur éligible aux aides ? Vérifiez votre montant',
+    'aide-energetique/aides-chaudiere': 'Changement de chaudière : calculez vos aides disponibles',
+    'aide-energetique/aides-chauffe-eau-thermodynamique': 'Chauffe-eau thermodynamique : estimez votre aide',
+    'aide-energetique/aides-combles-perdus': 'Isolation des combles perdus : calculez votre prime',
+    'aide-energetique/aides-renovation-toiture': 'Rénovation de toiture : découvrez vos aides disponibles',
+    'aide-energetique/cheque-energie': 'Chèque énergie : vérifiez votre éligibilité et vos droits',
+    'aide-energetique/eco-pret-a-taux-zero': 'Éco-PTZ : simulez votre prêt à taux zéro en 2 minutes',
+    'aide-energetique/maprimerenov': 'MaPrimeRénov’ : calculez le montant de votre aide',
+    'aide-energetique/prime-energie': 'Prime Énergie : vérifiez le montant auquel vous avez droit',
+    'aide-energetique/tva-reduite': 'TVA réduite travaux : vérifiez votre éligibilité',
+    // Rénovation Énergétique (silo distinct, meme principe)
+    'renovation-energetique/audit-energetique': 'Audit énergétique : obtenez un diagnostic gratuit',
+    'renovation-energetique/bilan-energetique': 'Bilan énergétique gratuit : identifiez vos économies',
+    'renovation-energetique/chaudiere': 'Remplacer votre chaudière ? Obtenez un devis et vos aides',
+    'renovation-energetique/chauffe-eau-thermodynamique': 'Chauffe-eau thermodynamique : devis et aides en 2 minutes',
+    'renovation-energetique/isolation': 'Isolation de votre logement : devis gratuit et aides',
+    'renovation-energetique/poele': 'Installer un poêle ? Comparez les offres et vos aides',
+    'renovation-energetique/pompe-a-chaleur': 'Pompe à chaleur : devis gratuit et simulation d’aides',
+    'renovation-energetique/renovation-globale': 'Rénovation globale : simulez vos aides en 2 minutes',
+    // Solaire
+    'solaire/batterie-panneaux-solaires': 'Batterie solaire : calculez votre rentabilité en 2 minutes',
+    'solaire/chauffe-eau-solaire': 'Chauffe-eau solaire : devis gratuit et simulation d’aides',
+    'solaire/kit-solaire': 'Kit solaire : estimez votre installation et vos économies',
+    'solaire/panneaux-solaires': 'Panneaux solaires : obtenez votre devis gratuit en 2 minutes',
+    'solaire/systeme-solaire-combine': 'Système solaire combiné : simulez votre installation'
+  };
+
   // Reduit a 2 questions le 24/10/2026 (demande operateur : minimiser la
   // friction) -- email et code_postal retires. "prenom" porte desormais le
   // nom ET le prenom en un seul champ (cle technique inchangee pour rester
@@ -453,9 +519,15 @@ add_action('wp_footer', function () {
       if (!zone) { arret('article.type-post .entry-content introuvable'); return; }
       if (zone.getAttribute('data-cta60')) { arret('deja execute sur cette page'); return; }
 
-      var prefixe = window.location.pathname.split('/').filter(Boolean)[0];
+      var segments = window.location.pathname.split('/').filter(Boolean);
+      var prefixe = segments[0];
       var offres = PAR_PREFIXE[prefixe];
       if (!offres || !offres.length) { arret("prefixe d'URL inconnu : " + prefixe); return; }   // pas de formulaire plutot qu'une mauvaise destination
+      // Sous-silo (12/11/2026) : surclasse le texte de silo generique quand
+      // le 2e segment de l'URL correspond a une entree connue de
+      // PAR_SOUS_SILO ; sinon repli silencieux sur le message de silo
+      // (comportement identique a avant cette date).
+      var texteSousSilo = PAR_SOUS_SILO[prefixe + '/' + segments[1]];
       zone.setAttribute('data-cta60', '1');
       injecterStyles();
 
@@ -466,7 +538,7 @@ add_action('wp_footer', function () {
         variante = variante || 'contact';
         var estAppel = variante === 'appel';
         var offre = offres[(n - 1) % offres.length];
-        var texteIntro = estAppel ? TEXTE_APPEL : offre.texte;
+        var texteIntro = estAppel ? TEXTE_APPEL : (texteSousSilo || offre.texte);
         var texteReassurance = estAppel
           ? '🔒 Vos données restent confidentielles · un conseiller vous répond immédiatement au téléphone'
           : '🔒 Vos données restent confidentielles · un conseiller vous recontacte sous 24h';
