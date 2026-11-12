@@ -42,6 +42,12 @@ except Exception as e:
 TYPES_SCHEMA = ["flowchart", "technique", "comparatif"]
 MAX_IMAGES = 3
 
+WP_URL = "https://www.comprendre-mon-energie.fr"
+WP_USERNAME = os.environ.get("WP_USERNAME", "")
+WP_APP_PASSWORD = os.environ.get("WP_APP_PASSWORD", "")
+if not WP_USERNAME or not WP_APP_PASSWORD:
+    sys.exit("❌ WP_USERNAME/WP_APP_PASSWORD manquant dans l'environnement (ne jamais le coder en dur ici)")
+
 
 def section(titre):
     print("\n" + "=" * 100)
@@ -64,29 +70,42 @@ def main():
         return
     print(df[["post_id", "silo", "titre"]].to_string(index=False))
 
-    section("2. Recherche de schemas SVG (image <img> _flowchart/_technique/_comparatif) dans ces articles")
+    section("2. Recherche de schemas SVG dans le contenu BRUT stocke (API REST, contourne le cache LiteSpeed "
+            "qui ferait rater les images injectees APRES le premier passage de cache, voir CLAUDE.md)")
     trouves = {}  # type_schema -> (article_titre, image_url)
     for _, row in df.iterrows():
         if len(trouves) >= len(TYPES_SCHEMA):
             break
-        url = row["url_wp"]
+        post_id = row["post_id"]
         try:
-            r = requests.get(url, timeout=20)
+            r = requests.get(
+                f"{WP_URL}/wp-json/wp/v2/posts/{post_id}?context=edit",
+                auth=(WP_USERNAME, WP_APP_PASSWORD),
+                timeout=20,
+            )
         except Exception as e:
-            print(f"  ⚠️ {url} injoignable : {e}")
+            print(f"  ⚠️ post_id={post_id} injoignable : {e}")
             continue
         if r.status_code != 200:
-            print(f"  ⚠️ {url} -> HTTP {r.status_code}")
+            print(f"  ⚠️ post_id={post_id} -> HTTP {r.status_code}")
             continue
-        soup = BeautifulSoup(r.text, "html.parser")
-        for img in soup.find_all("img"):
+        contenu_brut = r.json().get("content", {}).get("raw", "")
+        soup = BeautifulSoup(contenu_brut, "html.parser")
+        imgs = soup.find_all("img")
+        nb_schemas_article = sum(
+            1 for img in imgs
+            if any(f"_{t}.png" in img.get("src", "") for t in TYPES_SCHEMA)
+        )
+        if nb_schemas_article:
+            print(f"  📄 post_id={post_id} ({row['titre'][:50]}) -- {nb_schemas_article} schema(s) trouve(s)")
+        for img in imgs:
             src = img.get("src", "")
             for t in TYPES_SCHEMA:
                 if t in trouves:
                     continue
                 if f"_{t}.png" in src:
                     trouves[t] = (row["titre"], src)
-                    print(f"  ✅ {t} trouve -- article {row['post_id']!r} ({row['titre'][:50]}) -- {src}")
+                    print(f"    ✅ {t} retenu -- {src}")
 
     if not trouves:
         print("  (aucun schema trouve dans les articles publies aujourd'hui -- rien a telecharger)")
