@@ -2609,8 +2609,16 @@ d'article -- avec plusieurs articles du meme silo publies le meme jour,
 WordPress renomme les collisions avec un suffixe `-N` (`..._comparatif-1.png`,
 `..._flowchart-8.png`...) qu'un filtre par nom de fichier exact doit
 tolerer. Les 3 images recuperees et inspectees visuellement (base64 dans
-le log texte, decode cote sandbox) : titres et textes correctement
-contenus dans leurs boites/cercles sur les 3 types -- aucun depassement.
+le log texte, decode cote sandbox) : titres corrects sur les 3 types.
+
+**Correction a cette premiere lecture (voir section suivante, meme
+jour)** : l'operateur a repere, sur l'image "technique" envoyee suite a
+cette verification, que la ligne de description continuait bel et bien
+a depasser son cercle -- le "aucun depassement" ci-dessus etait une
+lecture visuelle rapide, pas une mesure au pixel ; une fois mesure
+precisement, l'ecart etait reel (3-6px). Toujours mesurer au pixel
+avant d'affirmer qu'un rendu est correct, plutot que se fier a une
+inspection visuelle a l'oeil sur une image envoyee en apercu.
 
 **Bug DISTINCT trouve en creusant pourquoi certains des 21 articles
 n'avaient aucun schema** : le run du 12/11 a plante au 8e article
@@ -2644,3 +2652,92 @@ conditions reelles** -- a confirmer au prochain run de
 le plus specifique `⚠️ Comparatif sans items, schema ignore`) n'apparait
 plus comme cause d'interruption globale, et que les articles suivant un
 cas degenere recoivent bien leurs schemas normalement.
+
+## Schema technique SVG — cercles qui ne contenaient pas le texte, malgre le correctif du 11/11 (12/11/2026)
+
+Suite directe de la section precedente : l'operateur a repere sur
+l'image "technique" envoyee ("Installer une bouteille de gaz") que la
+ligne de description sortait toujours de son cercle, malgre le
+correctif du 11/11 (troncature par largeur reelle + police bundlee).
+
+**Mesure au pixel sur l'image reelle en prod** (fenetre de scan serree
+autour de chaque cercle pour eviter la contamination par les composants
+voisins, heuristique `min(r,g,b)<200 ou saturation>60` pour distinguer
+texte/trait du fond tres pale a 8% d'opacite) : depassement reel de 3 a
+6px de chaque cote sur la ligne "desc" uniquement (pas "nom", pas
+l'icone) -- confirme que le signalement de l'operateur etait fonde.
+
+**Root cause, distincte du bug du 11/11** : `generer_technique_svg()`
+n'a structurellement pas de boite reelle pour ce type de schema (texte
+flottant CENTRE sur chaque icone, sans `<rect>` pour le contenir). Le
+budget de largeur par composant (`LARGEUR_LABEL_TECHNIQUE_PAR_NB`,
+jusqu'a 220px pour nb<=2, variable selon le nombre de composants) avait
+ete dimensionne pour eviter que le texte d'un composant ne chevauche
+celui du composant VOISIN (d'ou un budget plus genereux quand les
+composants sont plus espaces) -- pas pour rester a l'INTERIEUR du
+cercle qui l'entoure visuellement. Deux contraintes differentes, et
+c'est la seconde qui compte pour l'oeil.
+
+**Demande operateur explicite sur la direction du correctif** ("Réduire
+et agrandir le cercle, on cherche un équilibre et surtout une solution
+durable") : les deux leviers combines plutot qu'un seul **(commit
+`a792110`)** :
+- Rayon des cercles : 52/44 -> 58/50 (nouvelles constantes
+  `SVG_RAYON_CERCLE_TECHNIQUE`/`_INTERIEUR`). Verifie au prealable
+  qu'aucune paire de positions (toutes valeurs de `nb`) ne se
+  chevaucherait : distance minimale entre deux centres = 130px (cas
+  nb=5), donc tout rayon <= 65 restait sans risque -- 58 choisi pour une
+  marge confortable (14px).
+- Budget de texte : `LARGEUR_LABEL_TECHNIQUE_PAR_NB` uniformise a 120px
+  pour tout `nb` (au lieu de 130-220 selon `nb`) -- vise une largeur
+  reellement rendue au maximum de 102px (120 - 18px de marge interne
+  deja soustraite par `ajuster_texte_svg()`), soit 14px sous le nouveau
+  diametre (116px).
+
+**Validation en deux temps**, cairosvg etant indisponible dans ce
+sandbox (acces pypi.org bloque malgre sa presence dans la liste
+`noProxy` -- `NameResolutionError`, cause exacte non investiguee plus
+avant) :
+1. **Arithmetique locale** (sans rendu, meme fonctions de mesure que
+   `pipeline.py` -- `_mesurer_largeur_texte_svg`/`ajuster_texte_svg`,
+   meme police TTF embarquee) sur 5 descriptions realistes, en ajoutant
+   par precaution le pire ecart PIL-vs-cairosvg deja mesure en prod le
+   11/11 (jusqu'a 8px, voir `SVG_MARGE_SECURITE_PX`) : AVANT (rayon 52,
+   budget nb=5=130), les 5 depassent le diametre de 12.5 a 16.7px dans
+   le pire des cas -- coherent avec les 3-6px REELS mesures sur l'image
+   (le pire-cas theorique majore volontairement l'ecart reel). APRES
+   (rayon 58, budget uniforme 120), les memes textes restent tous DANS
+   le cercle, marge minimale +6px meme dans le pire des cas.
+2. **Rendu cairosvg REEL via le pont GitHub Actions**
+   (`scripts-maintenance/verifier_fix_cercles_technique_1211.py`,
+   lecture seule) : rend `generer_technique_svg()` (code committe) avec
+   5 composants representatifs (memes textes que l'etape 1), mesure au
+   pixel le depassement UNIQUEMENT sur les bandes horizontales ou le
+   texte "nom"/"desc" est reellement dessine, en comparant a la courbe
+   reelle de l'anneau du cercle (rayon + moitie du stroke-width, pas un
+   rayon plat). **Piege rencontre et corrige en cours de route** : une
+   premiere version du script scannait toute la hauteur du cercle contre
+   un rayon PLAT -- l'anneau du cercle lui-meme (stroke-width=2.5, dont
+   le bord EXTERIEUR reel est a rayon+1.25px) etait alors compte a tort
+   comme un "depassement de texte" sur quasi toute la hauteur du cercle
+   (signature reconnaissable : exces quasi UNIFORME de 1-2px sur 20+
+   lignes consecutives, alors qu'un vrai depassement de texte aurait des
+   bords irreguliers et localises aux seules lignes de texte) -- corrige
+   (commit `f6b6a67`) en comparant a la courbe reelle de l'anneau plutot
+   qu'a un rayon constant.
+   **Resultat final (run `43237900523`, log
+   `20261112-143103-...`)** : ligne "desc" -- celle a l'origine du
+   signalement operateur -- **0px de depassement sur les 5 composants**.
+   Ligne "nom" : ~1px residuel sur les 5 composants, mais ce point
+   precis se situe a plus de 20px de l'extremite reelle du texte "nom"
+   (`"Bouteille de gaz"` mesure ~76px de large, soit ~38px de chaque
+   cote du centre -- le pixel detecte est a la frontiere du cercle, pas
+   dans cette zone) : c'est l'anti-aliasing du trait du cercle
+   lui-meme (tout trait rendu a un bord adouci sur ~1px), pas du texte --
+   imperceptible a l'oeil et present sur n'importe quel cercle trace de
+   cette maniere, ancien rayon inclus (jamais mesure aussi finement
+   avant ce chantier).
+
+**Conclusion** : le defaut reellement signale par l'operateur (texte
+"desc" hors du cercle) est corrige et confirme par un rendu reel du
+code production, pas seulement par un calcul theorique. Chantier clos.
