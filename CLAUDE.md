@@ -2453,3 +2453,100 @@ tous les elements** par rapport a leur geometrie reelle. Chantier clos.
 `LARGEUR_LABEL_TECHNIQUE_PAR_NB` (budget de label par nombre de
 composants du schema technique), tous deux en haut de la section
 CELLULE 11B de `pipeline.py`.
+
+## SearchApi.io — quota mensuel epuise, 3 runs quotidiens perdus (08-10/11/2026)
+
+Demande operateur : verifier l'etat du run du 12/11. `gh run list` a
+montre **3 echecs consecutifs** (08/11, 09/11, 10/11, 0 article publie
+chacun) avant un retour au vert le 11/11. **Cause identique sur les 3
+echecs**, trouvee par lecture directe du log (`gh run view --log`,
+exceptionnellement accessible pour ces runs) : `Erreur pipeline : SearchApi
+inutilisable (HTTP 429) : You have used all of the searches for the month.`
+-- credit mensuel SearchApi.io (scraping concurrents, avant la boucle de
+redaction) tombe a 0, plantant tout le run des le premier appel (exit code
+1, aucun try/except a cette etape, contrairement aux garde-fous du 31/10
+qui couvrent la boucle par-brief mais pas le scraping qui la precede).
+**Confirme par l'operateur** : credit epuise, desormais corrige (plan/
+credit renouvele) -- run du 11/11 sans la moindre erreur SearchApi dans
+son log, run du 12/11 reparti normalement. **Aucun correctif de code
+applique** -- pas demande, cause externe (facturation SearchApi.io), pas
+un bug du pipeline. A garder en tete si le run quotidien replante en debut
+de mois suivant avec la meme signature : verifier le quota SearchApi.io
+avant de chercher un bug cote code.
+
+## Page pilier attestation-de-contrat-delectricite — perte de trafic, diagnostic 360 (12/11/2026)
+
+Demande operateur : comprendre pourquoi
+`https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/`
+(page PILIER du sous-silo "Contrat Électricité", reference dans
+`LIENS_PILIERS_SOUS_SILO`, `pipeline.py` -- chaque nouvel article du
+sous-silo lui insere un lien en tout debut de contenu via
+`inserer_lien_pilier()`) a perdu du trafic. Diagnostic en lecture seule
+via le pont GitHub Actions
+(`scripts-maintenance/diagnostic_360_attestation_contrat_electricite.py`
+puis `..._suite_url_exacte.py`, pour re-interroger GSC/GA4 par URL EXACTE
+apres une premiere ambiguite de LIKE) : historique_publications, statut
+technique live, tendances GSC/GA4 mensuelles et hebdomadaires,
+cannibalisation sur les requetes historiques, indexation Google connue,
+scan complet du maillage interne reel.
+
+**Root cause confirmee : DEUX URLs live pour le MEME post_id (2218),
+canonicalisees l'une vers l'autre, et le trafic organique + le maillage
+interne ont divergé depuis juin/juillet 2026** :
+- **URL longue** (`/electricite/contrat-electricite/attestation-de-contrat-delectricite/`,
+  permalien categorise normal du site, celle que pointent les 50 articles
+  "Contrat Électricité" vivants qui la lient + le constant pilier) :
+  **0 ligne GSC depuis le debut de l'historique synchronise** -- Google ne
+  l'a jamais indexee independamment. Son propre `<link rel="canonical">`
+  live pointe vers l'URL courte (confirme par requete directe HTML depuis
+  le runner), donc Google la traite en "Alternate page with proper
+  canonical tag" (confirme dans `04_pipeline_seo.indexation_google`,
+  post_id=2218) et ne la fait jamais apparaitre dans les resultats de
+  recherche.
+- **URL courte** (`/attestation-de-contrat-delectricite/`, sans prefixe de
+  categorie) : c'est elle que Google indexe reellement ("Submitted and
+  indexed", meme post_id) et qui porte **100% des impressions/clics GSC**
+  en continu jusqu'au 09/11/2026 -- mais elle ne recoit plus AUCUNE
+  session GA4 depuis juin 2026 (sessions GA4 : avril=1, mai=25, juin=11,
+  puis 0 tous les mois suivants), alors que l'URL longue en recoit depuis
+  (juin=6, juillet=22, ..., novembre=19) -- la bascule du trafic REEL
+  (visites, maillage interne) vers l'URL longue s'est faite a ce moment-la,
+  sans que le canonical ne suive.
+
+**Consequence directe, c'est la perte de trafic constatee** : depuis cette
+bascule, l'URL que Google classe reellement (la courte) ne recoit plus
+aucun lien interne ni aucune visite -- elle "coasse" sur son autorite
+residuelle sans plus etre renforcee -- tandis que l'URL activement lieee
+par les 50 articles + le mecanisme pilier (la longue) n'apparaitra jamais
+dans Google tant que son canonical pointe ailleurs. Chute nette observee
+sur l'URL courte (donc sur TOUT le trafic organique reel de cette page) :
+impressions GSC 1748 en juillet 2026 -> 208-413/mois depuis (-75% a -88%),
+clics organiques quasi nuls (0-4/mois) sur toute la periode malgre une
+position moyenne qui s'ameliore legerement (13.3 -> 11.1) -- coherent avec
+une page privee de renforcement (ni lien interne frais, ni signal
+d'engagement) plutot qu'une perte de classement actif. **Cannibalisation
+interne ecartee** : aucune autre page du site n'approche son classement
+sur ses 8 requetes historiques principales (le seul concurrent partiel,
+`/electricite/facture-electricite/justificatif-de-domicile/`, reste
+positionne 50+ sur les memes requetes).
+
+**Hors de portee de ce sandbox** : confirmer cote wp-admin/RankMath
+pourquoi les deux URLs repondent 200 sans redirection 301 automatique
+entre elles (WordPress redirige normalement une URL non-canonique vers la
+permalien courante via `redirect_canonical()` -- absence de redirection
+ici suggere une configuration RankMath/cache qui le desactive pour ce
+post, pas verifiable sans acces au site live) et pourquoi le canonical de
+l'URL longue (la vraie, la lieee) pointe vers l'URL courte (l'ancienne)
+plutot que l'inverse.
+
+**Action recommandee, pas encore faite (decision operateur)** : dans
+wp-admin/RankMath pour ce post (id 2218), (a) corriger le canonical pour
+qu'il se pointe lui-meme sur l'URL longue (celle deja lieee par tout le
+maillage interne et coherente avec le permalien `{silo}/{sous-silo}/{slug}/`
+utilise partout ailleurs sur le site), et (b) ajouter une redirection 301
+de l'URL courte vers l'URL longue pour consolider l'autorite/l'historique
+Google sur l'URL qui sera desormais la seule active. Aucune action prise
+depuis ce sandbox -- diagnostic uniquement, meme limite deja documentee
+pour les redirections 301 (section "32 liens morts... pas automatisable
+via RankMath" plus haut : pas d'acces API/ajax authentifie depuis ce
+pipeline pour creer une redirection).
