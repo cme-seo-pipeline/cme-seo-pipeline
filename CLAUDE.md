@@ -2948,6 +2948,103 @@ programmatique que le nouveau total est exactement 14 sur 14 sous-silos.
 au prochain run de `publication-quotidienne.yml` (modification pure de
 `pipeline/pipeline.py`, aucun fichier mu-plugin PHP, aucun deploiement
 cPanel necessaire). A confirmer apres ce run que 14 articles sont bien
-publies (1 par sous-silo), sans regression sur la selection dynamique ni
-sur l'angle transactionnel (`Aide pompe à chaleur`/`Aide isolation`/
-Solaire, inchange).
+publies (1 par sous-silo), sans regression sur la selection dynamique.
+**Note : la derniere phrase ci-dessus ("sans regression ... sur l'angle
+transactionnel ... inchange") est devenue obsolete le 13/11/2026, voir
+section suivante -- l'angle transactionnel a ete retire de ces memes
+sous-silos le jour meme.**
+
+## Descriptions de categorie WordPress — Aide isolation + nouveaux sous-silos (13/11/2026)
+
+Demande operateur, dans la continuite de la personnalisation des CTA par
+sous-silo (section "Personnalisation des messages CTA" plus haut) :
+remplir le champ **description de categorie WordPress** (natif, affiche
+en haut de la page d'archive de la categorie -- distinct de la
+`meta_description` au niveau ARTICLE, geree par RankMath/le pipeline) la
+ou il est vide, en calquant la convention deja en place sur les autres
+sous-silos (texte 100-520 caracteres, structure variable selon le sujet
+mais toujours un paragraphe informationnel/pratique).
+
+**Verifie en lecture seule avant toute ecriture**
+(`scripts-maintenance/verifier_description_categories_aide.py` puis
+`..._gaz.py` puis `..._solaire_et_aide.py`, pont GitHub Actions) :
+- **Aide isolation** (id=69, parent Aide Énergétique) : description
+  **vide** (0 car.) -- seule categorie du silo sans description. Ecrite
+  (`scripts-maintenance/definir_description_categorie_aide_isolation.py`,
+  dry-run puis `--apply` via l'API REST WordPress categories, meme
+  authentification Application Password que le reste du pipeline) :
+  418 caracteres, meme structure que la categorie la plus proche en angle
+  editorial ("Aide pompe à chaleur", 413 car.) -- aides nommees
+  (MaPrimeRénov', CEE, éco-PTZ, TVA réduite, Anah), montants/conditions,
+  démarches, pièges à éviter.
+- **Silo Solaire (6 categories, racine + 5 sous-silos) + Aide pompe à
+  chaleur** : deja toutes pourvues d'une description riche (393 a 517
+  car.), meme niveau de qualite que les references citees par
+  l'operateur (Gaz/bouteilles, Gaz/contrat-gaz, Gaz/facture-gaz) --
+  **aucune action necessaire**, deja fait avant cette session.
+- **Nouveau sous-silo "compteur" (silo Gaz, categorie creee par
+  l'operateur le 13/11/2026)** : n'apparaissait pas encore dans les 44/45
+  categories recuperees au moment de la verification -- categorie pas
+  encore propagee cote WordPress au moment du check, ou slug different de
+  l'hypothese `gaz/compteur/`. Description redigee (436 car., meme
+  registre informationnel que les autres sous-silos Gaz) mais **pas
+  ecrite via l'API** -- l'operateur a precise qu'il la collera lui-meme
+  dans wp-admin une fois la categorie confirmee.
+
+**Ecriture via l'API REST categories, pas de contrainte de deploiement
+cPanel** (a la difference des mu-plugins PHP) : `POST
+/wp-json/wp/v2/categories/{id}` avec `{"description": "..."}`, meme
+Application Password que les scripts de maintenance de contenu. Prend
+effet immediatement, modifiable a tout moment dans wp-admin → Categories.
+
+## Angle editorial — retrait du forçage transactionnel sur Solaire/Aide isolation/Aide pompe à chaleur (13/11/2026)
+
+Demande operateur explicite, en inversion directe des decisions du
+27/10/2026 (Solaire), 04/11/2026 (Aide pompe à chaleur) et 12/11/2026
+(Aide isolation) : *"appliquer le même type de contenu des silos
+(bouteille, facture, contrat gaz et électricité) à l'industrie des
+sous-silos solaire et pareil pour aide isolation et aide pompe à
+chaleur, car je pense que c'est comme ça on va gagner de l'autorité
+comme on a fait pour les autres"* -- precise ensuite, l'operateur ne
+parlait pas de la description de categorie (section precedente) mais du
+**style de contenu des articles** : informationnel vs transactionnel.
+
+**Etat des lieux (lecture seule, relecture du code)** avant application :
+`ANGLE_TRANSACTIONNEL_GENERIQUE` (`pipeline/pipeline.py`, branchement
+dans `generer_tous_briefs()`) forçait un angle transactionnel (prix/
+devis/ROI/budget, lecteur pret a convertir) sur exactement 7 sous-silos :
+tout le silo Solaire (5) + Aide pompe à chaleur + Aide isolation. Tous
+les autres sous-silos du quota (Gaz : Bouteilles/Facture Gaz/Contrat
+Gaz ; Électricité : Contrat/Facture ; Aide Énergétique : MaPrimeRénov'/
+Chèque énergie/Aides chauffe-eau thermodynamique) n'avaient **jamais**
+ete concernes par ce forçage -- angle informationnel par defaut (celui
+que le LLM choisit naturellement, sans consigne d'angle imposee).
+
+**Question posee avant application** (cout d'une erreur trop eleve pour
+deviner, vu l'ampleur) : futurs articles uniquement, ou aussi reecriture
+retroactive des articles deja publies sous l'angle transactionnel ?
+**Reponse operateur : futurs articles uniquement.** Aucune reecriture
+retroactive engagee -- les articles Solaire/Aide isolation/Aide pompe à
+chaleur deja publies restent inchanges, deja indexes avec leur angle
+d'origine.
+
+**Applique** (`pipeline/pipeline.py`, fonction `generer_tous_briefs()`) :
+les deux branches qui forcaient `angle_force = ANGLE_TRANSACTIONNEL_GENERIQUE`
+(silo Solaire ; sous-silo "Aide pompe à chaleur"/"Aide isolation") sont
+retirees -- `angle_force` vaut desormais toujours `None` pour tous les
+sous-silos du quota quotidien, exactement comme Gaz/Électricité/
+MaPrimeRénov'/Chèque énergie/Aides chauffe-eau thermodynamique. La
+constante `ANGLE_TRANSACTIONNEL_GENERIQUE` elle-meme n'a pas ete
+supprimee (gardee comme outil reutilisable si un forçage cible redevient
+utile un jour, meme logique que les fonctions "gardees mais plus
+appelees" documentees ailleurs dans ce fichier, ex. `inserer_ctas_repartis()`).
+
+**Validation** : `python3 -m py_compile pipeline/pipeline.py` OK (seul le
+`SyntaxWarning` preexistant non lie). **Pas encore valide en conditions
+reelles** -- prend effet automatiquement au prochain run de
+`publication-quotidienne.yml` (modification pure de `pipeline.py`, aucun
+fichier mu-plugin, aucun deploiement cPanel necessaire). A confirmer
+apres ce run que les articles Solaire/Aide isolation/Aide pompe à
+chaleur generes sont bien sur un angle informationnel (plus de mention
+explicite de prix/devis/ROI imposee), sans regression sur le choix
+dynamique du mot-cle (GSC/anciennete, inchange) ni sur le reste du quota.

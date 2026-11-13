@@ -1087,19 +1087,33 @@ JSON uniquement."""
         return None, f"❌ Erreur : {e}"
 
 
-# Angle transactionnel generique impose aux articles du quota quotidien
-# recurrent (QUOTAS_SOUS_SILO) pour les sous-silos ou le ciblage explicite
-# est de capter du trafic PRET A CONVERTIR plutot que purement informationnel
-# -- le mot-cle lui reste choisi dynamiquement (GSC/anciennete), seul
-# l'angle de traitement est force, quel que soit le mot-cle retenu ce
-# jour-la. Introduit pour Solaire le 27/10/2026 (reproduire l'intention
-# transactionnelle du lot ponctuel du 26/10 sans dependre d'une liste
-# figee de mots-cles, epuisable) ; etendu le 04/11/2026 au nouveau
-# sous-silo "Aide pompe à chaleur" (silo Aide Énergétique), meme logique,
-# meme texte -- voir le branchement dans generer_tous_briefs() et le
-# commentaire de QUOTAS_SOUS_SILO pour le contexte complet. Renomme
-# (ex-ANGLE_TRANSACTIONNEL_SOLAIRE) a cette occasion : le nom precedent
-# suggerait a tort une portee limitee au seul silo Solaire.
+# Angle transactionnel generique -- PLUS IMPOSE A AUCUN SOUS-SILO depuis le
+# 13/11/2026 (decision operateur, voir plus bas), garde seulement comme
+# constante/outil reutilisable si un besoin futur se represente (ex. un
+# lot ponctuel cible, comme celui du 26/10/2026 sur Solaire).
+#
+# Historique : impose aux articles du quota quotidien recurrent
+# (QUOTAS_SOUS_SILO) pour les sous-silos ou le ciblage explicite etait de
+# capter du trafic PRET A CONVERTIR plutot que purement informationnel --
+# le mot-cle lui restait choisi dynamiquement (GSC/anciennete), seul
+# l'angle de traitement etait force. Introduit pour Solaire le 27/10/2026
+# (reproduire l'intention transactionnelle du lot ponctuel du 26/10 sans
+# dependre d'une liste figee de mots-cles, epuisable) ; etendu le
+# 04/11/2026 au sous-silo "Aide pompe à chaleur", puis le 12/11/2026 a
+# "Aide isolation" (meme silo Aide Énergétique, meme logique, meme texte).
+#
+# RETIRE le 13/11/2026 (decision operateur explicite, strategie inverse :
+# "appliquer le meme type de contenu [informationnel] des silos Gaz
+# (bouteilles/facture/contrat) et Electricite a l'industrie des sous-silos
+# Solaire et pareil pour Aide isolation et Aide pompe a chaleur, car c'est
+# comme ca qu'on gagne de l'autorite" -- les 7 sous-silos concernes
+# (Solaire x5 + Aide isolation + Aide pompe a chaleur) repassent donc sur
+# l'angle informationnel par defaut, exactement comme Gaz/Electricite/
+# MaPrimeRénov'/Chèque énergie/Aides chauffe-eau thermodynamique, qui
+# n'avaient jamais ete concernes par ce forçage. Perimetre confirme
+# explicitement par l'operateur : FUTURS ARTICLES UNIQUEMENT -- aucune
+# reecriture retroactive des articles deja publies sous l'angle
+# transactionnel (deja indexes, chantier distinct si jamais demande).
 ANGLE_TRANSACTIONNEL_GENERIQUE = (
     "Quel que soit le mot-clé retenu, traite-le sous un angle TRANSACTIONNEL : "
     "prix/devis, rentabilité et temps de retour sur investissement, "
@@ -1125,21 +1139,14 @@ def generer_tous_briefs(df_final, client_bq, config):
             continue
         contexte = preparer_contexte_silo(df_silo_clean, silo_name)
         titres_existants = recuperer_titres_existants(silo_name, client_bq)
-        # Sous-silo compare par prefixe (pas egalite stricte) : un sous-silo
-        # a quota > 1 peut arriver ici suffixe ' (2)'/' (3)' par l'anti-
-        # collision de selectionner_silos_a_traiter().
+        # Angle transactionnel RETIRE le 13/11/2026 pour tous les sous-silos
+        # (Solaire, Aide isolation, Aide pompe à chaleur) -- decision
+        # operateur explicite d'unifier sur l'angle informationnel par
+        # defaut, comme Gaz/Electricite (voir ANGLE_TRANSACTIONNEL_GENERIQUE
+        # plus haut pour l'historique complet). angle_force reste toujours
+        # None desormais ; conserve explicitement (plutot que supprime) pour
+        # qu'un futur forçage cible reste un simple if a rajouter ici.
         angle_force = None
-        if silo_name == "4. Solaire":
-            angle_force = ANGLE_TRANSACTIONNEL_GENERIQUE
-        elif silo_name == "3. Aide Énergétique" and (
-            str(sous_silo_name).startswith("Aide pompe à chaleur")
-            or str(sous_silo_name).startswith("Aide isolation")
-        ):
-            # Aide isolation ajoutee le 12/11/2026, meme angle que Aide
-            # pompe a chaleur (demande operateur explicite) -- voir
-            # QUOTAS_SOUS_SILO dans selectionner_silos_a_traiter() pour le
-            # detail du changement de quota.
-            angle_force = ANGLE_TRANSACTIONNEL_GENERIQUE
         brief, erreur = generer_brief_silo(contexte, config, titres_existants, angle_force=angle_force)
         if erreur:
             print(f"  ❌ {silo_name} : {erreur}")
