@@ -1,0 +1,21 @@
+# Execution du 2026-11-13T17:28:27Z
+# Script    : scripts-maintenance/verifier_description_categories_aide.py
+# Arguments : 
+
+✅ 44 categories recuperees
+
+--- aide-isolation (id=69, parent=61, count=1) ---
+Description actuelle (0 car.) : ''
+
+--- aide-pompe-a-chaleur (id=68, parent=61, count=8) ---
+Description actuelle (413 car.) : 'Toutes les aides financières disponibles pour l’installation d’une pompe à chaleur : MaPrimeRénov’, primes CEE (Coup de pouce chauffage), éco-prêt à taux zéro, TVA réduite à 5,5%, et aides locales. Retrouvez les montants selon vos revenus, les conditions d’éligibilité, les démarches pas à pas et les pièges à éviter pour financer votre projet de pompe à chaleur air-eau, air-air ou géothermique au meilleur coût.'
+
+--- maprimerenov (id=41, parent=61, count=74) ---
+Description actuelle (438 car.) : "MaPrimeRénov' est aujourd'hui le dispositif d'aide à la rénovation énergétique le plus important en France. Versée directement par l'État, elle finance l'isolation, le remplacement du chauffage, la ventilation et bien d'autres travaux selon votre niveau de revenus. Comprendre son fonctionnement, ses plafonds et ses conditions d'attribution, c'est s'assurer de maximiser votre enveloppe de financement avant de démarrer quoi que ce soit."
+
+--- cheque-energie (id=42, parent=61, count=70) ---
+Description actuelle (406 car.) : "Chèque énergie : Le chèque énergie est une aide de l'État destinée aux ménages aux revenus modestes pour les aider à payer leurs factures d'énergie ou financer de petits travaux de rénovation. Envoyé automatiquement sans demande à effectuer, il est pourtant souvent mal utilisé ou oublié. Découvrez son montant, comment l'utiliser au mieux, et comment le faire valoir auprès de votre fournisseur d'énergie."
+
+--- aides-chauffe-eau-thermodynamique (id=39, parent=61, count=70) ---
+Description actuelle (117 car.) : "Aides chauffe-eau thermodynamique : réduisez son coût avec MaPrimeRénov' et les CEE. Découvrez montants et démarches."
+
