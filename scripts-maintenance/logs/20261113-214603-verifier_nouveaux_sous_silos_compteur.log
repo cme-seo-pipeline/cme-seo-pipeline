@@ -1,0 +1,16 @@
+# Execution du 2026-11-13T21:46:03Z
+# Script    : scripts-maintenance/verifier_nouveaux_sous_silos_compteur.py
+# Arguments : 
+
+✅ 45 categories recuperees
+
+--- /electricite/compteur/ (id=51, count=23) ---
+Name WordPress (a utiliser comme Sous-Silo) : 'Compteur'
+Parent attendu 'electricite' : OK
+Description actuelle (424 car.) : "Le compteur Linky a été déployé dans la quasi-totalité des foyers français, mais beaucoup ignorent encore ce qu'il permet vraiment. Suivi de consommation en temps réel, changement de puissance à distance, détection de pannes... ses fonctionnalités sont nombreuses et peuvent vous aider à mieux piloter votre consommation. On fait le point sur ce que vous pouvez en faire concrètement, et comment l'utiliser à votre avantage."
+
+--- /gaz/compteur-gaz/ (id=70, count=0) ---
+Name WordPress (a utiliser comme Sous-Silo) : 'Compteur gaz'
+Parent attendu 'gaz' : OK
+Description actuelle (436 car.) : 'Le compteur de gaz est l’élément central de votre installation : il mesure votre consommation et détermine le montant de vos factures. Ancien compteur à relevé manuel ou compteur communicant Gazpar, mise en service, changement, relevé d’index, panne ou anomalie... On décrypte son fonctionnement et on vous guide pas à pas dans vos démarches auprès de votre fournisseur ou de GRDF, pour éviter toute mauvaise surprise sur votre facture.'
+
