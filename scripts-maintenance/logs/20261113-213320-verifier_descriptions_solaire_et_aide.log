@@ -1,0 +1,36 @@
+# Execution du 2026-11-13T21:33:20Z
+# Script    : scripts-maintenance/verifier_descriptions_solaire_et_aide.py
+# Arguments : 
+
+✅ 45 categories recuperees
+
+==========================================================================================
+SILO SOLAIRE
+==========================================================================================
+--- /solaire/ (slug=solaire, id=29, count=1) ---
+Description actuelle (517 car.) : "Solaire : le soleil est une ressource gratuite, inépuisable et disponible partout en France — autant en profiter. Que vous envisagiez des panneaux photovoltaïques pour produire votre électricité, un chauffe-eau solaire pour votre eau chaude sanitaire, ou un système solaire combiné pour chauffer toute votre maison, les solutions existent pour chaque profil de logement et chaque budget. Découvrez comment l'énergie solaire peut transformer votre consommation, réduire vos factures et valoriser votre bien immobilier."
+
+--- /solaire/batterie-panneaux-solaires/ (slug=batterie-panneaux-solaires, id=34, count=21) ---
+Description actuelle (434 car.) : "Batterie panneaux solaires : Installer une batterie de stockage avec vos panneaux solaires, c'est passer à l'étape supérieure : consommer votre propre électricité même la nuit ou par temps nuageux. Capacité, compatibilité, durée de vie, retour sur investissement... les critères de choix sont nombreux mais décisifs. Découvrez comment optimiser votre autoconsommation et réduire encore davantage votre dépendance au réseau électrique."
+
+--- /solaire/chauffe-eau-solaire/ (slug=chauffe-eau-solaire, id=33, count=21) ---
+Description actuelle (393 car.) : "Le chauffe-eau solaire individuel est l'entrée en matière idéale dans l'univers du solaire thermique. Simple, fiable et économique, il utilise des capteurs solaires pour chauffer votre eau sanitaire et peut couvrir entre 50 et 70 % de vos besoins selon votre région. Éligible à MaPrimeRénov' et aux primes CEE, c'est l'un des équipements à l'un des meilleurs rapports coût/économies du marché."
+
+--- /solaire/kit-solaire/ (slug=kit-solaire, id=30, count=20) ---
+Description actuelle (417 car.) : "Le kit solaire est la solution idéale pour se lancer dans l'autoconsommation sans travaux lourds ni installation complexe. Branché sur une simple prise, il permet de produire et consommer votre propre électricité dès le premier jour. Balcon, terrasse, jardin... ces kits plug-and-play séduisent de plus en plus de locataires et de propriétaires souhaitant réduire leur facture électrique rapidement et à moindre coût."
+
+--- /solaire/panneaux-solaires/ (slug=panneaux-solaires, id=31, count=22) ---
+Description actuelle (439 car.) : "Les panneaux solaires photovoltaïques permettent de produire votre propre électricité grâce au soleil — et d'en revendre le surplus au réseau. Monocristallin, polycristallin, rendement, orientation, surface nécessaire... avant de se lancer, mieux vaut comprendre les bases. Ici, on vous guide de A à Z : du choix des panneaux jusqu'à l'installation, en passant par les aides disponibles et le calcul de rentabilité adapté à votre logement."
+
+--- /solaire/systeme-solaire-combine/ (slug=systeme-solaire-combine, id=32, count=21) ---
+Description actuelle (424 car.) : "Le système solaire combiné est la solution deux-en-un par excellence : il assure à la fois le chauffage de votre maison et la production d'eau chaude sanitaire grâce à l'énergie du soleil. Plus ambitieux qu'un simple chauffe-eau solaire, il peut couvrir jusqu'à 70 % de vos besoins énergétiques annuels selon l'Ademe. Un investissement conséquent, mais rentabilisé sur le long terme et soutenu par plusieurs aides de l'État."
+
+==========================================================================================
+RE-CONFIRMATION — Aide isolation / Aide pompe a chaleur
+==========================================================================================
+--- /aide-energetique/aide-isolation/ (slug=aide-isolation, id=69, count=1) ---
+Description actuelle (418 car.) : 'Toutes les aides financières disponibles pour l’isolation de votre logement : MaPrimeRénov’, primes CEE (Coup de pouce isolation), éco-prêt à taux zéro, TVA réduite à 5,5 %, et aides locales ou de l’Anah. Retrouvez les montants selon vos revenus, les conditions d’éligibilité, les démarches pas à pas et les pièges à éviter pour financer vos travaux d’isolation des combles, murs, toiture ou plancher au meilleur coût.'
+
+--- /aide-energetique/aide-pompe-a-chaleur/ (slug=aide-pompe-a-chaleur, id=68, count=8) ---
+Description actuelle (413 car.) : 'Toutes les aides financières disponibles pour l’installation d’une pompe à chaleur : MaPrimeRénov’, primes CEE (Coup de pouce chauffage), éco-prêt à taux zéro, TVA réduite à 5,5%, et aides locales. Retrouvez les montants selon vos revenus, les conditions d’éligibilité, les démarches pas à pas et les pièges à éviter pour financer votre projet de pompe à chaleur air-eau, air-air ou géothermique au meilleur coût.'
+
