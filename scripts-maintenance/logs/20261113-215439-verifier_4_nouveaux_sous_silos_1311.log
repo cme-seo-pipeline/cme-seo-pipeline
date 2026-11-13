@@ -1,0 +1,26 @@
+# Execution du 2026-11-13T21:54:39Z
+# Script    : scripts-maintenance/verifier_4_nouveaux_sous_silos_1311.py
+# Arguments : 
+
+✅ 45 categories recuperees
+
+--- /gaz/contrat-gaz/ (id=55, count=26) ---
+Name WordPress (a utiliser comme Sous-Silo) : 'Contrat Gaz'
+Parent attendu 'gaz' : OK
+Description actuelle (424 car.) : "Souscrire un contrat de gaz demande autant d'attention que pour l'électricité : type d'offre, indexation des prix, durée d'engagement, conditions de résiliation... Avec la volatilité des prix du gaz ces dernières années, le choix du bon contrat peut faire une différence significative sur votre budget annuel. On vous guide pour décrypter les offres, éviter les pièges et négocier les meilleures conditions pour votre foyer."
+
+--- /gaz/chauffage-gaz/ (id=58, count=31) ---
+Name WordPress (a utiliser comme Sous-Silo) : 'Chauffage Gaz'
+Parent attendu 'gaz' : OK
+Description actuelle (145 car.) : 'Guide complet du chauffage gaz : chaudières à condensation, poêles ou radiateurs. Comparez les équipements pour choisir et réduire votre facture.'
+
+--- /electricite/chauffage-electricite/ (id=53, count=25) ---
+Name WordPress (a utiliser comme Sous-Silo) : 'Chauffage Électricité'
+Parent attendu 'electricite' : OK
+Description actuelle (419 car.) : "Le chauffage électrique reste très répandu en France, mais il est souvent synonyme de factures élevées en hiver. Convecteurs, panneaux rayonnants, pompe à chaleur, plancher chauffant électrique... chaque solution a ses avantages selon le type de logement et l'usage. Ici, on compare les technologies, on évalue leur coût réel et on vous aide à faire les bons choix pour chauffer efficacement sans exploser votre budget."
+
+--- /electricite/demenagement/ (id=52, count=20) ---
+Name WordPress (a utiliser comme Sous-Silo) : 'Déménagement'
+Parent attendu 'electricite' : OK
+Description actuelle (404 car.) : "Un déménagement implique de gérer son contrat d'électricité avec rigueur : résiliation chez l'ancien fournisseur, ouverture de compteur dans le nouveau logement, relevé de compteur, choix d'une nouvelle offre... Autant d'étapes qui, mal gérées, peuvent entraîner des frais inutiles ou des coupures. Suivez notre guide pas à pas pour que votre déménagement soit aussi fluide côté énergie que côté cartons."
+
