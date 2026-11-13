@@ -1,0 +1,29 @@
+# Execution du 2026-11-13T17:35:21Z
+# Script    : scripts-maintenance/verifier_description_categories_gaz.py
+# Arguments : 
+
+✅ 44 categories recuperees
+
+Racine Gaz : gaz (id=45)
+
+--- /gaz/ (slug=gaz, id=45, count=0) ---
+Description actuelle (435 car.) : "Le gaz naturel reste l'une des énergies de chauffage les plus répandues en France, mais son prix et son impact environnemental poussent de plus en plus de ménages à s'interroger. Chaudière à condensation, contrats de fourniture, alternatives plus vertes... Nous vous guidons pour optimiser votre installation actuelle, comprendre vos options, et anticiper sereinement la transition énergétique sans mauvaise surprise sur votre facture."
+
+--- /gaz/bouteilles/ (slug=bouteilles, id=57, count=110) ---
+Description actuelle (403 car.) : "Les bouteilles de gaz butane ou propane sont une alternative pratique pour les logements non raccordés au réseau de gaz naturel. Cuisson, chauffage d'appoint, eau chaude... leurs usages sont nombreux, mais leur coût et leurs contraintes de stockage méritent d'être bien évalués. Découvrez comment choisir la bonne bouteille selon votre usage, où se la procurer et comment la manipuler en toute sécurité."
+
+--- /gaz/chauffage-gaz/ (slug=chauffage-gaz, id=58, count=31) ---
+Description actuelle (145 car.) : 'Guide complet du chauffage gaz : chaudières à condensation, poêles ou radiateurs. Comparez les équipements pour choisir et réduire votre facture.'
+
+--- /gaz/comparatifs-fournisseurs-gaz/ (slug=comparatifs-fournisseurs-gaz, id=56, count=26) ---
+Description actuelle (115 car.) : 'Consultez nos comparatifs fournisseurs gaz pour optimiser votre chauffage et anticiper les réglementations à venir.'
+
+--- /gaz/contrat-gaz/ (slug=contrat-gaz, id=55, count=26) ---
+Description actuelle (424 car.) : "Souscrire un contrat de gaz demande autant d'attention que pour l'électricité : type d'offre, indexation des prix, durée d'engagement, conditions de résiliation... Avec la volatilité des prix du gaz ces dernières années, le choix du bon contrat peut faire une différence significative sur votre budget annuel. On vous guide pour décrypter les offres, éviter les pièges et négocier les meilleures conditions pour votre foyer."
+
+--- /gaz/demenagement-gaz/ (slug=demenagement-gaz, id=65, count=21) ---
+Description actuelle (256 car.) : "Tout savoir sur le gaz lors d'un déménagement : résiliation et ouverture de contrat, relevé du compteur, transfert d'abonnement, délais à anticiper et démarches auprès de votre fournisseur pour un raccordement sans interruption dans votre nouveau logement."
+
+--- /gaz/facture-gaz/ (slug=facture-gaz, id=54, count=56) ---
+Description actuelle (399 car.) : "La facture de gaz peut vite devenir difficile à lire entre l'abonnement, la consommation en kWh, les taxes et les éventuelles régularisations. Pourtant, bien la comprendre est la première étape pour identifier les anomalies et réduire ses dépenses. On décrypte chaque ligne pour vous, et on vous donne les clés pour contester une facture anormalement élevée ou ajuster vos mensualités au plus juste."
+
