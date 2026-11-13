@@ -381,17 +381,36 @@ def selectionner_silos_a_traiter(client_bq, config):
     parent, name WordPress exact utilise ici comme libelle Sous-Silo) via
     scripts-maintenance/verifier_nouveaux_sous_silos_compteur.py. Aucun
     angle force pour ces deux (informationnel par defaut, meme traitement
-    que le reste de Gaz/Electricite). Total desormais 16 articles/jour sur
+    que le reste de Gaz/Electricite). Total alors 16 articles/jour sur
     16 sous-silos (Gaz 2->3, Electricite 2->3, Aide Energetique et Solaire
     inchanges a 5 chacun).
+
+    4 sous-silos supplementaires ajoutes le meme soir du 13/11/2026 (quota
+    1/jour chacun, decision operateur explicite d'elargir volontairement
+    la couverture mots-cles/trafic vers 20 articles/jour) : "Contrat Gaz"
+    (id=55, 26 articles deja publies), "Chauffage Gaz" (id=58, 31 articles),
+    "Chauffage Électricité" (id=53, 25 articles) et "Déménagement" (silo
+    Electricite, id=52, 20 articles) -- les 4 sont des sous-silos
+    PREEXISTANTS, jamais mis au quota quotidien jusqu'ici, tous avec une
+    description de categorie deja en place. Verifies en lecture seule
+    (slug/parent/name WordPress) via
+    scripts-maintenance/verifier_4_nouveaux_sous_silos_1311.py avant ajout.
+    Aucun angle force (informationnel par defaut, comme le reste de Gaz/
+    Electricite). Total desormais 20 articles/jour sur 20 sous-silos (Gaz
+    3->5, Electricite 3->5, Aide Energetique et Solaire inchanges a 5
+    chacun -- les 4 silos a parite exacte, 5 sous-silos chacun).
     """
     QUOTAS_SOUS_SILO = [
         ("1. Gaz", "Bouteilles", 1),
         ("1. Gaz", "Facture Gaz", 1),
         ("1. Gaz", "Compteur gaz", 1),
+        ("1. Gaz", "Contrat Gaz", 1),
+        ("1. Gaz", "Chauffage Gaz", 1),
         ("5. Électricité", "Contrat Électricité", 1),
         ("5. Électricité", "Facture Électricité", 1),
         ("5. Électricité", "Compteur", 1),
+        ("5. Électricité", "Chauffage Électricité", 1),
+        ("5. Électricité", "Déménagement", 1),
         ("3. Aide Énergétique", "MaPrimeRénov'", 1),
         ("3. Aide Énergétique", "Chèque énergie", 1),
         ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 1),

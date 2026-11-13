@@ -3104,3 +3104,58 @@ publies (1 par sous-silo, dont 1 "Compteur"/Electricite et 1 "Compteur
 gaz"/Gaz), et surveiller specifiquement "Compteur" (Electricite) pour
 verifier que l'anti-doublon fonctionne bien malgre les 23 articles
 deja publies sur ce sous-silo avant sa mise au quota.
+
+## Quota — elargissement a 20/jour, 4 sous-silos Gaz/Electricite supplementaires (13/11/2026, meme soir)
+
+Suite immediate de la section precedente : demande operateur explicite
+d'elargir encore, avec une motivation strategique differente de l'ajout
+"Compteur" (pas une simple reactivation ponctuelle, mais une decision
+deliberee d'augmenter la couverture mots-cles/trafic convertible) :
+*"on va passer à 20, comme ça on va élargir notre contenu pour couvrir
+plus de mots clés et aussi gagner des points sur un trafic qui peut
+convertir"*. 4 nouvelles URLs donnees par l'operateur :
+- `https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/`
+- `https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/`
+- `https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/`
+- `https://www.comprendre-mon-energie.fr/electricite/demenagement/`
+
+**Etat des lieux en lecture seule avant application**
+(`scripts-maintenance/verifier_4_nouveaux_sous_silos_1311.py`, pont
+GitHub Actions, meme pattern que l'ajout "Compteur" juste avant) : les 4
+sont, comme "Compteur"/Electricite, des **sous-silos PREEXISTANTS avec
+du contenu deja publie**, jamais mis au quota quotidien jusqu'ici --
+"Contrat Gaz" (id=55, 26 articles), "Chauffage Gaz" (id=58, 31 articles),
+"Chauffage Électricité" (id=53, 25 articles), "Déménagement" (silo
+Electricite, id=52, 20 articles). Les 4 ont deja une description de
+categorie en place (145 a 424 car.). Aucun "vrai nouveau" cette fois
+(contrairement a "Compteur gaz" juste avant) -- uniquement de la
+reactivation de sous-silos dormants qui avaient deja prouve une
+audience (20 a 31 articles chacun).
+
+**Nouveau `QUOTAS_SOUS_SILO`**, quota 1/jour chacun, aucun angle force
+(informationnel par defaut, comme le reste de Gaz/Electricite) :
+
+| Silo | Sous-silos (5 chacun) | Avant (ce soir) | Apres |
+|---|---|---|---|
+| 1. Gaz | Bouteilles, Facture Gaz, Compteur gaz, **Contrat Gaz**, **Chauffage Gaz** | 3 | **5** |
+| 5. Électricité | Contrat Électricité, Facture Électricité, Compteur, **Chauffage Électricité**, **Déménagement** | 3 | **5** |
+| 3. Aide Énergétique | (5 sous-silos existants) | 5 | 5 (inchange) |
+| 4. Solaire | (5 sous-silos existants) | 5 | 5 (inchange) |
+| **Total** | **20 sous-silos** | **16/jour** | **20/jour** |
+
+Parite exacte : les 4 silos actifs ont desormais chacun 5 sous-silos au
+quota. Recapitulatif de la progression du quota le 13/11/2026 :
+14 (uniformisation 1/sous-silo) -> 16 (+Compteur Electricite/Gaz) -> 20
+(+Contrat Gaz/Chauffage Gaz/Chauffage Electricite/Demenagement), tout en
+une seule soiree.
+
+**Validation** : `python3 -m py_compile pipeline/pipeline.py` OK (seul le
+`SyntaxWarning` preexistant non lie) + verification programmatique que le
+nouveau total est exactement 20 sur 20 sous-silos, repartition
+Gaz=5/Electricite=5/Aide Énergétique=5/Solaire=5. **Pas encore valide en
+conditions reelles** -- prend effet automatiquement au prochain run
+(lundi 16/11/2026). A confirmer apres ce run que 20 articles sont bien
+publies (1 par sous-silo), et que l'anti-doublon fonctionne correctement
+pour les 5 sous-silos reactives ce soir qui ont deja un historique
+(Compteur Electricite 23, Contrat Gaz 26, Chauffage Gaz 31, Chauffage
+Electricite 25, Demenagement 20 articles anterieurs).
