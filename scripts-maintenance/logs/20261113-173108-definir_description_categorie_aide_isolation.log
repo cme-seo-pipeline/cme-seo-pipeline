@@ -1,0 +1,10 @@
+# Execution du 2026-11-13T17:31:08Z
+# Script    : scripts-maintenance/definir_description_categorie_aide_isolation.py
+# Arguments : --apply
+
+Categorie : aide-isolation (id=69)
+Description actuelle (0 car.) : ''
+Nouvelle description (418 car.) :
+  'Toutes les aides financières disponibles pour l’isolation de votre logement : MaPrimeRénov’, primes CEE (Coup de pouce isolation), éco-prêt à taux zéro, TVA réduite à 5,5 %, et aides locales ou de l’Anah. Retrouvez les montants selon vos revenus, les conditions d’éligibilité, les démarches pas à pas et les pièges à éviter pour financer vos travaux d’isolation des combles, murs, toiture ou plancher au meilleur coût.'
+
+✅ Description ecrite et confirmee par relecture de la reponse API.
