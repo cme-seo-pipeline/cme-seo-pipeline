@@ -2906,3 +2906,48 @@ A faire quand l'operateur donne le feu vert pour le demarrer (annonce :
    (meme precaution que pour le tout premier deploiement du formulaire
    progressif en octobre), puisque c'est une nouvelle source de donnee
    affichee directement aux visiteurs.
+
+## Quota quotidien uniformise a 1 article/sous-silo (13/11/2026)
+
+Demande operateur : passer chaque sous-silo du quota a 1 article/jour.
+Etat des lieux en lecture seule avant application (pattern habituel de ce
+projet) : le quota actuel (`QUOTAS_SOUS_SILO`, `pipeline.py`) ne couvre que
+14 sous-silos sur les 37 ayant du contenu deja publie (recoupement avec le
+relevé reel des categories WordPress du 12/11, voir section
+"Personnalisation des messages CTA" plus haut) -- 23 sous-silos avec du
+contenu existant restent hors quota, dont **tout le silo Rénovation
+Énergétique** (quota actuel nul). Question posee explicitement a
+l'operateur avant d'appliquer, vu l'ecart de volume et le cout API
+(Anthropic + SearchApi) que represente chacun des deux perimetres
+possibles : (a) les 14 sous-silos deja actifs, chacun ramene/monte a 1 →
+14/jour, ou (b) les 37 sous-silos avec du contenu existant, chacun a 1 →
+37/jour, ce qui aurait reactive Rénovation Énergétique. **Reponse
+operateur : perimetre (a) uniquement** -- les 14 sous-silos deja actifs,
+aucune extension, aucune reactivation de silo.
+
+**Applique** (`QUOTAS_SOUS_SILO`, `pipeline.py`) : les 7 sous-silos qui
+etaient a quota > 1 ramenes a 1 (Bouteilles 2→1, Contrat Électricité 2→1,
+Facture Électricité 2→1, MaPrimeRénov' 2→1, Aides chauffe-eau
+thermodynamique 2→1, Aide pompe à chaleur 3→1, Aide isolation 2→1) ; les 7
+sous-silos deja a 1 inchanges (Facture Gaz, Chèque énergie, et les 5
+sous-silos Solaire). **Total quotidien vise : 14 articles/jour (etait
+22)** -- baisse de volume, pas une hausse, malgre la formulation "1 par
+sous-silo" qui aurait pu laisser croire a une extension.
+
+Aucun autre changement de code necessaire : le mecanisme de selection
+dynamique (GSC en priorite, fallback anciennete) et le suffixe
+anti-collision (`" (N)"`) restent les memes -- ce dernier ne s'activera
+simplement plus jamais en pratique tant qu'aucun sous-silo n'a de quota >
+1 (plus de risque de doublon intra-run par construction, pas seulement par
+le filtre anti-doublon existant).
+
+`python3 -m py_compile pipeline/pipeline.py` valide (seul le
+`SyntaxWarning` preexistant non lie, ligne ~2072) + verification
+programmatique que le nouveau total est exactement 14 sur 14 sous-silos.
+**Pas encore valide en conditions reelles** -- prend effet automatiquement
+au prochain run de `publication-quotidienne.yml` (modification pure de
+`pipeline/pipeline.py`, aucun fichier mu-plugin PHP, aucun deploiement
+cPanel necessaire). A confirmer apres ce run que 14 articles sont bien
+publies (1 par sous-silo), sans regression sur la selection dynamique ni
+sur l'angle transactionnel (`Aide pompe à chaleur`/`Aide isolation`/
+Solaire, inchange).

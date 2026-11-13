@@ -361,36 +361,27 @@ def selectionner_silos_a_traiter(client_bq, config):
     énergie/Aides chauffe-eau thermodynamique restent sur l'angle
     informationnel habituel).
 
-    Total vise desormais 22 articles/jour (14 existants + 5 Solaire + 3
-    Aide pompe à chaleur).
-
-    Nouveau sous-silo "Aide isolation" ajoute le 12/11/2026 (decision
-    operateur, categorie WordPress deja creee manuellement par l'operateur
-    avant ce changement, parente "Aide Énergétique", confirmee a l'URL
-    https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/) :
-    +2/jour, finance par -1 sur "Chèque énergie" (2 -> 1) et -1 sur
-    "Bouteilles" (Gaz, 3 -> 2), pour garder le total a 22/jour inchange --
-    demande operateur explicite : meme volume quotidien, juste une
-    redistribution. MEME mecanisme de selection dynamique que les autres
-    sous-silos du quota (GSC en priorite, fallback anciennete, aucune
-    liste figee). Angle impose EXPLICITEMENT demande identique a "Aide
-    pompe à chaleur" ("absolument le même angle", confirmation operateur) :
-    voir le branchement etendu dans generer_tous_briefs() --
-    ANGLE_TRANSACTIONNEL_GENERIQUE s'applique desormais a ce sous-silo
-    precis aussi, pas a tout le silo Aide Énergétique (MaPrimeRénov'/
-    Chèque énergie/Aides chauffe-eau thermodynamique restent sur l'angle
-    informationnel habituel, inchange).
+    Quota uniformise a 1 article/jour par sous-silo le 13/11/2026 (decision
+    operateur, perimetre confirme explicitement : les 14 sous-silos deja
+    actifs ci-dessous uniquement, PAS d'extension aux sous-silos Gaz/
+    Electricite/Aide Energetique actuellement hors quota ni au silo
+    Renovation Energetique -- voir CLAUDE.md). Total desormais 14
+    articles/jour (etait 22 : Bouteilles 2->1, Contrat Electricite 2->1,
+    Facture Electricite 2->1, MaPrimeRénov' 2->1, Aides chauffe-eau
+    thermodynamique 2->1, Aide pompe à chaleur 3->1, Aide isolation 2->1 ;
+    les sous-silos deja a 1 -- Facture Gaz, Chèque énergie, les 5 sous-silos
+    Solaire -- inchanges).
     """
     QUOTAS_SOUS_SILO = [
-        ("1. Gaz", "Bouteilles", 2),
+        ("1. Gaz", "Bouteilles", 1),
         ("1. Gaz", "Facture Gaz", 1),
-        ("5. Électricité", "Contrat Électricité", 2),
-        ("5. Électricité", "Facture Électricité", 2),
-        ("3. Aide Énergétique", "MaPrimeRénov'", 2),
+        ("5. Électricité", "Contrat Électricité", 1),
+        ("5. Électricité", "Facture Électricité", 1),
+        ("3. Aide Énergétique", "MaPrimeRénov'", 1),
         ("3. Aide Énergétique", "Chèque énergie", 1),
-        ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 2),
-        ("3. Aide Énergétique", "Aide pompe à chaleur", 3),
-        ("3. Aide Énergétique", "Aide isolation", 2),
+        ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 1),
+        ("3. Aide Énergétique", "Aide pompe à chaleur", 1),
+        ("3. Aide Énergétique", "Aide isolation", 1),
         ("4. Solaire", "Kit solaire", 1),
         ("4. Solaire", "Panneaux solaires", 1),
         ("4. Solaire", "Batterie panneaux solaires", 1),
