@@ -396,9 +396,21 @@ def selectionner_silos_a_traiter(client_bq, config):
     (slug/parent/name WordPress) via
     scripts-maintenance/verifier_4_nouveaux_sous_silos_1311.py avant ajout.
     Aucun angle force (informationnel par defaut, comme le reste de Gaz/
-    Electricite). Total desormais 20 articles/jour sur 20 sous-silos (Gaz
+    Electricite). Total alors 20 articles/jour sur 20 sous-silos (Gaz
     3->5, Electricite 3->5, Aide Energetique et Solaire inchanges a 5
     chacun -- les 4 silos a parite exacte, 5 sous-silos chacun).
+
+    Echange le meme soir du 13/11/2026 (demande operateur, meme volume
+    total vise, juste une reallocation) : "Aides chauffe-eau
+    thermodynamique" (silo Aide Énergétique) retiree, remplacee par
+    "Déménagement gaz" (silo Gaz, id=65, 21 articles deja publies,
+    jamais mis au quota -- verifie en lecture seule via
+    scripts-maintenance/verifier_demenagement_gaz.py avant application).
+    Ne pas confondre avec "Déménagement" (silo Electricite, slug
+    "demenagement", ajoutee le meme soir juste avant) : categorie
+    distincte, silo distinct. Gaz passe donc a 6 sous-silos, Aide
+    Énergétique a 4 -- total toujours 20/jour (aucun changement de
+    volume, uniquement de repartition).
     """
     QUOTAS_SOUS_SILO = [
         ("1. Gaz", "Bouteilles", 1),
@@ -406,6 +418,7 @@ def selectionner_silos_a_traiter(client_bq, config):
         ("1. Gaz", "Compteur gaz", 1),
         ("1. Gaz", "Contrat Gaz", 1),
         ("1. Gaz", "Chauffage Gaz", 1),
+        ("1. Gaz", "Déménagement gaz", 1),
         ("5. Électricité", "Contrat Électricité", 1),
         ("5. Électricité", "Facture Électricité", 1),
         ("5. Électricité", "Compteur", 1),
@@ -413,7 +426,6 @@ def selectionner_silos_a_traiter(client_bq, config):
         ("5. Électricité", "Déménagement", 1),
         ("3. Aide Énergétique", "MaPrimeRénov'", 1),
         ("3. Aide Énergétique", "Chèque énergie", 1),
-        ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 1),
         ("3. Aide Énergétique", "Aide pompe à chaleur", 1),
         ("3. Aide Énergétique", "Aide isolation", 1),
         ("4. Solaire", "Kit solaire", 1),

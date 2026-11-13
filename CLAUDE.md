@@ -3159,3 +3159,60 @@ publies (1 par sous-silo), et que l'anti-doublon fonctionne correctement
 pour les 5 sous-silos reactives ce soir qui ont deja un historique
 (Compteur Electricite 23, Contrat Gaz 26, Chauffage Gaz 31, Chauffage
 Electricite 25, Demenagement 20 articles anterieurs).
+
+**Note : la repartition par silo ci-dessus (Gaz=5/Electricite=5/Aide
+Énergétique=5/Solaire=5) est devenue obsolete le meme soir, voir section
+suivante -- un echange Gaz <-> Aide Énergétique l'a modifiee avant meme
+le premier run.**
+
+## Quota — echange "Aides chauffe-eau thermodynamique" contre "Déménagement gaz" (13/11/2026, meme soir, suite)
+
+Dernier ajustement de la soiree : demande operateur de retirer "Aides
+chauffe-eau thermodynamique" (silo Aide Énergétique) du quota et de la
+remplacer par "Déménagement gaz" (silo Gaz) -- *"On va garder le même
+volume journalier juste un changement de quota"*, donc une reallocation
+pure, pas un ajout.
+
+**Etat des lieux en lecture seule avant application**
+(`scripts-maintenance/verifier_demenagement_gaz.py`, pont GitHub Actions) :
+`https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/` (id=65,
+name WordPress "Déménagement gaz") -- sous-silo PREEXISTANT, **21
+articles deja publies**, jamais mis au quota, description de categorie
+deja en place (256 car.). **Piege de nommage a garder en tete** : a ne
+PAS confondre avec "Déménagement" (silo Electricite, slug "demenagement",
+ajoutee au quota le meme soir juste avant, voir section precedente) --
+deux categories distinctes, deux silos distincts, noms proches.
+
+**Nouveau `QUOTAS_SOUS_SILO`** -- meme total (20/jour), repartition par
+silo modifiee :
+
+| Silo | Sous-silos | Avant cet echange | Apres |
+|---|---|---|---|
+| 1. Gaz | Bouteilles, Facture Gaz, Compteur gaz, Contrat Gaz, Chauffage Gaz, **Déménagement gaz** | 5 | **6** |
+| 5. Électricité | (5 sous-silos existants) | 5 | 5 (inchange) |
+| 3. Aide Énergétique | MaPrimeRénov', Chèque énergie, Aide pompe à chaleur, Aide isolation (**Aides chauffe-eau thermodynamique retiree**) | 5 | **4** |
+| 4. Solaire | (5 sous-silos existants) | 5 | 5 (inchange) |
+| **Total** | **20 sous-silos** | **20/jour** | **20/jour (inchange)** |
+
+"Aides chauffe-eau thermodynamique" n'est pas supprimee de WordPress
+(la categorie continue d'exister, 70 articles deja publies dessus avant
+ce soir) -- simplement retiree de la liste quotidienne, exactement comme
+les 7 sous-silos ramenes a quota 0 lors de l'uniformisation du matin
+n'ont pas ete touches cote WordPress.
+
+**Validation** : `python3 -m py_compile pipeline/pipeline.py` OK (seul le
+`SyntaxWarning` preexistant non lie) + verification programmatique que le
+total reste exactement 20 sur 20 sous-silos, nouvelle repartition
+Gaz=6/Electricite=5/Aide Énergétique=4/Solaire=5. **Pas encore valide en
+conditions reelles** -- prend effet automatiquement au prochain run
+(lundi 16/11/2026). A confirmer apres ce run que "Déménagement gaz"
+produit bien un article et que "Aides chauffe-eau thermodynamique" n'en
+produit plus, sans affecter le total de 20/jour.
+
+**Recapitulatif complet de la soiree du 13/11/2026** (une seule session,
+quatre ajustements successifs de `QUOTAS_SOUS_SILO`) : 14 (uniformisation
+1/sous-silo, matin) -> 16 (+Compteur Electricite/Gaz) -> 20 (+Contrat
+Gaz/Chauffage Gaz/Chauffage Electricite/Demenagement Electricite) -> 20
+inchange en volume (Aides chauffe-eau thermodynamique <-> Déménagement
+gaz). Chaque etape verifiee en lecture seule avant application, comme
+demande systematiquement par l'operateur tout au long de la soiree.
