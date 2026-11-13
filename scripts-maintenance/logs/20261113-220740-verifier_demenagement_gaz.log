@@ -1,0 +1,10 @@
+# Execution du 2026-11-13T22:07:40Z
+# Script    : scripts-maintenance/verifier_demenagement_gaz.py
+# Arguments : 
+
+✅ 45 categories recuperees
+
+--- /gaz/demenagement-gaz/ (id=65, count=21) ---
+Name WordPress (a utiliser comme Sous-Silo) : 'Déménagement gaz'
+Parent attendu 'gaz' : OK
+Description actuelle (256 car.) : "Tout savoir sur le gaz lors d'un déménagement : résiliation et ouverture de contrat, relevé du compteur, transfert d'abonnement, délais à anticiper et démarches auprès de votre fournisseur pour un raccordement sans interruption dans votre nouveau logement."
