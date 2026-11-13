@@ -3048,3 +3048,59 @@ apres ce run que les articles Solaire/Aide isolation/Aide pompe à
 chaleur generes sont bien sur un angle informationnel (plus de mention
 explicite de prix/devis/ROI imposee), sans regression sur le choix
 dynamique du mot-cle (GSC/anciennete, inchange) ni sur le reste du quota.
+
+## Quota — ajout de 2 sous-silos "Compteur" (Gaz + Electricite), 14 -> 16/jour (13/11/2026)
+
+Demande operateur, le meme jour que le retrait de l'angle transactionnel
+ci-dessus : ajouter 2 nouveaux sous-silos au quota quotidien, categories
+WordPress creees par l'operateur lui-meme ce jour-la :
+- `https://www.comprendre-mon-energie.fr/electricite/compteur/`
+- `https://www.comprendre-mon-energie.fr/gaz/compteur-gaz/`
+
+**Etat des lieux en lecture seule avant application**
+(`scripts-maintenance/verifier_nouveaux_sous_silos_compteur.py`, pont
+GitHub Actions) -- demande explicitement par l'operateur ("je veux voir
+combien de sous-silos pour chaque silo. Avant qu'on l'applique"), meme
+pattern que toutes les evolutions de quota precedentes. Resultat
+inattendu et important : les deux categories n'ont PAS le meme profil :
+- **`/electricite/compteur/`** (id=51, name WordPress "Compteur") :
+  **sous-silo PREEXISTANT avec 23 articles deja publies** historiquement
+  -- jamais mis au quota quotidien jusqu'ici (fait partie des sous-silos
+  "avec du contenu existant mais hors quota" releves le 12/11, voir
+  section "Personnalisation des messages CTA"). Deja une description de
+  categorie (424 car., sur le compteur Linky). Reactiver ce sous-silo au
+  quota, pas le creer de zero -- le mecanisme anti-doublon (fenetre 90j,
+  cf. "Duplication editoriale") s'applique normalement.
+- **`/gaz/compteur-gaz/`** (id=70, name WordPress "Compteur gaz") :
+  **sous-silo entierement nouveau, 0 article**. Description deja collee
+  par l'operateur lui-meme avant cette verification (436 car., redigee
+  par Claude dans l'echange precedent, confirmee presente). Meme
+  mecanisme de demarrage a froid que "Aide isolation" le 12/11 (aucune
+  opportunite GSC au depart -> fallback anciennete, mot-cle genere par
+  le modele a partir du sous-silo lui-meme via `generate_niche_query()`).
+
+**Nouveau `QUOTAS_SOUS_SILO`** (`pipeline/pipeline.py`), quota 1/jour
+chacun comme tous les autres sous-silos actifs, **aucun angle force**
+(informationnel par defaut, meme traitement que le reste de Gaz/
+Electricite -- pas concernes par le retrait du forçage transactionnel
+ci-dessus puisqu'ils n'y etaient jamais soumis) :
+
+| Silo | Sous-silos | Avant | Apres |
+|---|---|---|---|
+| 1. Gaz | Bouteilles, Facture Gaz, **Compteur gaz** | 2 | **3** |
+| 5. Électricité | Contrat Électricité, Facture Électricité, **Compteur** | 2 | **3** |
+| 3. Aide Énergétique | (5 sous-silos existants) | 5 | 5 (inchange) |
+| 4. Solaire | (5 sous-silos existants) | 5 | 5 (inchange) |
+| **Total** | **16 sous-silos** | **14/jour** | **16/jour** |
+
+**Validation** : `python3 -m py_compile pipeline/pipeline.py` OK (seul le
+`SyntaxWarning` preexistant non lie) + verification programmatique que le
+nouveau total est exactement 16 sur 16 sous-silos, repartition Gaz=3/
+Electricite=3/Aide Énergétique=5/Solaire=5. **Pas encore valide en
+conditions reelles** -- prend effet automatiquement au prochain run de
+`publication-quotidienne.yml` (lundi 16/11/2026, run Mon-Ven uniquement
+depuis le 11/11). A confirmer apres ce run que 16 articles sont bien
+publies (1 par sous-silo, dont 1 "Compteur"/Electricite et 1 "Compteur
+gaz"/Gaz), et surveiller specifiquement "Compteur" (Electricite) pour
+verifier que l'anti-doublon fonctionne bien malgre les 23 articles
+deja publies sur ce sous-silo avant sa mise au quota.

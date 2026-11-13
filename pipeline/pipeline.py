@@ -365,18 +365,33 @@ def selectionner_silos_a_traiter(client_bq, config):
     operateur, perimetre confirme explicitement : les 14 sous-silos deja
     actifs ci-dessous uniquement, PAS d'extension aux sous-silos Gaz/
     Electricite/Aide Energetique actuellement hors quota ni au silo
-    Renovation Energetique -- voir CLAUDE.md). Total desormais 14
+    Renovation Energetique -- voir CLAUDE.md). Total alors 14
     articles/jour (etait 22 : Bouteilles 2->1, Contrat Electricite 2->1,
     Facture Electricite 2->1, MaPrimeRénov' 2->1, Aides chauffe-eau
     thermodynamique 2->1, Aide pompe à chaleur 3->1, Aide isolation 2->1 ;
     les sous-silos deja a 1 -- Facture Gaz, Chèque énergie, les 5 sous-silos
     Solaire -- inchanges).
+
+    2 nouveaux sous-silos ajoutes le 13/11/2026 (quota 1/jour chacun,
+    demande operateur, categories WordPress creees par lui-meme le meme
+    jour) : "Compteur" (silo Electricite, id=51 -- sous-silo PREEXISTANT
+    avec 23 articles deja publies historiquement, jamais mis au quota
+    jusqu'ici) et "Compteur gaz" (silo Gaz, id=70 -- sous-silo entierement
+    nouveau, 0 article). Verifies en lecture seule avant ajout (slug,
+    parent, name WordPress exact utilise ici comme libelle Sous-Silo) via
+    scripts-maintenance/verifier_nouveaux_sous_silos_compteur.py. Aucun
+    angle force pour ces deux (informationnel par defaut, meme traitement
+    que le reste de Gaz/Electricite). Total desormais 16 articles/jour sur
+    16 sous-silos (Gaz 2->3, Electricite 2->3, Aide Energetique et Solaire
+    inchanges a 5 chacun).
     """
     QUOTAS_SOUS_SILO = [
         ("1. Gaz", "Bouteilles", 1),
         ("1. Gaz", "Facture Gaz", 1),
+        ("1. Gaz", "Compteur gaz", 1),
         ("5. Électricité", "Contrat Électricité", 1),
         ("5. Électricité", "Facture Électricité", 1),
+        ("5. Électricité", "Compteur", 1),
         ("3. Aide Énergétique", "MaPrimeRénov'", 1),
         ("3. Aide Énergétique", "Chèque énergie", 1),
         ("3. Aide Énergétique", "Aides chauffe-eau thermodynamique", 1),
