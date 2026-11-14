@@ -1,0 +1,121 @@
+# Execution du 2026-11-14T16:09:31Z
+# Script    : scripts-maintenance/auditer_ctr_potentiel_perdu.py
+# Arguments : --jours=90 --position-max=20 --impressions-min=50 --top=15
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+🔎 Bilan CTR — fenetre glissante : 90 derniers jours — 'fort potentiel' = position moyenne <= 20.0 et >= 50 impressions cumulees
+
+⚠️ Le CTR attendu utilise une grille sectorielle INDICATIVE (pas une courbe propre a ce site, volume encore trop faible pour en construire une fiable) -- a lire comme un ordre de grandeur, pas une cible exacte.
+
+==========================================================================================
+BILAN CTR PAR SILO
+==========================================================================================
+  1. Gaz                       clics=28    impr.=11895   pos.moy=44.1  CTR reel=0.24%  CTR attendu≈0.20%  ecart=-0.04pts
+  5. Electricite               clics=9     impr.=11749   pos.moy=43.6  CTR reel=0.08%  CTR attendu≈0.20%  ecart=+0.12pts
+  3. Aide Energetique          clics=2     impr.=12599   pos.moy=46.2  CTR reel=0.02%  CTR attendu≈0.20%  ecart=+0.18pts
+  4. Solaire                   clics=1     impr.=3261    pos.moy=56.6  CTR reel=0.03%  CTR attendu≈0.20%  ecart=+0.17pts
+  2. Renovation Energetique    clics=0     impr.=2383    pos.moy=49.2  CTR reel=0.00%  CTR attendu≈0.20%  ecart=+0.20pts
+  contact                      clics=0     impr.=11      pos.moy=27.1  CTR reel=0.00%  CTR attendu≈0.50%  ecart=+0.50pts
+
+==========================================================================================
+ARTICLES A FORT POTENTIEL MAIS CTR FAIBLE (position <= 20.0, >= 50 impr., top 15 par clics manques estimes)
+==========================================================================================
+
+  #1 — https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015-2/
+     1. Gaz / bouteilles
+     Position moyenne : 9.4   Impressions : 1144   Clics reels : 9
+     CTR reel : 0.79%   CTR attendu≈ : 3.00%   ecart : +2.21 pts
+     ≈ Clics manques estimes sur la fenetre : 25.3
+
+  #2 — https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+     5. Electricite / 
+     Position moyenne : 11.6   Impressions : 1321   Clics reels : 1
+     CTR reel : 0.08%   CTR attendu≈ : 1.50%   ecart : +1.42 pts
+     ≈ Clics manques estimes sur la fenetre : 18.8
+
+  #3 — https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilition-contrat-electricite-delais-legaux/
+     5. Electricite / contrat-electricite
+     Position moyenne : 6.8   Impressions : 332   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 4.00%   ecart : +4.00 pts
+     ≈ Clics manques estimes sur la fenetre : 13.3
+
+  #4 — https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs/
+     1. Gaz / bouteilles
+     Position moyenne : 8.3   Impressions : 416   Clics reels : 6
+     CTR reel : 1.44%   CTR attendu≈ : 3.00%   ecart : +1.56 pts
+     ≈ Clics manques estimes sur la fenetre : 6.5
+
+  #5 — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs-1001/
+     3. Aide Energetique / aides-chauffe-eau-thermodynamique
+     Position moyenne : 12.5   Impressions : 349   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 1.50%   ecart : +1.50 pts
+     ≈ Clics manques estimes sur la fenetre : 5.2
+
+  #6 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-demarches-obtention-guide/
+     3. Aide Energetique / maprimerenov
+     Position moyenne : 13.7   Impressions : 280   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 1.50%   ecart : +1.50 pts
+     ≈ Clics manques estimes sur la fenetre : 4.2
+
+  #7 — https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/gaz-naturel-vs-propane-fournisseur-0905/
+     1. Gaz / comparatifs-fournisseurs-gaz
+     Position moyenne : 7.6   Impressions : 86   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 4.00%   ecart : +4.00 pts
+     ≈ Clics manques estimes sur la fenetre : 3.4
+
+  #8 — https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/
+     2. Renovation Energetique / pompe-a-chaleur
+     Position moyenne : 19.1   Impressions : 245   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 1.00%   ecart : +1.00 pts
+     ≈ Clics manques estimes sur la fenetre : 2.5
+
+  #9 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-1018/
+     3. Aide Energetique / maprimerenov
+     Position moyenne : 18.0   Impressions : 244   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 1.00%   ecart : +1.00 pts
+     ≈ Clics manques estimes sur la fenetre : 2.4
+
+  #10 — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/eco-ptz-chauffe-eau-thermodynamique/
+     3. Aide Energetique / aides-chauffe-eau-thermodynamique
+     Position moyenne : 9.2   Impressions : 80   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 3.00%   ecart : +3.00 pts
+     ≈ Clics manques estimes sur la fenetre : 2.4
+
+  #11 — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-1101/
+     3. Aide Energetique / aides-chauffe-eau-thermodynamique
+     Position moyenne : 9.7   Impressions : 78   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 3.00%   ecart : +3.00 pts
+     ≈ Clics manques estimes sur la fenetre : 2.3
+
+  #12 — https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharge-bouteille-gaz-guide-tarifs/
+     1. Gaz / bouteilles
+     Position moyenne : 15.4   Impressions : 213   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 1.00%   ecart : +1.00 pts
+     ≈ Clics manques estimes sur la fenetre : 2.1
+
+  #13 — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-budget/
+     3. Aide Energetique / aides-chauffe-eau-thermodynamique
+     Position moyenne : 10.2   Impressions : 141   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 1.50%   ecart : +1.50 pts
+     ≈ Clics manques estimes sur la fenetre : 2.1
+
+  #14 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-autres-aides-comparatif-1020/
+     3. Aide Energetique / maprimerenov
+     Position moyenne : 15.3   Impressions : 207   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 1.00%   ecart : +1.00 pts
+     ≈ Clics manques estimes sur la fenetre : 2.1
+
+  #15 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-delais-versement-statut/
+     3. Aide Energetique / maprimerenov
+     Position moyenne : 9.3   Impressions : 64   Clics reels : 0
+     CTR reel : 0.00%   CTR attendu≈ : 3.00%   ecart : +3.00 pts
+     ≈ Clics manques estimes sur la fenetre : 1.9
+
+==========================================================================================
+Total clics manques estimes (top 15 affiches) : 94.6 sur 90 jours.
+Piste d'action la plus probable pour ces pages : retravailler le titre SEO et la meta-description (snippet affiche dans Google) -- la position elle-meme n'est pas le probleme ici.
