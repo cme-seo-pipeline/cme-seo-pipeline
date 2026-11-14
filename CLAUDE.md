@@ -599,17 +599,88 @@ partagé par plusieurs blocs différents.
 | `maintenance-a-la-demande.yml` | `workflow_dispatch` uniquement | Exécute un script de `scripts-maintenance/*.py` à la demande (déclenché par Claude Code via `gh workflow run`) ; commite le log d'exécution dans le repo (seul canal lisible par Claude Code, cf. section sandbox ci-dessous) |
 | `audit-liens-hebdomadaire.yml` | cron hebdo (lundi 5h UTC) + `workflow_dispatch` | Audit exhaustif des liens (internes + externes) **dans le contenu** des articles (`auditer_liens_internes.py`) — résultat dans les logs du run, rien de commité |
 | `audit-cannibalisation-mensuel.yml` | cron mensuel (1er du mois, 5h10 UTC) + `workflow_dispatch` | Détection de cannibalisation de mots-clés par requête GSC (`detecter_cannibalisation_gsc.py`) — résultat dans les logs du run, rien de commité |
+| `audit-ctr-hebdomadaire.yml` | cron hebdo (vendredi 6h UTC) + `workflow_dispatch` | Bilan CTR réel vs attendu par silo + articles bien positionnés mais sous-cliqués (`auditer_ctr_potentiel_perdu.py`) — résultat dans les logs du run, rien de commité |
 
 Seul `maintenance-a-la-demande.yml` exécute un script de
 `scripts-maintenance/` **sur demande explicite** (via `gh workflow run`,
 typiquement déclenché par Claude Code) et commite son log, car c'est le
 seul canal par lequel Claude Code peut relire le résultat (voir section
-sandbox). Les deux audits SEO technique ci-dessus sont au contraire des
+sandbox). Les trois audits SEO technique ci-dessus sont au contraire des
 **workflows récurrents autonomes** : ils tournent seuls sur leur cron,
 sans que Claude Code n'ait besoin de les déclencher ni d'en lire le
 résultat — c'est l'opérateur qui consulte l'onglet Actions GitHub
 directement. Ne pas les faire aussi commiter un log à chaque run
 automatique, ce serait un commit par semaine/mois pour rien.
+
+## Classement des silos par trafic organique + bilan CTR hebdomadaire (14/11/2026)
+
+Demande opérateur, dans la continuité directe du diagnostic "angle
+transactionnel vs trafic organique" du même jour : savoir **quel silo
+attire le plus de trafic organique et renforce l'autorité du site**
+(distinct de la question des leads/CA — "la vie du site est le nouveau
+trafic") + un **rituel hebdomadaire, chaque vendredi matin**, du taux de
+CTR et des articles à fort potentiel mais pénalisés par un CTR faible.
+
+**Deux nouveaux scripts, lecture seule, même table source**
+(`01_raw.gsc_queries`, colonnes déjà présentes `silo`/`sous_silo`, même
+source que `detecter_cannibalisation_gsc.py`) :
+
+- **`scripts-maintenance/classement_silos_trafic_organique.py`** —
+  classement des silos par clics/impressions GSC réels sur une fenêtre
+  glissante (défaut 6 mois), avec évolution mensuelle (croissance/déclin/
+  stable/volatile) et contexte "nombre d'articles publiés" (table
+  `historique_publications`, jointure par normalisation de chaîne — les
+  deux tables sont alimentées par des pipelines indépendants, convention
+  de nommage des silos non garantie identique entre elles). Ponctuel,
+  pas de workflow récurrent dédié (demande explicitement posée comme une
+  question unique, pas un rituel).
+- **`scripts-maintenance/auditer_ctr_potentiel_perdu.py`** — bilan CTR par
+  silo (CTR réel vs CTR attendu selon une grille de référence par position
+  moyenne, **indicative/sectorielle, pas une courbe propre à ce site** —
+  le volume de clics est encore trop faible pour en construire une
+  fiable) + liste des pages dont la position est déjà correcte (donc
+  visibles par Google) mais dont le CTR réel est nettement sous l'attendu
+  — signe le plus probable : titre/méta peu engageants, pas un problème
+  de classement. Triées par "clics manqués estimés"
+  (`impressions × (CTR attendu − CTR réel)`).
+
+**Résultat du premier run réel (14/11/2026, fenêtre 6 mois, pont GitHub
+Actions)** — classement par clics organiques réels :
+
+| Rang | Silo | Clics | Impressions | Position moy. | Articles publiés | Évolution |
+|---|---|---|---|---|---|---|
+| 1 | Gaz | 28 | 14 565 | 43.7 | 262 | Croissance nette (0→2→1→13→12/mois) |
+| 2 | Électricité | 18 | 15 973 | 40.3 | 269 | Volatile |
+| 3 | Aide Énergétique | 5 | 13 969 | 46.3 | 307 | Déclin |
+| 4 | Solaire | 1 | 3 827 | 53.8 | 103 | Croissance (quasi nulle) |
+| 5 | Rénovation Énergétique | 0 | 3 568 | 46.1 | 50 | Aucun clic sur la période |
+
+**Constat le plus important, au-delà du classement lui-même** : le CTR
+moyen reste entre 0.03% et 0.19% et la position moyenne pondérée entre 40
+et 55 sur **tous** les silos — la masse du contenu ne se classe nulle
+part près de la 1ère page (CTR normal en page 1 : 15-30%+). Aide
+Énergétique est notable dans l'autre sens : silo avec le **plus
+d'articles publiés (307)** mais le moins efficace par article et en
+déclin, malgré autant d'impressions que Gaz/Électricité. Conclusion
+communiquée à l'opérateur : l'angle éditorial (transactionnel vs
+informationnel, voir section précédente) est un facteur secondaire face
+à ce problème de positionnement moyen, plus structurel — faire monter le
+classement des pages existantes compte davantage que le choix d'angle
+pour les nouvelles. 9 catégories GSC supplémentaires trouvées dans les
+données (`seche-linge-pompe-a-chaleur`, `contact`, `comparateur-energie`,
+etc.) sont des URLs orphelines à une seule requête, absentes de
+`historique_publications` — pas de vrais silos, exclues du classement.
+
+**Nouveau workflow récurrent** `.github/workflows/audit-ctr-hebdomadaire.yml`
+(cron `'0 6 * * 5'`, vendredi 6h UTC = 7h heure de Paris en hiver)
+— même convention que les deux audits SEO technique existants (lecture
+seule, résultat uniquement dans les logs du run, rien commité dans le
+repo). Fenêtre d'analyse par défaut 90 jours (pas 7 jours : le volume de
+clics du site est encore trop faible pour qu'une fenêtre d'une semaine
+soit statistiquement lisible — la cadence hebdomadaire sert à repasser
+régulièrement, pas à réduire la fenêtre). Paramètres ajustables via
+`workflow_dispatch` (`jours`, `position_max`, `impressions_min`, `top`)
+sans toucher au code.
 
 ## SEO technique délégué — liens cassés & cannibalisation (chantier oct. 2026)
 

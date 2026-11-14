@@ -1,0 +1,72 @@
+name: CME - Audit CTR hebdomadaire
+
+# Bilan du taux de clic (CTR) reel vs attendu par silo, et detection des
+# articles bien positionnes mais sous-cliques -- scripts-maintenance/
+# auditer_ctr_potentiel_perdu.py. Lecture seule : le resultat s'affiche
+# dans les logs de ce run (onglet Actions), rien n'est commite dans le
+# repo (meme logique que audit-liens-hebdomadaire.yml et
+# audit-cannibalisation-mensuel.yml -- demande operateur, pas destine a
+# etre relu par Claude Code a chaque execution automatique).
+#
+# Cadence hebdomadaire (vendredi matin, demande operateur du 14/11/2026) :
+# la fenetre d'analyse elle-meme reste glissante sur 90 jours par defaut
+# (le site a un volume de clics encore trop faible pour qu'une fenetre
+# plus courte soit statistiquement lisible, voir le script) -- la cadence
+# hebdomadaire sert a repasser regulierement, pas a changer la fenetre.
+
+on:
+  schedule:
+    - cron: '0 6 * * 5'
+  workflow_dispatch:
+    inputs:
+      jours:
+        description: "Fenetre d'analyse en jours (defaut : 90)"
+        required: false
+        type: string
+        default: "90"
+      position_max:
+        description: "Position moyenne max pour compter comme 'fort potentiel' (defaut : 20)"
+        required: false
+        type: string
+        default: "20"
+      impressions_min:
+        description: "Seuil de bruit -- impressions cumulees minimum par page (defaut : 50)"
+        required: false
+        type: string
+        default: "50"
+      top:
+        description: "Nombre d'articles a afficher, tries par clics manques estimes (defaut : 15)"
+        required: false
+        type: string
+        default: "15"
+
+jobs:
+  auditer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dependances
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Configurer les identifiants GCP
+        env:
+          GCP_KEY_JSON: ${{ secrets.GCP_SA_KEY_CME }}
+        run: |
+          echo "$GCP_KEY_JSON" > /tmp/gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json" >> $GITHUB_ENV
+
+      - name: Lancer le bilan CTR
+        run: >
+          python3 scripts-maintenance/auditer_ctr_potentiel_perdu.py
+          --jours=${{ inputs.jours || '90' }}
+          --position-max=${{ inputs.position_max || '20' }}
+          --impressions-min=${{ inputs.impressions_min || '50' }}
+          --top=${{ inputs.top || '15' }}
