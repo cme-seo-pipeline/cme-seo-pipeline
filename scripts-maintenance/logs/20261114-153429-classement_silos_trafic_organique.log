@@ -1,0 +1,205 @@
+# Execution du 2026-11-14T15:34:29Z
+# Script    : scripts-maintenance/classement_silos_trafic_organique.py
+# Arguments : --mois=6
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+🔎 Classement des silos par performance organique reelle (GSC) — fenetre : 6 derniers mois complets + mois en cours
+
+================================================================================================
+CLASSEMENT DES SILOS — PERFORMANCE ORGANIQUE REELLE (Google Search Console)
+================================================================================================
+
+#1 — 1. Gaz
+   Clics (periode)        : 28
+   Impressions (periode)  : 14565
+   CTR moyen              : 0.19%
+   Position moyenne       : 43.7
+   Pages actives (clics>0 sur la periode) : 224
+   Sous-silos presents dans GSC           : 7
+   Articles publies (toutes dates)        : 262  (≈0.11 clic/article sur la periode)
+   Evolution sur la fenetre                : 📈 Croissance
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 1853 impr., pos. 38.8
+     - 2026-08 : 2 clics, 2362 impr., pos. 52.5
+     - 2026-09 : 1 clics, 709 impr., pos. 36.1
+     - 2026-10 : 13 clics, 3157 impr., pos. 35.9
+     - 2026-11 : 12 clics, 6484 impr., pos. 46.6
+
+#2 — 5. Electricite
+   Clics (periode)        : 18
+   Impressions (periode)  : 15973
+   CTR moyen              : 0.11%
+   Position moyenne       : 40.3
+   Pages actives (clics>0 sur la periode) : 238
+   Sous-silos presents dans GSC           : 17
+   Articles publies (toutes dates)        : 269  (≈0.07 clic/article sur la periode)
+   Evolution sur la fenetre                : 🔀 Volatile (mois en dents de scie)
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 8 clics, 3350 impr., pos. 26.1
+     - 2026-08 : 1 clics, 1796 impr., pos. 55.1
+     - 2026-09 : 2 clics, 1286 impr., pos. 32.7
+     - 2026-10 : 3 clics, 3127 impr., pos. 41.8
+     - 2026-11 : 4 clics, 6414 impr., pos. 44.4
+
+#3 — 3. Aide Energetique
+   Clics (periode)        : 5
+   Impressions (periode)  : 13969
+   CTR moyen              : 0.04%
+   Position moyenne       : 46.3
+   Pages actives (clics>0 sur la periode) : 244
+   Sous-silos presents dans GSC           : 10
+   Articles publies (toutes dates)        : 307  (≈0.02 clic/article sur la periode)
+   Evolution sur la fenetre                : 📉 Declin
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 3 clics, 1024 impr., pos. 38.2
+     - 2026-08 : 0 clics, 1046 impr., pos. 64.5
+     - 2026-09 : 0 clics, 639 impr., pos. 37.7
+     - 2026-10 : 1 clics, 4139 impr., pos. 51.7
+     - 2026-11 : 1 clics, 7121 impr., pos. 42.4
+
+#4 — 4. Solaire
+   Clics (periode)        : 1
+   Impressions (periode)  : 3827
+   CTR moyen              : 0.03%
+   Position moyenne       : 53.8
+   Pages actives (clics>0 sur la periode) : 84
+   Sous-silos presents dans GSC           : 7
+   Articles publies (toutes dates)        : 103  (≈0.01 clic/article sur la periode)
+   Evolution sur la fenetre                : 📈 Croissance
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 456 impr., pos. 30.8
+     - 2026-08 : 0 clics, 187 impr., pos. 68.3
+     - 2026-09 : 0 clics, 24 impr., pos. 9.0
+     - 2026-10 : 0 clics, 618 impr., pos. 57.6
+     - 2026-11 : 1 clics, 2542 impr., pos. 56.4
+
+#5 — seche-linge-pompe-a-chaleur
+   Clics (periode)        : 0
+   Impressions (periode)  : 9
+   CTR moyen              : 0.00%
+   Position moyenne       : 29.9
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Donnees insuffisantes
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 9 impr., pos. 29.9
+
+#6 — comprendre-mecanisme-heures-creuses-heures-pleines
+   Clics (periode)        : 0
+   Impressions (periode)  : 10
+   CTR moyen              : 0.00%
+   Position moyenne       : 18.9
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Donnees insuffisantes
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 10 impr., pos. 18.9
+
+#7 — installer-une-pompe-a-chaleur
+   Clics (periode)        : 0
+   Impressions (periode)  : 2
+   CTR moyen              : 0.00%
+   Position moyenne       : 65.0
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Donnees insuffisantes
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 2 impr., pos. 65.0
+
+#8 — pompe-a-chaleur-piscine
+   Clics (periode)        : 0
+   Impressions (periode)  : 5
+   CTR moyen              : 0.00%
+   Position moyenne       : 36.0
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Donnees insuffisantes
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 5 impr., pos. 36.0
+
+#9 — contact
+   Clics (periode)        : 0
+   Impressions (periode)  : 11
+   CTR moyen              : 0.00%
+   Position moyenne       : 27.1
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Aucun clic sur la fenetre
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-10 : 0 clics, 1 impr., pos. 14.0
+     - 2026-11 : 0 clics, 10 impr., pos. 28.4
+
+#10 — 2. Renovation Energetique
+   Clics (periode)        : 0
+   Impressions (periode)  : 3568
+   CTR moyen              : 0.00%
+   Position moyenne       : 46.1
+   Pages actives (clics>0 sur la periode) : 52
+   Sous-silos presents dans GSC           : 9
+   Articles publies (toutes dates)        : 50  (≈0.00 clic/article sur la periode)
+   Evolution sur la fenetre                : ➡️ Aucun clic sur la fenetre
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 915 impr., pos. 33.7
+     - 2026-08 : 0 clics, 445 impr., pos. 60.6
+     - 2026-09 : 0 clics, 86 impr., pos. 49.5
+     - 2026-10 : 0 clics, 549 impr., pos. 60.5
+     - 2026-11 : 0 clics, 1573 impr., pos. 43.9
+
+#11 — solutions-pompe-a-chaleur
+   Clics (periode)        : 0
+   Impressions (periode)  : 16
+   CTR moyen              : 0.00%
+   Position moyenne       : 59.9
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Donnees insuffisantes
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 16 impr., pos. 59.9
+
+#12 — changer-de-fournisseur
+   Clics (periode)        : 0
+   Impressions (periode)  : 18
+   CTR moyen              : 0.00%
+   Position moyenne       : 88.8
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Donnees insuffisantes
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 18 impr., pos. 88.8
+
+#13 — comparateur-energie
+   Clics (periode)        : 0
+   Impressions (periode)  : 15
+   CTR moyen              : 0.00%
+   Position moyenne       : 89.7
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Donnees insuffisantes
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 15 impr., pos. 89.7
+
+#14 — pompe-a-chaleur-air-air
+   Clics (periode)        : 0
+   Impressions (periode)  : 3
+   CTR moyen              : 0.00%
+   Position moyenne       : 22.7
+   Pages actives (clics>0 sur la periode) : 1
+   Sous-silos presents dans GSC           : 1
+   Articles publies (toutes dates)        : n/a (silo absent de historique_publications)
+   Evolution sur la fenetre                : ➡️ Donnees insuffisantes
+   Détail mensuel (clics / impressions / position moy.) :
+     - 2026-07 : 0 clics, 3 impr., pos. 22.7
+
+================================================================================================
+Rappel de lecture : le classement ci-dessus mesure le trafic organique REEL (clics/impressions GSC), pas un proxy. 'Evolution' compare la 1re et la 2e moitie de la fenetre -- a interpreter avec prudence pour les silos recents ou a faible volume (bruit statistique plus eleve).
