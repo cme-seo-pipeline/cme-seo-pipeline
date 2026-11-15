@@ -1,0 +1,104 @@
+# Execution du 2026-11-15T13:42:26Z
+# Script    : scripts-maintenance/verifier_corrections_du_jour.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+🔎 Etat des lieux du 2026-11-15
+
+==========================================================================================
+CORRECTIONS REGLEMENTAIRES AUTOMATIQUES — 2026-11-15
+==========================================================================================
+
+  Post 9764 — Facture Gaz : hausse de 6.6% en octobre 2026
+    Indicateur : PRVG_moyen_TTC
+    URL : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-octobre-2026/
+    Avant : <table>
+<thead>
+<tr>
+<th>Période</th>
+<th>PRVG_moyen_TTC (€/MWh)</th>
+<th>Évolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Octobre 2026 (ancien tarif)</td>
+<td>182.88</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Novembre 2026 (nouveau tarif)</td>
+<td>194.90</td>
+<td>+6.6%</td>
+</tr>
+</tbody>
+</table>
+    Apres : <table>
+<thead>
+<tr>
+<th>Période</th>
+<th>PRVG_moyen_TTC (€/MWh)</th>
+<th>Évolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Octobre 2026 (ancien tarif)</td>
+<td>182.88</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Novembre 2026 (nouveau tarif)</td>
+<td>206.26</td>
+<td>+12.8%</td>
+</tr>
+</tbody>
+</table>
+
+  Post 11358 — Évolution historique des tarifs gaz naturel : tendances
+    Indicateur : PRVG_moyen_TTC
+    URL : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/prix-gaz-naturel-economies/
+    Avant : <p>Le tarif du gaz naturel en France varie selon votre profil de consommation et votre fournisseur. Actuellement, le prix de référence pour le gaz naturel s&rsquo;établit à <strong>206.26 €/MWh TTC</strong> (soit environ 0,2063 €/kWh), ce qui représente une grille de base pour les comparaisons tarifaires entre les différents acteurs du marché.</p>
+    Apres : <p>Le tarif du gaz naturel en France varie selon votre profil de consommation et votre fournisseur. Actuellement, le prix de référence pour le gaz naturel s&rsquo;établit à <strong>206.26 €/MWh TTC</strong> (soit environ 0,2063 €/kWh), ce qui représente une grille de base pour les comparaisons tarifaires entre les différents acteurs du marché.</p>
+
+  Post 13383 — Facture Gaz : hausse de 5.8% en novembre 2026
+    Indicateur : PRVG_moyen_TTC
+    URL : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-novembre-2026/
+    Avant : <p>Le prix moyen du gaz naturel pour les clients résidentiels en France connaît une augmentation significative depuis le 1er décembre 2026. Selon la Commission de Régulation de l&rsquo;Énergie (CRE), le tarif réglementé de vente du gaz (PRVG) moyen TTC passe de <strong>194,90 €/MWh à 206,26 €/MWh</strong>, représentant une hausse de <strong>5,8%</strong>.</p>
+    Apres : <p>Le prix moyen du gaz naturel pour les clients résidentiels en France connaît une augmentation significative depuis le 1er décembre 2026. Selon la Commission de Régulation de l&rsquo;Énergie (CRE), le tarif réglementé de vente du gaz (PRVG) moyen TTC passe de <strong>194,90 €/MWh à 206,26 €/MWh</strong>, représentant une hausse de <strong>5,8%</strong>.</p>
+
+  Post 6535 — Comment fonctionne un contrat de gaz naturel
+    Indicateur : PRVG_moyen_TTC
+    URL : https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/fonctionnement-contrat-gaz-naturel/
+    Avant : <p>À titre informatif, le tarif régulé de vente du gaz naturel (PRVG) affiche une moyenne de <strong>206.26 €/MWh TTC</strong> en vigueur depuis septembre 2026. Ce tarif de référence officiel illustre le niveau actuel du marché, bien que les offres commerciales proposées par les différents fournisseurs puissent varier.</p>
+    Apres : <p>À titre informatif, le tarif régulé de vente du gaz naturel (PRVG) affiche une moyenne de <strong>206.26 €/MWh TTC</strong> en vigueur depuis septembre 2026. Ce tarif de référence officiel illustre le niveau actuel du marché, bien que les offres commerciales proposées par les différents fournisseurs puissent varier.</p>
+
+  Post 7035 — Facture Électricité : hausse de 0.9% en août 2026
+    Indicateur : TRVE_part_fixe_TTC
+    URL : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-8/
+    Avant : <p>Pour un foyer type, cette hausse de 0.9% sur la part fixe représente une augmentation annuelle limitée. Concrètement, avec la nouvelle part fixe établie à 330.57 €/an et la part variable à 0.1985 €/kWh en vigueur depuis le 1er août 2026, voici un exemple chiffré :</p>
+    Apres : <p>Pour un foyer type, cette hausse de 0.9% sur la part fixe représente une augmentation annuelle limitée. Concrètement, avec la nouvelle part fixe établie à 330.57 €/an et la part variable à 0.1985 €/kWh en vigueur depuis le 1er août 2026, voici un exemple chiffré :</p>
+
+  Post 7037 — Facture Électricité : hausse de 3.1% en août 2026
+    Indicateur : TRVE_part_variable_TTC
+    URL : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-aout-2026-0827-9/
+    Avant : <p><strong>Mise à jour :</strong> La valeur actuelle en vigueur du TRVE_part_variable_TTC est 0.1985 €/kWh selon les données officielles.</p>
+    Apres : <p><strong>Mise à jour :</strong> La valeur actuelle en vigueur du TRVE_part_variable_TTC est 0.1985 €/kWh selon les données officielles.</p>
+
+  Post 12504 — MaPrimeRénov' : quelles aides cumuler et dans quel ordre
+    Indicateur : ampleur_pourcent_ecretement
+    URL : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-cumul-autres-aides/
+    Avant : <p><strong>Oui, mais avec une règle importante : ces deux aides ne doivent pas dépasser 90 % du montant TTC des travaux.</strong></p>
+    Apres : <p><strong>Oui, mais avec une règle importante : ces deux aides ne doivent pas dépasser 50 % du montant TTC des travaux.</strong></p>
+
+Total : 7 correction(s) appliquee(s) aujourd'hui.
+
+==========================================================================================
+NOUVEAUX ARTICLES PUBLIES — 2026-11-15
+==========================================================================================
+Aucun nouvel article publie aujourd'hui (coherent avec publication-quotidienne.yml, Lun-Ven uniquement, et le log Mode Actualite 'Aucun changement detecte, rien a publier').
