@@ -1,0 +1,48 @@
+# Execution du 2026-11-15T13:48:23Z
+# Script    : scripts-maintenance/diagnostiquer_corrections_sans_changement.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+==========================================================================================
+HISTORIQUE COMPLET corrections_articles_auto -- corrections sans changement reel
+==========================================================================================
+Total de lignes dans la table : 66
+
+Corrections SANS changement reel (avant == apres) : 28 / 66
+
+Detail des no-op par date :
+  2026-09-08 : 4 correction(s) sans changement reel
+  2026-09-26 : 6 correction(s) sans changement reel
+  2026-10-01 : 12 correction(s) sans changement reel
+  2026-11-11 : 1 correction(s) sans changement reel
+  2026-11-15 : 5 correction(s) sans changement reel
+
+Detail des no-op par indicateur :
+  PRVG_moyen_TTC                      10
+  TRVE_part_fixe_TTC                  9
+  TRVE_part_variable_TTC              9
+
+Liste complete des post_id concernes :
+[5235, 6411, 6419, 6535, 6732, 7019, 7025, 7027, 7031, 7033, 7035, 7037, 7268, 7392, 8340, 11358, 13383]
+
+Corrections AVEC changement reel : 38 / 66
+
+==========================================================================================
+FRAICHEUR DE indicateurs_reglementaires (derniere valeur connue par indicateur)
+==========================================================================================
+  PRVG_moyen_TTC                      valeur=206.25603666147236 unite=€/MWh      derniere verif. il y a 0 jour(s) (2026-11-15 11:45:19.673214+00:00)
+  TRVE_part_fixe_TTC                  valeur=330.57       unite=€/an       derniere verif. il y a 0 jour(s) (2026-11-15 11:45:19.378699+00:00)
+  TRVE_part_variable_TTC              valeur=0.1985       unite=€/kWh      derniere verif. il y a 0 jour(s) (2026-11-15 11:45:19.378695+00:00)
+  ampleur_pourcent_ecretement         valeur=50.0         unite=%          derniere verif. il y a 0 jour(s) (2026-11-15 11:45:20.465625+00:00)
+
+==========================================================================================
+COHERENCE mapping_indicateur_sous_silo (pertinence='directe') vs indicateurs_reglementaires
+==========================================================================================
+✅ Tous les indicateurs mappes en pertinence='directe' existent bien dans indicateurs_reglementaires -- aucun candidat saute silencieusement.
