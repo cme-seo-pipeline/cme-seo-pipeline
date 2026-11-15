@@ -1292,6 +1292,19 @@ def auditer_article(post_id, titre, indicateur, valeur_actuelle, unite, config):
     except Exception as e:
         return {"post_id": post_id, "statut": "erreur", "detail": str(e)}
 
+    # Comparer a la MEME precision que celle demandee pour la correction
+    # (arrondie a 2 decimales) -- sinon le LLM compare une valeur brute a
+    # haute precision (ex. 206.25603666147236) a une valeur deja arrondie
+    # citee dans l'article (ex. 206.26), juge a tort "obsolete", puis
+    # produit un passage corrige identique au passage existant une fois
+    # lui-meme arrondi (no-op confirme en prod le 15/11/2026, 28/66
+    # corrections historiques dans corrections_articles_auto sans aucun
+    # changement reel -- voir diagnostiquer_corrections_sans_changement.py).
+    try:
+        valeur_actuelle_comparee = round(float(valeur_actuelle), 2)
+    except (TypeError, ValueError):
+        valeur_actuelle_comparee = valeur_actuelle
+
     prompt = f"""Tu es un auditeur de contenu factuel, rigoureux et prudent.
 
 ARTICLE (titre) : {titre}
@@ -1301,7 +1314,7 @@ CONTENU HTML DE L'ARTICLE :
 
 DONNEE OFFICIELLE ACTUELLE A VERIFIER :
 - Indicateur : {indicateur}
-- Valeur actuelle en vigueur : {valeur_actuelle} {unite}
+- Valeur actuelle en vigueur : {valeur_actuelle_comparee} {unite}
 
 TACHE :
 1. Determine si cet article presente une valeur CHIFFREE PRECISE pour "{indicateur}" comme un FAIT REGLEMENTAIRE ACTUEL (pas un exemple fictif, pas une simulation avec "imaginons"/"exemple"/"prenons le cas").
@@ -1347,6 +1360,17 @@ def appliquer_correction_article(verdict, wp_config, client_bq):
 
     if not passage_avant or passage_avant not in contenu_actuel:
         print(f"  ⚠️ Post {post_id} : passage exact non retrouve, correction annulee par securite")
+        return False
+
+    # Garde anti no-op (15/11/2026) : independamment de la precision de
+    # comparaison corrigee en amont (auditer_article), ne jamais re-ecrire
+    # l'article ni loguer une "correction" si le passage propose est en
+    # realite identique a l'existant (espaces mis a part) -- evite une
+    # ecriture WordPress inutile et une ligne trompeuse dans
+    # corrections_articles_auto quand le LLM juge valeur_obsolete=true a
+    # tort.
+    if re.sub(r'\s+', ' ', passage_avant).strip() == re.sub(r'\s+', ' ', passage_apres).strip():
+        print(f"  ℹ️ Post {post_id} : valeur deja a jour (aucun changement reel apres arrondi), rien a ecrire")
         return False
 
     nouveau_contenu = contenu_actuel.replace(passage_avant, passage_apres, 1)
