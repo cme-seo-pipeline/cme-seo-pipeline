@@ -3287,3 +3287,80 @@ Gaz/Chauffage Gaz/Chauffage Electricite/Demenagement Electricite) -> 20
 inchange en volume (Aides chauffe-eau thermodynamique <-> Déménagement
 gaz). Chaque etape verifiee en lecture seule avant application, comme
 demande systematiquement par l'operateur tout au long de la soiree.
+
+## Audit mensuel — "corrections" sans changement reel, root cause et correctif (15/11/2026)
+
+Demande operateur, suite a la verification du run `audit-mensuel.yml` du
+15/11 (7 corrections appliquees ce jour-la) : creuser une anomalie
+reperee dans le detail des 7 corrections (`scripts-maintenance/verifier_corrections_du_jour.py`,
+lecture de `corrections_articles_auto`) — 5 des 7 avaient un
+`passage_avant` et un `passage_apres` **strictement identiques**, et
+verifier au passage la fiabilite generale des sources utilisees par
+l'audit (fraicheur des indicateurs, coherence du mapping).
+
+**Diagnostic** (`scripts-maintenance/diagnostiquer_corrections_sans_changement.py`,
+lecture seule, pont GitHub Actions) sur l'**historique complet** de
+`corrections_articles_auto` (pas seulement le 15/11) : **28 corrections
+sur 66 au total (42%)**, depuis le 08/09/2026, n'ont **aucun changement
+reel** (texte avant = texte apres) — reparties sur 5 dates
+(08/09, 26/09, 01/10, 11/11, 15/11), concentrees sur **3 indicateurs
+uniquement** : `PRVG_moyen_TTC` (10), `TRVE_part_fixe_TTC` (9),
+`TRVE_part_variable_TTC` (9) — les tarifs qui changent le plus souvent.
+`ampleur_pourcent_ecretement` n'a jamais ete concerne.
+
+**Root cause confirmee** : `auditer_article()` (`pipeline/pipeline.py`)
+transmettait au LLM la valeur officielle a sa **precision brute
+BigQuery** (ex. `206.25603666147236 €/MWh`) comme reference de
+comparaison, alors que la consigne de correction demande elle-meme
+d'arrondir a 2 decimales (`"Arrondis a 2 decimales maximum"`). Un
+article citant deja la bonne valeur arrondie (`206.26 €/MWh`) est alors
+compare a `206.25603666147236` — litteralement different — et le LLM
+juge `valeur_obsolete=true` **a tort**. En generant ensuite le "passage
+corrige" (lui-meme arrondi a 2 decimales), le resultat retombe
+exactement sur le texte deja present : aucun changement reel, mais
+l'article est quand meme re-ecrit sur WordPress (POST inutile, sans
+consequence sur le contenu) et loggue comme "corrige automatiquement"
+dans `corrections_articles_auto` — bruit dans l'audit trail, pas de
+corruption de contenu.
+
+**Corrige** (meme session, `pipeline/pipeline.py`), deux correctifs
+complementaires (meme philosophie que les correctifs structurels
+precedents — ne pas se limiter au cas precis trouve) :
+1. `auditer_article()` : la valeur transmise au LLM pour comparaison
+   est desormais arrondie a 2 decimales en amont (`round(float(valeur_actuelle), 2)`)
+   — coherente avec la precision de la correction demandee, elimine la
+   cause racine.
+2. `appliquer_correction_article()` : garde de defense en profondeur,
+   independante de la cause — si le passage corrige propose par le LLM
+   est en realite identique au passage existant (espaces normalises),
+   aucune ecriture WordPress ni log de correction (`ℹ️ valeur deja a
+   jour (aucun changement reel apres arrondi), rien a ecrire`).
+
+Teste en local (logique isolee, mock — `google-cloud-bigquery`
+indisponible dans ce sandbox, meme limite deja documentee) sur le cas
+reel no-op (post 11358, valeur deja a jour) et un cas reel avec
+changement (post 9764, 194.90→206.26) : le garde ne bloque que le
+premier cas. `python3 -m py_compile` OK (seul le `SyntaxWarning`
+preexistant non lie). **Pas encore valide en conditions reelles** — a
+confirmer au prochain run de `audit-mensuel.yml` (22/11/2026, prochaine
+date fixe) que la ligne `ℹ️ valeur deja a jour` apparait a la place de
+`✅ ... corrige automatiquement` pour les cas no-op, et que le nombre de
+"vraies" corrections reste coherent avec les changements reglementaires
+reels survenus entre deux runs.
+
+**Fiabilite des sources, verifiee au meme moment — aucun souci trouve** :
+- `indicateurs_reglementaires` : les 4 indicateurs en pertinence
+  'directe' sont tous a jour a 0 jour (rafraichis le jour meme par
+  `sync-indicateurs.yml`, qui tourne quotidiennement).
+- `mapping_indicateur_sous_silo` (pertinence='directe') : tous les
+  indicateurs mappes existent bien dans `indicateurs_reglementaires` —
+  aucun candidat saute silencieusement par defaut de correspondance.
+- Log complet du run `audit-mensuel.yml` du 15/11 (486 lignes) : **zero**
+  occurrence de erreur/echec/exception/timeout sur les 476 candidats
+  audites — ni l'appel API Anthropic (Haiku) ni l'API REST WordPress
+  n'ont echoue une seule fois ce jour-la. Les 17 "passage exact non
+  retrouve" restent le garde-fou de securite normal (deja documente),
+  pas une panne.
+- **Conclusion** : le pipeline de donnees (fraicheur, mapping, APIs)
+  est fiable — le seul probleme etait la logique de comparaison de
+  precision dans l'audit lui-meme, maintenant corrigee.
