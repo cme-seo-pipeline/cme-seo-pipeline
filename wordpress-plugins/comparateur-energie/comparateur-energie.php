@@ -94,8 +94,8 @@ function cme_cmp_handle_lead(){
     <div style="background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;padding:20px 24px">
       <h3 style="color:#3b82f6;margin:0 0 12px">Contact</h3>
       <table style="width:100%;border-collapse:collapse;margin-bottom:16px">
-        <tr><td style="padding:6px;color:#6b7280;width:150px">Nom complet</td><td style="padding:6px;font-weight:600">'.$prenom.' '.$nom.'</td></tr>
-        <tr><td style="padding:6px;color:#6b7280">Email</td><td style="padding:6px"><a href="mailto:'.$email.'" style="color:#3b82f6">'.$email.'</a></td></tr>
+        <tr><td style="padding:6px;color:#6b7280;width:150px">Nom et pr&eacute;nom</td><td style="padding:6px;font-weight:600">'.trim($prenom.' '.$nom).'</td></tr>
+        <tr><td style="padding:6px;color:#6b7280">Email</td><td style="padding:6px">'.($email?'<a href="mailto:'.$email.'" style="color:#3b82f6">'.$email.'</a>':'<span style="color:#9ca3af">non demand&eacute; (formulaire simplifi&eacute;)</span>').'</td></tr>
         <tr><td style="padding:6px;color:#6b7280">Telephone</td><td style="padding:6px"><a href="tel:'.$tel.'" style="color:#3b82f6">'.$tel.'</a></td></tr>
         <tr><td style="padding:6px;color:#6b7280">Logement</td><td style="padding:6px">'.esc_html($logement).' — '.esc_html($surface).' m² — '.esc_html($personnes).' pers. — chauffage '.esc_html($chauffage).'</td></tr>
         <tr><td style="padding:6px;color:#6b7280">Code postal</td><td style="padding:6px">'.esc_html($cp).'</td></tr>
@@ -774,11 +774,14 @@ function closeLeadModal(){
 }
 function submitLead(){
   var g=function(id){return document.getElementById(UID+'-'+id);};
-  var prn=(g('lm-prn')||{}).value||'', nom=(g('lm-nom')||{}).value||'';
-  var mail=(g('lm-mail')||{}).value||'', tel=(g('lm-tel')||{}).value||'';
+  // Formulaire simplifie au 16/11/2026 (demande operateur) : uniquement
+  // nom&prenom (champ fusionne, meme principe que le mini-formulaire
+  // inline des articles depuis le 24/10/2026) + telephone -- email/nom
+  // separe retires pour reduire la friction, en particulier sur mobile.
+  var prn=(g('lm-prn')||{}).value||'', tel=(g('lm-tel')||{}).value||'';
   var rgpd=g('lm-rgpd')&&g('lm-rgpd').checked;
   var err=g('lm-err');
-  if(!prn.trim()||!nom.trim()||!mail.trim()||!tel.trim()||!rgpd){
+  if(!prn.trim()||!tel.trim()||!rgpd){
     if(err)err.style.display='block';
     return;
   }
@@ -794,7 +797,7 @@ function submitLead(){
   }
 
   var data=Object.assign({
-    prenom:prn.trim(),nom:nom.trim(),email:mail.trim(),telephone:tel.trim(),
+    prenom:prn.trim(),telephone:tel.trim(),
     logement:S.logement,surface:S.surface,personnes:S.personnes,chauffage:S.chauffage,
     codepostal:S.codepostal,pdl:S.pdl,pce:S.pce,
     src_post:new URLSearchParams(window.location.search).get('src_post')||''
@@ -825,8 +828,7 @@ function showLeadSuccess(){
   var form=document.getElementById(UID+'-lmform');
   if(form){
     var prn=(document.getElementById(UID+'-lm-prn')||{}).value||'';
-    var nom=(document.getElementById(UID+'-lm-nom')||{}).value||'';
-    var mail=(document.getElementById(UID+'-lm-mail')||{}).value||'';
+    var nom='', mail=''; // champs retires du formulaire (simplification du 16/11/2026)
     var tel=(document.getElementById(UID+'-lm-tel')||{}).value||'';
     var srcPost=new URLSearchParams(window.location.search).get('src_post')||'';
     var ctx=LEAD_CTX||{};
@@ -889,16 +891,14 @@ function buildLeadModal(root){
 
   var form=mk('div');form.id=UID+'-lmform';
 
+  // Formulaire simplifie au 16/11/2026 (demande operateur, meme principe
+  // que le mini-formulaire inline des articles depuis le 24/10/2026) :
+  // nom&prenom (champ fusionne) + telephone uniquement -- email et nom
+  // separe retires pour reduire la friction, surtout sur mobile.
   var row1=mk('div','lmfrow');
-  var fPrn=mk('input','lmfi');fPrn.id=UID+'-lm-prn';fPrn.type='text';fPrn.placeholder='Pr\u00e9nom *';
-  var fNom=mk('input','lmfi');fNom.id=UID+'-lm-nom';fNom.type='text';fNom.placeholder='Nom *';
-  ap(row1,fPrn);ap(row1,fNom);ap(form,row1);
-
-  var fMail=mk('input','lmfi');fMail.id=UID+'-lm-mail';fMail.type='email';fMail.placeholder='Email *';
-  fMail.style.marginTop='10px';ap(form,fMail);
-
-  var fTel=mk('input','lmfi');fTel.id=UID+'-lm-tel';fTel.type='tel';fTel.placeholder='T\u00e9l\u00e9phone *';
-  fTel.style.marginTop='10px';ap(form,fTel);
+  var fPrn=mk('input','lmfi');fPrn.id=UID+'-lm-prn';fPrn.type='text';fPrn.autocomplete='name';fPrn.placeholder='Nom et pr\u00e9nom *';
+  var fTel=mk('input','lmfi');fTel.id=UID+'-lm-tel';fTel.type='tel';fTel.autocomplete='tel';fTel.placeholder='T\u00e9l\u00e9phone *';
+  ap(row1,fPrn);ap(row1,fTel);ap(form,row1);
 
   var rgpd=mk('label','lmrgpd');
   var chk=document.createElement('input');chk.type='checkbox';chk.id=UID+'-lm-rgpd';
