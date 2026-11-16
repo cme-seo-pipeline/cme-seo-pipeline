@@ -180,14 +180,19 @@ def tarif_edf():
     """
     try:
         client_bq = bigquery.Client()
-        df = client_bq.query(f"""
+        # .result() + iteration directe sur les Row BigQuery plutot que
+        # .to_dataframe() -- evite une dependance a pandas/db-dtypes pour
+        # lire 2 lignes (bug trouve au deploiement du 16/11 : pandas n'est
+        # pas dans requirements.txt, jamais installe dans le conteneur
+        # Cloud Run, .to_dataframe() plante systematiquement en prod).
+        rows = list(client_bq.query(f"""
             SELECT indicateur, valeur, date_debut_validite
             FROM `{INDICATEURS_PROJECT}`
             WHERE indicateur IN ('TRVE_part_variable_TTC', 'TRVE_part_fixe_TTC')
               AND sous_categorie = '6 kVA'
             QUALIFY ROW_NUMBER() OVER (PARTITION BY indicateur ORDER BY date_verification DESC) = 1
-        """).to_dataframe()
-        valeurs = {row["indicateur"]: row for _, row in df.iterrows()}
+        """).result())
+        valeurs = {row["indicateur"]: row for row in rows}
         if "TRVE_part_variable_TTC" not in valeurs or "TRVE_part_fixe_TTC" not in valeurs:
             return _cors(jsonify({"status": "error", "detail": "indicateurs TRVE introuvables"})), 404
 
@@ -217,17 +222,19 @@ def tarif_gaz_repere():
     """
     try:
         client_bq = bigquery.Client()
-        df = client_bq.query(f"""
+        # Meme correctif que tarif_edf() ci-dessus : .result() au lieu de
+        # .to_dataframe() (pandas indisponible dans le conteneur Cloud Run).
+        rows = list(client_bq.query(f"""
             SELECT valeur, date_debut_validite
             FROM `{INDICATEURS_PROJECT}`
             WHERE indicateur = 'PRVG_moyen_TTC'
             ORDER BY date_verification DESC
             LIMIT 1
-        """).to_dataframe()
-        if df.empty:
+        """).result())
+        if not rows:
             return _cors(jsonify({"status": "error", "detail": "indicateur PRVG_moyen_TTC introuvable"})), 404
 
-        row = df.iloc[0]
+        row = rows[0]
         resp = jsonify({
             "status": "ok",
             "prix_kwh_ttc": round(float(row["valeur"]) / 1000, 5),  # €/MWh -> €/kWh
