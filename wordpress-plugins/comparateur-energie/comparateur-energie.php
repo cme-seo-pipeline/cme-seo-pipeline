@@ -148,6 +148,20 @@ endif;
 add_action('wp_ajax_cme_cmp_lead','cme_cmp_handle_lead');
 add_action('wp_ajax_nopriv_cme_cmp_lead','cme_cmp_handle_lead');
 
+// ── Fraicheur des prix d'offres de marche (concurrents ELEC/GAZ) ─────────────
+// Ces prix (tableaux ELEC/GAZ ci-dessous, hors offres de reference EDF/CRE
+// qui sont desormais branchees en live sur indicateurs_reglementaires, voir
+// tracking-api/server.py) ne peuvent PAS etre automatises : aucune API
+// publique fiable n'existe pour les offres de marche des fournisseurs
+// (restriction confirmee le 16/11/2026, demande operateur). Ils doivent donc
+// etre revus et mis a jour MANUELLEMENT par l'operateur a un rythme
+// trimestriel -- mettre a jour cette date a CHAQUE verification manuelle
+// (meme si aucun prix n'a change), c'est elle qui alimente le rappel
+// automatique : scripts-maintenance/verifier_fraicheur_prix_marche_comparateur.py
+// + .github/workflows/verif-fraicheur-prix-comparateur.yml (echoue
+// visiblement dans l'onglet Actions une fois le seuil trimestriel depasse).
+if(!defined('CME_CMP_PRIX_MARCHE_DERNIERE_VERIF')) define('CME_CMP_PRIX_MARCHE_DERNIERE_VERIF','2026-11-16');
+
 if(!function_exists('cme_comp_sc')):
 function cme_comp_sc($atts){
 $atts=shortcode_atts(['energie'=>'dual'],$atts);

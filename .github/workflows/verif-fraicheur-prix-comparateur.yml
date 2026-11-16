@@ -1,0 +1,52 @@
+name: CME - Rappel fraicheur prix marche comparateur
+
+# Rappel (pas un audit de donnees) pour les prix des offres de MARCHE
+# (concurrents, ~18 fournisseurs ELEC/GAZ) du comparateur-energie --
+# demande operateur du 16/11/2026 : aucune API publique fiable n'existe
+# pour automatiser ces prix ("restriction d'automatisation"), contrairement
+# aux deux offres de reference (EDF TRVE, Prix Repere gaz CRE) qui sont
+# elles branchees en live sur indicateurs_reglementaires depuis cette meme
+# date (voir tracking-api/server.py).
+#
+# scripts-maintenance/verifier_fraicheur_prix_marche_comparateur.py lit la
+# constante CME_CMP_PRIX_MARCHE_DERNIERE_VERIF dans le plugin PHP et ECHOUE
+# VOLONTAIREMENT (exit 1, run rouge dans l'onglet Actions) si la derniere
+# revue manuelle remonte a plus de ~1 trimestre -- c'est le rappel lui-meme,
+# pas une erreur a corriger dans le code. Entierement local au repo (aucun
+# secret, aucun acces reseau necessaire).
+#
+# Cadence mensuelle (pas trimestrielle) : un check plus frequent que le
+# seuil lui-meme, pour ne jamais rater le passage du seuil de plus d'un
+# mois -- le seuil (--seuil-jours, defaut ~100j) est ce qui determine
+# l'alerte, pas la cadence de verification.
+
+on:
+  schedule:
+    - cron: '0 7 1 * *'
+  workflow_dispatch:
+    inputs:
+      seuil_jours:
+        description: "Seuil d'alerte en jours (defaut ~1 trimestre)"
+        required: false
+        default: ''
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verifier la fraicheur des prix de marche
+        run: |
+          if [ -n "${{ github.event.inputs.seuil_jours }}" ]; then
+            python3 scripts-maintenance/verifier_fraicheur_prix_marche_comparateur.py --seuil-jours "${{ github.event.inputs.seuil_jours }}"
+          else
+            python3 scripts-maintenance/verifier_fraicheur_prix_marche_comparateur.py
+          fi
