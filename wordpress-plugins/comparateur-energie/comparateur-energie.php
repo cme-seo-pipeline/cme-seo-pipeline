@@ -423,6 +423,11 @@ function mkLogo(o){
   if(LOGOS[o.logo]){
     var img=new Image();
     img.alt=o.nom;
+    img.width=52;img.height=52; // evite tout CLS meme avant application du CSS
+    // Jusqu'a 18 cartes/logos rendus d'un coup en etape 3 -- la plupart hors
+    // ecran sur mobile : lazy-load + decodage async pour ne pas faire
+    // concurrence au contenu visible (CWV, demande operateur 16/11/2026).
+    img.loading='lazy';img.decoding='async';
     img.onerror=function(){w.innerHTML='';var f=mk('div','logo-fb');f.style.background=o.c+'25';f.style.color=o.c;f.textContent=o.i;ap(w,f);};
     img.src=LOGOS[o.logo];
     ap(w,img);
