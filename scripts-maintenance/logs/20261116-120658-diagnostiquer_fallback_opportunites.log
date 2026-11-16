@@ -1,0 +1,75 @@
+# Execution du 2026-11-16T12:06:58Z
+# Script    : scripts-maintenance/diagnostiquer_fallback_opportunites.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+===============================================================================================
+ETAT GLOBAL DE LA VUE seo_opportunities ET DE SA SOURCE gsc_queries
+===============================================================================================
+ lignes  silos_distincts  min_jours  max_jours
+    521                6          0       2511
+
+Plage de dates reelle de 01_raw.gsc_queries :
+  date_min   date_max  lignes
+2026-07-04 2026-11-12   31582
+
+===============================================================================================
+LIBELLES DE silo REELLEMENT PRESENTS DANS seo_opportunities
+===============================================================================================
+                     silo  lignes  nb_sous_silo
+           5. Électricité     158             8
+                   1. Gaz     157             5
+      3. Aide Énergétique     143             9
+2. Rénovation Énergétique      31             7
+               4. Solaire      31             5
+                  contact       1             1
+
+===============================================================================================
+FUNNEL PAR SOUS-SILO DU QUOTA ACTUEL (20 sous-silos)
+===============================================================================================
+  1. Gaz                    Bouteilles                     lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  1. Gaz                    Facture Gaz                    lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  1. Gaz                    Compteur gaz                   lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  1. Gaz                    Contrat Gaz                    lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  1. Gaz                    Chauffage Gaz                  lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  1. Gaz                    Déménagement gaz               lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  5. Électricité            Contrat Électricité            lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  5. Électricité            Facture Électricité            lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  5. Électricité            Compteur                       lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  5. Électricité            Chauffage Électricité          lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  5. Électricité            Déménagement                   lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  3. Aide Énergétique       MaPrimeRénov'                  lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  3. Aide Énergétique       Chèque énergie                 lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  3. Aide Énergétique       Aide pompe à chaleur           lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  3. Aide Énergétique       Aide isolation                 lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  4. Solaire                Kit solaire                    lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  4. Solaire                Panneaux solaires              lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  4. Solaire                Batterie panneaux solaires     lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  4. Solaire                Système solaire combiné        lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+  4. Solaire                Chauffe-eau solaire            lignes_vue=0     avec_jours_depuis_pub>=30=0     min_jours_depuis_pub=<NA>
+
+===============================================================================================
+ECHANTILLON BRUT (sans aucun filtre) POUR 3 SOUS-SILOS -- comprendre pourquoi jours_depuis_pub reste bas
+===============================================================================================
+
+  -- 1. Gaz | Bouteilles --
+  (aucune ligne du tout dans la vue pour ce couple silo/sous_silo)
+
+  -- 3. Aide Énergétique | MaPrimeRénov' --
+  (aucune ligne du tout dans la vue pour ce couple silo/sous_silo)
+
+  -- 4. Solaire | Panneaux solaires --
+  (aucune ligne du tout dans la vue pour ce couple silo/sous_silo)
