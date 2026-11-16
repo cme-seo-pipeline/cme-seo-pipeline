@@ -3364,3 +3364,96 @@ reels survenus entre deux runs.
 - **Conclusion** : le pipeline de donnees (fraicheur, mapping, APIs)
   est fiable — le seul probleme etait la logique de comparaison de
   precision dans l'audit lui-meme, maintenant corrigee.
+
+## Fallback ancienneté à 100% depuis au moins le 31/10 — deux bugs structurels distincts dans la sélection GSC (16/11/2026)
+
+Demande opérateur, suite à la vérification du run `publication-quotidienne.yml`
+du 16/11 (20/20 articles publiés, mais 20/20 sous-silos en "fallback
+ancienneté", 0 trouvé via GSC) : creuser pourquoi. Comparaison de 6 runs
+historiques (`gh run view --log`, 31/10 au 16/11, toutes configurations de
+quota confondues) : **0 "trouvé via SEO" sur la totalité des runs vérifiés**
+— ce n'est donc pas un incident du jour, mais un mécanisme qui n'a jamais
+fonctionné sur toute la période observée.
+
+`selectionner_silos_a_traiter()` (`pipeline/pipeline.py`) interroge la vue
+`03_final.seo_opportunities` (`scripts-maintenance/fix_seo_opportunities_postid.sh`)
+avec `WHERE silo = X AND sous_silo = Y AND jours_depuis_pub >= 30 AND ...`.
+Diagnostic en 3 scripts lecture seule (`diagnostiquer_fallback_opportunites.py`,
+`..._suite.py`, `diagnostiquer_jours_depuis_pub.py`, pont GitHub Actions) :
+
+**Bug 1 — mismatch slug vs libellé affiché (bloquant à 100%, corrigé)** :
+`seo_opportunities.sous_silo` est stocké en **slug** par la vue (normalisation
+CASE/REGEXP de `fix_seo_opportunities_postid.sh` : `"bouteilles"`,
+`"maprimerenov"`, `"chauffage-electricite"`), alors que
+`selectionner_silos_a_traiter()` comparait au **libellé affiché** de
+`QUOTAS_SOUS_SILO` (`"Bouteilles"`, `"MaPrimeRénov'"`, `"Chauffage
+Électricité"`) par égalité stricte — qui ne matchait donc **jamais**, malgré
+521 lignes réelles dans la vue au moment du diagnostic. **Corrigé** (commit
+`5025d86`) : `to_slug(sous_silo_cible)` (déjà utilisée ailleurs dans le
+fichier pour les slugs WordPress) appliquée à la comparaison contre
+`seo_opportunities.sous_silo` uniquement — le libellé affiché reste utilisé
+tel quel pour le `SELECT` et pour le filtre anti-doublon sur
+`historique_publications.sous_silo_strategique` (qui stocke bien le libellé,
+pas un slug). Validé en rejouant la requête réelle (post-fix) sur les 20
+sous-silos : 16/20 slugs existent désormais bien dans la vue (les 4 restants
+sont attendus — voir plus bas).
+
+**Bug 2 — `jours_depuis_pub >= 30` structurellement insatisfiable pour un
+sous-silo publié en continu (bloquant à 100%, NON corrigé, décision
+opérateur nécessaire)** : même après le fix du Bug 1, la requête complète
+reste à **0/20** en test réel
+(`scripts-maintenance/tester_fix_slug_seo_opportunities.py`). Cause :
+`jours_depuis_pub` est calculé **par sous-silo entier** (date de la dernière
+publication sur TOUT le sous-silo, pas par article/URL individuel) — et les
+16 sous-silos dont le slug matche montrent tous `min_jours = médiane_jours =
+max_jours = 0` sur l'intégralité de leurs lignes
+(`diagnostiquer_jours_depuis_pub.py`), `derniere_pub` étant systématiquement
+**le run du jour même** (16/11, entre 10h52 et 11h20 UTC). Comme
+`selectionner_silos_a_traiter()` boucle sur **chaque entrée de
+`QUOTAS_SOUS_SILO` à chaque run** (pas une rotation d'un sous-ensemble), et
+que le quota est désormais 1 article/jour ouvré par sous-silo pour les 20
+sous-silos actifs, la dernière publication d'un sous-silo actif est quasi
+toujours la veille ou le jour même — donc `jours_depuis_pub` reste quasi
+toujours < 30 **par construction**, indépendamment de tout bug de données.
+Autrement dit : un sous-silo ne peut satisfaire `jours_depuis_pub >= 30` que
+s'il n'a PAS été publié depuis 30 jours — mais un sous-silo qui est dans
+`QUOTAS_SOUS_SILO` est justement publié en continu, ce qui rend le filtre
+auto-contradictoire avec la présence même d'un sous-silo dans le quota actif.
+
+**Pas corrigé — décision opérateur nécessaire avant toute modification**,
+car plusieurs lectures légitimes coexistent et la protection anti-doublon
+réelle (fenêtre 90 jours sur `historique_publications`, déjà dans la même
+requête via `LOWER(query) NOT IN (...)`) ne dépend pas de ce filtre — il
+semble redondant avec elle plutôt que complémentaire, mais ce n'est pas
+certain sans connaître l'intention d'origine : (a) baisser ou retirer le
+seuil de 30 jours, en s'appuyant uniquement sur l'exclusion 90 jours déjà
+en place pour éviter les doublons ; (b) recalculer `jours_depuis_pub` par
+URL/mot-clé individuel (temps depuis la publication de l'article qui rank
+sur CETTE requête précise) plutôt que par sous-silo entier — plus fidèle à
+l'intention probable ("ne pas re-cibler un article qu'on vient de publier"),
+mais nécessite de modifier la vue (`fix_seo_opportunities_postid.sh`), pas
+seulement `pipeline.py` ; (c) laisser tel quel, si le fallback ancienneté
+est en réalité acceptable pour l'opérateur (le pipeline publie quand même
+sans erreur dans ce cas, juste sans bénéficier du signal GSC).
+
+**Nouveaux scripts lecture seule** (tous via le pont GitHub Actions) :
+`diagnostiquer_fallback_opportunites.py`, `diagnostiquer_fallback_opportunites_suite.py`,
+`tester_fix_slug_seo_opportunities.py`, `diagnostiquer_jours_depuis_pub.py`.
+
+**Effet secondaire noté en passant, non corrigé (bug distinct, scope plus
+petit)** : même avec les Bugs 1 et 2 réglés, "Aide pompe à chaleur" et "Aide
+isolation" (silo "3. Aide Énergétique") ne matcheraient toujours pas — la
+vue les classe par erreur sous le silo "2. Rénovation Énergétique" avec les
+slugs `"pompe-a-chaleur"`/`"isolation"` (sans préfixe `"aide-"`), signe que
+la logique CASE/REGEXP de `fix_seo_opportunities_postid.sh` ne distingue pas
+`/aide-energetique/aide-pompe-a-chaleur/` de `/renovation-energetique/pompe-a-chaleur/`.
+"Compteur gaz" et "Chauffage Gaz" (créés/réactivés le 13/11) n'ont eux
+simplement pas encore de données GSC — attendu, pas un bug.
+
+`python3 -m py_compile pipeline/pipeline.py` validé (seul le `SyntaxWarning`
+préexistant non lié). **Bug 1 pas encore validé en conditions réelles** — à
+confirmer au prochain run de `publication-quotidienne.yml` (demain,
+17/11/2026) : tant que le Bug 2 reste tel quel, le fallback ancienneté
+restera à 100% malgré le correctif du Bug 1, donc ce run seul ne suffira
+pas à confirmer le Bug 1 isolément — seul le test SQL direct déjà effectué
+le confirme pour l'instant.
