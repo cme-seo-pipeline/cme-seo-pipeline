@@ -1,0 +1,33 @@
+# Execution du 2026-11-16T16:02:30Z
+# Script    : scripts-maintenance/tester_lead_reel_comparateur_energie.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+====================================================================================================
+1. Récupération d'un nonce réel depuis la page live
+====================================================================================================
+  Statut page : 200
+  Nonce extrait : 4924a9d146
+  URL ajax      : https://www.comprendre-mon-energie.fr/wp-admin/admin-ajax.php
+
+====================================================================================================
+2. Soumission réelle du formulaire (identité de test clairement marquée)
+====================================================================================================
+  Statut HTTP de la reponse AJAX : 200
+  Reponse JSON complete : {'success': True, 'data': {'status': 'ok', 'email_sent': True, 'gas': '{"status":"ok","rows":2}'}}
+  -> email_sent = True
+  -> gas (Google Sheets) = {"status":"ok","rows":2}
+
+====================================================================================================
+3. Vérification dans leads_convertis (BigQuery) — laisser quelques secondes au relais asynchrone
+====================================================================================================
+  ✅ 1 ligne(s) trouvée(s) -- le relais Cloud Run -> BigQuery FONCTIONNE :
+    {'timestamp': Timestamp('2026-11-16 16:02:36.565149+0000', tz='UTC'), 'tool': 'comparateur-energie', 'prenom': 'TEST-DIAGNOSTIC', 'telephone': '0600000000', 'source_page': 'comparateur-energie-electricite-gaz', 'details': '{"energie": "elec", "fournisseur": "TEST", "offre": "Test diagnostic relais lead", "kwh": 3500, "option_tarifaire": "base", "lien_offre": "https://example.invalid/test"}'}
+
+====================================================================================================
+FIN DU TEST — marqueur unique pour nettoyage ultérieur si besoin : TESTDIAG1794844950
+====================================================================================================
