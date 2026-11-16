@@ -814,4 +814,12 @@ document.querySelectorAll('.cme-comp[data-cme-nonce]').forEach(function(el){
   el.setAttribute('data-cme-init','1');
   cmeCmpInit(el.id, el.getAttribute('data-eg')||'dual', el.getAttribute('data-cme-nonce'), el.getAttribute('data-ajax'));
 });
+
+// Expose pour une instance inseree APRES coup, cote client (16/11/2026) --
+// cme-cta-progressifs.php remplace le 1er mini-formulaire "contact-expert-
+// inline" par ce comparateur sur chaque article ; ce div n existe pas encore
+// quand le scan ci-dessus s execute, donc il ne peut pas etre auto-detecte.
+// L appelant externe doit inserer le div dans le document AVANT d appeler
+// cmeCmpInit (document.getElementById ne trouve rien sur un noeud detache).
+window.cmeCmpInit=cmeCmpInit;
 })();

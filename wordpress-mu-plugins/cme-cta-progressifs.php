@@ -199,6 +199,27 @@
  * les 6 articles cites, et le seul <article> jamais rencontre par ce
  * script est soit le wrapper du theme (hors de .entry-content, jamais un
  * candidat), soit cet artefact d'import -- aucun troisieme cas connu.
+ *
+ * COMPARATEUR ENERGIE AU 1ER EMPLACEMENT (16/11/2026) -- demande operateur
+ * explicite : remplacer UNIQUEMENT la 1ere occurrence du mini-formulaire
+ * "contact-expert-inline" par le widget comparateur-energie (plugin
+ * wordpress-plugins/comparateur-energie/), sur TOUS les silos, anciens et
+ * nouveaux articles -- les occurrences suivantes (2e, 3e...) restent
+ * creer(n,'contact') inchange ; le bloc "avant d'appeler" (variante 'appel')
+ * et le popup du bouton telephone du header (cme-tracking-conversion.php)
+ * ne sont pas concernes. Implementation cote client, meme principe de
+ * couverture retroactive "gratuite" que le reste de ce fichier -- aucune
+ * reecriture du contenu stocke de chaque article. Voir
+ * comparateurDisponible()/creerComparateur()/initialiserComparateur() plus
+ * bas, et le point d'entree expose window.cmeCmpInit par
+ * comparateur-energie.js, qui doit lui-meme etre charge sur chaque article
+ * (gate assoupli dans comparateur-energie.php : cme_cmp_enqueue_assets()
+ * tourne desormais aussi sur is_singular('post'), pas seulement sur les
+ * pages portant le shortcode reel). Filet de securite volontaire : si le
+ * bootstrap (window.CME_CMP_BOOT/cmeCmpInit) est indisponible pour une
+ * raison quelconque, ce 1er emplacement retombe simplement sur l'ancien
+ * mini-formulaire -- jamais de placeholder "Chargement..." bloque a
+ * l'ecran, jamais de capture de lead perdue a cette position.
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -657,6 +678,56 @@ add_action('wp_footer', function () {
         return d;
       }
 
+      // ── Comparateur energie au 1er emplacement (16/11/2026) ────────────
+      // Demande operateur explicite : remplacer UNIQUEMENT la 1ere occurrence
+      // du mini-formulaire "contact-expert-inline" (poses===0 dans la boucle
+      // plus bas) par le widget comparateur-energie, sur TOUS les silos,
+      // anciens et nouveaux articles -- les occurrences suivantes (2e, 3e...)
+      // restent creer(n,'contact') inchange, jamais touchees. Insertion cote
+      // CLIENT, meme principe de couverture retroactive "gratuite" que
+      // creer() lui-meme (aucune reecriture du contenu stocke de chaque
+      // article). window.cmeCmpInit est expose globalement par
+      // comparateur-energie.js (wp_enqueue_script, meme page) -- fiable des
+      // l'execution de ce script car DOMContentLoaded (qui declenche
+      // demarrer()) ne peut se produire qu'apres l'execution de TOUS les
+      // <script> synchrones de la page, quel que soit leur ordre relatif
+      // d'impression en pied de page. Le nonce/l'URL ajax sont localises par
+      // cme_cmp_enqueue_assets() (comparateur-energie.php) dans
+      // window.CME_CMP_BOOT.
+      //
+      // Filet de securite volontaire : si CME_CMP_BOOT ou cmeCmpInit sont
+      // indisponibles pour une raison quelconque (plugin desactive, echec
+      // d'enqueue, script bloque...), on ne cree PAS le placeholder -- on
+      // retombe sur l'ancien mini-formulaire a ce 1er emplacement, pour ne
+      // jamais laisser un "⏳ Chargement..." bloque a l'ecran du visiteur, ni
+      // perdre silencieusement la capture de lead a cette position.
+      function comparateurDisponible() {
+        return !!(window.CME_CMP_BOOT && window.CME_CMP_BOOT.nonce && window.CME_CMP_BOOT.ajax && window.cmeCmpInit);
+      }
+      function creerComparateur(prefixeSilo) {
+        var uid = 'cmeinline' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        // Tabulation de depart adaptee au silo (le comparateur reste
+        // bi-energie, l'onglet de depart est juste une personnalisation --
+        // le visiteur peut toujours basculer manuellement) : Gaz -> onglet
+        // gaz, Electricite -> onglet elec, tout autre silo (Aide Energetique/
+        // Solaire/Renovation) -> les deux onglets ('dual'), aucun ne domine.
+        var energieDefaut = (prefixeSilo === 'gaz') ? 'gaz' : (prefixeSilo === 'electricite') ? 'elec' : 'dual';
+        var d = document.createElement('div');
+        d.id = uid;
+        d.className = 'cme-comp';
+        d.style.cssText = 'margin:28px 0;clear:both;';
+        d.setAttribute('data-eg', energieDefaut);
+        d.setAttribute('data-cme-nonce', window.CME_CMP_BOOT.nonce);
+        d.setAttribute('data-ajax', window.CME_CMP_BOOT.ajax);
+        d.setAttribute('data-cme-init', '1');   // deja initialise ci-dessous, evite un double-scan
+        return d;
+      }
+      function initialiserComparateur(uid) {
+        var el = document.getElementById(uid);
+        if (!el) { return; }
+        window.cmeCmpInit(uid, el.getAttribute('data-eg'), el.getAttribute('data-cme-nonce'), el.getAttribute('data-ajax'));
+      }
+
       var enfants = enfantsEffectifs(zone);   // "deplie" les blocs Colonnes -- voir docblock, correctif du 04/11/2026
       var i;
       // apres[i] : mots restant apres l'element i avant le prochain formulaire existant (ou la fin)
@@ -674,6 +745,7 @@ add_action('wp_footer', function () {
       // prochainSeuilContact() dans les REGLAGES plus haut.
       var totalMotsVus = 0;
       var poses = 0;
+      var comparateurPose = false;   // true si le 1er emplacement a bien recu le comparateur (pas le mini-formulaire)
       for (i = 0; i < enfants.length; i++) {
         var el = enfants[i];
         if (estCta(el)) { continue; }
@@ -688,7 +760,10 @@ add_action('wp_footer', function () {
         // enfantsEffectifs() plus haut) -- insertBefore exige le PARENT REEL
         // de l'element de reference, jamais `zone` directement (qui echouerait
         // silencieusement/leverait si suivantEl n'est pas son enfant direct).
-        suivantEl.parentNode.insertBefore(creer(poses + 1, 'contact'), suivantEl);
+        var premierSlot = (poses === 0) && comparateurDisponible();
+        var elementAInserer = premierSlot ? creerComparateur(prefixe) : creer(poses + 1, 'contact');
+        suivantEl.parentNode.insertBefore(elementAInserer, suivantEl);
+        if (premierSlot) { initialiserComparateur(elementAInserer.id); comparateurPose = true; }
         poses++;
       }
 
@@ -707,7 +782,7 @@ add_action('wp_footer', function () {
       }
 
       if (MODE === 'apercu' && window.console) {
-        window.console.log('cme-cta60 : ' + poses + ' formulaire(s) contact pose(s), ' + posesAppel + ' formulaire(s) appel pose(s), silo ' + prefixe);
+        window.console.log('cme-cta60 : ' + poses + ' formulaire(s) contact pose(s) (dont 1er = comparateur : ' + comparateurPose + '), ' + posesAppel + ' formulaire(s) appel pose(s), silo ' + prefixe);
       }
     } catch (e) {
       if (window.console) { window.console.error('cme-cta60 : erreur ignoree', e); }

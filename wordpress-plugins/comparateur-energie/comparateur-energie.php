@@ -193,10 +193,19 @@ add_shortcode('comparateur_energie','cme_comp_sc');
 if(!function_exists('cme_cmp_enqueue_assets')):
 function cme_cmp_enqueue_assets(){
   global $post;
-  // Charge uniquement sur les pages qui contiennent reellement le shortcode
-  // (evite d alourdir toutes les autres pages du site de ce CSS/JS inutile
-  // ailleurs -- important vu le volume de pages de ce site).
-  if (!($post instanceof WP_Post) || !has_shortcode($post->post_content, 'comparateur_energie')) return;
+  // Charge sur les pages qui contiennent reellement le shortcode, ET depuis
+  // le 16/11/2026 sur CHAQUE article (is_singular('post')) meme sans
+  // shortcode dans le contenu stocke -- demande operateur : remplacer le 1er
+  // mini-formulaire periodique "contact-expert-inline" par ce comparateur,
+  // insere cote CLIENT par wordpress-mu-plugins/cme-cta-progressifs.php, sur
+  // tous les articles anciens et nouveaux (meme principe de couverture
+  // retroactive "gratuite" deja etabli pour contact-expert-inline -- aucune
+  // reecriture du contenu stocke de chaque article). En dehors des articles
+  // et des pages a shortcode reel, rien n est charge -- toujours pas de poids
+  // inutile sur le reste du site.
+  $a_le_shortcode = ($post instanceof WP_Post) && has_shortcode($post->post_content, 'comparateur_energie');
+  $est_un_article = is_singular('post');
+  if (!$a_le_shortcode && !$est_un_article) return;
   $assets_dir = plugin_dir_path(__FILE__).'assets/';
   $assets_url = plugins_url('assets/', __FILE__);
   $css_file = $assets_dir.'comparateur-energie.css';
@@ -210,6 +219,16 @@ function cme_cmp_enqueue_assets(){
   $js_ver  = file_exists($js_file)  ? filemtime($js_file)  : null;
   wp_enqueue_style('cme-comparateur-energie', $assets_url.'comparateur-energie.css', array(), $css_ver);
   wp_enqueue_script('cme-comparateur-energie', $assets_url.'comparateur-energie.js', array(), $js_ver, true);
+  // Nonce/URL ajax exposes en global JS (window.CME_CMP_BOOT) pour
+  // l'instance inseree cote client par cme-cta-progressifs.php, qui n'a pas
+  // de marqueur PHP (le vrai shortcode porte deja son propre nonce en
+  // attribut data-* sur son marqueur HTML -- inutile pour ce cas-la, mais
+  // localiser systematiquement est sans risque et plus simple que de
+  // distinguer les deux cas ici).
+  wp_localize_script('cme-comparateur-energie', 'CME_CMP_BOOT', array(
+    'nonce' => wp_create_nonce('cme_cmp_lead_nonce'),
+    'ajax'  => admin_url('admin-ajax.php'),
+  ));
 }
 endif;
 add_action('wp_enqueue_scripts','cme_cmp_enqueue_assets');
