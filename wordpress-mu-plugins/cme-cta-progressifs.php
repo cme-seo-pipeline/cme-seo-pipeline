@@ -220,6 +220,17 @@
  * raison quelconque, ce 1er emplacement retombe simplement sur l'ancien
  * mini-formulaire -- jamais de placeholder "Chargement..." bloque a
  * l'ecran, jamais de capture de lead perdue a cette position.
+ *
+ * CORRECTIF (16/11/2026, meme jour) -- data-eg toujours 'dual' : une
+ * premiere version de creerComparateur() faisait varier data-eg selon le
+ * silo (gaz->'gaz', electricite->'elec'), a tort -- EDEF='gaz'/'elec' ne
+ * presectionne pas un onglet, il VERROUILLE tout le parcours sur une seule
+ * energie (aucun selecteur ni onglet de bascule, voir comparateur-energie.js).
+ * Constate en prod par l'operateur juste apres deploiement : silo Gaz ->
+ * comparatif gaz uniquement, silo Electricite -> comparatif elec
+ * uniquement. Demande explicite : laisser le lecteur choisir lui-meme, un
+ * seul comparateur bi-energie partout, aucune presupposition par silo --
+ * data-eg = 'dual' sans exception desormais.
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -706,12 +717,20 @@ add_action('wp_footer', function () {
       }
       function creerComparateur(prefixeSilo) {
         var uid = 'cmeinline' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-        // Tabulation de depart adaptee au silo (le comparateur reste
-        // bi-energie, l'onglet de depart est juste une personnalisation --
-        // le visiteur peut toujours basculer manuellement) : Gaz -> onglet
-        // gaz, Electricite -> onglet elec, tout autre silo (Aide Energetique/
-        // Solaire/Renovation) -> les deux onglets ('dual'), aucun ne domine.
-        var energieDefaut = (prefixeSilo === 'gaz') ? 'gaz' : (prefixeSilo === 'electricite') ? 'elec' : 'dual';
+        // CORRECTIF (16/11/2026, suite) : toujours 'dual', quel que soit le
+        // silo -- une premiere version faisait varier data-eg par silo
+        // (gaz->'gaz', electricite->'elec'), en pensant a tort que EDEF ne
+        // faisait que PRESELECTIONNER un onglet tout en laissant l'autre
+        // accessible. Verifie dans comparateur-energie.js : EDEF='gaz'/'elec'
+        // VERROUILLE entierement le parcours sur une seule energie (aucun
+        // selecteur d'energie a l'etape 1, aucun onglet a l'etape 3 -- voir
+        // les conditions `if(EDEF==='dual')`). Constate en prod par
+        // l'operateur : silo Gaz -> comparatif gaz uniquement, silo
+        // Electricite -> comparatif elec uniquement. Demande explicite :
+        // laisser le lecteur choisir lui-meme, jamais de presupposition par
+        // silo -- donc 'dual' partout, sans exception, prefixeSilo n'est
+        // plus utilise (parametre garde pour l'appel existant, sans effet).
+        var energieDefaut = 'dual';
         var d = document.createElement('div');
         d.id = uid;
         d.className = 'cme-comp';
