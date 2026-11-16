@@ -572,13 +572,6 @@ function submitLead(){
   var sub=g('lm-sub');
   if(sub){sub.disabled=true;sub.textContent='Envoi en cours...';}
 
-  // Ouvrir l'onglet fournisseur IMMEDIATEMENT (geste utilisateur direct)
-  // -> evite le blocage popup (window.open apres un fetch async est bloque)
-  var providerTab=null;
-  if(LEAD_CTX&&LEAD_CTX.lien_offre){
-    providerTab=window.open('about:blank','_blank');
-  }
-
   var data=Object.assign({
     prenom:prn.trim(),telephone:tel.trim(),
     logement:S.logement,surface:S.surface,personnes:S.personnes,chauffage:S.chauffage,
@@ -586,12 +579,10 @@ function submitLead(){
     src_post:new URLSearchParams(window.location.search).get('src_post')||''
   },LEAD_CTX);
 
-  // Rediriger l'onglet deja ouvert vers l'offre - instantane
-  if(providerTab){
-    try{providerTab.location.href=LEAD_CTX.lien_offre;}catch(e){}
-  }
-
-  // Confirmation immediate, sans attendre le serveur
+  // Confirmation immediate, sans attendre le serveur -- plus d'ouverture
+  // d'onglet/popup vers le fournisseur (demande operateur du 16/11/2026,
+  // suite au QA mobile : "pas de liens a la fin du parcours, on garde
+  // uniquement la confirmation").
   showLeadSuccess();
 
   // Envoi en arriere-plan (email + Sheets)
@@ -610,9 +601,6 @@ function submitLead(){
 function showLeadSuccess(){
   var form=document.getElementById(UID+'-lmform');
   if(form){
-    var prn=(document.getElementById(UID+'-lm-prn')||{}).value||'';
-    var nom='', mail=''; // champs retires du formulaire (simplification du 16/11/2026)
-    var tel=(document.getElementById(UID+'-lm-tel')||{}).value||'';
     var srcPost=new URLSearchParams(window.location.search).get('src_post')||'';
     var ctx=LEAD_CTX||{};
     var leadData={
@@ -644,14 +632,14 @@ function showLeadSuccess(){
         +'<div style="font-size:13px;color:#6b7280;line-height:1.5">Ajout\u00e9e \u00e0 vos dossiers dans l\'app.<br>Nous vous recontactons sous 48h.</div>'
         +'</div>';
     }else{
-      var lienCompte='https://espace-client.comprendre-mon-energie.fr/register?prenom='
-        +encodeURIComponent(prn)+'&nom='+encodeURIComponent(nom)+'&email='+encodeURIComponent(mail)+'&telephone='+encodeURIComponent(tel)
-        +'&lead_data='+encodeURIComponent(JSON.stringify(leadData));
+      // Confirmation seule, aucun lien (demande operateur du 16/11/2026 --
+      // retire le lien "Creer mon espace client" + toute mention d'onglet
+      // fournisseur, l'ouverture de popup ayant elle-meme ete retiree dans
+      // submitLead()).
       form.innerHTML='<div style="text-align:center;padding:20px 10px">'
         +'<div style="width:52px;height:52px;border-radius:50%;background:#d1fae5;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px">\u2713</div>'
         +'<div style="font-weight:700;font-size:16px;color:#111827;margin-bottom:6px">Demande envoy\u00e9e !</div>'
-        +'<div style="font-size:13px;color:#6b7280;line-height:1.5">Nous vous recontactons sous 48h.<br>L\'offre du fournisseur s\'est ouverte dans un nouvel onglet.</div>'
-        +'<a href="'+lienCompte+'" target="_blank" style="display:inline-block;margin-top:16px;background:#3b82f6;color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px">Créer mon espace client &rarr;</a>'
+        +'<div style="font-size:13px;color:#6b7280;line-height:1.5">Un conseiller vous recontacte sous 48h<br>pour confirmer votre nouvelle offre.</div>'
         +'</div>';
     }
   }
@@ -701,8 +689,15 @@ function buildLeadModal(root){
 }
 
 // ── Rendu principal ──────────────────────────────────────────────────────────
+var lastStep=null;
 function render(){
   var root=$();if(!root)return;
+  // Changement d'etape reel (pas le 1er rendu, pas un re-rendu silencieux
+  // type refresh de prix en tache de fond) -- distingue les deux cas avant
+  // de reconstruire le DOM ci-dessous.
+  var stepChanged=(lastStep!==null&&S.step!==lastStep);
+  lastStep=S.step;
+
   root.innerHTML='';
 
   // Header
@@ -716,15 +711,35 @@ function render(){
   if(S.step===1)step1(root);
   else if(S.step===2)step2(root);
   else step3(root);
+
+  // Remonter en haut du comparateur a chaque changement d'etape reel --
+  // corrige le bug mobile du 16/11/2026 (QA operateur) : "Suivant"/"Retour"
+  // laissait le visiteur scrolle en bas du nouveau contenu (le titre/les
+  // champs de la nouvelle etape restaient hors-ecran, perçus comme
+  // "invisibles" sans scroll manuel).
+  if(stepChanged){
+    requestAnimationFrame(function(){
+      root.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  }
 }
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 estim();
 // Construire le modal UNE SEULE FOIS, hors du conteneur vide a chaque render()
+// -> attache a document.body (pas au parent du shortcode dans l'article) :
+// si un ancetre reel du theme (menu mobile, header collant...) porte un
+// `transform`/`filter`/`will-change`, ca cree un nouveau "containing block"
+// qui casse le `position:fixed` du modal -- deja vu comme cause classique
+// de "modal qui ne s'affiche pas" sur mobile, non reproductible dans un
+// harnais de test minimal sans le vrai theme. Rattacher a <body>, qui
+// n'a jamais ce genre de transform (ca casserait toute la mise en page du
+// site), elimine structurellement ce risque. Corrige le 16/11/2026 (QA
+// operateur : "le formulaire final ne s'affiche pas sur telephone").
 (function(){
   var rootEl=$();
-  if(rootEl&&rootEl.parentNode&&!document.getElementById(UID+'-lmodal')){
-    buildLeadModal(rootEl.parentNode);
+  if(rootEl&&!document.getElementById(UID+'-lmodal')){
+    buildLeadModal(document.body);
   }
 })();
 // Rendu immediat avec le prix EDF par defaut (pas d'attente reseau)
