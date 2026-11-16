@@ -190,19 +190,19 @@ def diag_trafic_reel(client_bq):
     section("6. TRAFIC RÉEL SUR LA PAGE (GA4 — 01_raw.ga4_pages, 90 jours)")
     try:
         df5 = client_bq.query(f"""
-            SELECT pagePath, SUM(sessions) AS sessions, SUM(vues) AS vues,
+            SELECT page_path, SUM(sessions) AS sessions, SUM(vues) AS vues,
                    MIN(date) AS premiere_date, MAX(date) AS derniere_date
             FROM `{PROJECT_ID}.01_raw.ga4_pages`
-            WHERE pagePath LIKE '{PAGE_SLUG_LIKE}'
+            WHERE page_path LIKE '{PAGE_SLUG_LIKE}'
               AND date >= DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY)
-            GROUP BY pagePath
+            GROUP BY page_path
             ORDER BY sessions DESC
         """).to_dataframe()
         if df5.empty:
             print("  Aucune ligne GA4 trouvée pour cette page sur 90 jours.")
         else:
             for _, r in df5.iterrows():
-                print(f"  {r['pagePath']} : sessions={int(r['sessions'])} vues={int(r['vues'])} "
+                print(f"  {r['page_path']} : sessions={int(r['sessions'])} vues={int(r['vues'])} "
                       f"(du {r['premiere_date']} au {r['derniere_date']})")
     except Exception as e:
         print(f"  ❌ Erreur GA4 (colonnes possiblement différentes) : {e}")
