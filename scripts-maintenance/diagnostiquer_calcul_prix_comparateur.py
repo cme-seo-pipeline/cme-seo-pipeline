@@ -30,17 +30,18 @@ def main():
     client = bigquery.Client(project=PROJECT_ID)
 
     section("1. DERNIERES VALEURS REGLEMENTAIRES REELLES (indicateurs_reglementaires)")
-    df = client.query(f"""
-        SELECT nom_indicateur, valeur, date_valeur, date_maj
-        FROM `{PROJECT_ID}.{DATASET_ID}.indicateurs_reglementaires`
-        WHERE nom_indicateur IN ('TRVE_part_variable_TTC','TRVE_part_fixe_TTC','PRVG_moyen_TTC')
-        ORDER BY nom_indicateur
+    table = client.get_table(f"{PROJECT_ID}.{DATASET_ID}.indicateurs_reglementaires")
+    cols = [f.name for f in table.schema]
+    print(f"  Colonnes reelles de la table : {cols}")
+    df_all = client.query(f"""
+        SELECT * FROM `{PROJECT_ID}.{DATASET_ID}.indicateurs_reglementaires`
+        WHERE indicateur IN ('TRVE_part_variable_TTC','TRVE_part_fixe_TTC','PRVG_moyen_TTC')
     """).to_dataframe()
-    if df.empty:
-        print("  Aucune ligne trouvee -- noms d'indicateurs a reverifier.")
+    if df_all.empty:
+        print("  Aucune ligne trouvee pour ces 3 indicateurs.")
     else:
-        for _, r in df.iterrows():
-            print(f"  {r['nom_indicateur']:28s} = {r['valeur']}  (valable au {r['date_valeur']}, synchronise le {r['date_maj']})")
+        for _, r in df_all.iterrows():
+            print(f"  {dict(r)}")
 
     print("\n  Valeurs actuellement figees dans le JS du comparateur (code source repo, S.edfPrix/S.gazRef) :")
     print("    EDF Tarif Bleu (elec)      : px=0.19398 EUR/kWh, abo=11.80 EUR/mois, date affichee 01/02/2026")
