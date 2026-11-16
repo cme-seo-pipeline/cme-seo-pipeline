@@ -162,10 +162,81 @@ def log_interaction():
         return _cors(jsonify({"status": "error", "detail": str(e)})), 500
 
 
-@app.route('/api/tarifs', methods=['GET'])
-def get_tarifs():
-    resp = jsonify({"status": "ok", "derniere_maj": "2026-06-29", "source": "CRE"})
-    return _cors(resp), 200
+INDICATEURS_PROJECT = "seo-data-hub-cme.04_pipeline_seo.indicateurs_reglementaires"
+
+
+@app.route('/api/tarif-edf', methods=['GET'])
+def tarif_edf():
+    """
+    Tarif reglementaire EDF (TRVE, tarif 6 kVA -- tarif residentiel le
+    plus courant) pour l'offre de reference du comparateur-energie.
+
+    Remplace un endpoint precedent (/api/tarifs) qui ne faisait que
+    renvoyer un statut fixe sans aucune donnee reelle -- jamais appele
+    par le front, decouvert lors du diagnostic du 16/11/2026. Lit
+    indicateurs_reglementaires, deja synchronise quotidiennement
+    (sync-indicateurs.yml) et deja utilise pour l'audit mensuel des
+    articles -- meme source de verite, pas de nouvelle donnee a sourcer.
+    """
+    try:
+        client_bq = bigquery.Client()
+        df = client_bq.query(f"""
+            SELECT indicateur, valeur, date_debut_validite
+            FROM `{INDICATEURS_PROJECT}`
+            WHERE indicateur IN ('TRVE_part_variable_TTC', 'TRVE_part_fixe_TTC')
+              AND sous_categorie = '6 kVA'
+            QUALIFY ROW_NUMBER() OVER (PARTITION BY indicateur ORDER BY date_verification DESC) = 1
+        """).to_dataframe()
+        valeurs = {row["indicateur"]: row for _, row in df.iterrows()}
+        if "TRVE_part_variable_TTC" not in valeurs or "TRVE_part_fixe_TTC" not in valeurs:
+            return _cors(jsonify({"status": "error", "detail": "indicateurs TRVE introuvables"})), 404
+
+        variable = valeurs["TRVE_part_variable_TTC"]
+        fixe = valeurs["TRVE_part_fixe_TTC"]
+        resp = jsonify({
+            "status": "ok",
+            "prix_kwh_ttc": round(float(variable["valeur"]), 5),
+            "abo_mois_ttc": round(float(fixe["valeur"]) / 12, 2),
+            "date_debut_validite": variable["date_debut_validite"].strftime("%d/%m/%Y"),
+        })
+        return _cors(resp), 200
+    except Exception as e:
+        print(f"tarif-edf error: {e}")
+        return _cors(jsonify({"status": "error", "detail": str(e)})), 500
+
+
+@app.route('/api/tarif-gaz-repere', methods=['GET'])
+def tarif_gaz_repere():
+    """
+    Prix Repere CRE du gaz (PRVG, moyenne toutes consommations) pour
+    l'offre de reference gaz du comparateur-energie. Meme source et
+    meme principe que /api/tarif-edf. Aucun abonnement reglemente
+    equivalent n'est publie pour le gaz -- seul le prix au kWh est
+    renvoye, l'abonnement reste la valeur indicative deja en place
+    cote front (pas de source live pour cette partie).
+    """
+    try:
+        client_bq = bigquery.Client()
+        df = client_bq.query(f"""
+            SELECT valeur, date_debut_validite
+            FROM `{INDICATEURS_PROJECT}`
+            WHERE indicateur = 'PRVG_moyen_TTC'
+            ORDER BY date_verification DESC
+            LIMIT 1
+        """).to_dataframe()
+        if df.empty:
+            return _cors(jsonify({"status": "error", "detail": "indicateur PRVG_moyen_TTC introuvable"})), 404
+
+        row = df.iloc[0]
+        resp = jsonify({
+            "status": "ok",
+            "prix_kwh_ttc": round(float(row["valeur"]) / 1000, 5),  # €/MWh -> €/kWh
+            "date_debut_validite": row["date_debut_validite"].strftime("%d/%m/%Y"),
+        })
+        return _cors(resp), 200
+    except Exception as e:
+        print(f"tarif-gaz-repere error: {e}")
+        return _cors(jsonify({"status": "error", "detail": str(e)})), 500
 
 
 if __name__ == "__main__":

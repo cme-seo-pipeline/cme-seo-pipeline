@@ -69,6 +69,18 @@ function cme_cmp_handle_lead(){
   $kwh    = intval($data['kwh']??0);
   $opt    = sanitize_text_field($data['option_tarifaire']??'');
   $lien   = esc_url_raw($data['lien_offre']??'');
+  // Profil collecte aux etapes 1/2 -- deja present dans $data (envoye par
+  // le JS depuis S), mais jusqu'ici jamais lu ici : il n'atteignait donc
+  // ni l'email ni (surtout) leads_convertis/BigQuery, seul le relais
+  // Google Sheets (cme-comparateur-leads.gs, qui lit le payload brut) le
+  // recevait. Corrige le 16/11/2026 (diagnostic operateur).
+  $logement  = sanitize_text_field($data['logement']??'');
+  $surface   = intval($data['surface']??0);
+  $personnes = intval($data['personnes']??0);
+  $chauffage = sanitize_text_field($data['chauffage']??'');
+  $cp        = sanitize_text_field($data['codepostal']??'');
+  $pdl       = sanitize_text_field($data['pdl']??'');
+  $pce       = sanitize_text_field($data['pce']??'');
   $dest   = 'contact@comprendre-mon-energie.fr';
 
   $icon = ($energie==='gaz')?'\xF0\x9F\x94\xA5':'\xE2\x9A\xA1';
@@ -85,6 +97,8 @@ function cme_cmp_handle_lead(){
         <tr><td style="padding:6px;color:#6b7280;width:150px">Nom complet</td><td style="padding:6px;font-weight:600">'.$prenom.' '.$nom.'</td></tr>
         <tr><td style="padding:6px;color:#6b7280">Email</td><td style="padding:6px"><a href="mailto:'.$email.'" style="color:#3b82f6">'.$email.'</a></td></tr>
         <tr><td style="padding:6px;color:#6b7280">Telephone</td><td style="padding:6px"><a href="tel:'.$tel.'" style="color:#3b82f6">'.$tel.'</a></td></tr>
+        <tr><td style="padding:6px;color:#6b7280">Logement</td><td style="padding:6px">'.esc_html($logement).' — '.esc_html($surface).' m² — '.esc_html($personnes).' pers. — chauffage '.esc_html($chauffage).'</td></tr>
+        <tr><td style="padding:6px;color:#6b7280">Code postal</td><td style="padding:6px">'.esc_html($cp).'</td></tr>
       </table>
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:0 0 16px">
       <h3 style="color:#3b82f6;margin:0 0 12px">Offre selectionnee</h3>
@@ -118,7 +132,11 @@ function cme_cmp_handle_lead(){
     'body' => json_encode(array(
       'tool' => 'comparateur-energie', 'prenom' => $prenom, 'nom' => $nom, 'email' => $email,
       'telephone' => $tel, 'montant_estime' => $prix, 'economie_estimee' => $eco,
-      'details' => array('energie'=>$energie,'fournisseur'=>$fourn,'offre'=>$offre,'kwh'=>$kwh,'option_tarifaire'=>$opt,'lien_offre'=>$lien),
+      'details' => array(
+        'energie'=>$energie,'fournisseur'=>$fourn,'offre'=>$offre,'kwh'=>$kwh,'option_tarifaire'=>$opt,'lien_offre'=>$lien,
+        'logement'=>$logement,'surface'=>$surface,'personnes'=>$personnes,'chauffage'=>$chauffage,
+        'codepostal'=>$cp,'pdl'=>$pdl,'pce'=>$pce
+      ),
       'source_page' => 'comparateur-energie-electricite-gaz',
       'source_post_id' => sanitize_text_field($data['src_post'] ?? '')
     ))
@@ -260,7 +278,6 @@ octopus:'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/06/octopu
 ohm:'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/01/OHM-logo.png',
 ilek:'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/01/Ilek-logo.png',
 plenitude:'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/06/Logo_Plenitude.png',
-vattenfall:'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/06/vattenfall_logo.png',
 butagaz:'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/06/butagaz_logo.webp',
 alpiq:'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/01/Alpiq-logo.png',
 primeo:'https://www.comprendre-mon-energie.fr/wp-content/uploads/2026/01/Primeo-logo.png'
@@ -272,7 +289,6 @@ var ELEC=[
 {id:'ohm-elec',logo:'ohm',nom:'Ohm Énergie',offre:'Prix Fixe Élec',type:'Offre locale',px:0.1980,abo:7.80,eng:12,vert:false,tags:['Prix fixe 1 an','Service client FR','Local'],c:'#FF6600',i:'OHM',url:'https://ohm-energie.com/offre/electricite'},
 {id:'alpiq-elec',logo:'alpiq',nom:'Alpiq',offre:'Elec Fixe Confort',type:'Offre de marché',px:0.1995,abo:8.40,eng:12,vert:false,tags:['Groupe suisse','Prix fixe 1 an'],c:'#005A96',i:'ALP',url:'https://particuliers.alpiq.fr/electricite/notre-offre'},
 {id:'ekwa-elec',logo:'ekwa',nom:'Ekwateur',offre:'Électricité Verte',type:'Offre verte',px:0.2010,abo:7.99,eng:0,vert:true,tags:['100% renouvelable','Coopérative','B-Corp'],c:'#3D8B37',i:'EKW',url:'https://ekwateur.fr/electricite-verte/'},
-{id:'vattenfall',logo:'vattenfall',nom:'Vattenfall',offre:'Elec Fixe',type:'Offre de marché',px:0.2020,abo:8.60,eng:12,vert:true,tags:['Hydroélectrique','Prix fixe'],c:'#1F3A6E',i:'VAT',url:'https://www.vattenfall.fr/electricite-et-gaz/offres-electricite-moins-chere'},
 {id:'plen-elec',logo:'plenitude',nom:'Plenitude',offre:'Fix Électricité',type:'Offre de marché',px:0.2030,abo:8.30,eng:12,vert:false,tags:['Prix fixe 2 ans','Ex-Eni'],c:'#F5A623',i:'PLN',url:'https://www.eniplenitude.fr/offres-electricite'},
 {id:'ilek-elec',logo:'ilek',nom:'ilek',offre:'Je choisis Vert',type:'Offre verte',px:0.2055,abo:8.10,eng:0,vert:true,tags:['Énergie locale','Producteurs FR'],c:'#6DBF4A',i:'ILK',url:'https://www.ilek.fr/offre-electricite'},
 {id:'octopus-elec',logo:'octopus',nom:'Octopus Energy',offre:'Électricité Verte',type:'Offre verte',px:0.2075,abo:8.20,eng:0,vert:true,tags:['100% vert','App innovante'],c:'#E8107F',i:'OCT',url:'https://octopusenergy.fr/offre'},
@@ -283,7 +299,6 @@ var ELEC=[
 var GAZ=[
 {id:'ohm-gaz',logo:'ohm',nom:'Ohm Énergie',offre:'Gaz Prix Fixe',type:'Offre locale',px:0.0971,abo:5.70,eng:12,vert:false,tags:['Prix fixe 1 an','Service client FR'],c:'#FF6600',i:'OHM',url:'https://ohm-energie.com/offre/offre-gaz'},
 {id:'engie-gaz',logo:'engie',nom:'Engie',offre:'Gaz Moins Cher',type:'Offre de marché',px:0.1045,abo:5.80,eng:0,vert:false,tags:['Sans engagement','App mobile'],c:'#009DE0',i:'ENG',url:'https://particuliers.engie.fr/gaz.html'},
-{id:'vat-gaz',logo:'vattenfall',nom:'Vattenfall',offre:'Gaz Fixe',type:'Offre de marché',px:0.1050,abo:5.90,eng:12,vert:false,tags:['Prix fixe 1 an'],c:'#1F3A6E',i:'VAT',url:'https://www.vattenfall.fr/electricite-et-gaz/offres-gaz-moins-cheres'},
 {id:'plen-gaz',logo:'plenitude',nom:'Plenitude',offre:'Fix Gaz',type:'Offre de marché',px:0.1065,abo:6.00,eng:12,vert:false,tags:['Prix fixe 2 ans','Ex-Eni'],c:'#F5A623',i:'PLN',url:'https://www.eniplenitude.fr/offres-gaz'},
 {id:'te-gaz',logo:'te',nom:'TotalEnergies',offre:'Gaz Fixe 1 an',type:'Offre de marché',px:0.1089,abo:5.99,eng:12,vert:false,tags:['Prix fixe 1 an'],c:'#E8001C',i:'TE',url:'https://www.totalenergies.fr/particuliers/electricite-et-gaz/offres-d-electricite-et-gaz'},
 {id:'butagaz-gaz',logo:'butagaz',nom:'Butagaz',offre:'Gaz Sérénité',type:'Offre de marché',px:0.1120,abo:6.20,eng:0,vert:false,tags:['Groupe Shell','Sans engagement'],c:'#E85D1E',i:'BUT',url:'https://www.butagaz.fr/gaz-electricite/offres-electricite'},
@@ -300,7 +315,7 @@ var S={
   enrg:EDEF==='gaz'?'gaz':(EDEF==='dual'?'dual':'elec'),
   tab:EDEF==='gaz'?'gaz':'elec',
   edfPrix:0.19398,edfAbo:11.80,edfDate:'01/02/2026',
-  gazRef:0.12766,gazAbo:6.49
+  gazRef:0.12766,gazAbo:6.49,gazDate:'01/02/2026'
 };
 
 // ── Calculs ──────────────────────────────────────────────────────────────────
@@ -685,7 +700,7 @@ function step3(root){
   ap(root,g3);
 
   // Note légale
-  ap(root,mk('div','fnote','ℹ️ Tarif EDF mis à jour depuis la CRE ('+S.edfDate+'). Offres de marché : indicatifs trimestriels. Votre facture réelle dépend de votre puissance souscrite et consommation exacte.'));
+  ap(root,mk('div','fnote','ℹ️ Tarif EDF mis à jour depuis la CRE ('+S.edfDate+'), Prix Repère gaz CRE ('+S.gazDate+'). Offres de marché : indicatifs trimestriels. Votre facture réelle dépend de votre puissance souscrite et consommation exacte.'));
 
   // Boutons retour
   var acts=mk('div','acts');acts.style.marginTop='14px';
@@ -915,6 +930,18 @@ fetch(API+'/api/tarif-edf')
     }
   })
   .catch(function(){}); // silencieux : le prix par defaut reste affiche
+// Mise a jour silencieuse du Prix Repere gaz CRE, meme principe que ci-dessus
+fetch(API+'/api/tarif-gaz-repere')
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(d&&d.prix_kwh_ttc){
+      S.gazRef=d.prix_kwh_ttc;
+      S.gazDate=d.date_debut_validite||'01/02/2026';
+      GAZ.forEach(function(o){if(o.id==='edf-gaz'){o.px=S.gazRef;}}); // abo gaz : pas de source live, valeur indicative inchangee
+      render();
+    }
+  })
+  .catch(function(){});
 })();
 </script>
 <?php
