@@ -1,0 +1,41 @@
+# Execution du 2026-11-16T16:49:00Z
+# Script    : scripts-maintenance/tester_endpoints_tarifs_comparateur.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+====================================================================================================
+1. /api/tarif-edf — requete exacte de tarif_edf()
+====================================================================================================
+            indicateur   valeur date_debut_validite
+    TRVE_part_fixe_TTC 190.8100          2026-08-01
+TRVE_part_variable_TTC   0.2001          2026-08-01
+
+  -> Reponse simulee : prix_kwh_ttc=0.2001, abo_mois_ttc=15.9, date_debut_validite=01/08/2026
+
+====================================================================================================
+2. /api/tarif-gaz-repere — requete exacte de tarif_gaz_repere()
+====================================================================================================
+    valeur date_debut_validite
+206.256037          2026-12-01
+
+  -> Reponse simulee : prix_kwh_ttc=0.20626, date_debut_validite=01/12/2026
+  ⚠️ prix_kwh_ttc gaz hors plage plausible (0.05-0.20 €/kWh) : 0.20626
+
+====================================================================================================
+3. Comparaison avec les valeurs actuellement codees en dur dans le plugin (avant branchement live)
+====================================================================================================
+  EDF (plugin, S.edfPrix/S.edfAbo par defaut) : 0.19398 €/kWh, 11.80 €/mois
+  Gaz (plugin, GAZ 'edf-gaz'/S.gazRef/S.gazAbo) : 0.12766 €/kWh, 6.49 €/mois (abo)
+  -> Ecart EDF détecté par le branchement live : prix +3.2% / abo +34.7%
+  -> Ecart gaz détecté par le branchement live : prix +61.6%
+
+====================================================================================================
+RESULTAT
+====================================================================================================
+✅ Les deux endpoints renverraient des valeurs exploitables -- pret pour redeploiement Cloud Run.
