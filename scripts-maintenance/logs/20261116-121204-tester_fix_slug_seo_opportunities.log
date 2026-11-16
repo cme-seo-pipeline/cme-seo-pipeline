@@ -1,0 +1,73 @@
+# Execution du 2026-11-16T12:12:04Z
+# Script    : scripts-maintenance/tester_fix_slug_seo_opportunities.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+REJEU DE LA REQUETE CORRIGEE (apres to_slug) POUR LES 20 SOUS-SILOS DU QUOTA
+====================================================================================================
+  ⚠️ 1. Gaz                 Bouteilles                   slug=bouteilles                          -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 1. Gaz                 Facture Gaz                  slug=facture-gaz                         -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 1. Gaz                 Compteur gaz                 slug=compteur-gaz                        -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 1. Gaz                 Contrat Gaz                  slug=contrat-gaz                         -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 1. Gaz                 Chauffage Gaz                slug=chauffage-gaz                       -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 1. Gaz                 Déménagement gaz             slug=demenagement-gaz                    -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 5. Électricité         Contrat Électricité          slug=contrat-electricite                 -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 5. Électricité         Facture Électricité          slug=facture-electricite                 -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 5. Électricité         Compteur                     slug=compteur                            -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 5. Électricité         Chauffage Électricité        slug=chauffage-electricite               -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 5. Électricité         Déménagement                 slug=demenagement                        -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 3. Aide Énergétique    MaPrimeRénov'                slug=maprimerenov                        -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 3. Aide Énergétique    Chèque énergie               slug=cheque-energie                      -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 3. Aide Énergétique    Aide pompe à chaleur         slug=aide-pompe-a-chaleur                -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 3. Aide Énergétique    Aide isolation               slug=aide-isolation                      -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 4. Solaire             Kit solaire                  slug=kit-solaire                         -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 4. Solaire             Panneaux solaires            slug=panneaux-solaires                   -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 4. Solaire             Batterie panneaux solaires   slug=batterie-panneaux-solaires          -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 4. Solaire             Système solaire combiné      slug=systeme-solaire-combine             -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 4. Solaire             Chauffe-eau solaire          slug=chauffe-eau-solaire                 -> toujours 0 opportunite (fallback anciennete inchange)
+
+====================================================================================================
+BILAN : 0/20 sous-silos trouveraient desormais une opportunite GSC reelle (contre 0/20 avant le correctif), 20/20 resteraient en fallback anciennete.
+====================================================================================================
