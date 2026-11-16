@@ -3457,3 +3457,37 @@ confirmer au prochain run de `publication-quotidienne.yml` (demain,
 restera à 100% malgré le correctif du Bug 1, donc ce run seul ne suffira
 pas à confirmer le Bug 1 isolément — seul le test SQL direct déjà effectué
 le confirme pour l'instant.
+
+### Correctif appliqué — jours_depuis_pub retiré, validé en conditions réelles (16/11/2026)
+
+Décision opérateur suite à l'analyse ci-dessus : option (a) retenue — retirer
+entièrement `jours_depuis_pub >= 30` plutôt que le recalculer par article
+(option b, écartée : touche la vue SQL pour une protection déjà redondante
+avec les deux couches anti-doublon existantes et déjà éprouvées). Appliqué
+dans `selectionner_silos_a_traiter()` (commit `5ebab5c`) — la colonne reste
+dans le `SELECT` à titre informatif, simplement plus utilisée comme filtre.
+
+**Validé en conditions réelles avant le prochain run**
+(`scripts-maintenance/tester_fix_slug_seo_opportunities.py`, rejoue la
+requête complète corrigée — slug + sans `jours_depuis_pub` — pour les 20
+sous-silos) : **16/20 sous-silos trouvent désormais une vraie opportunité
+GSC** (contre 0/20 avant les deux correctifs), avec des scores et positions
+réalistes (ex. "preavis edf ouverture" pos 6.5, score 19543 ; "chèque
+énergie 2026 simulation" pos 9.8, score 5045).
+
+**Les 4 qui restent en fallback sont exactement ceux déjà identifiés, pas
+une régression** :
+- "Compteur gaz" et "Chauffage Gaz" : pas encore de données GSC (créés/
+  réactivés le 13/11, trop récents).
+- "Aide pompe à chaleur" et "Aide isolation" : mal classés par la vue sous
+  le silo "2. Rénovation Énergétique" (slugs `"pompe-a-chaleur"`/
+  `"isolation"` sans préfixe `"aide-"`) — bug distinct côté
+  `fix_seo_opportunities_postid.sh`, non corrigé, scope séparé.
+
+**Les deux bugs du fallback ancienneté à 100% sont donc corrigés et
+validés par test SQL réel.** Reste à confirmer au prochain run de
+`publication-quotidienne.yml` (demain, 17/11/2026) que les lignes
+`ℹ️ ... trouvé via SEO` apparaissent effectivement dans le log (au lieu de
+100% fallback ancienneté), et qu'aucune régression n'apparaît sur
+l'anti-doublon (les deux couches restantes — exclusion exacte par mot-clé
+et `verifier_et_differencier_sujet()` — n'ont pas été modifiées).
