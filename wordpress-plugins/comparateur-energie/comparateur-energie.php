@@ -187,14 +187,11 @@ ob_start();?>
 #<?php echo $uid;?> .hint{font-size:12px;color:#9ca3af;margin-top:5px;line-height:1.4}
 #<?php echo $uid;?> .stitle{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px}
 #<?php echo $uid;?> .tog{display:flex;gap:6px;flex-wrap:wrap}
-#<?php echo $uid;?> .tbtn{flex:1;min-width:80px;min-height:44px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;color:#374151;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;padding:8px 6px;line-height:1.2;display:flex;align-items:center;justify-content:center;text-align:center}
-#<?php echo $uid;?> .tbtn.on{border:1.5px solid #3b82f6;background:#eff6ff;color:#1d4ed8;font-weight:500}
-#<?php echo $uid;?> .tog .tbtn:nth-child(1){background:#eff6ff}
-#<?php echo $uid;?> .tog .tbtn:nth-child(2){background:#fff7ed}
-#<?php echo $uid;?> .tog .tbtn:nth-child(3){background:#faf5ff}
-#<?php echo $uid;?> .tog .tbtn:nth-child(1).on{background:#dbeafe;border-color:#3b82f6;color:#1d4ed8}
-#<?php echo $uid;?> .tog .tbtn:nth-child(2).on{background:#fed7aa;border-color:#f97316;color:#9a3412}
-#<?php echo $uid;?> .tog .tbtn:nth-child(3).on{background:#e9d5ff;border-color:#a855f7;color:#6b21a8}
+#<?php echo $uid;?> .tbtn{flex:1;min-width:80px;min-height:48px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;color:#374151;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;padding:8px 6px;line-height:1.2;display:flex;align-items:center;justify-content:center;gap:7px;text-align:center}
+#<?php echo $uid;?> .tbtn.on{border:1.5px solid #3b82f6;background:#eff6ff;color:#1d4ed8;font-weight:600}
+#<?php echo $uid;?> .ticon{flex-shrink:0;display:inline-flex;color:#9ca3af;transition:color .15s}
+#<?php echo $uid;?> .ticon svg{width:20px;height:20px;display:block}
+#<?php echo $uid;?> .tbtn.on .ticon{color:#3b82f6}
 #<?php echo $uid;?> .summ-elec{border-left:4px solid #3b82f6;background:#eff6ff}
 #<?php echo $uid;?> .summ-gaz{border-left:4px solid #f97316;background:#fff7ed}
 #<?php echo $uid;?> .sbar{display:flex;align-items:center;gap:6px;margin-bottom:20px}
@@ -361,10 +358,28 @@ function mk(tag,cls,txt){
 }
 function ap(parent,child){parent.appendChild(child);return parent;}
 
+// ── Icônes SVG inline (currentColor -- recoloriees par CSS via .on, aucune
+// requete reseau, quelques centaines d'octets au total) pour les toggles
+// (energie / logement / option tarifaire), remplace la distinction
+// uniquement par couleur arbitraire (bleu/orange/violet par position)
+// qui existait jusqu'ici et ne voulait rien dire semantiquement.
+var TOG_ICONS={
+  elec:'<svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>',
+  gaz:'<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c3 4 6 7 6 11a6 6 0 1 1-12 0c0-1 .3-2 .8-3 .4 1.5 1.7 2 2.2.5-.6-2 .2-4 1.5-5.3-.2 1.6.6 2.3 1.5 1.3C11.6 5 11.8 3.3 12 2Z"/></svg>',
+  dual:'<svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 2 2 12h5l-1 7 7-10H8l1-7Z"/><path fill="currentColor" d="M17 9c2 2.4 4 4.4 4 7a4 4 0 1 1-8 0c0-.7.2-1.3.5-2 .3 1 1.1 1.3 1.5.3-.4-1.3.1-2.6 1-3.5-.1 1 .4 1.5 1 .8C16.7 10.7 16.8 9.8 17 9Z"/></svg>',
+  maison:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1V16a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3.5a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1V10"/></svg>',
+  appartement:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/><path d="M10 21v-3a2 2 0 0 1 4 0v3"/></svg>',
+  base:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor"/></svg>',
+  hphc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path fill="currentColor" stroke="none" d="M12 3a9 9 0 0 1 0 18Z"/></svg>'
+};
 function mkTog(opts,val,onChange){
   var d=mk('div','tog');
   opts.forEach(function(o){
-    var b=mk('button','tbtn'+(val===o.v?' on':''),o.l);
+    var b=mk('button','tbtn'+(val===o.v?' on':''));
+    if(o.icon&&TOG_ICONS[o.icon]){
+      var ic=mk('span','ticon');ic.innerHTML=TOG_ICONS[o.icon];ap(b,ic);
+    }
+    ap(b,document.createTextNode(o.l));
     b.onclick=function(){
       d.querySelectorAll('.tbtn').forEach(function(x){x.className='tbtn';});
       b.className='tbtn on';
@@ -485,7 +500,7 @@ function step1(root){
   // Profil
   var c1=mk('div','cc');
   ap(c1,mk('div','stitle','Type de logement'));
-  ap(c1,mkTog([{v:'maison',l:'Maison'},{v:'appartement',l:'Appartement'}],S.logement,function(v){S.logement=v;}));
+  ap(c1,mkTog([{v:'maison',l:'Maison',icon:'maison'},{v:'appartement',l:'Appartement',icon:'appartement'}],S.logement,function(v){S.logement=v;}));
   var g2=mk('div','g2');g2.style.marginTop='14px';
   ap(g2,mkField('Surface (m²)','number',S.surface,function(v){S.surface=parseInt(v)||75;estim();},'',10,500));
   ap(g2,mkSel('Nombre de personnes',['1 personne','2 personnes','3 personnes','4 personnes','5+ personnes'],Math.min(4,(parseInt(S.personnes)||2)-1),function(v){S.personnes=v+1;estim();}));
@@ -524,7 +539,7 @@ function step1(root){
     var ce=mk('div','cc');
     ap(ce,mk('div','stitle','Énergie à comparer'));
     ap(ce,mkTog(
-      [{v:'elec',l:'Électricité'},{v:'gaz',l:'Gaz'},{v:'dual',l:'Électricité & Gaz'}],
+      [{v:'elec',l:'Électricité',icon:'elec'},{v:'gaz',l:'Gaz',icon:'gaz'},{v:'dual',l:'Électricité & Gaz',icon:'dual'}],
       S.enrg,
       function(v){S.enrg=v;S.tab=v==='gaz'?'gaz':'elec';render();}
     ));
@@ -561,9 +576,9 @@ function step2(root){
 
   // Option tarifaire
   var ct=mk('div','cc');
-  ap(ct,mk('div','stitle','🕐 Option tarifaire'));
+  ap(ct,mk('div','stitle','Option tarifaire'));
   ap(ct,mkTog(
-    [{v:'base',l:'Tarif de base'},{v:'hphc',l:'Heures pleines / creuses'}],
+    [{v:'base',l:'Tarif de base',icon:'base'},{v:'hphc',l:'Heures pleines / creuses',icon:'hphc'}],
     S.option,
     function(v){S.option=v;render();}
   ));
