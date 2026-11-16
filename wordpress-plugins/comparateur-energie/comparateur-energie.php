@@ -185,6 +185,7 @@ ob_start();?>
 #<?php echo $uid;?> input[type=number]:focus::-webkit-inner-spin-button{background:#dbeafe}
 #<?php echo $uid;?> input:focus,#<?php echo $uid;?> select:focus{border-color:#3b82f6;background:#fff}
 #<?php echo $uid;?> .hint{font-size:12px;color:#9ca3af;margin-top:5px;line-height:1.4}
+#<?php echo $uid;?> .s1err{display:none;color:#dc2626;font-size:12px;margin-top:12px;line-height:1.4}
 #<?php echo $uid;?> .stitle{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px}
 #<?php echo $uid;?> .tog{display:flex;gap:6px;flex-wrap:wrap}
 #<?php echo $uid;?> .tbtn{flex:1;min-width:80px;min-height:48px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;color:#374151;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;padding:8px 6px;line-height:1.2;display:flex;align-items:center;justify-content:center;gap:7px;text-align:center}
@@ -320,8 +321,13 @@ var GAZ=[
 // ── État global ──────────────────────────────────────────────────────────────
 var S={
   step:1,
-  logement:'maison',surface:75,personnes:2,chauffage:'elec',
-  codepostal:'75001',pdl:'',pce:'',
+  // Demande operateur (16/11/2026) : plus de pre-remplissage automatique --
+  // surface/personnes/chauffage/code postal partent vides (placeholder),
+  // l'utilisateur doit les renseigner lui-meme (champs obligatoires, voir
+  // step1Valide()). Seuls logement (toggle, ne peut pas etre "vide") et
+  // PDL/PCE (explicitement optionnels) gardent un comportement different.
+  logement:'maison',surface:'',personnes:'',chauffage:'',
+  codepostal:'',pdl:'',pce:'',
   option:'base',elec:3500,gaz:8000,
   enrg:EDEF==='gaz'?'gaz':(EDEF==='dual'?'dual':'elec'),
   tab:EDEF==='gaz'?'gaz':'elec',
@@ -390,32 +396,47 @@ function mkTog(opts,val,onChange){
   return d;
 }
 
-function mkInput(type,val,onChg,ph,min,max,step){
+function mkInput(type,val,onChg,ph,min,max,step,ac){
   var i=document.createElement('input');
   i.type=type;i.value=val||'';
   if(ph)i.placeholder=ph;
   if(min!=null)i.min=min;
   if(max!=null)i.max=max;
   if(step)i.step=step;
+  // ac (autocomplete) optionnel : 'off' coupe l'auto-remplissage du
+  // navigateur (adresses/profils enregistres) sur les champs profil
+  // desormais obligatoires -- demande operateur du 16/11/2026, saisie
+  // volontaire plutot qu'une valeur suggeree sans verification.
+  if(ac)i.autocomplete=ac;
   i.oninput=function(){onChg(i.value);};
   return i;
 }
-function mkField(lbl,type,val,onChg,ph,min,max,step){
+function mkField(lbl,type,val,onChg,ph,min,max,step,ac){
   var d=mk('div');
   ap(d,mk('label',null,lbl));
-  ap(d,mkInput(type,val,onChg,ph,min,max,step));
+  ap(d,mkInput(type,val,onChg,ph,min,max,step,ac));
   return d;
 }
-function mkSel(lbl,opts,selIdx,onChg){
+function mkSel(lbl,opts,selIdx,onChg,placeholder){
+  // placeholder (optionnel) : ajoute une option desactivee/grisee en tete
+  // ("Choisissez...") selectionnee par defaut quand selIdx est null -- pas
+  // de pre-selection automatique sur un vrai choix, demande operateur du
+  // 16/11/2026. Reste un <select> natif (le "choix deroulant" a garder).
   var d=mk('div'),s=document.createElement('select');
   ap(d,mk('label',null,lbl));
+  if(placeholder){
+    var ph=document.createElement('option');
+    ph.value='';ph.textContent=placeholder;ph.disabled=true;ph.hidden=true;
+    if(selIdx==null||selIdx<0)ph.selected=true;
+    ap(s,ph);
+  }
   opts.forEach(function(o,i){
     var op=document.createElement('option');
     op.value=i;op.textContent=o;
     if(i===selIdx)op.selected=true;
     ap(s,op);
   });
-  s.onchange=function(){onChg(parseInt(s.value));};
+  s.onchange=function(){onChg(s.value===''?null:parseInt(s.value));};
   return ap(d,s);
 }
 function mkLogo(o){
@@ -502,15 +523,21 @@ function step1(root){
   var showE=S.enrg==='elec'||S.enrg==='dual';
   var showG=S.enrg==='gaz'||S.enrg==='dual';
 
-  // Profil
+  // Profil -- tous obligatoires sauf PDL/PCE (demande operateur du
+  // 16/11/2026) : plus de valeur pre-remplie automatiquement, l'utilisateur
+  // doit renseigner lui-meme chaque champ (voir step1Valide()).
   var c1=mk('div','cc');
-  ap(c1,mk('div','stitle','Type de logement'));
+  ap(c1,mk('div','stitle','Type de logement *'));
   ap(c1,mkTog([{v:'maison',l:'Maison',icon:'maison'},{v:'appartement',l:'Appartement',icon:'appartement'}],S.logement,function(v){S.logement=v;}));
   var g2=mk('div','g2');g2.style.marginTop='14px';
-  ap(g2,mkField('Surface (m²)','number',S.surface,function(v){S.surface=parseInt(v)||75;estim();},'',10,500));
-  ap(g2,mkSel('Nombre de personnes',['1 personne','2 personnes','3 personnes','4 personnes','5+ personnes'],Math.min(4,(parseInt(S.personnes)||2)-1),function(v){S.personnes=v+1;estim();}));
-  ap(g2,mkSel('Mode de chauffage',['Électrique','Gaz naturel','Pompe à chaleur','Fioul / autre'],['elec','gaz','pac','fioul'].indexOf(S.chauffage),function(v){S.chauffage=['elec','gaz','pac','fioul'][v];estim();}));
-  ap(g2,mkField('Code postal','text',S.codepostal,function(v){S.codepostal=v;},'ex: 75001'));
+  ap(g2,mkField('Surface (m²) *','number',S.surface,function(v){S.surface=v;estim();},'ex: 75',10,500,null,'off'));
+  ap(g2,mkSel('Nombre de personnes *',['1 personne','2 personnes','3 personnes','4 personnes','5+ personnes'],
+    (S.personnes===''||S.personnes==null)?null:(parseInt(S.personnes)-1),
+    function(v){S.personnes=(v==null)?'':v+1;estim();},'Choisissez...'));
+  ap(g2,mkSel('Mode de chauffage *',['Électrique','Gaz naturel','Pompe à chaleur','Fioul / autre'],
+    S.chauffage?['elec','gaz','pac','fioul'].indexOf(S.chauffage):null,
+    function(v){S.chauffage=(v==null)?'':['elec','gaz','pac','fioul'][v];estim();},'Choisissez...'));
+  ap(g2,mkField('Code postal *','text',S.codepostal,function(v){S.codepostal=v;},'ex: 75001',null,null,null,'off'));
   ap(c1,g2);
   ap(root,c1);
 
@@ -542,7 +569,7 @@ function step1(root){
   // Énergie (dual uniquement)
   if(EDEF==='dual'){
     var ce=mk('div','cc');
-    ap(ce,mk('div','stitle','Énergie à comparer'));
+    ap(ce,mk('div','stitle','Énergie à comparer *'));
     ap(ce,mkTog(
       [{v:'elec',l:'Électricité',icon:'elec'},{v:'gaz',l:'Gaz',icon:'gaz'},{v:'dual',l:'Électricité & Gaz',icon:'dual'}],
       S.enrg,
@@ -551,12 +578,32 @@ function step1(root){
     ap(root,ce);
   }
 
+  var s1err=mk('div','s1err','⚠️ Merci de renseigner tous les champs obligatoires (*) ci-dessus — le code postal doit comporter 5 chiffres.');
+  s1err.id=UID+'-s1err';ap(root,s1err);
+
   var acts=mk('div','acts');
   ap(acts,mk('div'));
   var nb=mk('button','bp','Continuer →');
-  nb.onclick=function(){S.step=2;render();};
+  nb.onclick=function(){
+    if(!step1Valide()){
+      var e=document.getElementById(UID+'-s1err');
+      if(e)e.style.display='block';
+      return;
+    }
+    S.step=2;render();
+  };
   ap(acts,nb);
   ap(root,acts);
+}
+
+// Champs obligatoires de l'etape 1 (tous sauf PDL/PCE, explicitement
+// optionnels) -- demande operateur du 16/11/2026.
+function step1Valide(){
+  return !!S.logement
+    && String(S.surface).trim()!==''&&parseInt(S.surface)>0
+    && S.personnes!==''&&S.personnes!=null
+    && !!S.chauffage
+    && /^[0-9]{5}$/.test(String(S.codepostal).trim());
 }
 
 // ── Input number avec flèches natives stylisées ─────────────────────────────
