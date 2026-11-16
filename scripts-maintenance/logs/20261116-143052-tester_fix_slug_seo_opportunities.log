@@ -1,0 +1,43 @@
+# Execution du 2026-11-16T14:30:52Z
+# Script    : scripts-maintenance/tester_fix_slug_seo_opportunities.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+REJEU DE LA REQUETE CORRIGEE (apres to_slug) POUR LES 20 SOUS-SILOS DU QUOTA
+====================================================================================================
+  ✅ 1. Gaz                 Bouteilles                   slug=bouteilles                          -> 'prix du gaz bouteille 2026' (pos 8.6, impr. 116, score 6806, pub. il y a 0j)
+  ✅ 1. Gaz                 Facture Gaz                  slug=facture-gaz                         -> 'comparateur gaz collectivite' (pos 10.7, impr. 9, score 486, pub. il y a 0j)
+  ⚠️ 1. Gaz                 Compteur gaz                 slug=compteur-gaz                        -> toujours 0 opportunite (fallback anciennete inchange)
+  ✅ 1. Gaz                 Contrat Gaz                  slug=contrat-gaz                         -> 'renouvellement contrat gaz pro' (pos 10.4, impr. 7, score 383, pub. il y a 0j)
+  ⚠️ 1. Gaz                 Chauffage Gaz                slug=chauffage-gaz                       -> toujours 0 opportunite (fallback anciennete inchange)
+  ✅ 1. Gaz                 Déménagement gaz             slug=demenagement-gaz                    -> 'installation poele a gaz' (pos 13.2, impr. 6, score 437, pub. il y a 0j)
+  ✅ 5. Électricité         Contrat Électricité          slug=contrat-electricite                 -> 'preavis edf ouverture' (pos 6.5, impr. 309, score 19543, pub. il y a 0j)
+  ✅ 5. Électricité         Facture Électricité          slug=facture-electricite                 -> 'havredemaison.fr courant calcul' (pos 5.3, impr. 133, score 8765, pub. il y a 0j)
+  ✅ 5. Électricité         Compteur                     slug=compteur                            -> 'combien coute compteur electrique' (pos 32.2, impr. 25, score 231, pub. il y a 0j)
+  ✅ 5. Électricité         Chauffage Électricité        slug=chauffage-electricite               -> 'section cable radiateur 2000w' (pos 11.3, impr. 6, score 316, pub. il y a 0j)
+  ✅ 5. Électricité         Déménagement                 slug=demenagement                        -> 'préavis changement offre énergie' (pos 18.3, impr. 6, score 222, pub. il y a 0j)
+  ✅ 3. Aide Énergétique    MaPrimeRénov'                slug=maprimerenov                        -> 'je-renove-mon-habitat.fr comparatif' (pos 8.3, impr. 186, score 11025, pub. il y a 0j)
+  ✅ 3. Aide Énergétique    Chèque énergie               slug=cheque-energie                      -> 'chèque énergie 2026 simulation' (pos 9.8, impr. 90, score 5045, pub. il y a 0j)
+  ⚠️ 3. Aide Énergétique    Aide pompe à chaleur         slug=aide-pompe-a-chaleur                -> toujours 0 opportunite (fallback anciennete inchange)
+  ⚠️ 3. Aide Énergétique    Aide isolation               slug=aide-isolation                      -> toujours 0 opportunite (fallback anciennete inchange)
+  ✅ 4. Solaire             Kit solaire                  slug=kit-solaire                         -> 'panneau solaire 9kw' (pos 34.1, impr. 21, score 43, pub. il y a 0j)
+  ✅ 4. Solaire             Panneaux solaires            slug=panneaux-solaires                   -> 'panneaux photovoltaïques ma-gestion-renovation.fr' (pos 8.7, impr. 41, score 2396, pub. il y a 0j)
+  ✅ 4. Solaire             Batterie panneaux solaires   slug=batterie-panneaux-solaires          -> 'groupe électrogène batterie solaire' (pos 23.1, impr. 30, score 790, pub. il y a 0j)
+  ✅ 4. Solaire             Système solaire combiné      slug=systeme-solaire-combine             -> 'prix système solaire combiné' (pos 16.0, impr. 14, score 590, pub. il y a 0j)
+  ✅ 4. Solaire             Chauffe-eau solaire          slug=chauffe-eau-solaire                 -> 'devis chauffage solaire' (pos 16.3, impr. 52, score 2160, pub. il y a 0j)
+
+====================================================================================================
+BILAN : 16/20 sous-silos trouveraient desormais une opportunite GSC reelle (contre 0/20 avant le correctif), 4/20 resteraient en fallback anciennete.
+====================================================================================================
