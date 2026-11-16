@@ -1,0 +1,94 @@
+# Execution du 2026-11-16T14:53:41Z
+# Script    : scripts-maintenance/diagnostiquer_etat_comparateur_energie.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+====================================================================================================
+1. ÉTAT DE LA PAGE LIVE (poids réel, rendu, cache)
+====================================================================================================
+  URL testée       : https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+  Statut HTTP      : 200
+  Temps de réponse : 1.46s
+  Poids total HTML : 123 Ko
+  Cache LiteSpeed  : en-tete absent
+  Shortcode bien rendu (marqueurs trouvés) : oui
+  Poids du <style> inline : non isolé automatiquement
+  Poids du plus gros <script> inline       : 27 Ko (sur 25 balises <script> trouvées sur la page)
+  -> Pour comparaison, poids TOTAL de la page : 123 Ko
+  Date de tarifs affichée dans le HTML/JS live : 01/02/2026
+
+====================================================================================================
+2. FRAÎCHEUR DES PRIX — CODE SOURCE DU REPO (comparateur-energie.php)
+====================================================================================================
+  Date de tarifs codée en dur dans le repo (S.edfDate) : 01/02/2026
+  Nombre d'offres codées en dur (ELEC+GAZ) trouvées : 20
+  Exemple : EDF — 0.19398 EUR/kWh, abo 11.80 EUR/mois (en dur dans le JS, aucune source dynamique)
+
+  Script maj-trimestrielle/update_prix.py attend les champs : prix_kwh:/abo_mois:
+  Champs réellement utilisés dans le PHP actuel            : px:/abo:
+  ⚠️ INCOMPATIBILITÉ CONFIRMÉE : le script de mise à jour trimestrielle ne retrouvera AUCUNE offre avec les noms de champs actuels (px:/abo:) — son regex cherche prix_kwh:/abo_mois:. Ce script est cassé depuis un refactor du fichier PHP, silencieusement (il afficherait 'ERREUR : aucune offre trouvee').
+
+====================================================================================================
+3. LEADS RÉELS CAPTURÉS (leads_convertis, tool='comparateur-energie')
+====================================================================================================
+  Total leads convertis depuis le début du suivi : 0
+  Premier lead : NaT
+  Dernier lead : NaT
+
+====================================================================================================
+4. CLICS RÉELS SUR LES OFFRES (historique_clics_comparateur)
+====================================================================================================
+  Total clics enregistrés : 85
+  Premier clic : 2026-06-29 04:55:53.672801+00:00
+  Dernier clic : 2026-10-29 16:19:49.449222+00:00
+
+  Répartition par offre cliquée :
+     : 22
+    Ohm Énergie — Prix Fixe Élec : 12
+    Alpiq — Elec Fixe Confort : 8
+    Butagaz — Gaz Sérénité : 7
+    Primeo Énergie — Fix Confort+ : 7
+    Butagaz — Elec Sérénité : 5
+    Plenitude — Fix Électricité : 3
+    Octopus Energy — Électricité Verte : 3
+    Ekwateur — Biogaz 100% : 3
+    EDF — Prix Repère CRE : 2
+
+====================================================================================================
+5. TRAFIC RÉEL SUR LA PAGE (GSC — 01_raw.gsc_queries, 90 jours)
+====================================================================================================
+  https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    requêtes distinctes=69 clics=0 impressions=135 position_moy=76.6 (du 2026-08-18 au 2026-11-12)
+
+  Top requêtes (90j) :
+    'comparateur gaz' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=16, pos=90.6)
+    'comparatif gaz et electricité' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=5, pos=81.5)
+    'mon énérgie' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=4, pos=23.3)
+    'comparateur fournisseur electricité' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=4, pos=70.5)
+    'comparatif energie' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=4, pos=85.8)
+    'comparateur fournisseur gaz et electricité' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=4, pos=83.0)
+    'comparateur energie' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=4, pos=93.0)
+    'mon energie' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=3, pos=17.0)
+    'comparateur gaz et electricité' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=3, pos=75.3)
+    'comparateur electricite' -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (clics=0, impr=3, pos=89.3)
+
+====================================================================================================
+6. TRAFIC RÉEL SUR LA PAGE (GA4 — 01_raw.ga4_pages, 90 jours)
+====================================================================================================
+  ❌ Erreur GA4 (colonnes possiblement différentes) : 400 Unrecognized name: vues at [2:62]; reason: invalidQuery, location: query, message: Unrecognized name: vues at [2:62]
+
+Location: EU
+Job ID: 4ed8de84-d93c-4f1e-9292-08f716889d12
+
+
+====================================================================================================
+FIN DU DIAGNOSTIC
+====================================================================================================
