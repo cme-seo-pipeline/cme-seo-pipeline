@@ -83,7 +83,13 @@ function cme_cmp_handle_lead(){
   $pce       = sanitize_text_field($data['pce']??'');
   $dest   = 'contact@comprendre-mon-energie.fr';
 
-  $icon = ($energie==='gaz')?'\xF0\x9F\x94\xA5':'\xE2\x9A\xA1';
+  // Bug trouve le 16/11/2026 (test isole de cme_cmp_handle_lead(), task #28) :
+  // des guillemets simples n'interpretent jamais les echappements \xHH en PHP
+  // (contrairement a l'equivalent JS \u.. plus haut, openLeadModal()) -- la
+  // chaine restait donc litteralement "\xF0\x9F\x94\xA5"/"\xE2\x9A\xA1" dans
+  // le sujet/corps de CHAQUE email de lead envoye jusqu'ici. Guillemets
+  // doubles : PHP interprete alors correctement les octets UTF-8 (🔥/⚡).
+  $icon = ($energie==='gaz')?"\xF0\x9F\x94\xA5":"\xE2\x9A\xA1";
   $sujet = $icon.' Nouvelle demande comparateur — '.$prenom.' '.$nom.' — '.$fourn;
 
   $corps = '<!DOCTYPE html><html><body style="font-family:sans-serif;max-width:580px;margin:auto">
