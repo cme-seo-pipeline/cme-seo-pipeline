@@ -30,9 +30,9 @@
 .cme-comp .slbl{font-size:12px;font-weight:500;color:#9ca3af;white-space:nowrap;transition:color .2s}
 .cme-comp .slbl.act{color:#1d4ed8}
 .cme-comp .slbl.done{color:#065f46}
-.cme-comp .bp{height:44px;padding:0 24px;border:none;border-radius:10px;background:#3b82f6;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s}
+.cme-comp .bp{height:44px;padding:0 24px;border:none;border-radius:10px;background:#3b82f6;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;display:inline-flex;align-items:center;justify-content:center}
 .cme-comp .bp:hover{background:#2563eb}
-.cme-comp .bo{height:40px;padding:0 16px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;color:#374151;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s}
+.cme-comp .bo{height:40px;padding:0 16px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;color:#374151;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;justify-content:center}
 .cme-comp .bo:hover{border-color:#3b82f6;color:#1d4ed8}
 .cme-comp .acts{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
 .cme-comp .ibox-info{padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.5;margin-top:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
@@ -58,7 +58,7 @@
 .cme-comp .tags-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .cme-comp .tag{font-size:11px;padding:4px 8px;border-radius:6px;background:#f3f4f6;color:#374151;border:.5px solid #e5e7eb}
 .cme-comp .tag-green{background:#d1fae5;color:#065f46;border-color:#a7f3d0}
-.cme-comp .offer-btn{width:100%;height:40px;border:1px solid #e5e7eb;border-radius:8px;background:transparent;color:#374151;font-size:13px;cursor:pointer;margin-top:10px;font-family:inherit;transition:all .15s}
+.cme-comp .offer-btn{width:100%;height:40px;border:1px solid #e5e7eb;border-radius:8px;background:transparent;color:#374151;font-size:13px;cursor:pointer;margin-top:10px;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;justify-content:center}
 .cme-comp .offer-btn:hover{border-color:#3b82f6;color:#1d4ed8}
 .cme-comp .offer-btn.best{height:44px;border:none;background:#3b82f6;color:#fff;font-size:14px;font-weight:600;margin-top:12px}
 .cme-comp .offer-btn.best:hover{background:#2563eb}
@@ -88,15 +88,29 @@
 .lmodal-ov{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:99999;align-items:center;justify-content:center;padding:16px}
 .lmodal-ov.open{display:flex}
 .lmodal-box{background:#fff;border-radius:16px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
-.lmodal-head{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:18px 22px;border-radius:16px 16px 0 0;font-size:16px;font-weight:700;position:relative}
-.lmodal-close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.2);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:18px;line-height:1;cursor:pointer}
-.lmodal-summ{background:#eff6ff;margin:16px 22px 0;padding:12px 14px;border-radius:10px;border:1px solid #bfdbfe}
-.lmfrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 22px 0}
-.lmfi{width:100%;height:44px;border:1px solid #e5e7eb;border-radius:8px;padding:0 12px;font-size:15px;background:#f9fafb;color:#111827;box-sizing:border-box}
+.lmodal-head{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:20px 22px;border-radius:16px 16px 0 0;font-size:17px;font-weight:700;position:relative}
+/* Distinction par couleur selon l'energie (16/11/2026) -- reprend le meme
+   systeme deja en place a l'etape 2 (.summ-elec bleu / .summ-gaz orange)
+   plutot qu'une couleur arbitraire : l'utilisateur reconnait la meme
+   logique de couleur du debut a la fin du parcours. */
+.lmodal-box.gaz .lmodal-head{background:linear-gradient(135deg,#7c2d12,#f97316)}
+.lmodal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.2);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:18px;line-height:1;cursor:pointer}
+.lmodal-summ{background:#eff6ff;margin:18px 22px 0;padding:14px 16px;border-radius:10px;border:1px solid #bfdbfe}
+.lmodal-box.gaz .lmodal-summ{background:#fff7ed;border-color:#fdba74}
+.lmfrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:18px 22px 0}
+.lmfi{width:100%;height:46px;border:1px solid #e5e7eb;border-radius:8px;padding:0 12px;font-size:15px;background:#f9fafb;color:#111827;box-sizing:border-box}
 .lmfi:focus{outline:none;border-color:#3b82f6;background:#fff}
-.lmrgpd{display:flex;align-items:flex-start;gap:8px;padding:14px 22px 0;font-size:12px;color:#6b7280;line-height:1.5;cursor:pointer}
+.lmrgpd{display:flex;align-items:flex-start;gap:8px;padding:16px 22px 0;font-size:12px;color:#6b7280;line-height:1.5;cursor:pointer}
 .lmrgpd input{margin-top:2px;flex-shrink:0}
 .lmferr{display:none;color:#dc2626;font-size:12px;padding:10px 22px 0;line-height:1.4}
-.lmodal-sub{width:calc(100% - 44px);margin:16px 22px 22px;height:46px;border:none;border-radius:10px;background:#3b82f6;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.lmodal-sub{width:calc(100% - 44px);margin:18px 22px 22px;height:48px;border:none;border-radius:10px;background:#3b82f6;color:#fff;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .15s}
+.lmodal-sub:hover{background:#2563eb}
 .lmodal-sub:disabled{opacity:.6;cursor:not-allowed}
 @media(max-width:480px){.lmfrow{grid-template-columns:1fr}}
+
+/* Fleches de bouton en SVG (remplace le glyphe clavier "→"/"←") -- regle
+   globale : utilisee a la fois dans .cme-comp (bp/bo/offer-btn) et dans
+   le modal de lead, attache a <body>, hors de .cme-comp. */
+.arrow-ic{display:inline-flex;vertical-align:middle;margin-left:7px}
+.arrow-ic.left{margin-left:0;margin-right:7px}
+.arrow-ic svg{width:16px;height:16px;display:block}

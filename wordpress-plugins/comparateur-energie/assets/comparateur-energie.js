@@ -95,6 +95,26 @@ function mk(tag,cls,txt){
 }
 function ap(parent,child){parent.appendChild(child);return parent;}
 
+// ── Fleches de bouton en SVG (remplace le glyphe clavier "→"/"←", rendu
+// grossier et inconsistant selon la police/plateforme) -- meme principe
+// que TOG_ICONS ci-dessous : currentColor, aucune requete reseau.
+var ARROW_SVG={
+  right:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>',
+  left:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M11 18l-6-6 6-6"/></svg>'
+};
+function setArrowLabel(btn,label,dir){
+  dir=dir==='left'?'left':'right';
+  btn.textContent='';
+  var ic=mk('span','arrow-ic'+(dir==='left'?' left':''));ic.innerHTML=ARROW_SVG[dir];
+  if(dir==='left'){ap(btn,ic);ap(btn,document.createTextNode(label));}
+  else{ap(btn,document.createTextNode(label));ap(btn,ic);}
+}
+function mkArrowBtn(tag,cls,label,dir){
+  var b=mk(tag,cls);
+  setArrowLabel(b,label,dir);
+  return b;
+}
+
 // ── Icônes SVG inline (currentColor -- recoloriees par CSS via .on, aucune
 // requete reseau, quelques centaines d'octets au total) pour les toggles
 // (energie / logement / option tarifaire), remplace la distinction
@@ -235,7 +255,10 @@ function mkOfferCard(o,rang,kwh,opt,energie,refPrix){
   o.tags.forEach(function(t){ap(tags,mk('span','tag',t));});
   ap(d,tags);
 
-  var btn=mk('button','offer-btn'+(best?' best':''),best?'Souscrire à cette offre →':'Voir cette offre →');
+  // Message CTA uniforme sur toutes les offres, pas uniquement la
+  // recommandee (demande operateur du 16/11/2026) -- seule la couleur/le
+  // badge "Meilleure offre" distingue desormais la recommandation.
+  var btn=mkArrowBtn('button','offer-btn'+(best?' best':''),'Souscrire à cette offre');
   btn.onclick=function(){
     logClic({offre_id:o.id,offre_nom:o.nom+' — '+o.offre,energie:energie,kwh:kwh,prix_annuel:prix,economie:eco});
     openLeadModal({
@@ -314,7 +337,7 @@ function step1(root){
 
   var acts=mk('div','acts');
   ap(acts,mk('div'));
-  var nb=mk('button','bp','Continuer →');
+  var nb=mkArrowBtn('button','bp','Continuer');
   nb.onclick=function(){
     if(!step1Valide()){
       var e=document.getElementById(UID+'-s1err');
@@ -424,10 +447,10 @@ function step2(root){
 
   // Actions
   var acts=mk('div','acts');
-  var bb=mk('button','bo','← Retour');
+  var bb=mkArrowBtn('button','bo','Retour','left');
   bb.onclick=function(){S.step=1;render();};
   ap(acts,bb);
-  var nb=mk('button','bp','Voir les offres →');
+  var nb=mkArrowBtn('button','bp','Voir les offres');
   nb.onclick=function(){S.step=3;render();};
   ap(acts,nb);
   ap(root,acts);
@@ -516,7 +539,7 @@ function step3(root){
 
   // Boutons retour
   var acts=mk('div','acts');acts.style.marginTop='14px';
-  var bm=mk('button','bo','← Modifier');
+  var bm=mkArrowBtn('button','bo','Modifier','left');
   bm.onclick=function(){S.step=2;render();};
   ap(acts,bm);
   var bn=mk('button','bo','Nouvelle recherche');
@@ -533,6 +556,12 @@ function openLeadModal(ctx){
   var ov=document.getElementById(UID+'-lmodal');
   if(!ov)return;
   var icon=ctx.energie==='gaz'?'\ud83d\udd25':'\u26a1';
+  // Distinction par couleur du modal selon l'energie (demande operateur du
+  // 16/11/2026) -- reprend le meme systeme deja en place a l'etape 2
+  // (.summ-elec bleu / .summ-gaz orange), plutot que d'inventer une
+  // nouvelle couleur : coherence visuelle sur tout le parcours.
+  var box=ov.querySelector('.lmodal-box');
+  if(box)box.className='lmodal-box'+(ctx.energie==='gaz'?' gaz':'');
   var summ=document.getElementById(UID+'-lm-summ');
   if(summ){
     summ.innerHTML=
@@ -547,7 +576,7 @@ function openLeadModal(ctx){
   }
   var err=document.getElementById(UID+'-lm-err');if(err)err.style.display='none';
   var subb=document.getElementById(UID+'-lm-sub');
-  if(subb){subb.disabled=false;subb.textContent='Envoyer ma demande \u2192';}
+  if(subb){subb.disabled=false;setArrowLabel(subb,'Envoyer ma demande');}
   ov.className='lmodal-ov open';
   document.body.style.overflow='hidden';
 }
@@ -652,7 +681,10 @@ function buildLeadModal(root){
 
   var head=mk('div','lmodal-head');
   ap(head,mk('div',null,'\ud83d\udce9 Recevoir cette offre'));
-  var sub=mk('div');sub.style.cssText='font-size:12px;color:#6b7280;font-weight:400;margin-top:2px';
+  // Correctif contraste (QA operateur 16/11/2026) : #6b7280 (gris concu pour
+  // fond clair) etait illisible sur le degrade bleu fonce du header --
+  // remplace par un blanc attenue, lisible sur fond sombre.
+  var sub=mk('div');sub.style.cssText='font-size:12px;color:rgba(255,255,255,.82);font-weight:400;margin-top:4px;line-height:1.4';
   sub.textContent='Un conseiller confirme votre \u00e9ligibilit\u00e9 et vous accompagne';
   ap(head,sub);
   var cls=mk('button','lmodal-close','\u00d7');cls.type='button';cls.onclick=closeLeadModal;
@@ -680,7 +712,7 @@ function buildLeadModal(root){
   var err=mk('div','lmferr','\u26a0\ufe0f Merci de remplir tous les champs et d\'accepter la politique de confidentialit\u00e9.');
   err.id=UID+'-lm-err';ap(form,err);
 
-  var subb=mk('button','lmodal-sub','Envoyer ma demande \u2192');subb.id=UID+'-lm-sub';
+  var subb=mkArrowBtn('button','lmodal-sub','Envoyer ma demande');subb.id=UID+'-lm-sub';
   subb.type='button';subb.onclick=submitLead;ap(form,subb);
 
   ap(box,form);
