@@ -1,20 +1,34 @@
 """
-CME — Test du correctif du 16/11/2026 (slug vs libelle affiche dans
-selectionner_silos_a_traiter()) : rejoue EXACTEMENT la requete corrigee
-(celle commitee dans pipeline.py) pour les 20 sous-silos du quota actuel,
-sans rien publier ni ecrire -- juste pour confirmer, avant le prochain
-run reel de publication-quotidienne.yml, que le correctif debloque bien
-la selection d'opportunites GSC la ou des donnees existent.
+CME — Test des DEUX correctifs du 16/11/2026 (slug vs libelle affiche +
+retrait de jours_depuis_pub>=30) dans selectionner_silos_a_traiter() :
+rejoue EXACTEMENT la requete corrigee (celle commitee dans pipeline.py)
+pour les 20 sous-silos du quota actuel, sans rien publier ni ecrire --
+juste pour confirmer, avant le prochain run reel de
+publication-quotidienne.yml, que les correctifs debloquent bien la
+selection d'opportunites GSC la ou des donnees existent.
 
-Root cause : seo_opportunities.sous_silo est stocke en SLUG (ex.
+Bug 1 : seo_opportunities.sous_silo est stocke en SLUG (ex.
 "bouteilles", "maprimerenov") par la vue, alors que
 selectionner_silos_a_traiter() comparait jusqu'ici au libelle affiche
 ("Bouteilles", "MaPrimeRénov'") -- egalite stricte qui ne matchait
-JAMAIS, d'ou 0/20 sous-silos trouves via SEO sur au moins 6 runs reels
-espaces de 17 jours avant ce correctif. Fix : to_slug(sous_silo_cible)
-utilise desormais pour le WHERE sur seo_opportunities.sous_silo (le
-libelle affiche reste utilise pour le SELECT et pour le filtre
-anti-doublon sur historique_publications, qui stocke bien le libelle).
+JAMAIS. Fix : to_slug(sous_silo_cible) utilise desormais pour le WHERE
+sur seo_opportunities.sous_silo (le libelle affiche reste utilise pour
+le SELECT et pour le filtre anti-doublon sur historique_publications,
+qui stocke bien le libelle).
+
+Bug 2 : jours_depuis_pub>=30 est calcule PAR SOUS-SILO ENTIER (derniere
+publication sur tout le sous-silo), donc quasi toujours < 30 pour un
+sous-silo publie en continu (1/jour ouvre) -- auto-contradictoire avec
+la presence meme d'un sous-silo dans QUOTAS_SOUS_SILO. Decision
+operateur (16/11) : retire entierement, la protection anti-doublon
+restant assuree par (1) l'exclusion exacte par mot-cle (90 jours,
+ci-dessous) et (2) verifier_et_differencier_sujet() en aval (comparaison
+semantique LLM, deja eprouvee).
+
+Avec les deux correctifs appliques, ce script devrait montrer un
+resultat tres different du premier test (0/20) : la plupart des
+sous-silos ayant des donnees GSC devraient desormais trouver une vraie
+opportunite.
 
 Lecture seule -- ne touche ni WordPress ni historique_publications.
 """
@@ -81,7 +95,6 @@ def main():
                        impressions, jours_depuis_pub
                 FROM `{PROJECT_ID}.03_final.seo_opportunities`
                 WHERE silo = '{silo_safe}' AND sous_silo = '{sous_silo_slug_safe}'
-                  AND jours_depuis_pub >= 30
                   AND LOWER(query) NOT IN (
                       SELECT LOWER(mot_cle)
                       FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`

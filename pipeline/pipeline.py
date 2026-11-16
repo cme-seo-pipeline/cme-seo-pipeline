@@ -484,7 +484,22 @@ def selectionner_silos_a_traiter(client_bq, config):
                 jours_depuis_pub
             FROM `{PROJECT_ID}.03_final.seo_opportunities`
             WHERE silo = '{silo_safe}' AND sous_silo = '{sous_silo_slug_safe}'
-              AND jours_depuis_pub >= 30
+              -- jours_depuis_pub >= 30 retire le 16/11/2026 (decision operateur) :
+              -- ce filtre etait calcule par SOUS-SILO ENTIER (derniere
+              -- publication sur tout le sous-silo), pas par article/mot-cle --
+              -- structurellement quasi toujours < 30 pour un sous-silo publie
+              -- en continu (1/jour ouvre), donc auto-contradictoire avec la
+              -- presence meme d'un sous-silo dans QUOTAS_SOUS_SILO. Confirme
+              -- en prod : 0/20 sous-silos "trouves via SEO" sur au moins 6
+              -- runs espaces de 17 jours (31/10 au 16/11), quelle que soit la
+              -- config de quota (voir CLAUDE.md, section "Fallback anciennete
+              -- a 100%..."). Protection anti-doublon deja assuree par deux
+              -- couches independantes et deja eprouvees, sans ce filtre :
+              -- (1) l'exclusion exacte par mot-cle ci-dessous (90 jours) et
+              -- (2) verifier_et_differencier_sujet() en aval (comparaison
+              -- semantique LLM, 90 jours, deja corrigee/validee plusieurs
+              -- fois). jours_depuis_pub reste dans le SELECT ci-dessus a
+              -- titre informatif (log), simplement plus utilise comme filtre.
               AND LOWER(query) NOT IN (
                   SELECT LOWER(mot_cle)
                   FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
