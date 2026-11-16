@@ -1,0 +1,27 @@
+# Execution du 2026-11-16T12:14:07Z
+# Script    : scripts-maintenance/diagnostiquer_jours_depuis_pub.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+=========================================================================================================
+DISTRIBUTION DE jours_depuis_pub PAR (silo, sous_silo SLUG) -- pour les slugs qui matchent reellement
+=========================================================================================================
+  1. Gaz                 bouteilles                          total=137   min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 10:52:13.093692+00:00
+  1. Gaz                 contrat-gaz                         total=4     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 10:56:29.526496+00:00
+  1. Gaz                 facture-gaz                         total=3     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 10:59:24.544065+00:00
+  1. Gaz                 demenagement-gaz                    total=2     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 10:58:00.168903+00:00
+  5. Électricité         facture-electricite                 total=79    min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:20:41.551280+00:00
+  5. Électricité         contrat-electricite                 total=37    min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:17:35.754357+00:00
+  5. Électricité         compteur                            total=3     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:16:07.681851+00:00
+  5. Électricité         chauffage-electricite               total=4     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:14:02.385411+00:00
+  5. Électricité         demenagement                        total=3     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:19:10.401528+00:00
+  3. Aide Énergétique    maprimerenov                        total=62    min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:05:02.125986+00:00
+  3. Aide Énergétique    cheque-energie                      total=37    min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:03:33.253599+00:00
+  4. Solaire             panneaux-solaires                   total=15    min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:10:52.646493+00:00
+  4. Solaire             chauffe-eau-solaire                 total=6     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:07:47.902741+00:00
+  4. Solaire             systeme-solaire-combine             total=5     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:12:50.881602+00:00
+  4. Solaire             kit-solaire                         total=3     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:09:30.550891+00:00
+  4. Solaire             batterie-panneaux-solaires          total=2     min_j=0      mediane_j=0        max_j=0      nb_avec_30j_ou_plus=0    derniere_pub=2026-11-16 11:06:29.341927+00:00
