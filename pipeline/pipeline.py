@@ -453,6 +453,23 @@ def selectionner_silos_a_traiter(client_bq, config):
     for silo_du_jour, sous_silo_cible, quota in QUOTAS_SOUS_SILO:
         silo_safe = silo_du_jour.replace("\\", "\\\\").replace("'", "\\'")
         sous_silo_safe = sous_silo_cible.replace("\\", "\\\\").replace("'", "\\'")
+        # seo_opportunities.sous_silo est stocke en SLUG (ex. "bouteilles",
+        # "maprimerenov", "chauffage-electricite" -- normalisation CASE/REGEXP
+        # de fix_seo_opportunities_postid.sh), pas le libelle affiche utilise
+        # par QUOTAS_SOUS_SILO ("Bouteilles", "MaPrimeRénov'", "Chauffage
+        # Électricité"...). Une egalite stricte sur le libelle affiche ne
+        # matche donc JAMAIS -- confirme en prod le 16/11/2026 : 0 ligne pour
+        # les 20/20 sous-silos du quota, sur au moins 6 runs espaces de 17
+        # jours, alors que la vue contient 521 lignes au total sur ces memes
+        # silos (scripts-maintenance/diagnostiquer_fallback_opportunites*.py).
+        # to_slug() (deja utilisee ailleurs dans ce fichier pour les slugs WP)
+        # reproduit exactement le format de la vue -- verifie sur les 521
+        # lignes reelles avant ce correctif. Seule cette comparaison est
+        # slugifiee : le libelle affiche (sous_silo_safe) reste utilise tel
+        # quel pour le SELECT et pour le filtre anti-doublon sur
+        # historique_publications.sous_silo_strategique (qui stocke bien le
+        # libelle affiche, pas un slug).
+        sous_silo_slug_safe = to_slug(sous_silo_cible).replace("\\", "\\\\").replace("'", "\\'")
         nb_trouves = 0
         sous_silos_deja_vus = []
         try:
@@ -466,7 +483,7 @@ def selectionner_silos_a_traiter(client_bq, config):
                 impressions,
                 jours_depuis_pub
             FROM `{PROJECT_ID}.03_final.seo_opportunities`
-            WHERE silo = '{silo_safe}' AND sous_silo = '{sous_silo_safe}'
+            WHERE silo = '{silo_safe}' AND sous_silo = '{sous_silo_slug_safe}'
               AND jours_depuis_pub >= 30
               AND LOWER(query) NOT IN (
                   SELECT LOWER(mot_cle)
