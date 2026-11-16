@@ -65,8 +65,15 @@ def main():
         prix_kwh_gaz = round(float(row["valeur"]) / 1000, 5)
         date_validite_gaz = row["date_debut_validite"].strftime("%d/%m/%Y")
         print(f"\n  -> Reponse simulee : prix_kwh_ttc={prix_kwh_gaz}, date_debut_validite={date_validite_gaz}")
-        if not (0.05 <= prix_kwh_gaz <= 0.20):
-            print(f"  ⚠️ prix_kwh_ttc gaz hors plage plausible (0.05-0.20 €/kWh) : {prix_kwh_gaz}")
+        # Plage relevee le 16/11/2026 (diagnostiquer_unite_prvg.py) : 'unite' confirme
+        # explicitement '€/MWh' pour PRVG_moyen_TTC -- la conversion /1000 est correcte.
+        # L'indicateur est en hausse continue (172.05 -> 182.88 -> 194.90 -> 206.26 €/MWh
+        # sur sept./oct./nov./dec. 2026, environ +6-7%/mois) : la borne haute initiale de
+        # 0.20 €/kWh etait trop basse pour une tendance reelle, pas le signe d'un bug de
+        # conversion. Relevee a 0.30 pour absorber la poursuite plausible de cette hausse
+        # sans redevenir un faux positif a chaque run mensuel.
+        if not (0.05 <= prix_kwh_gaz <= 0.30):
+            print(f"  ⚠️ prix_kwh_ttc gaz hors plage plausible (0.05-0.30 €/kWh) : {prix_kwh_gaz}")
     else:
         print("  ❌ ECHEC : indicateur PRVG_moyen_TTC introuvable -- l'endpoint renverrait 404.")
 
