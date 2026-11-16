@@ -1,0 +1,86 @@
+# Execution du 2026-11-16T12:09:13Z
+# Script    : scripts-maintenance/diagnostiquer_fallback_opportunites_suite.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+===============================================================================================
+TOUS LES COUPLES (silo, sous_silo) REELLEMENT PRESENTS DANS seo_opportunities
+===============================================================================================
+                     silo                            sous_silo  lignes  min_jours  meilleur_score
+                   1. Gaz                           bouteilles     137          0          6806.0
+                   1. Gaz         comparatifs-fournisseurs-gaz      11         51        146172.0
+                   1. Gaz                          contrat-gaz       4          0           383.0
+                   1. Gaz                          facture-gaz       3          0           486.0
+                   1. Gaz                     demenagement-gaz       2          0           437.0
+2. Rénovation Énergétique                      pompe-a-chaleur      19       2511         51722.0
+2. Rénovation Énergétique                            isolation       4       2511          7067.0
+2. Rénovation Énergétique                            chaudiere       2         67          3411.0
+2. Rénovation Énergétique          chauffe-eau-thermodynamique       2         68        448455.0
+2. Rénovation Énergétique                   renovation-globale       2         69        114168.0
+2. Rénovation Énergétique                    bilan-energetique       1         67         13782.0
+2. Rénovation Énergétique                                poele       1       2511             0.0
+      3. Aide Énergétique                         maprimerenov      62          0         11025.0
+      3. Aide Énergétique                       cheque-energie      37          0          5045.0
+      3. Aide Énergétique    aides-chauffe-eau-thermodynamique      28          3         33186.0
+      3. Aide Énergétique                                            6       2511         93932.0
+      3. Aide Énergétique             aides-renovation-toiture       3         53           942.0
+      3. Aide Énergétique                 aides-combles-perdus       3         52        223461.0
+      3. Aide Énergétique                        prime-energie       2         51            68.0
+      3. Aide Énergétique                          tva-reduite       1         69         15180.0
+      3. Aide Énergétique                 eco-pret-a-taux-zero       1         51           357.0
+               4. Solaire                    panneaux-solaires      15          0          2396.0
+               4. Solaire                  chauffe-eau-solaire       6          0          2160.0
+               4. Solaire              systeme-solaire-combine       5          0           590.0
+               4. Solaire                          kit-solaire       3          0            43.0
+               4. Solaire           batterie-panneaux-solaires       2          0           790.0
+           5. Électricité                  facture-electricite      79          0          8765.0
+           5. Électricité                  contrat-electricite      37          0         19543.0
+           5. Électricité                                           25       2511        450959.0
+           5. Électricité comparatifs-fournisseurs-electricite       5         51         84517.0
+           5. Électricité                chauffage-electricite       4          0           316.0
+           5. Électricité                             compteur       3          0           231.0
+           5. Électricité                         demenagement       3          0           222.0
+           5. Électricité               heures-pleines-creuses       2       2511          5640.0
+                  contact                                            1       2511         46694.0
+
+===============================================================================================
+REPR() DES LIBELLES EXACTS (pour reperer un espace/accent invisible)
+===============================================================================================
+  silo='1. Gaz'                            sous_silo='bouteilles'
+  silo='1. Gaz'                            sous_silo='comparatifs-fournisseurs-gaz'
+  silo='1. Gaz'                            sous_silo='contrat-gaz'
+  silo='1. Gaz'                            sous_silo='facture-gaz'
+  silo='1. Gaz'                            sous_silo='demenagement-gaz'
+  silo='2. Rénovation Énergétique'         sous_silo='pompe-a-chaleur'
+  silo='2. Rénovation Énergétique'         sous_silo='isolation'
+  silo='2. Rénovation Énergétique'         sous_silo='chaudiere'
+  silo='2. Rénovation Énergétique'         sous_silo='chauffe-eau-thermodynamique'
+  silo='2. Rénovation Énergétique'         sous_silo='renovation-globale'
+  silo='2. Rénovation Énergétique'         sous_silo='bilan-energetique'
+  silo='2. Rénovation Énergétique'         sous_silo='poele'
+  silo='3. Aide Énergétique'               sous_silo='maprimerenov'
+  silo='3. Aide Énergétique'               sous_silo='cheque-energie'
+  silo='3. Aide Énergétique'               sous_silo='aides-chauffe-eau-thermodynamique'
+  silo='3. Aide Énergétique'               sous_silo=''
+  silo='3. Aide Énergétique'               sous_silo='aides-renovation-toiture'
+  silo='3. Aide Énergétique'               sous_silo='aides-combles-perdus'
+  silo='3. Aide Énergétique'               sous_silo='prime-energie'
+  silo='3. Aide Énergétique'               sous_silo='tva-reduite'
+  silo='3. Aide Énergétique'               sous_silo='eco-pret-a-taux-zero'
+  silo='4. Solaire'                        sous_silo='panneaux-solaires'
+  silo='4. Solaire'                        sous_silo='chauffe-eau-solaire'
+  silo='4. Solaire'                        sous_silo='systeme-solaire-combine'
+  silo='4. Solaire'                        sous_silo='kit-solaire'
+  silo='4. Solaire'                        sous_silo='batterie-panneaux-solaires'
+  silo='5. Électricité'                    sous_silo='facture-electricite'
+  silo='5. Électricité'                    sous_silo='contrat-electricite'
+  silo='5. Électricité'                    sous_silo=''
+  silo='5. Électricité'                    sous_silo='comparatifs-fournisseurs-electricite'
+  silo='5. Électricité'                    sous_silo='chauffage-electricite'
+  silo='5. Électricité'                    sous_silo='compteur'
+  silo='5. Électricité'                    sous_silo='demenagement'
+  silo='5. Électricité'                    sous_silo='heures-pleines-creuses'
+  silo='contact'                           sous_silo=''
