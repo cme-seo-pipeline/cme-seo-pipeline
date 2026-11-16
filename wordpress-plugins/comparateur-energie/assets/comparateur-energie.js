@@ -255,10 +255,12 @@ function mkOfferCard(o,rang,kwh,opt,energie,refPrix){
   o.tags.forEach(function(t){ap(tags,mk('span','tag',t));});
   ap(d,tags);
 
-  // Message CTA uniforme sur toutes les offres, pas uniquement la
-  // recommandee (demande operateur du 16/11/2026) -- seule la couleur/le
-  // badge "Meilleure offre" distingue desormais la recommandation.
-  var btn=mkArrowBtn('button','offer-btn'+(best?' best':''),'Souscrire à cette offre');
+  // Message ET couleur du CTA uniformes sur toutes les offres, recommandee
+  // ou non (demande operateur du 16/11/2026, precision du meme jour) --
+  // seul le badge "Meilleure offre" (texte) + le liseret de la carte
+  // distinguent la recommandation, jamais la couleur du bouton d'action,
+  // pour ne pas donner l'impression de vouloir orienter le choix.
+  var btn=mkArrowBtn('button','offer-btn','Souscrire à cette offre');
   btn.onclick=function(){
     logClic({offre_id:o.id,offre_nom:o.nom+' — '+o.offre,energie:energie,kwh:kwh,prix_annuel:prix,economie:eco});
     openLeadModal({
