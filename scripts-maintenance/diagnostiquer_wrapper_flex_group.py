@@ -39,10 +39,18 @@ if not WP_APP_PASSWORD:
 AUTH = (WP_USERNAME, WP_APP_PASSWORD)
 
 # Detecte un commentaire Gutenberg wp:group dont le layout est flex (avec ou
-# sans flexWrap explicite) -- l'ordre des cles JSON n'est pas garanti donc on
-# cherche juste la presence des deux signatures dans le MEME commentaire.
+# sans flexWrap explicite). CORRECTIF (17/11/2026) : une 1ere version de cette
+# regex utilisait [^}]* pour capturer le JSON -- mais le JSON Gutenberg reel
+# est IMBRIQUE (ex: {"layout":{"type":"flex","flexWrap":"nowrap"}}, 2
+# accolades fermantes), donc [^}]* s'arretait a la 1ere accolade fermante
+# interne et le \s*--> final ne matchait jamais (faux negatif confirme sur
+# un run reel : 0/1057 articles detectes, alors que le cas connu existe bel
+# et bien). Le JSON d'un commentaire wp:group est toujours sur une seule
+# ligne en pratique -- on capture donc tout entre la 1ere { et la DERNIERE }
+# de la ligne (glouton, bornee par \n), ce qui gere correctement l'imbrication
+# sans avoir besoin d'un vrai parseur JSON.
 RE_WPGROUP_FLEX = re.compile(
-    r'<!--\s*wp:group\s*(\{[^}]*"type"\s*:\s*"flex"[^}]*\})\s*-->',
+    r'<!--\s*wp:group\s*(\{[^\n]*"type"\s*:\s*"flex"[^\n]*\})\s*-->',
     re.IGNORECASE,
 )
 
