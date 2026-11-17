@@ -80,24 +80,36 @@ def main():
     print("\n" + "=" * 100)
     print("📥 4/ Trafic GA4 historique sur la page comparateur-energie-electricite-gaz (si colonnes trouvees)...\n")
     colonnes_dispo = set(noms_colonnes)
-    col_sessions_candidats = [c for c in ["sessions", "sessionCount", "activeUsers", "screenPageViews", "pageviews"] if c in colonnes_dispo]
-    if "pagePath" not in colonnes_dispo or not col_sessions_candidats:
-        print(f"  ⚠️ Impossible de construire la requete automatiquement -- colonnes candidates trouvees : {col_sessions_candidats}, pagePath present={'pagePath' in colonnes_dispo}")
+    if "page_path" not in colonnes_dispo:
+        print(f"  ⚠️ Colonne 'page_path' absente -- colonnes reelles : {noms_colonnes}")
     else:
-        col = col_sessions_candidats[0]
         df_ga4 = client.query(f"""
-            SELECT FORMAT_DATE('%Y-%m', date) AS mois, SUM({col}) AS total_{col}
+            SELECT FORMAT_DATE('%Y-%m', date) AS mois,
+                   SUM(sessions) AS total_sessions,
+                   SUM(page_views) AS total_page_views,
+                   SUM(conversions) AS total_conversions,
+                   AVG(bounce_rate) AS bounce_rate_moyen
             FROM `{PROJECT_ID}.01_raw.ga4_pages`
-            WHERE pagePath LIKE '%comparateur-energie%'
+            WHERE page_path LIKE '%comparateur-energie%'
             GROUP BY mois
             ORDER BY mois
         """).to_dataframe()
         if df_ga4.empty:
-            print(f"  (aucune ligne GA4 pour cette page -- colonne utilisee : {col})")
+            print("  (aucune ligne GA4 pour cette page)")
         else:
-            print(f"  (colonne utilisee : {col})")
             for _, row in df_ga4.iterrows():
-                print(f"  {row['mois']}  -> {row[f'total_{col}']}")
+                print(f"  {row['mois']}  sessions={row['total_sessions']}  page_views={row['total_page_views']}  "
+                      f"conversions={row['total_conversions']}  bounce_rate_moy={row['bounce_rate_moyen']:.1f}%")
+
+        print("\n  --- Detail des page_path distincts trouves (pour verifier qu'on cible la bonne page) ---")
+        df_paths = client.query(f"""
+            SELECT DISTINCT page_path
+            FROM `{PROJECT_ID}.01_raw.ga4_pages`
+            WHERE page_path LIKE '%comparateur%'
+            LIMIT 20
+        """).to_dataframe()
+        for _, row in df_paths.iterrows():
+            print(f"  {row['page_path']}")
 
     print("\n" + "=" * 100)
     print("📥 5/ Pour comparaison directe -- rappel du denominateur contact-expert-inline (deja mesure le 17/11) :\n")
