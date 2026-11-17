@@ -15,14 +15,20 @@ source_page='comparateur-energie-electricite-gaz') :
      comparateur (Engie/Primeo Energie/Alpiq), avant la decouverte du bug
      catastrophique qui a mene au revert complet le meme soir.
 
-Identification PRECISE par (tool, timestamp tronque a la seconde,
-telephone) -- pas un filtre large par telephone de test seul, pour ne
-retirer QUE ces 4 lignes exactes, aucune autre (meme principe que les
-nettoyages de leads de test precedents : nettoyer_leads_test_0211_0302.py,
-nettoyer_leads_test_popup_header.py). TIMESTAMP_TRUNC(..., SECOND) car
-l'operateur a colle des valeurs a la seconde (sans microsecondes) -- la
-colonne reelle en a probablement, une egalite stricte sans troncature
-ne matcherait jamais.
+Identification PRECISE par (tool, timestamp exact, telephone) -- pas un
+filtre large par telephone de test seul, pour ne retirer QUE ces 4 lignes
+exactes, aucune autre (meme principe que les nettoyages de leads de test
+precedents : nettoyer_leads_test_0211_0302.py, nettoyer_leads_test_popup_header.py).
+
+CORRECTIF (17/11/2026) : un 1er essai avec les valeurs collees telles que
+transcrites par l'operateur (timestamps a la seconde arrondis, telephone
+avec espaces "2126 94 37 49 91") a renvoye 0/4 -- une requete de diagnostic
+large (DATE(timestamp,'Europe/Paris') sur le 16-17/11) a retrouve les 4
+vraies lignes et confirme un ecart de quelques secondes sur les timestamps
+(transcription manuelle imprecise) et un telephone reel different
+('+212694374991', sans espaces, avec le '+' du code pays Maroc) --
+valeurs ci-dessous corrigees d'apres cette requete de verification, pas
+d'apres le texte colle initialement.
 
 Dry-run par defaut (affiche les lignes qui seraient supprimees).
 --apply --confirmation=NETTOYAGE-COMPARATEUR-1611 pour executer la
@@ -39,12 +45,13 @@ except ImportError:
 PROJECT_ID = "seo-data-hub-cme"
 TABLE = f"{PROJECT_ID}.04_pipeline_seo.leads_convertis"
 
-# (timestamp UTC a la seconde, telephone) -- cle d'identification precise
+# (timestamp UTC exact confirme par requete, telephone exact confirme) --
+# cle d'identification precise
 CIBLES = [
-    ("2026-11-16 16:02:35", "06 00 00 00 00"),
-    ("2026-11-16 18:19:31", "2126 94 37 49 91"),
-    ("2026-11-16 18:58:29", "2126 94 37 49 91"),
-    ("2026-11-16 19:19:32", "2126 94 37 49 91"),
+    ("2026-11-16 16:02:36.565149", "0600000000"),
+    ("2026-11-16 18:19:34.529518", "+212694374991"),
+    ("2026-11-16 18:58:31.515324", "+212694374991"),
+    ("2026-11-16 19:19:34.160592", "+212694374991"),
 ]
 
 
@@ -53,7 +60,7 @@ def clause_sql():
     for ts, tel in CIBLES:
         tel_sql = tel.replace("'", "\\'")
         parties.append(
-            f"(TIMESTAMP_TRUNC(timestamp, SECOND) = TIMESTAMP('{ts}') AND telephone = '{tel_sql}')"
+            f"(timestamp = TIMESTAMP('{ts}') AND telephone = '{tel_sql}')"
         )
     return " OR ".join(parties)
 
