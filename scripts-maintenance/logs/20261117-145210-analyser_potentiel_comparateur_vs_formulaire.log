@@ -1,0 +1,51 @@
+# Execution du 2026-11-17T14:52:10Z
+# Script    : scripts-maintenance/analyser_potentiel_comparateur_vs_formulaire.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 1/ leads_convertis -- tous les 'tool' distincts contenant 'comparateur' ou lies aux anciens simulateurs...
+
+  ⚠️ Aucune ligne historique trouvee pour un tool comparateur/simulateur (hors ce qui vient d'etre nettoye).
+
+====================================================================================================
+📥 2/ Detail mensuel des leads 'comparateur-energie' (hors leads de test identifies le 17/11)...
+
+  (aucune ligne -- cohérent si tout l'historique etait fait de tests, deja nettoyes)
+
+====================================================================================================
+📥 3/ Schema de 01_raw.ga4_pages (pour verifier les colonnes disponibles)...
+
+  Colonnes : ['date', 'page_path', 'page_url', 'silo', 'sous_silo', 'sessions', 'bounce_rate', 'avg_session_duration', 'page_views', 'new_users', 'conversions', 'synced_at']
+
+====================================================================================================
+📥 4/ Trafic GA4 historique sur la page comparateur-energie-electricite-gaz (si colonnes trouvees)...
+
+  2026-06  sessions=2  page_views=7  conversions=0  bounce_rate_moy=0.0%
+  2026-07  sessions=11  page_views=21  conversions=0  bounce_rate_moy=0.9%
+  2026-08  sessions=16  page_views=23  conversions=0  bounce_rate_moy=1.0%
+  2026-09  sessions=22  page_views=26  conversions=0  bounce_rate_moy=0.9%
+  2026-10  sessions=38  page_views=37  conversions=0  bounce_rate_moy=0.2%
+  2026-11  sessions=7  page_views=9  conversions=1  bounce_rate_moy=0.1%
+
+  --- Detail des page_path distincts trouves (pour verifier qu'on cible la bonne page) ---
+  /comparateur-energie/
+  /electricite/contrat-electricite/comparateur-tarifs-electricite-2026/
+  /electricite/contrat-electricite/comparateur-electricite-meilleure-offre/
+  /comparateur-energie-electricite-gaz/
+  /comparateur-doffres-electricite/
+  /electricite/comparatifs-fournisseurs-electricite/comparateur-electricite/
+  /electricite/comparatifs-fournisseurs-electricite/comparateur-fournisseurs-electricite-tarifs-2026/
+
+====================================================================================================
+📥 5/ Pour comparaison directe -- rappel du denominateur contact-expert-inline (deja mesure le 17/11) :
+
+  15 leads / 1887 sessions ayant vu le mini-formulaire ≈ 0,8%
