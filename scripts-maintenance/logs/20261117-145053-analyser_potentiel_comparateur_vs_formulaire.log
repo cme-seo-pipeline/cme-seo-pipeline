@@ -1,0 +1,33 @@
+# Execution du 2026-11-17T14:50:53Z
+# Script    : scripts-maintenance/analyser_potentiel_comparateur_vs_formulaire.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 1/ leads_convertis -- tous les 'tool' distincts contenant 'comparateur' ou lies aux anciens simulateurs...
+
+  ⚠️ Aucune ligne historique trouvee pour un tool comparateur/simulateur (hors ce qui vient d'etre nettoye).
+
+====================================================================================================
+📥 2/ Detail mensuel des leads 'comparateur-energie' (hors leads de test identifies le 17/11)...
+
+  (aucune ligne -- cohérent si tout l'historique etait fait de tests, deja nettoyes)
+
+====================================================================================================
+📥 3/ Schema de 01_raw.ga4_pages (pour verifier les colonnes disponibles)...
+
+  Colonnes : ['date', 'page_path', 'page_url', 'silo', 'sous_silo', 'sessions', 'bounce_rate', 'avg_session_duration', 'page_views', 'new_users', 'conversions', 'synced_at']
+
+====================================================================================================
+📥 4/ Trafic GA4 historique sur la page comparateur-energie-electricite-gaz (si colonnes trouvees)...
+
+  ⚠️ Impossible de construire la requete automatiquement -- colonnes candidates trouvees : ['sessions'], pagePath present=False
+
+====================================================================================================
+📥 5/ Pour comparaison directe -- rappel du denominateur contact-expert-inline (deja mesure le 17/11) :
+
+  15 leads / 1887 sessions ayant vu le mini-formulaire ≈ 0,8%
