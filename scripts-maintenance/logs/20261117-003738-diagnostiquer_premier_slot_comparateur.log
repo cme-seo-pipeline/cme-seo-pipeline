@@ -1,0 +1,60 @@
+# Execution du 2026-11-17T00:37:38Z
+# Script    : scripts-maintenance/diagnostiquer_premier_slot_comparateur.py
+# Arguments : --dump=prix-installation-devis-systeme-solaire-combine
+
+post_id=13255 slug=prix-installation-devis-systeme-solaire-combine
+Histogramme des tags (apres deplirement wp-block-columns/column/article) : {'div': 1}
+Nombre total d'enfants effectifs : 1
+
+--- Les 15 premiers enfants effectifs (tag + 60 premiers caracteres de texte + classes si div) ---
+  [0] <div class=['wp-block-group']> mots=2559 :: Pour aller plus loin, consultez notre guide sur le fonctionn
+
+--- Extrait brut du HTML stocke (2500 premiers caracteres) ---
+<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-group"><!-- wp:freeform -->
+<p>Pour aller plus loin, consultez <a href="https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/fonctionnement-systeme-solaire-combine/">notre guide sur le fonctionnement du système solaire combiné</a>.</p>
+<h2>Prix d&rsquo;un système solaire combiné : fourchette réelle en France</h2>
+<p>Le coût d&rsquo;installation d&rsquo;un système solaire combiné (SSC) en France varie entre <strong>12 000 € et 25 000 €</strong> hors aides financières, selon la puissance installée et la complexité du chantier.</p>
+<p>Voici les fourchettes par puissance, matériel et main-d&rsquo;œuvre inclus :</p>
+<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px 0;">
+<table>
+<thead>
+<tr>
+<th>Puissance installée</th>
+<th>Surface panneaux (m²)</th>
+<th>Budget total HT</th>
+<th>Coût matériel</th>
+<th>Coût installation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 kW</td>
+<td>20-25 m²</td>
+<td>12 000 € &#8211; 15 000 €</td>
+<td>6 500 € &#8211; 8 000 €</td>
+<td>5 500 € &#8211; 7 000 €</td>
+</tr>
+<tr>
+<td>6 kW</td>
+<td>30-35 m²</td>
+<td>16 000 € &#8211; 20 000 €</td>
+<td>9 000 € &#8211; 11 500 €</td>
+<td>7 000 € &#8211; 8 500 €</td>
+</tr>
+<tr>
+<td>8 kW</td>
+<td>40-50 m²</td>
+<td>20 000 € &#8211; 25 000 €</td>
+<td>11 500 € &#8211; 14 500 €</td>
+<td>8 500 € &#8211; 10 500 €</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Ces tarifs incluent les panneaux solaires thermiques et/ou photovoltaïques, le ballon d&rsquo;inertie thermique ou d&rsquo;eau chaude, les tuyauteries isolées, la régulation électronique et la pose complète. La main-d&rsquo;œuvre représente environ <strong>35 à 40 % du coût total</strong> pour un SSC, contre 25 à 30 % pour une simple installation photovoltaïque.</p>
+<p>Les régions affichent des écarts tarifaires notables : l&rsquo;Île-de-France et la région PACA pratiquent des tarifs supérieurs à la moyenne (+10 à 15 %), tandis que les zones rurales et la Nouvelle-Aquitaine offrent souvent une réduction de 5 à 10 %. Cette variation tient à la densité d&rsquo;installateurs RGE, aux coûts de déplacement et à la concurrence locale.</p>
+<h2>Facteurs qui influencent le coût d&rsquo;installation de votre SSC</h2>
+<p>Un écart de 30 % entre deux devis n&rsquo;est pas anormal. Plusieurs éléments expliquent cette variation :</p>
+<ul>
+<li><strong>Surface et orientation de la toiture.</strong> Une toiture sud-ouest de 50 m² bien exposée coûtera moins ch
