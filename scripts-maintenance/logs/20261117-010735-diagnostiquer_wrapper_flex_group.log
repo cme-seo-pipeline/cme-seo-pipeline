@@ -1,0 +1,19 @@
+# Execution du 2026-11-17T01:07:35Z
+# Script    : scripts-maintenance/diagnostiquer_wrapper_flex_group.py
+# Arguments : --tous
+
+  ... page 1/11 recuperee (100 articles au total)
+  ... page 2/11 recuperee (200 articles au total)
+  ... page 3/11 recuperee (300 articles au total)
+  ... page 4/11 recuperee (400 articles au total)
+  ... page 5/11 recuperee (500 articles au total)
+  ... page 6/11 recuperee (600 articles au total)
+  ... page 7/11 recuperee (700 articles au total)
+  ... page 8/11 recuperee (800 articles au total)
+  ... page 9/11 recuperee (900 articles au total)
+  ... page 10/11 recuperee (1000 articles au total)
+  ... page 11/11 recuperee (1057 articles au total)
+
+=== RESUME ===
+1057 article(s) analyse(s)
+0 article(s) avec un bloc wp:group{flex} couvrant >=30% du contenu
