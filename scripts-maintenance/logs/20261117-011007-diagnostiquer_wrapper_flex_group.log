@@ -1,0 +1,12 @@
+# Execution du 2026-11-17T01:10:07Z
+# Script    : scripts-maintenance/diagnostiquer_wrapper_flex_group.py
+# Arguments : --slug=prix-installation-devis-systeme-solaire-combine
+
+
+=== RESUME ===
+1 article(s) analyse(s)
+1 article(s) avec un bloc wp:group{flex} couvrant >=30% du contenu
+
+  - post_id=13255 slug=prix-installation-devis-systeme-solaire-combine
+    titre: Système solaire combiné : guide complet des aides
+    layout={"layout":{"type":"flex","flexWrap":"nowrap"}} -- 2558 mots (100.0% de l'article)
