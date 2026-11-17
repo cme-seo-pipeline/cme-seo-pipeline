@@ -1,0 +1,29 @@
+# Execution du 2026-11-17T01:16:57Z
+# Script    : scripts-maintenance/fix_wrapper_flex_group_1711.py
+# Arguments : --slug=prix-installation-devis-systeme-solaire-combine --apply
+
+post_id=13255 slug=prix-installation-devis-systeme-solaire-combine
+titre: Système solaire combiné : guide complet des aides
+taille contenu avant : 17695 caracteres
+
+✅ 1 bloc(s) wp:group{flex} deplie(s)
+taille contenu apres  : 17578 caracteres
+
+--- Debut du contenu APRES correction (800 premiers caracteres) ---
+
+<!-- wp:freeform -->
+<p>Pour aller plus loin, consultez <a href="https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/fonctionnement-systeme-solaire-combine/">notre guide sur le fonctionnement du système solaire combiné</a>.</p>
+<h2>Prix d’un système solaire combiné : fourchette réelle en France</h2>
+<p>Le coût d’installation d’un système solaire combiné (SSC) en France varie entre <strong>12 000 € et 25 000 €</strong> hors aides financières, selon la puissance installée et la complexité du chantier.</p>
+<p>Voici les fourchettes par puissance, matériel et main-d’œuvre inclus :</p>
+<div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 24px 0;">
+<table>
+<thead>
+<tr>
+<th>Puissance installée</th>
+<th>Surface panneaux (m²)</th>
+<th>Budget total HT</th>
+<th>C
+
+✅ Article 13255 mis a jour via l'API REST WordPress.
+   Verifier : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/prix-installation-devis-systeme-solaire-combine?t=RANDOM
