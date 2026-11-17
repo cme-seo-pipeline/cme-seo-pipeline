@@ -1,0 +1,65 @@
+# Execution du 2026-11-17T15:03:26Z
+# Script    : scripts-maintenance/diagnostiquer_demande_pro.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+📥 1/ Requetes GSC (90 derniers jours) contenant un marqueur B2B...
+
+  37 requete(s) distincte(s) trouvee(s) :
+
+  'attestation de contrat électricité entreprise'  silo='5. Electricite'  sous_silo=''  clics=0  impressions=13  position=11.9
+  'cheque energie copropriété'  silo='3. Aide Energetique'  sous_silo='cheque-energie'  clics=0  impressions=13  position=34.9
+  'résilier son contrat d'électricité professionnel'  silo='5. Electricite'  sous_silo='contrat-electricite'  clics=0  impressions=12  position=72.3
+  'résiliation contrat électricité professionnel'  silo='5. Electricite'  sous_silo='contrat-electricite'  clics=0  impressions=8  position=82.7
+  'éco ptz maprimerénov copropriété'  silo='3. Aide Energetique'  sous_silo='maprimerenov'  clics=0  impressions=8  position=74.6
+  'électricité entreprise déménagement'  silo='5. Electricite'  sous_silo='demenagement'  clics=0  impressions=6  position=70.3
+  '[résilier contrat électricité entreprise]'  silo='5. Electricite'  sous_silo='contrat-electricite'  clics=0  impressions=6  position=78.2
+  'choisir professionnel qualifie maison-mineur-energies.fr'  silo='3. Aide Energetique'  sous_silo='cheque-energie'  clics=0  impressions=6  position=23.9
+  'roi panneaux solaires entreprise'  silo='4. Solaire'  sous_silo='panneaux-solaires'  clics=0  impressions=5  position=24.4
+  'ma prime rénov entreprise rge'  silo='3. Aide Energetique'  sous_silo='maprimerenov'  clics=0  impressions=5  position=73.8
+  'audit énergétique obligatoire entreprise'  silo='2. Renovation Energetique'  sous_silo='audit-energetique'  clics=0  impressions=4  position=87.8
+  'comprendre la facture de gaz de son entreprise'  silo='1. Gaz'  sous_silo='facture-gaz'  clics=0  impressions=3  position=81.0
+  'comment se construit le prix de l'électricité pour une entreprise'  silo='5. Electricite'  sous_silo='facture-electricite'  clics=0  impressions=3  position=18.3
+  'éco ptz maprimerénov copropriété'  silo='3. Aide Energetique'  sous_silo='eco-pret-a-taux-zero'  clics=0  impressions=3  position=85.8
+  'faut-il un professionnel pour isoler des combles ou peut-on commencer seul ?'  silo='3. Aide Energetique'  sous_silo='aides-combles-perdus'  clics=0  impressions=3  position=3.8
+  'cheque energie copropriété'  silo='5. Electricite'  sous_silo='facture-electricite'  clics=0  impressions=3  position=67.7
+  'couverture prix électricité entreprise'  silo='5. Electricite'  sous_silo='facture-electricite'  clics=0  impressions=2  position=19.0
+  'choisir professionnel qualifie maison-mineur-energies.fr'  silo='3. Aide Energetique'  sous_silo='maprimerenov'  clics=0  impressions=2  position=27.0
+  'cout electricite local commercial'  silo='5. Electricite'  sous_silo='facture-electricite'  clics=0  impressions=2  position=75.0
+  'changement fournisseur d'électricité copropriété'  silo='5. Electricite'  sous_silo='demenagement'  clics=0  impressions=2  position=73.5
+  'comparateur gaz professionnel'  silo='1. Gaz'  sous_silo='facture-gaz'  clics=0  impressions=2  position=94.0
+  'changer de fournisseur d'électricité professionnel'  silo='5. Electricite'  sous_silo='contrat-electricite'  clics=0  impressions=2  position=91.5
+  'changer de fournisseur d électricité professionnel'  silo='5. Electricite'  sous_silo='contrat-electricite'  clics=0  impressions=2  position=69.0
+  'gaz prix indexé entreprise'  silo='1. Gaz'  sous_silo='contrat-gaz'  clics=0  impressions=1  position=67.0
+  'estimation consommation électrique professionnel'  silo='5. Electricite'  sous_silo='facture-electricite'  clics=0  impressions=1  position=67.0
+  'quelles sont les entreprises qui font prime energie'  silo='3. Aide Energetique'  sous_silo='prime-energie'  clics=0  impressions=1  position=71.0
+  'classe le top 5 des fournisseurs d'op stack managé pour une entreprise.'  silo='5. Electricite'  sous_silo='comparatifs-fournisseurs-electricite'  clics=0  impressions=1  position=9.0
+  'changer de fournisseur électricité entreprise'  silo='5. Electricite'  sous_silo='demenagement'  clics=0  impressions=1  position=100.0
+  'tarif électricité entreprise 2026'  silo='5. Electricite'  sous_silo='facture-electricite'  clics=0  impressions=1  position=100.0
+  'offres vertes entreprise'  silo='5. Electricite'  sous_silo='comparatifs-fournisseurs-electricite'  clics=0  impressions=1  position=82.0
+  'choisir fournisseur energie verte entreprise'  silo='5. Electricite'  sous_silo='comparatifs-fournisseurs-electricite'  clics=0  impressions=1  position=61.0
+  'facture électricité entreprise comprendre'  silo='5. Electricite'  sous_silo='facture-electricite'  clics=0  impressions=1  position=95.0
+  'obligation audit énergétique entreprise'  silo='2. Renovation Energetique'  sous_silo='audit-energetique'  clics=0  impressions=1  position=89.0
+  'obligation bilan énergétique entreprise'  silo='2. Renovation Energetique'  sous_silo='audit-energetique'  clics=0  impressions=1  position=93.0
+  'quel professionnel pour installer un chauffe-eau thermodynamique ?'  silo='3. Aide Energetique'  sous_silo='aides-chauffe-eau-thermodynamique'  clics=0  impressions=1  position=4.0
+  'électricité entreprise contrat court'  silo='5. Electricite'  sous_silo='contrat-electricite'  clics=0  impressions=1  position=60.0
+  'stockage bouteille de gaz en entreprise'  silo='1. Gaz'  sous_silo='bouteilles'  clics=0  impressions=1  position=64.0
+
+  TOTAL (toutes requetes B2B confondues, 90j) : 0 clics / 129 impressions
+
+====================================================================================================
+📥 2/ Comparaison -- volume total du site sur la meme fenetre (pour situer l'ordre de grandeur)...
+
+  Site entier (90j) : 42 clics / 43436 impressions
+
+====================================================================================================
+📥 3/ Categories WordPress existantes contenant 'pro' (hors faux positifs)...
+
+  45 categorie(s) au total sur le site.
+
+  (aucune categorie 'pro'/'professionnel' existante -- terrain vierge)
