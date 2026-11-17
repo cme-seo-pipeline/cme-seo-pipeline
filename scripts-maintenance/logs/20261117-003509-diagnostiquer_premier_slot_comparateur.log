@@ -1,0 +1,493 @@
+# Execution du 2026-11-17T00:35:09Z
+# Script    : scripts-maintenance/diagnostiquer_premier_slot_comparateur.py
+# Arguments : --slug=prix-installation-devis-systeme-solaire-combine --echantillon=60
+
+
+--- post_id=13255 slug=prix-installation-devis-systeme-solaire-combine ---
+    titre: Système solaire combiné : guide complet des aides
+    total mots (hors CTA): 2559, formulaires 'contact' places: 0
+    (aucun 1er emplacement -- article trop court ou structure non eligible)
+
+--- post_id=13680 slug=decoder-codes-tarifaires-facture-electricite ---
+    titre: Codes tarifaires électricité : guide de décodage
+    total mots (hors CTA): 3007, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 667 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13679 slug=electricite-demenagement-resiliation-souscription ---
+    titre: Résiliation électricité ancien logement : marche à suivre
+    total mots (hors CTA): 3635, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 347 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13678 slug=resilier-contrat-electricite-delais-droits ---
+    titre: Résiliation électricité : délais légaux par situation
+    total mots (hors CTA): 3610, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 327 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13677 slug=compteur-electrique-fonctionnement-fonctionner ---
+    titre: Comprendre la consommation électrique : décoder les données
+    total mots (hors CTA): 4751, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 308 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13676 slug=aides-subventions-chauffage-electrique-2026 ---
+    titre: Aides chauffage électrique 2026 : obtenir vos subventions
+    total mots (hors CTA): 2105, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 301 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13675 slug=fonctionnement-systeme-solaire-combine-1116 ---
+    titre: Système solaire combiné : comment ça marche vraiment
+    total mots (hors CTA): 4300, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 330 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13674 slug=kit-solaire-autonome-dimensionner-production ---
+    titre: Kit solaire : dimensionner sa puissance
+    total mots (hors CTA): 3430, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 306 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13673 slug=fonctionnement-chauffe-eau-solaire-capteurs-ballon ---
+    titre: Chauffe-eau solaire : comment ça marche vraiment
+    total mots (hors CTA): 2880, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 317 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13672 slug=batterie-solaire-fonctionnement-stockage-energie ---
+    titre: Batterie solaire : guide technique du stockage d'énergie
+    total mots (hors CTA): 3386, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 322 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13671 slug=maprimerenov-cumul-autres-aides-1116 ---
+    titre: MaPrimeRénov' + CEE + éco-PTZ + MaPrimeRénov' Sérénité
+    total mots (hors CTA): 2968, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 322 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13670 slug=cheque-energie-montant-conditions-utilisation ---
+    titre: Chèque énergie : guide complet des démarches et demande
+    total mots (hors CTA): 2102, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 305 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13669 slug=pompe-a-chaleur-fonctionnement-cycle-thermodynamique ---
+    titre: Pompe à chaleur : comment ça marche vraiment
+    total mots (hors CTA): 3022, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 323 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13668 slug=aides-isolation-cumulables-2026 ---
+    titre: Isolation thermique : toutes les aides cumulables 2026
+    total mots (hors CTA): 2753, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 313 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13667 slug=comparer-fournisseurs-gaz-economiser ---
+    titre: Changer de fournisseur gaz : simulation d'économies
+    total mots (hors CTA): 3117, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 325 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13666 slug=checklist-demenagement-gaz-guide-complet ---
+    titre: Checklist gaz déménagement : erreurs à éviter et étapes
+    total mots (hors CTA): 2858, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 304 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13665 slug=comparer-contrats-gaz-moins-cher ---
+    titre: Meilleur fournisseur gaz 2026 : classement et comparatif
+    total mots (hors CTA): 3336, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 345 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13664 slug=compteur-gaz-fonctionnement-mesure ---
+    titre: Compteur gaz : comment fonctionne la mesure
+    total mots (hors CTA): 2699, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 300 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13663 slug=chaudiere-gaz-condensation-rendement ---
+    titre: Chaudière gaz condensation : rendement et économies
+    total mots (hors CTA): 3121, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 309 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13662 slug=bouteille-gaz-propane-butane-comparatif ---
+    titre: Bouteille de gaz propane vs butane : guide d'achat
+    total mots (hors CTA): 2149, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 302 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13512 slug=lire-facture-electricite-decryptage-lignes ---
+    titre: Facture électricité : guide pas à pas pour les débutants
+    total mots (hors CTA): 3190, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 318 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13511 slug=analyser-consommation-electricite-appareils-energivores ---
+    titre: Appareils énergivores : audit énergétique pour identifier
+    total mots (hors CTA): 3215, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 338 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13510 slug=comprendre-contrat-electricite-clauses-essentielles ---
+    titre: Décrypter les clauses cachées du contrat électricité
+    total mots (hors CTA): 3919, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 309 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13509 slug=contrats-electricite-comparer-offres-economiser ---
+    titre: Comparer les offres électricité : critères cachés et pièges
+    total mots (hors CTA): 3237, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 367 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13508 slug=systeme-solaire-combine-vs-chaudiere-gaz-roi ---
+    titre: Système solaire combiné vs chaudière gaz : calculer le vrai coût d'ins
+    total mots (hors CTA): 2391, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 317 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13507 slug=panneaux-solaires-thermiques-vs-photovoltaiques-roi ---
+    titre: Panneaux solaires thermiques : installation, entretien et devis en 2 m
+    total mots (hors CTA): 3743, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 323 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13506 slug=kit-solaire-cle-en-main-vs-diy ---
+    titre: Kit solaire clé en main : avantages et inconvénients et demande de dev
+    total mots (hors CTA): 3288, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 308 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13505 slug=chauffe-eau-solaire-vs-thermodynamique-comparatif ---
+    titre: Chauffe-eau thermodynamique : fonctionnement, coût réel et demande de 
+    total mots (hors CTA): 2816, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 329 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13504 slug=batterie-lifepo4-vs-lithium-comparatif-prix-performance ---
+    titre: Batterie LiFePO4 pour panneaux solaires : chimie, durabilité et demand
+    total mots (hors CTA): 3144, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 305 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13503 slug=maprimerenov-plafonds-revenus-2026-eligibilite ---
+    titre: MaPrimeRénov' 2026 : tableau des plafonds revenus
+    total mots (hors CTA): 2337, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 301 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13502 slug=eligibilite-maprimerenov-conditions-revenus ---
+    titre: MaPrimeRénov' : les seuils de revenus qui vous excluent
+    total mots (hors CTA): 2160, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 338 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13501 slug=cheque-energie-delais-reception-activation-1113 ---
+    titre: Chèque énergie : timeline complète de la demande
+    total mots (hors CTA): 2834, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 326 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13500 slug=cee-chauffe-eau-thermodynamique-certificats-economie-energie ---
+    titre: CEE chauffe-eau thermodynamique : demande et dossier
+    total mots (hors CTA): 2578, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 328 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13499 slug=aides-locales-chauffe-eau-thermodynamique-region ---
+    titre: Chauffe-eau thermodynamique : simulateur d'aides et demande en ligne
+    total mots (hors CTA): 2870, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 307 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13498 slug=pompe-chaleur-air-air-prix-installation-roi-1113 ---
+    titre: Pompe à chaleur air-air : coûts réels d'installation et demande de dev
+    total mots (hors CTA): 2849, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 307 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13497 slug=pompe-chaleur-air-air-prix-installation-roi ---
+    titre: Pompe à chaleur air-air : calculer son ROI selon sa région et demande 
+    total mots (hors CTA): 3697, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 427 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13496 slug=pompe-a-chaleur-air-air-prix-devis-economies ---
+    titre: Pompe à chaleur air-air : guide comparatif avec air-eau
+    total mots (hors CTA): 2551, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 342 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13495 slug=isolation-combles-devis-prix-economies ---
+    titre: Isolation combles : devis, prix, aides et économies réelles
+    total mots (hors CTA): 2885, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 319 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13494 slug=consommation-facture-gaz ---
+    titre: Consommation gaz : réduire sa facture par des changements
+    total mots (hors CTA): 2907, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 305 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13493 slug=bouteille-gaz-fonctionnement-complet ---
+    titre: Bouteille de gaz : dépannage rapide des problèmes | Demande en ligne
+    total mots (hors CTA): 3093, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 328 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13492 slug=bouteille-gaz-comment-ca-marche ---
+    titre: Bouteille de gaz : démystifier la physique derrière
+    total mots (hors CTA): 3263, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 349 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13409 slug=comment-lire-facture-electricite-1112 ---
+    titre: Facture électricité : guide interactif avec simulateur
+    total mots (hors CTA): 3397, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 322 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13408 slug=lire-facture-electricite-guide-complet-1112 ---
+    titre: Facture électricité : erreurs courantes et comment réduire sa facture
+    total mots (hors CTA): 2461, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 300 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13407 slug=changement-fournisseur-electricite-guide-complet ---
+    titre: Changement fournisseur électricité : checklist complète
+    total mots (hors CTA): 2929, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 313 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13406 slug=changer-fournisseur-electricite-procedure-delais ---
+    titre: Changement fournisseur électricité : coûts cachés
+    total mots (hors CTA): 2092, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 341 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13405 slug=budget-installation-systeme-solaire-combine-2026 ---
+    titre: Système solaire combiné : budget 2026 par type
+    total mots (hors CTA): 3649, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 491 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13404 slug=panneaux-solaires-300w-prix-installation-roi ---
+    titre: Panneaux solaires 300W : coûts d'installation réels
+    total mots (hors CTA): 2085, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 417 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13403 slug=kit-solaire-avec-batterie-prix-installation-roi ---
+    titre: Installation kit solaire avec batterie : étapes, coûts
+    total mots (hors CTA): 5514, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 342 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13402 slug=chauffe-eau-solaire-prix-vrai-installation ---
+    titre: Chauffe-eau solaire : budget réel 2026 selon votre région
+    total mots (hors CTA): 3162, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 329 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13401 slug=batterie-solaire-prix-dimensionnement-roi ---
+    titre: Batterie solaire : calculateur de ROI personnalisé
+    total mots (hors CTA): 2755, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 382 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13400 slug=maprimerenov-fonctionnement-complet ---
+    titre: MaPrimeRénov' : checklist complète avant de soumettre
+    total mots (hors CTA): 2503, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 357 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13399 slug=maprimerenov-cumul-autres-aides-regles-1112 ---
+    titre: MaPrimeRénov' : tableau récapitulatif des aides compatibles
+    total mots (hors CTA): 2747, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 329 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13398 slug=cheque-energie-montants-2026-conditions-eligibilite ---
+    titre: Chèque énergie 2026 : calculatrice interactive
+    total mots (hors CTA): 2740, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 318 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13397 slug=cheque-energie-montant-conditions-beneficiaires ---
+    titre: Chèque énergie : tableau comparatif des montants par revenu
+    total mots (hors CTA): 2368, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 455 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13396 slug=chauffe-eau-thermodynamique-vs-electrique-comparatif-1112 ---
+    titre: Chauffe-eau thermodynamique vs électrique : consommation et devis
+    total mots (hors CTA): 3035, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 312 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13395 slug=chauffe-eau-thermodynamique-vs-traditionnel-economies ---
+    titre: Chauffe-eau thermodynamique : payback et retour
+    total mots (hors CTA): 2876, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 338 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13394 slug=pompe-a-chaleur-geothermique-prix-economies-roi ---
+    titre: Pompe à chaleur géothermique : dimensionnement, forage
+    total mots (hors CTA): 3344, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 308 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13393 slug=pompe-a-chaleur-geothermique-prix-comparatif-air-eau ---
+    titre: Pompe à chaleur géothermique vs air-eau : installation et devis
+    total mots (hors CTA): 3018, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 351 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13392 slug=lire-facture-gaz-decryptage-montants ---
+    titre: Facture gaz : décoder les codes et symboles pour éviter
+    total mots (hors CTA): 3257, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 333 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13391 slug=fonctionnement-bouteille-gaz-guide ---
+    titre: Bouteille de gaz : dépannage des dysfonctionnements
+    total mots (hors CTA): 3363, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 341 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+--- post_id=13390 slug=detendeur-bouteille-gaz-fonctionnement-1112 ---
+    titre: Détendeur de gaz : guide de dépannage et réparation
+    total mots (hors CTA): 2764, formulaires 'contact' places: 7
+    1er emplacement (comparateur) apres 322 mots
+    parent reel: <[document] class=None>
+    chemin parents (jusqu'a 6 niveaux): 
+    ✅ dans la pleine largeur de l'article (pas de colonne)
+
+=== RESUME ===
+0 article(s) a risque (colonne etroite) sur 61 analyse(s)
+60 article(s) sans risque de colonne (pleine largeur)
