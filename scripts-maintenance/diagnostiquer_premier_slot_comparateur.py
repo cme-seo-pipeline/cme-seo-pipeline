@@ -183,6 +183,32 @@ def analyser_article(contenu_html):
     }
 
 
+def dump_structure(slug):
+    """Diagnostic approfondi pour UN article : histogramme des tags de
+    enfants_effectifs() (pourquoi aucune position n'est eligible, le cas
+    echeant) + un extrait brut du HTML stocke pour inspection manuelle."""
+    from collections import Counter
+    p = recuperer_par_slug(slug)
+    if not p:
+        sys.exit(f"❌ Aucun article trouve pour le slug '{slug}'")
+    contenu = p["content"]["raw"] if isinstance(p["content"], dict) else p["content"]
+    soup = BeautifulSoup(contenu, "html.parser")
+    enfants = enfants_effectifs(soup)
+    hist = Counter(e.name for e in enfants)
+    print(f"post_id={p['id']} slug={p['slug']}")
+    print(f"Histogramme des tags (apres deplirement wp-block-columns/column/article) : {dict(hist)}")
+    print(f"Nombre total d'enfants effectifs : {len(enfants)}")
+    print()
+    print("--- Les 15 premiers enfants effectifs (tag + 60 premiers caracteres de texte + classes si div) ---")
+    for i, e in enumerate(enfants[:15]):
+        texte = e.get_text().strip()[:60].replace("\n", " ")
+        classes = e.get("class") if e.name == "div" else None
+        print(f"  [{i}] <{e.name} class={classes}> mots={mots(e)} :: {texte}")
+    print()
+    print("--- Extrait brut du HTML stocke (2500 premiers caracteres) ---")
+    print(contenu[:2500])
+
+
 def recuperer_par_slug(slug):
     r = requests.get(
         f"{WP_URL}/wp-json/wp/v2/posts",
@@ -210,11 +236,18 @@ def recuperer_echantillon(n):
 def main():
     slug = None
     echantillon_n = None
+    dump_slug = None
     for arg in sys.argv[1:]:
         if arg.startswith("--slug="):
             slug = arg.split("=", 1)[1]
         elif arg.startswith("--echantillon="):
             echantillon_n = int(arg.split("=", 1)[1])
+        elif arg.startswith("--dump="):
+            dump_slug = arg.split("=", 1)[1]
+
+    if dump_slug:
+        dump_structure(dump_slug)
+        return
 
     posts = []
     if slug:
