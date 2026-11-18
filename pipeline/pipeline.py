@@ -562,6 +562,15 @@ def generate_niche_query(silo, subcat):
 
     if clean_subcat:
         clean_subcat_human = clean_subcat.replace('-', ' ').lower()
+        # Cas particulier 'compteur gaz' (18/11/2026) : desambiguise AVANT
+        # la boucle generique plutot que par une cle dediee dans
+        # MAPPING_REQUETES -- le matching ci-dessous est bidirectionnel
+        # (substring dans les deux sens), donc une cle 'compteur gaz' y
+        # serait elle-meme une sous-chaine qui ferait matcher a tort le
+        # sous-silo electrique 'Compteur' (clean_subcat_human='compteur')
+        # sur la requete gaz. Egalite stricte ici, sans toucher au dict.
+        if clean_subcat_human == 'compteur gaz':
+            return "compteur gaz naturel Gazpar relevé fonctionnement"
         for key, requete in MAPPING_REQUETES.items():
             if key.lower() in clean_subcat_human or clean_subcat_human in key.lower():
                 return requete
@@ -1214,6 +1223,12 @@ def generer_tous_briefs(df_final, client_bq, config):
     for (silo_name, sous_silo_name), df_silo in df_final.groupby(['Silo', 'Sous-Silo']):
         df_silo_clean = df_silo[df_silo['volume_mots'] > 0]
         if df_silo_clean.empty:
+            # Correctif (18/11/2026) : avant ce log, ce cas etait un no-op
+            # totalement silencieux -- aucun brief, aucun article publie
+            # pour ce sous-silo, sans la moindre trace dans le log du run.
+            # Decouvert seulement en comparant manuellement le nombre de
+            # sous-silos selectionnes au nombre d'articles publies.
+            print(f"  ⚠️ {silo_name} | {sous_silo_name} : aucun contenu concurrent exploitable (volume_mots=0 sur toutes les sources scrapees) -- aucun brief genere, aucun article publie aujourd'hui pour ce sous-silo")
             continue
         contexte = preparer_contexte_silo(df_silo_clean, silo_name)
         titres_existants = recuperer_titres_existants(silo_name, client_bq)
