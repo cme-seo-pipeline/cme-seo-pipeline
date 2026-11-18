@@ -33,35 +33,33 @@ PROJECT_ID = "seo-data-hub-cme"
 def main():
     client = bigquery.Client(project=PROJECT_ID)
 
+    print("📥 0/ Schema reel de analyse_concurrents...\n")
+    table = client.get_table(f"{PROJECT_ID}.04_pipeline_seo.analyse_concurrents")
+    print(f"  Colonnes : {[f.name for f in table.schema]}\n")
+
     print("📥 Lignes analyse_concurrents du 18/11/2026 pour les 2 sous-silos sans brief...\n")
     df = client.query(f"""
-        SELECT run_id, silo, sous_silo, url, volume_mots
+        SELECT *
         FROM `{PROJECT_ID}.04_pipeline_seo.analyse_concurrents`
         WHERE date_run = '2026-11-18'
           AND ((silo = '1. Gaz' AND sous_silo = 'Compteur gaz')
                OR (silo = '5. Électricité' AND sous_silo = 'Compteur'))
-        ORDER BY silo, sous_silo, url
     """).to_dataframe()
 
     if df.empty:
-        print("  ⚠️ AUCUNE ligne du tout pour ces 2 sous-silos aujourd'hui -- meme le scraping n'a produit aucune ligne exportable (pas seulement volume_mots=0).")
+        print("  ⚠️ AUCUNE ligne du tout pour ces 2 sous-silos aujourd'hui -- meme le scraping n'a produit aucune ligne exportable.")
     else:
         print(f"  {len(df)} ligne(s) trouvee(s) :\n")
-        for _, row in df.iterrows():
-            print(f"  run_id={row['run_id']}  {row['silo']} | {row['sous_silo']}  volume_mots={row['volume_mots']}  url={row['url'][:80]}")
-        print(f"\n  Volume_mots max sur ces lignes : {df['volume_mots'].max()}")
-        print(f"  Nombre de lignes avec volume_mots > 0 : {(df['volume_mots'] > 0).sum()} / {len(df)}")
+        print(df.to_string())
 
     print("\n" + "=" * 100)
     print("📥 Pour comparaison -- meme chose sur un sous-silo qui A eu un brief aujourd'hui (Bouteilles)...\n")
     df2 = client.query(f"""
-        SELECT url, volume_mots
+        SELECT *
         FROM `{PROJECT_ID}.04_pipeline_seo.analyse_concurrents`
         WHERE date_run = '2026-11-18' AND silo = '1. Gaz' AND sous_silo = 'Bouteilles'
-        ORDER BY url
     """).to_dataframe()
-    for _, row in df2.iterrows():
-        print(f"  volume_mots={row['volume_mots']}  url={row['url'][:80]}")
+    print(df2.to_string())
 
 
 if __name__ == "__main__":
