@@ -7,6 +7,7 @@ import time
 
 import os
 import re
+import unicodedata
 import json
 import html
 import base64
@@ -202,8 +203,20 @@ MAPPING_REQUETES = {
     'facture electricite': "comprendre facture électricité réduire consommation",
     'chauffage electricite': "chauffage électrique économique radiateur 2026",
     'demenagement': "déménagement électricité démarches résiliation 2026",
+    # Ajoutee le 18/11/2026 : avant cette cle, 'Déménagement gaz' matchait
+    # la cle 'demenagement' ci-dessus (electricite) une fois le matching
+    # rendu insensible aux accents -- cf. generate_niche_query(), le
+    # matching choisit desormais la cle la PLUS LONGUE (la plus specifique)
+    # parmi celles qui matchent, donc cette entree gagne pour 'Déménagement
+    # gaz' sans jamais etre choisie pour 'Déménagement' (electricite, qui
+    # ne contient pas 'gaz').
+    'demenagement gaz': "déménagement gaz démarches résiliation ouverture compteur 2026",
     'heures pleines creuses': "heures creuses heures pleines avantages simulateur",
     'compteur': "compteur Linky fonctionnement consommation optimisation",
+    # Ajoutee le 18/11/2026 (meme logique que 'demenagement gaz' ci-dessus) :
+    # Linky est le compteur ELECTRIQUE d'Enedis, sans rapport avec le gaz --
+    # 'Compteur gaz' matchait a tort cette cle avant ce correctif.
+    'compteur gaz': "compteur gaz naturel Gazpar relevé fonctionnement",
 }
 
 
@@ -556,24 +569,66 @@ def selectionner_silos_a_traiter(client_bq, config):
     return df_tous
 
 
+def _sans_accents(texte):
+    """Retire les diacritiques (é -> e, à -> a, etc.) pour un matching
+    insensible aux accents. Ajoute le 18/11/2026 -- voir
+    generate_niche_query() pour le bug que ca corrige."""
+    return ''.join(
+        c for c in unicodedata.normalize('NFKD', texte)
+        if not unicodedata.combining(c)
+    )
+
+
 def generate_niche_query(silo, subcat):
     clean_silo = silo.split('. ')[-1] if '. ' in silo else silo
     clean_subcat = str(subcat).strip() if subcat and str(subcat) not in ['', 'nan'] else ''
 
     if clean_subcat:
-        clean_subcat_human = clean_subcat.replace('-', ' ').lower()
-        # Cas particulier 'compteur gaz' (18/11/2026) : desambiguise AVANT
-        # la boucle generique plutot que par une cle dediee dans
-        # MAPPING_REQUETES -- le matching ci-dessous est bidirectionnel
-        # (substring dans les deux sens), donc une cle 'compteur gaz' y
-        # serait elle-meme une sous-chaine qui ferait matcher a tort le
-        # sous-silo electrique 'Compteur' (clean_subcat_human='compteur')
-        # sur la requete gaz. Egalite stricte ici, sans toucher au dict.
-        if clean_subcat_human == 'compteur gaz':
-            return "compteur gaz naturel Gazpar relevé fonctionnement"
-        for key, requete in MAPPING_REQUETES.items():
-            if key.lower() in clean_subcat_human or clean_subcat_human in key.lower():
-                return requete
+        clean_subcat_human = _sans_accents(clean_subcat.replace('-', ' ').lower())
+        # CORRECTIF (18/11/2026) : l'ancien matching comparait des cles
+        # ASCII sans accent ('contrat electricite') a des sous-silos
+        # accentues ('Contrat Électricité') -- ne matchait donc JAMAIS,
+        # et ne s'arretait qu'au premier match par ORDRE d'insertion dans
+        # le dict, pas par specificite. Consequence reelle confirmee :
+        # 'Contrat Électricité'/'Facture Électricité'/'Chauffage
+        # Électricité'/'Comparatifs Fournisseurs Électricité' tombaient
+        # tous sur la cle generique du GAZ ('contrat'/'facture'/
+        # 'chauffage'/'comparatifs fournisseurs', placee plus haut dans le
+        # dict et donc toujours testee avant leur equivalent electrique),
+        # et 'Batterie panneaux solaires' tombait sur la cle generique
+        # 'panneaux solaires'. Les articles de ces sous-silos ont ete
+        # rediges a partir d'une analyse concurrentielle sur le MAUVAIS
+        # sujet/type d'energie depuis la creation de ces sous-silos.
+        #
+        # Nouveau matching : (1) insensible aux accents des deux cotes ;
+        # (2) une cle ne matche QUE si elle est contenue DANS le sous-silo
+        # (jamais l'inverse -- sinon une cle plus longue qui contient le
+        # sous-silo comme sous-chaine le capturerait a tort, ex.
+        # 'batterie panneaux solaires' capturant 'Panneaux solaires') ;
+        # (3) parmi toutes les cles qui matchent, la plus LONGUE (donc la
+        # plus specifique) gagne, independamment de l'ordre du dict.
+        #
+        # CORRECTIF SUPPLEMENTAIRE (18/11/2026, trouve en testant CE
+        # correctif avant de le commiter) : clean_subcat_human remplace les
+        # tirets par des espaces ('-' -> ' '), mais key.lower() ne le
+        # faisait pas -- une cle contenant un tiret ('chauffe-eau solaire',
+        # 'eco-pret a taux zero') ne pouvait donc jamais se matcher
+        # elle-meme (ni aucun sous-silo reel equivalent), et tombait
+        # systematiquement sur le fallback generique. Confirme en prod sur
+        # le sous-silo actif 'Chauffe-eau solaire' (Solaire, au quota) :
+        # produisait a tort "chauffe eau solaire guide complet prix aides
+        # 2026" au lieu de sa requete dediee "chauffe-eau solaire prix
+        # installation aides". Meme normalisation ('-' -> ' ') appliquee
+        # desormais des deux cotes.
+        meilleure_cle = None
+        meilleure_longueur = -1
+        for key in MAPPING_REQUETES:
+            key_norm = _sans_accents(key.lower().replace('-', ' '))
+            if key_norm in clean_subcat_human and len(key_norm) > meilleure_longueur:
+                meilleure_cle = key
+                meilleure_longueur = len(key_norm)
+        if meilleure_cle:
+            return MAPPING_REQUETES[meilleure_cle]
         return f"{clean_subcat_human} guide complet prix aides 2026"
 
     silo_lower = clean_silo.lower()
