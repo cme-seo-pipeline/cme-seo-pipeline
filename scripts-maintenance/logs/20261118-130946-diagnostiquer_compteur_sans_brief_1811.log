@@ -1,0 +1,41 @@
+# Execution du 2026-11-18T13:09:46Z
+# Script    : scripts-maintenance/diagnostiquer_compteur_sans_brief_1811.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+📥 Lignes analyse_concurrents du 18/11/2026 pour les 2 sous-silos sans brief...
+
+Traceback (most recent call last):
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/diagnostiquer_compteur_sans_brief_1811.py", line 68, in <module>
+    main()
+  File "/home/runner/work/cme-seo-pipeline/cme-seo-pipeline/scripts-maintenance/diagnostiquer_compteur_sans_brief_1811.py", line 44, in main
+    """).to_dataframe()
+         ^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/job/query.py", line 2052, in to_dataframe
+    query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/_tqdm_helpers.py", line 107, in wait_for_query
+    return query_job.result(max_results=max_results)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/job/query.py", line 1676, in result
+    while not is_job_done():
+              ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/retry/retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/job/query.py", line 1625, in is_job_done
+    raise job_failed_exception
+google.api_core.exceptions.BadRequest: 400 Unrecognized name: url at [2:41]; reason: invalidQuery, location: query, message: Unrecognized name: url at [2:41]
+
+Location: EU
+Job ID: 83b80a4d-5c3b-4e30-b592-bcb08a895f08
+
