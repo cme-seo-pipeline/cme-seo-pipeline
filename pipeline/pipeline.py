@@ -4039,8 +4039,14 @@ def recuperer_donnees_officielles(silo, sous_silo, client_bq):
     Retourne une chaine prete a injecter dans le prompt, vide si rien
     ne correspond (fonctionne meme si les tables n'existent pas encore)."""
     try:
-        silo_safe = silo.replace("'", "''")
-        sous_silo_safe = (sous_silo or "").replace("'", "''")
+        # Meme correctif d'echappement que recuperer_articles_meme_sous_silo
+        # (19/11/2026) -- le doublement "''" cassait deja silencieusement
+        # cette fonction pour "MaPrimeRénov'" (except generique -> "",
+        # jamais remonte en erreur visible), privant ces articles du
+        # garde-fou anti-invention de chiffres que cette fonction est
+        # censee fournir.
+        silo_safe = str(silo).replace("\\", "\\\\").replace("'", "\\'")
+        sous_silo_safe = str(sous_silo or "").replace("\\", "\\\\").replace("'", "\\'")
         df = client_bq.query(f"""
         SELECT DISTINCT i.indicateur, i.valeur, i.unite, i.date_debut_validite
         FROM `{PROJECT_ID}.{DATASET_ID}.mapping_indicateur_sous_silo` m
@@ -4324,8 +4330,14 @@ def recuperer_articles_meme_sous_silo(silo_name, sous_silo, client_bq):
     recuperer_articles_meme_silo, plus large mais toujours disponible."""
     import re as re_local
     sous_silo_base = re_local.sub(r' \(\d+\)$', '', str(sous_silo))
-    silo_safe = str(silo_name).replace("'", "''")
-    sous_silo_safe = sous_silo_base.replace("'", "''")
+    # Echappement backslash (pas le doublement '' qui casse sur un nom se
+    # terminant par une apostrophe, ex. "MaPrimeRénov'" -> 3 guillemets
+    # consecutifs juste avant la fermeture de la chaine SQL) -- meme bug,
+    # meme correctif que celui applique le 22/10/2026 dans
+    # verifier_et_differencier_sujet()/selectionner_silos_a_traiter(),
+    # jamais reporte ici jusqu'ici (voir CLAUDE.md, 19/11/2026).
+    silo_safe = str(silo_name).replace("\\", "\\\\").replace("'", "\\'")
+    sous_silo_safe = sous_silo_base.replace("\\", "\\\\").replace("'", "\\'")
     try:
         df = client_bq.query(f"""
             SELECT DISTINCT titre, url_wp AS url, date_publication FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
@@ -5470,10 +5482,17 @@ Max 5 composants. Noms 15 car."""
         "content-type": "application/json"
     }
     try:
+        # max_tokens specifique au type (19/11/2026) : le schema "comparatif"
+        # (jusqu'a 3 items x 5 criteres x 7 champs chacun) depassait
+        # systematiquement les 500 tokens communs aux 3 types -- JSON
+        # tronque en plein milieu (87% d'echec mesure en prod le 19/11),
+        # jamais sur flowchart/technique (0% d'echec, schema plus petit).
+        # flowchart/technique restent a 500, deja fiables a ce budget.
+        max_tokens_svg = 1000 if type_svg == 'comparatif' else 500
         r = requests.post(
             "https://api.anthropic.com/v1/messages",
             headers=headers,
-            json={"model": config['MODEL'], "max_tokens": 500,
+            json={"model": config['MODEL'], "max_tokens": max_tokens_svg,
                   "messages": [{"role": "user", "content": prompt}]},
             timeout=30
         )

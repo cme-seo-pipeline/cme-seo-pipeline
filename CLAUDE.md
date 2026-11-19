@@ -3491,3 +3491,80 @@ validés par test SQL réel.** Reste à confirmer au prochain run de
 100% fallback ancienneté), et qu'aucune régression n'apparaît sur
 l'anti-doublon (les deux couches restantes — exclusion exacte par mot-clé
 et `verifier_et_differencier_sujet()` — n'ont pas été modifiées).
+
+## Rituel quotidien du run — mis en place le 18/11/2026, deux correctifs le 19/11/2026
+
+Scheduled task "Audit quotidien pipeline CME" (lundi-vendredi, créé le
+18/11/2026) : audit lecture seule du run `publication-quotidienne.yml` du
+jour (statut, volume publié vs quota, GSC vs fallback ancienneté, erreurs/
+exceptions, mise en perspective avec l'historique projet). Heure décalée le
+19/11/2026 à la demande opérateur, de 11h17 UTC (11h17 Europe/Paris
+initial — décalage automatique à la création) à **12h34 UTC+1 Paris**
+(13h00 demandé, jitter -26min appliqué par convention sur une heure
+pile).
+
+**Deux bugs trouvés par le premier run de cet audit (19/11/2026),
+diagnostiqués en lecture seule puis corrigés le même jour sur demande
+explicite de l'opérateur** (commit à suivre) :
+
+1. **Même bug d'échappement d'apostrophe que celui déjà corrigé le
+   22/10/2026, mais dans DEUX autres fonctions qui n'avaient jamais reçu
+   le même correctif** : `recuperer_articles_meme_sous_silo()` et
+   `recuperer_donnees_officielles()` (`pipeline/pipeline.py`) utilisaient
+   encore `.replace("'", "''")` (doublement du guillemet) au lieu du style
+   backslash (`.replace("\\", "\\\\").replace("'", "\\'")`) déjà en place
+   dans `selectionner_silos_a_traiter()`/`verifier_et_differencier_sujet()`
+   depuis le 22/10. Conséquence confirmée en prod le 19/11 pour
+   "MaPrimeRénov'" (seul sous-silo actif du quota se terminant par une
+   apostrophe) :
+   - `recuperer_articles_meme_sous_silo()` : erreur SQL visible dans le
+     log (`400 Syntax error: concatenated string literals...`), fail-safe
+     déjà en place (repli sur `recuperer_articles_meme_silo()`, pas de
+     plantage) — mais le maillage "effet de flotte" précis par sous-silo
+     ne fonctionnait jamais pour MaPrimeRénov'.
+   - `recuperer_donnees_officielles()` : même bug, mais `except Exception:
+     return ""` avale l'erreur silencieusement — aucune trace dans le log
+     (contrairement au premier cas). Plus sérieux en pratique : cette
+     fonction existe spécifiquement "pour éviter que l'IA n'invente des
+     chiffres" sur les valeurs réglementaires (PRVG/TRVE/aides) — elle ne
+     fournissait donc jamais ce garde-fou aux articles MaPrimeRénov',
+     sans qu'aucun signal ne le révèle avant cet audit.
+   - **Corrigé** (même style d'échappement, mêmes deux fonctions) et testé
+     localement (script Python isolé, sans réseau) : confirme que l'ancien
+     code produisait bien `'MaPrimeRénov'''` (triple guillemet, requête
+     cassée) et que le nouveau produit `'MaPrimeRénov\''` (valide), sans
+     changer le comportement sur un nom sans apostrophe.
+   - **Deux occurrences du même pattern `.replace("'", "''")` repérées
+     mais volontairement NON corrigées** à cette session, signalées à
+     l'opérateur plutôt que corrigées d'office : `indicateur_safe` dans
+     `construire_brief_actualite()` (ligne ~3871 — exposition quasi nulle,
+     les noms d'indicateurs comme `TRVE_part_variable_TTC` ne contiennent
+     jamais d'apostrophe) et `url_soeur_echappee` dans le mécanisme de
+     fusion ORCAAS (ligne ~3589 — composant déjà documenté "à l'abandon
+     côté usage", voir section "SEO technique délégué" plus haut, pas de
+     nouvel investissement décidé). À corriger si l'un des deux redevient
+     actif ou si une exposition réelle est confirmée.
+
+2. **Génération des schémas SVG "comparatif" — `max_tokens=500`
+   insuffisant pour ce type, jamais pour les deux autres** : mesuré en
+   prod le 19/11, 53 échecs sur 61 tentatives (87%) pour le type
+   "comparatif" (erreurs JSON typiques d'une troncature —
+   `Unterminated string`, `Expecting value`, `Expecting ',' delimiter`),
+   contre 0 échec sur 20 (flowchart) et 0 sur 22 (technique) au même
+   budget de 500 tokens. Cause probable : le schéma "comparatif" (jusqu'à
+   3 items × 5 critères × 7 champs chacun) est structurellement plus
+   volumineux que les deux autres types. Impact réel mesuré : 11 des 20
+   articles publiés ce jour-là n'ont reçu que 2 schémas sur 3 (comparatif
+   manquant). **Corrigé** (`extraire_donnees_svg()`) : `max_tokens` passe
+   à 1000 spécifiquement pour le type `comparatif`, flowchart/technique
+   restent à 500 (déjà fiables à ce budget, aucune raison de les changer).
+   `python3 -m py_compile` validé (seul le `SyntaxWarning` préexistant non
+   lié, ligne ~2251).
+
+**Pas encore validé en conditions réelles** — à confirmer au prochain run
+de `publication-quotidienne.yml` (demain, 20/11/2026) : (a) plus d'erreur
+`Recuperation articles meme sous-silo impossible` ni de "données
+officielles : aucune" silencieuse pour MaPrimeRénov', et (b) un taux
+d'échec "comparatif" nettement inférieur à 87%, idéalement proche de 0
+comme flowchart/technique, et les articles du jour avec 3 schémas sur 3
+plutôt que 2.
