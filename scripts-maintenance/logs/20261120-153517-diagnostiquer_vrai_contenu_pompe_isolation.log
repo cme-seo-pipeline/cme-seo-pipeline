@@ -1,0 +1,115 @@
+# Execution du 2026-11-20T15:35:17Z
+# Script    : scripts-maintenance/diagnostiquer_vrai_contenu_pompe_isolation.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+1. PAGES REELLES derriere silo~Renovation + sous_silo brut IN ('pompe-a-chaleur','isolation')
+   (30 jours, table brute 01_raw.gsc_queries -- avant tout relabel de la vue)
+====================================================================================================
+                                                                                                                page                 silo_brut  sous_silo_brut  nb_requetes  impressions
+            https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/prix-isolation-maison-devis-2024/ 2. Renovation Energetique       isolation          231          552
+    https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air-vs-air-eau/ 2. Renovation Energetique pompe-a-chaleur          118          397
+       https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/ 2. Renovation Energetique pompe-a-chaleur          147          341
+               https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-eau/ 2. Renovation Energetique pompe-a-chaleur           45           84
+               https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air/ 2. Renovation Energetique pompe-a-chaleur           37           53
+                         https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-thermique/ 2. Renovation Energetique       isolation           22           39
+            https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024/ 2. Renovation Energetique pompe-a-chaleur           13           15
+               https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-piscine/ 2. Renovation Energetique pompe-a-chaleur           13           13
+https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air-fonctionnement/ 2. Renovation Energetique pompe-a-chaleur            3            5
+                                       https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/ 2. Renovation Energetique pompe-a-chaleur            2            3
+    https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/cout-isolation-thermique-prix-devis-2024/ 2. Renovation Energetique       isolation            2            2
+           https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/seche-linge-pompe-a-chaleur/ 2. Renovation Energetique pompe-a-chaleur            1            2
+                        https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/isolation-exterieure/ 2. Renovation Energetique       isolation            1            1
+
+====================================================================================================
+2. Existe-t-il des lignes gsc_queries pour des pages contenant 'aide-pompe-a-chaleur' ou 'aide-isolation' ?
+   (90 jours, peu importe le silo/sous_silo attribue)
+====================================================================================================
+                                                                                                                             page           silo_brut       sous_silo_brut  nb_requetes  impressions
+    https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-roi-1113/ 3. Aide Energetique aide-pompe-a-chaleur          105          227
+        https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-air-air-prix-devis-economies/ 3. Aide Energetique aide-pompe-a-chaleur           23           44
+                    https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-combles-devis-prix-economies/ 3. Aide Energetique       aide-isolation           20           34
+       https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-aides/ 3. Aide Energetique aide-pompe-a-chaleur           10           34
+                https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-devis-roi/ 3. Aide Energetique aide-pompe-a-chaleur           24           31
+     https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-geothermique-prix-economies-roi/ 3. Aide Energetique aide-pompe-a-chaleur           13           17
+              https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-air-eau-prix-roi/ 3. Aide Energetique aide-pompe-a-chaleur            9           14
+         https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-roi/ 3. Aide Energetique aide-pompe-a-chaleur            4            5
+                                                     https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/ 3. Aide Energetique aide-pompe-a-chaleur            2            2
+https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-fonctionnement-cycle-thermodynamique/ 3. Aide Energetique aide-pompe-a-chaleur            2            2
+
+====================================================================================================
+3. URLs REELLEMENT PUBLIEES sous 'Aide pompe a chaleur' / 'Aide isolation' (historique_publications)
+   -- et, pour chacune, apparait-elle dans gsc_queries (90j), sous quel silo/sous_silo ?
+====================================================================================================
+  19 article(s) publie(s) au total sous ces 2 sous-silos.
+               silo sous_silo_strategique                                                                                                                            url_wp                 date_publication
+3. Aide Énergétique  Aide pompe à chaleur     https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-vs-air-eau-comparatif-1120/ 2026-11-20 11:16:18.590836+00:00
+3. Aide Énergétique        Aide isolation                       https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-fenetres-installation-cout/ 2026-11-20 11:15:18.556272+00:00
+3. Aide Énergétique  Aide pompe à chaleur         https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/fonctionnement-pompe-a-chaleur-guide-complet/ 2026-11-19 11:29:06.819150+00:00
+3. Aide Énergétique        Aide isolation                           https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-combles-prix-budget-m2/ 2026-11-19 11:27:16.470132+00:00
+3. Aide Énergétique  Aide pompe à chaleur          https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/cout-pompe-chaleur-devis-installation-aides/ 2026-11-18 11:25:34.403942+00:00
+3. Aide Énergétique        Aide isolation                        https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/cout-isolation-toiture-budget-aides/ 2026-11-18 11:23:30.219380+00:00
+3. Aide Énergétique  Aide pompe à chaleur          https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-vs-air-eau-comparatif/ 2026-11-17 11:50:36.543614+00:00
+3. Aide Énergétique        Aide isolation          https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-interieur-vs-exterieur-comparatif-aides/ 2026-11-17 11:49:10.400984+00:00
+3. Aide Énergétique  Aide pompe à chaleur https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-fonctionnement-cycle-thermodynamique/ 2026-11-16 11:02:21.427110+00:00
+3. Aide Énergétique        Aide isolation                            https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/aides-isolation-cumulables-2026/ 2026-11-16 11:00:53.684802+00:00
+3. Aide Énergétique  Aide pompe à chaleur     https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-roi-1113/ 2026-11-13 10:54:18.351971+00:00
+3. Aide Énergétique  Aide pompe à chaleur          https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-roi/ 2026-11-13 10:52:49.763307+00:00
+3. Aide Énergétique  Aide pompe à chaleur         https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-air-air-prix-devis-economies/ 2026-11-13 10:51:01.783444+00:00
+3. Aide Énergétique        Aide isolation                     https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-combles-devis-prix-economies/ 2026-11-13 10:49:48.971368+00:00
+3. Aide Énergétique  Aide pompe à chaleur      https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-geothermique-prix-economies-roi/ 2026-11-12 11:03:03.461058+00:00
+3. Aide Énergétique  Aide pompe à chaleur https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-geothermique-prix-comparatif-air-eau/ 2026-11-12 11:01:18.931773+00:00
+3. Aide Énergétique  Aide pompe à chaleur        https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-aides/ 2026-11-11 10:30:09.383419+00:00
+3. Aide Énergétique  Aide pompe à chaleur               https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-air-eau-prix-roi/ 2026-11-11 10:28:11.035849+00:00
+3. Aide Énergétique  Aide pompe à chaleur                 https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-devis-roi/ 2026-11-11 10:26:25.306051+00:00/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+
+
+  Croisement avec gsc_queries (match par suffixe d'URL, 90 jours) :
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-vs-air-eau-comparatif-1120/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-fenetres-installation-cout/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/fonctionnement-pompe-a-chaleur-guide-complet/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-combles-prix-budget-m2/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/cout-pompe-chaleur-devis-installation-aides/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/cout-isolation-toiture-budget-aides/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-vs-air-eau-comparatif/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-interieur-vs-exterieur-comparatif-aides/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-fonctionnement-cycle-thermodynamique/ -> silo='3. Aide Energetique' sous_silo='aide-pompe-a-chaleur'
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/aides-isolation-cumulables-2026/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-roi-1113/ -> silo='3. Aide Energetique' sous_silo='aide-pompe-a-chaleur'
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-roi/ -> silo='3. Aide Energetique' sous_silo='aide-pompe-a-chaleur'
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-air-air-prix-devis-economies/ -> silo='3. Aide Energetique' sous_silo='aide-pompe-a-chaleur'
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/isolation-combles-devis-prix-economies/ -> silo='3. Aide Energetique' sous_silo='aide-isolation'
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-geothermique-prix-economies-roi/ -> silo='3. Aide Energetique' sous_silo='aide-pompe-a-chaleur'
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-a-chaleur-geothermique-prix-comparatif-air-eau/ -> AUCUNE ligne GSC (pas assez de donnees/trop recent)
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-installation-aides/ -> silo='3. Aide Energetique' sous_silo='aide-pompe-a-chaleur'
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-air-eau-prix-roi/ -> silo='3. Aide Energetique' sous_silo='aide-pompe-a-chaleur'
+    - https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/pompe-chaleur-air-air-prix-devis-roi/ -> silo='3. Aide Energetique' sous_silo='aide-pompe-a-chaleur'
