@@ -3699,3 +3699,60 @@ week-end) : qu'aucun autre chevauchement cross-sous-silo de ce type ne
 réapparaisse dans le même silo, et qu'une ligne `🔀 Chevauchement detecte`
 apparaisse bien si un cas similaire se présente à nouveau (preuve que la
 détection fonctionne en conditions réelles, pas seulement en mock).
+
+## Confusion Linky/Gazpar dans un article "Compteur gaz" (20/11/2026)
+
+Signalé par l'opérateur : un article publié dans le sous-silo "Compteur
+gaz" (silo Gaz) portait le titre *"Compteur gaz communicant Linky :
+avantages et économies d'énergie"* — Linky est le compteur **ÉLECTRIQUE**
+communicant d'Enedis, le compteur **GAZ** communicant français s'appelle
+**Gazpar** (GRDF). Déjà corrigé manuellement par l'opérateur sur
+l'article trouvé — demande explicite : corriger **au niveau du prompt
+des briefs LLM**, pas de rattrapage rétroactif demandé.
+
+**Root cause** : le seul garde-fou existant avant ce correctif
+(`MAPPING_REQUETES` / `generate_niche_query()`, corrigé le 18/11/2026,
+voir section "Rituel quotidien du run") ne s'applique qu'à la requête de
+niche envoyée au scraping concurrent (SearchApi) — jamais transmise aux
+deux appels LLM qui décident réellement du titre et du contenu de
+l'article : `generer_brief_silo()` (titre_seo/mot_cle_principal/
+meta_description) et `rediger_article()` (corps HTML). Ces deux prompts
+ne mentionnaient que le nom du silo/sous-silo, sans aucune précision
+terminologique Linky/Gazpar — rien n'empêchait le modèle de confondre les
+deux marques de sa propre initiative.
+
+**Corrigé** (`pipeline/pipeline.py`) : nouvelle fonction
+`consigne_disambiguation_compteur(sous_silo)` (juste après
+`_sans_accents()`), appelée aux deux sites LLM :
+- Retire le suffixe anti-collision (`' (2)'`, `' (3)'`...) avant
+  matching — même précaution que `verifier_et_differencier_sujet()`.
+- Si le sous-silo (normalisé, sans accents) contient "compteur" ET "gaz" :
+  injecte une consigne obligatoire imposant "Gazpar" et interdisant
+  "Linky".
+- Si le sous-silo contient "compteur" sans "gaz" (le sous-silo
+  Électricité "Compteur") : injecte la consigne symétrique inverse
+  (imposant "Linky", interdisant "Gazpar") — corrige aussi le risque
+  miroir, non signalé par l'opérateur mais structurellement identique.
+- Tout autre sous-silo (y compris "Déménagement gaz", qui contient "gaz"
+  mais pas "compteur") : chaîne vide, comportement inchangé.
+- Injectée dans le prompt de `generer_brief_silo()` (juste après
+  `{contrainte_force_str}`) et dans celui de `rediger_article()` (juste
+  après `{donnees_officielles_str}`, avant `RÈGLES :`) — un seul helper
+  centralisé réutilisé aux deux appels, même logique que
+  `MAPPING_REQUETES` lui-même.
+
+**Testé en local** (extraction isolée de la fonction, sans dépendance
+réseau) sur 7 cas : `'Compteur gaz'` et `'Compteur gaz (2)'` → consigne
+Gazpar/anti-Linky correcte ; `'Compteur'` et `'Compteur (2)'` → consigne
+Linky/anti-Gazpar correcte ; `'Bouteilles'`, `'Chauffage Gaz'`,
+`'Déménagement gaz'` → chaîne vide, aucun effet de bord. `python3 -m
+py_compile pipeline/pipeline.py` validé (seul le `SyntaxWarning`
+préexistant non lié).
+
+**Pas encore validé en conditions réelles** — à confirmer aux prochains
+articles publiés sur les sous-silos "Compteur gaz" et "Compteur"
+(`publication-quotidienne.yml`, prochain run lundi 23/11/2026, pas de run
+le week-end) : plus aucune mention de "Linky" dans un article Gaz ni de
+"Gazpar" dans un article Électricité. Aucune correction rétroactive
+engagée — l'opérateur a confirmé avoir déjà corrigé à la main le seul
+article trouvé à ce jour.

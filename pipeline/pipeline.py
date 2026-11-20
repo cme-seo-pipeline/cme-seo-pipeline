@@ -579,6 +579,45 @@ def _sans_accents(texte):
     )
 
 
+def consigne_disambiguation_compteur(sous_silo):
+    """Trouve en prod le 20/11/2026 (operateur) : un article du sous-silo
+    "Compteur gaz" publie avec le titre "Compteur gaz communicant Linky...",
+    alors que Linky est le compteur ELECTRIQUE d'Enedis -- le compteur GAZ
+    communicant francais s'appelle Gazpar (GRDF). Le seul garde-fou
+    existant avant ce correctif (MAPPING_REQUETES / generate_niche_query(),
+    corrige le 18/11/2026) ne s'applique qu'a la requete de niche envoyee
+    au scraping concurrent -- rien n'empechait le modele de confondre les
+    deux marques de sa propre initiative au moment de choisir le
+    titre_seo/mot_cle_principal (generer_brief_silo()) ou de rediger le
+    contenu (rediger_article()), deux appels LLM independants qui ne se
+    partagent aucune consigne.
+
+    Injecte une precision terminologique explicite dans le prompt des DEUX
+    fonctions quand le sous-silo traite precisement de l'un des deux
+    compteurs communicants francais -- chaine vide (comportement inchange)
+    pour tout autre sous-silo. Le suffixe anti-collision (' (2)', ' (3)'...)
+    est retire avant le matching, meme precaution que partout ailleurs dans
+    ce fichier ou un sous-silo suffixe est recu (voir verifier_et_differencier_sujet())."""
+    nom = _sans_accents(re.sub(r' \(\d+\)$', '', str(sous_silo)).strip().lower())
+    if 'compteur' not in nom:
+        return ""
+    if 'gaz' in nom:
+        return (
+            "\n\n⚠️ PRÉCISION TERMINOLOGIQUE OBLIGATOIRE : ce sous-silo traite "
+            "du compteur GAZ communicant, qui s'appelle Gazpar (déployé par "
+            "GRDF). N'écris JAMAIS le mot \"Linky\" dans cet article -- Linky "
+            "est le compteur ÉLECTRIQUE communicant d'Enedis, sans aucun "
+            "rapport avec le gaz."
+        )
+    return (
+        "\n\n⚠️ PRÉCISION TERMINOLOGIQUE OBLIGATOIRE : ce sous-silo traite "
+        "du compteur ÉLECTRIQUE communicant, qui s'appelle Linky (déployé "
+        "par Enedis). N'écris JAMAIS le mot \"Gazpar\" dans cet article -- "
+        "Gazpar est le compteur GAZ communicant de GRDF, sans aucun rapport "
+        "avec l'électricité."
+    )
+
+
 def generate_niche_query(silo, subcat):
     clean_silo = silo.split('. ')[-1] if '. ' in silo else silo
     clean_subcat = str(subcat).strip() if subcat and str(subcat) not in ['', 'nan'] else ''
@@ -1154,6 +1193,8 @@ def generer_brief_silo(contexte, config, titres_existants=None, mot_cle_force=No
         )
         contrainte_force_str = "\n".join(lignes_force) + "\n"
 
+    consigne_compteur_str = consigne_disambiguation_compteur(sous_silo)
+
     prompt = f"""Tu es un expert SEO éditorial senior spécialisé dans l'énergie en France.
 ⚠️ CONTRAINTE ABSOLUE : brief EXCLUSIVEMENT sur :
 → SILO : {silo}
@@ -1162,6 +1203,7 @@ def generer_brief_silo(contexte, config, titres_existants=None, mot_cle_force=No
 STRUCTURE URL : /{slug_silo}/{slug_sous_silo}/[slug-article]/
 {titres_str}
 {contrainte_force_str}
+{consigne_compteur_str}
 
 Génère un brief en JSON STRICT :
 {{
@@ -4089,6 +4131,8 @@ def rediger_article(brief, config, articles_silo=None, client_bq=None):
         if donnees:
             donnees_officielles_str = f"\nDONNÉES OFFICIELLES ACTUELLES (source : CRE/ANAH, vérifiées — utilise IMPÉRATIVEMENT ces valeurs exactes dans au moins un exemple chiffré concret) :\n{donnees}\n"
 
+    consigne_compteur_str = consigne_disambiguation_compteur(brief.get('sous_silo', ''))
+
     prompt = f"""Tu es un rédacteur SEO expert et conseiller commercial, spécialisé exclusivement dans 3 secteurs : l'électricité, le gaz et les aides à la rénovation énergétique en France.
 Rédige un article complet basé sur ce brief :
 
@@ -4113,6 +4157,7 @@ FAQ :
 
 {maillage_str}
 {donnees_officielles_str}
+{consigne_compteur_str}
 
 RÈGLES :
 1. HTML propre : h1, h2, h3, p, ul, li, strong, a, table, thead, tbody, tr, th, td
