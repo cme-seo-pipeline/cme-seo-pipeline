@@ -3492,6 +3492,46 @@ validés par test SQL réel.** Reste à confirmer au prochain run de
 l'anti-doublon (les deux couches restantes — exclusion exacte par mot-clé
 et `verifier_et_differencier_sujet()` — n'ont pas été modifiées).
 
+### Correction du diagnostic "Aide pompe à chaleur"/"Aide isolation" — fausse alerte, pas un bug (20/11/2026)
+
+L'"effet secondaire" documenté ci-dessus le 16/11 (classification erronée
+par `fix_seo_opportunities_postid.sh`) était une **fausse conclusion** —
+corrigé après re-lecture du code et vérification SQL réelle
+(`scripts-maintenance/diagnostiquer_vrai_contenu_pompe_isolation.py`,
+lecture seule, pont GitHub Actions). Le diagnostic du 16/11 avait vu des
+lignes `silo='2. Rénovation Énergétique'`/`sous_silo='pompe-a-chaleur'`
+(resp. `'isolation'`) et conclu, à tort, qu'elles correspondaient au
+contenu "Aide pompe à chaleur"/"Aide isolation" mal routé — sans vérifier
+les URLs réelles derrière.
+
+**Vérifié le 20/11** : `fix_seo_opportunities_postid.sh` ne fait que
+relabelliser l'orthographe du `silo` déjà présent dans
+`01_raw.gsc_queries` — toute la dérivation silo/sous-silo depuis l'URL se
+fait en amont, dans `apps-scripts/cme-gsc-to-bq.gs` (`parseUrl()`), à
+partir des deux premiers segments du chemin. Les URLs réellement
+publiées sous "Aide pompe à chaleur"/"Aide isolation"
+(`/aide-energetique/aide-pompe-a-chaleur/...`,
+`/aide-energetique/aide-isolation/...`) sont correctement classées
+`silo='3. Aide Energetique'`/`sous_silo='aide-pompe-a-chaleur'` (resp.
+`'aide-isolation'`) dans `gsc_queries` — confirmé sur plusieurs requêtes
+réelles avec de vraies impressions (jusqu'à 227). Les lignes
+"pompe-a-chaleur"/"isolation" (sans préfixe) sous "Rénovation
+Énergétique" sont un **sous-silo pré-existant totalement distinct**, même
+nom par coïncidence, contenu entièrement différent (slugs d'articles
+différents, ex. `pompe-a-chaleur-air-air-vs-air-eau` vs
+`pompe-chaleur-air-air-vs-air-eau-comparatif`) — aucune confusion
+possible entre les deux une fois les URLs comparées.
+
+**Vraie explication du "0 opportunité" du 16/11** : "Aide pompe à
+chaleur" et "Aide isolation" ont été créés le 04/11 et le 12/11 —
+simplement trop récents à cette date pour avoir accumulé assez
+d'impressions GSC pour passer les seuils de la vue
+(`impressions > 5`, position entre 5 et 42). Le 20/11, 4 jours plus tard,
+de vraies requêtes apparaissent déjà, correctement classées. **Aucune
+correction de code nécessaire** — se résout avec le temps, comme
+"Compteur gaz"/"Chauffage Gaz" (même mécanisme, déjà noté comme "pas un
+bug" dans la section précédente).
+
 ## Rituel quotidien du run — mis en place le 18/11/2026, deux correctifs le 19/11/2026
 
 Scheduled task "Audit quotidien pipeline CME" (lundi-vendredi, créé le
