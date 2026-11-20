@@ -5082,6 +5082,19 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
     ne doit jamais bloquer silencieusement la publication comme les
     bugs deja rencontres ce jour.
 
+    EXTENSION DU 20/11/2026 (voir CLAUDE.md, "Chevauchement cross-sous-silo
+    -- Electricite 20/11/2026") : cette fonction ne comparait jusqu'ici qu'au
+    MEME sous-silo. Deux sous-silos DIFFERENTS du meme silo ("Contrat
+    Electricite" et "Demenagement") ont publie le meme jour deux titres
+    quasi-identiques sur "changer de fournisseur electricite", chacun ayant
+    choisi independamment un mot-cle GSC different mais ciblant le meme
+    theme reel -- aucune comparaison mecanique de chaines ne les aurait
+    rapproches. Etendue pour comparer AUSSI aux articles d'un AUTRE
+    sous-silo du MEME SILO publies dans la meme fenetre de 90 jours (pas
+    seulement le run du jour -- voir bloc `freres` plus bas). Perimetre
+    volontairement limite au MEME SILO (decision operateur) : le risque de
+    chevauchement entre silos differents est structurellement plus faible.
+
     BUG CORRIGE LE 22/10/2026 (voir CLAUDE.md, "Duplication editoriale --
     suite") : `sous_silo` recu ici porte parfois le suffixe anti-collision
     ' (2)', ' (3)'... ajoute par selectionner_silos_a_traiter() pour
@@ -5205,7 +5218,44 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
     ):
         existants.insert(0, exact_match_row)
 
-    if not existants:
+    # EXTENSION DU 20/11/2026 (demande operateur, suite a l'observation de 2
+    # sous-silos Electricite -- "Contrat Electricite" et "Demenagement" --
+    # ayant publie le MEME JOUR deux titres quasi-identiques sur "changer de
+    # fournisseur electricite" : 'Changer de fournisseur électricité :
+    # démarches et économies' / 'Changement fournisseur électricité :
+    # démarches et délais'). Root cause distincte du bug du 22/10 (suffixe
+    # anti-collision) : ici chaque sous-silo avait choisi un mot-cle GSC
+    # DIFFERENT et pas lexicalement proche ('preavis edf ouverture' vs
+    # 'préavis changement offre énergie') -- aucune comparaison mecanique de
+    # chaines ne les aurait rapproches, seul un jugement semantique peut voir
+    # qu'ils pointent vers le MEME theme reel (préavis de changement de
+    # fournisseur). Cette fonction ne comparait jusqu'ici qu'au MEME
+    # sous-silo (sous_silo_strategique egal) -- aucune protection n'existait
+    # entre deux sous-silos DIFFERENTS du meme silo. Perimetre volontairement
+    # limite au MEME SILO (pas tout le run, pas inter-silos, decision
+    # operateur) : le risque de chevauchement thematique entre silos
+    # differents (Gaz vs Electricite, par ex.) est structurellement plus
+    # faible, les silos etant deja bien separes thematiquement. Fenetre
+    # alignee sur la meme fenetre anti-doublon de 90 jours (pas seulement le
+    # run du jour) : un chevauchement cross-sous-silo peut tout aussi bien
+    # se produire a quelques jours d'ecart qu'au sein du meme run. FAIL-OPEN
+    # comme le reste de cette fonction : une erreur ici n'empeche jamais la
+    # verification same-sous-silo deja en place de s'appliquer.
+    try:
+        df_freres = client_bq.query(f"""
+            SELECT titre, mot_cle, sous_silo_strategique, MAX(date_publication) AS derniere_date
+            FROM `{PROJECT_ID}.{DATASET_ID}.historique_publications`
+            WHERE silo = '{silo_safe}' AND sous_silo_strategique != '{sous_silo_safe}'
+              AND date_publication >= '{date_limite_90j}'
+            GROUP BY titre, mot_cle, sous_silo_strategique
+            ORDER BY derniere_date DESC LIMIT 40
+        """).to_dataframe()
+        freres = df_freres.to_dict('records') if not df_freres.empty else []
+    except Exception as e:
+        print(f"  ⚠️ Verification chevauchement cross-sous-silo impossible ({e}) -- poursuite sans cette verification")
+        freres = []
+
+    if not existants and not freres:
         return brief
 
     mot_cle_propose = brief.get('mot_cle_principal', '')
@@ -5223,7 +5273,13 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
         "L'article propose couvre-t-il un sujet QUASI-IDENTIQUE a l'un de ceux "
         "deja publies (meme angle, meme intention de recherche, meme mot-cle "
         "ou variante triviale du meme mot-cle -- ex. ordre des mots inverse, "
-        "singulier/pluriel, synonyme evident) ? Si OUI, propose un TITRE et "
+        "singulier/pluriel, synonyme evident), qu'il soit du meme sous-silo "
+        "ou d'un autre sous-silo du meme silo ? Deux mots-cles qui semblent "
+        "differents en surface (ex. 'preavis edf ouverture' et 'préavis "
+        "changement offre énergie') peuvent tres bien cibler le MEME theme "
+        "reel (ex. préavis de changement de fournisseur) -- juge sur "
+        "l'intention de recherche reelle, pas sur la similarite lexicale du "
+        "mot-cle. Si OUI, propose un TITRE et "
         "un MOT-CLE PRINCIPAL ALTERNATIFS avec un angle genuinement distinct "
         "sur le meme theme general -- jamais une simple reformulation, un "
         "vrai angle different (public different, aspect different du sujet, "
@@ -5231,13 +5287,26 @@ def verifier_et_differencier_sujet(brief, silo_name, sous_silo, client_bq, confi
         "different (pas juste un synonyme du mot-cle existant). Si NON, "
         "renvoie le titre et le mot-cle proposes tels quels."
     )
+    # Deux sources distinctes fusionnees dans le MEME prompt (un seul appel
+    # LLM, pas deux, pour ne pas doubler le cout Haiku par brief) : les
+    # articles du meme sous-silo (existants, logique inchangee depuis le
+    # 22/10) et, depuis le 20/11/2026, les articles d'un AUTRE sous-silo du
+    # MEME SILO publies dans la meme fenetre de 90 jours (freres) --
+    # etiquetes distinctement pour que le LLM voie bien l'origine de chaque
+    # ligne (utile pour juger l'angle a differencier, jamais pour fusionner).
+    lignes_contexte = (
+        [f"- \"{e['titre']}\" (mot-cle : {e['mot_cle']}, meme sous-silo)" for e in existants]
+        + [f"- \"{e['titre']}\" (mot-cle : {e['mot_cle']}, AUTRE sous-silo du meme silo : {e['sous_silo_strategique']})"
+           for e in freres]
+    )
     prompt = (
         f"Voici un article PROPOSE :\n"
         f"- Titre : \"{titre_propose}\"\n"
         f"- Mot-cle principal : \"{mot_cle_propose}\"\n\n"
         "Voici les articles DEJA PUBLIES (ou en cours de publication dans "
-        "ce meme run) dans le meme sous-silo :\n"
-        + "\n".join(f"- \"{e['titre']}\" (mot-cle : {e['mot_cle']})" for e in existants) + "\n\n"
+        "ce meme run) dans le meme sous-silo OU dans un autre sous-silo du "
+        "MEME SILO (etiquete sur chaque ligne) :\n"
+        + "\n".join(lignes_contexte) + "\n\n"
         + consigne_chevauchement + "\n"
         "Reponds EXACTEMENT dans ce format, avec ces delimiteurs exacts "
         "(PAS de JSON) :\n"

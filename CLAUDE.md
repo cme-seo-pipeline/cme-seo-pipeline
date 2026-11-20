@@ -3568,3 +3568,94 @@ officielles : aucune" silencieuse pour MaPrimeRénov', et (b) un taux
 d'échec "comparatif" nettement inférieur à 87%, idéalement proche de 0
 comme flowchart/technique, et les articles du jour avec 3 schémas sur 3
 plutôt que 2.
+
+**Validé en conditions réelles le 20/11/2026** (audit lecture seule du run
+`44722742977`, scheduled task quotidien) : (a) zéro occurrence de
+`Recuperation articles meme sous-silo impossible` ni de match de l'ancien
+bug d'échappement pour MaPrimeRénov' — le correctif tient ; (b) 18/19
+articles publiés avec 3 schémas sur 3 (flowchart+technique+comparatif),
+1 seul à 2/3 — contre 11/20 à 3/3 la veille (87% d'échec sur le type
+comparatif). Les deux correctifs du 19/11 sont confirmés efficaces.
+
+## Chevauchement cross-sous-silo — Électricité 20/11/2026
+
+Repéré par l'opérateur en lisant le rapport d'audit quotidien du
+20/11/2026 (run `44722742977`) : 2 des 5 sous-silos Électricité publiés ce
+jour-là portaient des titres quasi-identiques — "Contrat Électricité" →
+*"Changer de fournisseur électricité : démarches et économies"*,
+"Déménagement" → *"Changement fournisseur électricité : démarches et
+délais"*. Un 3ᵉ titre ("Facture Électricité : comparer les tarifs par
+fournisseur") touche au même champ lexical sans être un vrai doublon de
+titre.
+
+**Diagnostic** (lecture seule, log du run) : les deux sous-silos ont
+sélectionné, chacun indépendamment, un mot-clé GSC différent et PAS
+lexicalement proche (`preavis edf ouverture` vs `préavis changement offre
+énergie` — intersection/union des mots ≈ 0.17, bien en dessous de tout
+seuil de similarité de chaîne raisonnable) mais ciblant en réalité le
+MÊME thème (préavis de changement de fournisseur électricité). Aucune
+ligne `🔀 Chevauchement detecte` dans le log pour ces deux briefs — confirmé
+par relecture du code : `verifier_et_differencier_sujet()` ne comparait
+jusqu'ici qu'au MÊME sous-silo (`sous_silo_strategique` égal), jamais à un
+AUTRE sous-silo du même silo, même publié le même jour dans le même run.
+C'est un angle mort distinct du bug du 22/10 (qui concernait le suffixe
+anti-collision au sein d'un même sous-silo) — celui-ci n'a jamais été
+couvert par aucun mécanisme existant.
+
+**Impact SEO** : cannibalisation interne classique — deux pages du site
+visant la même intention de recherche se disputent le même classement au
+lieu de consolider un seul signal fort (lien interne, profondeur de
+contenu, autorité) sur une page unique ; risque direct "effet
+d'écrasement" déjà documenté le 31/10 (Google qui ne retient qu'une des
+deux, ou les classe toutes les deux moyennement). Gaspille aussi un
+emplacement du quota quotidien (20/jour) sur un sujet redondant plutôt
+qu'un sujet réellement nouveau. Le signal ne serait de toute façon visible
+dans `detecter_cannibalisation_gsc.py` qu'après plusieurs semaines de
+trafic réel (audit mensuel) — d'où l'intérêt d'une prévention à la
+publication plutôt qu'une détection tardive après coup.
+
+**Corrigé** (`verifier_et_differencier_sujet()`, commit à suivre) —
+décision opérateur explicite sur le périmètre : comparaison limitée au
+MÊME SILO (pas tout le run, pas inter-silos — le risque de chevauchement
+entre silos différents, ex. Gaz vs Électricité, est structurellement plus
+faible, les silos étant déjà bien séparés thématiquement), sur la MÊME
+fenêtre anti-doublon de 90 jours (pas seulement le run du jour — un
+chevauchement cross-sous-silo peut survenir à quelques jours d'écart
+aussi bien qu'au sein du même run). Nouvelle requête BigQuery (`freres` :
+même silo, `sous_silo_strategique != ` le sous-silo courant, 90 jours)
+fusionnée dans le MÊME prompt LLM que la vérification same-sous-silo
+existante (un seul appel Haiku par brief, pas deux) — chaque ligne
+étiquetée "même sous-silo" ou "AUTRE sous-silo du même silo : X" pour que
+le LLM juge sur l'intention de recherche réelle plutôt que sur la
+similarité lexicale du mot-clé. Garde de différenciation forcée
+(`exact_force`) volontairement laissée inchangée (scope same-sous-silo
+uniquement) — un chevauchement cross-sous-silo n'est jamais un match
+lexical exact par construction ici, seul le jugement sémantique du LLM
+peut le voir. FAIL-OPEN : une erreur sur cette nouvelle requête ne bloque
+jamais la vérification same-sous-silo déjà en place.
+
+Une alternative plus légère (comparaison mécanique des mots-clés GSC à la
+sélection, avant même de générer un brief) a été envisagée mais écartée :
+rejouée sur le cas réel du 20/11, elle n'aurait PAS détecté ce
+chevauchement précis (similarité lexicale trop faible entre les deux
+mots-clés) — seul un jugement sémantique peut voir que deux mots-clés
+différents en surface ciblent la même intention de recherche.
+
+**Testé en local** (logique isolée, mock BigQuery + mock Anthropic, sans
+réseau — même limite déjà documentée ailleurs dans ce fichier) : 5 cas
+— (1) aucun chevauchement ni same-sous-silo ni cross-sous-silo → pas
+d'appel LLM, brief inchangé ; (2) chevauchement cross-sous-silo seul →
+LLM appelé, angle différencié ; (3) contexte cross-sous-silo présent mais
+LLM juge qu'il n'y a pas de chevauchement → brief inchangé (pas
+d'agressivité excessive) ; (4) non-régression : logique same-sous-silo
+existante inchangée ; (5) erreur sur la nouvelle requête cross-sous-silo
+→ fail-open, la vérification same-sous-silo continue de fonctionner.
+`python3 -m py_compile` validé (seul le `SyntaxWarning` préexistant non
+lié, ligne ~2251).
+
+**Pas encore validé en conditions réelles** — à confirmer au prochain run
+de `publication-quotidienne.yml` (lundi 23/11/2026, pas de run le
+week-end) : qu'aucun autre chevauchement cross-sous-silo de ce type ne
+réapparaisse dans le même silo, et qu'une ligne `🔀 Chevauchement detecte`
+apparaisse bien si un cas similaire se présente à nouveau (preuve que la
+détection fonctionne en conditions réelles, pas seulement en mock).
