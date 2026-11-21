@@ -1,0 +1,53 @@
+# Execution du 2026-11-21T14:43:53Z
+# Script    : scripts-maintenance/comparer_bilan_ctr.py
+# Arguments : --periode=semaine
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+🔎 Bilan CTR — periode : semaine — 2026-11-09 -> 2026-11-15 (vs periode precedente 2026-11-02 -> 2026-11-08)
+
+⚠️ Calcule par agregation de l'historique hebdomadaire deja stocke (bilan_ctr_historique_silo/_articles) -- aucune nouvelle requete GSC a cette granularite.
+
+
+==========================================================================================
+BILAN CTR PAR SILO -- SEMAINE
+==========================================================================================
+  1. Gaz                       clics=7      impr.=2935     pos.moy=42.8  CTR reel=0.24%  CTR attendu≈0.20%  ecart=-0.04pts
+  5. Electricite               clics=3      impr.=3625     pos.moy=43.8  CTR reel=0.08%  CTR attendu≈0.20%  ecart=+0.12pts
+  3. Aide Energetique          clics=1      impr.=3975     pos.moy=39.7  CTR reel=0.03%  CTR attendu≈0.20%  ecart=+0.17pts
+  contact                      clics=0      impr.=8        pos.moy=23.1  CTR reel=0.00%  CTR attendu≈0.50%  ecart=+0.50pts
+  4. Solaire                   clics=0      impr.=1471     pos.moy=54.2  CTR reel=0.00%  CTR attendu≈0.20%  ecart=+0.20pts
+  2. Renovation Energetique    clics=0      impr.=903      pos.moy=36.7  CTR reel=0.00%  CTR attendu≈0.20%  ecart=+0.20pts
+  TOTAL                        clics=11     impr.=12917    CTR global=0.09%
+
+--- Evolution vs periode precedente (meme duree) ---
+  1. Gaz                       nouveau -- clics=7 (aucune donnee la periode precedente)
+  2. Renovation Energetique    nouveau -- clics=0 (aucune donnee la periode precedente)
+  3. Aide Energetique          nouveau -- clics=1 (aucune donnee la periode precedente)
+  4. Solaire                   nouveau -- clics=0 (aucune donnee la periode precedente)
+  5. Electricite               nouveau -- clics=3 (aucune donnee la periode precedente)
+  contact                      nouveau -- clics=0 (aucune donnee la periode precedente)
+
+==========================================================================================
+TOP 15 ARTICLES A FORT POTENTIEL MAIS CTR FAIBLE -- SEMAINE (agrege par URL sur toute la periode)
+==========================================================================================
+  #1 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-demarches-obtention-guide/ (3. Aide Energetique/maprimerenov) pos=6.9 impr=156 clics=0 ecart=+4.00pts clics_manques≈6.2
+  #2 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-1018/ (3. Aide Energetique/maprimerenov) pos=7.1 impr=128 clics=0 ecart=+4.00pts clics_manques≈5.1
+  #3 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-fonctionnement-systeme-complet/ (3. Aide Energetique/maprimerenov) pos=7.9 impr=122 clics=0 ecart=+4.00pts clics_manques≈4.9
+  #4 — https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/ (5. Electricite/facture-electricite) pos=12.1 impr=289 clics=0 ecart=+1.50pts clics_manques≈4.3
+  #5 — https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/ (5. Electricite/) pos=10.4 impr=235 clics=0 ecart=+1.50pts clics_manques≈3.5
+  #6 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-travaux-eligibles-non-eligibles/ (3. Aide Energetique/maprimerenov) pos=15.1 impr=326 clics=0 ecart=+1.00pts clics_manques≈3.3
+  #7 — https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs/ (1. Gaz/bouteilles) pos=9.4 impr=129 clics=1 ecart=+2.22pts clics_manques≈2.9
+  #8 — https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-budget/ (3. Aide Energetique/aides-chauffe-eau-thermodynamique) pos=6.1 impr=50 clics=0 ecart=+4.00pts clics_manques≈2.0
+  #9 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-autres-aides-comparatif-1020/ (3. Aide Energetique/maprimerenov) pos=14.0 impr=127 clics=0 ecart=+1.50pts clics_manques≈1.9
+  #10 — https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-2024/ (2. Renovation Energetique/chauffe-eau-thermodynamique) pos=10.9 impr=121 clics=0 ecart=+1.50pts clics_manques≈1.8
+  #11 — https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air-vs-air-eau/ (2. Renovation Energetique/pompe-a-chaleur) pos=16.6 impr=142 clics=0 ecart=+1.00pts clics_manques≈1.4
+  #12 — https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/ (2. Renovation Energetique/pompe-a-chaleur) pos=17.2 impr=104 clics=0 ecart=+1.00pts clics_manques≈1.0
+  #13 — https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2026-tarifs-1015-2/ (1. Gaz/bouteilles) pos=11.2 impr=190 clics=2 ecart=+0.45pts clics_manques≈0.8
+  #14 — https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-dossier/ (3. Aide Energetique/maprimerenov) pos=19.9 impr=71 clics=0 ecart=+1.00pts clics_manques≈0.7
