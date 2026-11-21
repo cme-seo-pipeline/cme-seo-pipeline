@@ -3906,12 +3906,37 @@ collecteur (garde de démarrage active/inactive, `--force`, écriture
 idempotente) et sur le comparateur (5 granularités, rejet d'une
 granularité invalide, bornes de période incluant les rollovers
 d'année) — tous les cas passent. YAML des 5 workflows validé
-(`yaml.safe_load`). **Pas encore validé en conditions réelles** — les
-deux tables n'existent pas encore côté BigQuery (`creer_tables_historique_ctr.py`
-doit être exécuté une seule fois via le pont GitHub Actions avant le
-premier run réel du collecteur, même précaution d'ordre documentée pour
-`interactions_contenu`), et aucune semaine n'aura été historisée avant
-le 02/12/2026 (garde de démarrage). À confirmer après le 02/12/2026 que
-le run du mercredi écrit bien les deux tables, et après le 01/01/2027 au
-plus tard que chaque rollup (mensuel dès le 01/01, les autres selon leur
-cadence propre) produit un résultat cohérent avec l'historique accumulé.
+(`yaml.safe_load`).
+
+**Validé en conditions réelles le 21/11/2026, via le pont GitHub
+Actions** (commit `f784dea`) :
+1. `creer_tables_historique_ctr.py` exécuté une seule fois — les deux
+   tables existent désormais côté BigQuery, schéma effectif confirmé
+   conforme (14 colonnes `bilan_ctr_historique_articles`, 10 colonnes
+   `bilan_ctr_historique_silo`).
+2. `historiser_bilan_ctr_hebdo.py --force` (outrepasse volontairement la
+   garde du 02/12/2026, pour valider le chemin d'écriture réel avant
+   cette date) : a correctement calculé la semaine fiable la plus
+   récente au 21/11/2026 (09/11→15/11, marge de 6 jours sur le dimanche,
+   bien au-dessus du minimum `GSC_LAG=3`) et écrit **6 lignes silo + 14
+   lignes article**.
+3. `comparer_bilan_ctr.py --periode=semaine` : relit cette même semaine
+   par agrégation (aucune nouvelle requête GSC) et **reproduit
+   exactement** les totaux écrits à l'étape 2 (mêmes clics/impressions/
+   position moyenne/écarts par silo, même top 14 articles) — confirme
+   que l'agrégation SQL de l'historique est fidèle à la source. La
+   comparaison à la période précédente affiche "nouveau" pour tous les
+   silos, normal : c'est la toute première semaine historisée.
+
+Cette semaine du 09/11→15/11 a été historisée **par anticipation**, avant
+la garde de démarrage du 02/12/2026, uniquement à des fins de validation
+(`--force`) — elle sera naturellement écrasée (même `periode_debut`,
+écriture idempotente) si un rattrapage `--force` différent devait la
+recalculer, sans aucun risque de duplication. **Reste à confirmer** :
+que le run automatique du mercredi (premier réel le 02/12/2026, cron
+`audit-ctr-hebdomadaire.yml`) historise bien chaque semaine sans
+intervention manuelle, et qu'à partir de janvier 2027 chaque rollup
+(mensuel dès le 01/01/2027, trimestriel/semestriel/annuel selon leur
+cadence propre) produit un résultat cohérent une fois plusieurs semaines
+réellement accumulées (le test du 21/11 n'a porté que sur une seule
+semaine, donc pas encore sur une vraie recombinaison multi-semaines).
