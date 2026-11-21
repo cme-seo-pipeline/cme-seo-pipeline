@@ -2,21 +2,31 @@ name: CME - Audit CTR hebdomadaire
 
 # Bilan du taux de clic (CTR) reel vs attendu par silo, et detection des
 # articles bien positionnes mais sous-cliques -- scripts-maintenance/
-# auditer_ctr_potentiel_perdu.py. Lecture seule : le resultat s'affiche
-# dans les logs de ce run (onglet Actions), rien n'est commite dans le
-# repo (meme logique que audit-liens-hebdomadaire.yml et
-# audit-cannibalisation-mensuel.yml -- demande operateur, pas destine a
-# etre relu par Claude Code a chaque execution automatique).
+# auditer_ctr_potentiel_perdu.py (fenetre glissante, ad-hoc, inchange).
+# Depuis le 21/11/2026, ce run ecrit AUSSI l'historisation hebdomadaire
+# exacte (scripts-maintenance/historiser_bilan_ctr_hebdo.py,
+# ECRITURE/DDL -- exception documentee, voir CLAUDE.md) dans les tables
+# BigQuery `bilan_ctr_historique_silo`/`bilan_ctr_historique_articles`,
+# pour permettre les comparaisons semaine/mois/trimestre/semestre/annee
+# (scripts-maintenance/comparer_bilan_ctr.py, lecture seule, workflows
+# separes bilan-ctr-{mensuel,trimestriel,semestriel,annuel}.yml). Les
+# deux scripts restent par ailleurs lecture-seule-par-nature vis-a-vis du
+# repo : rien n'est commite ici (meme logique que
+# audit-liens-hebdomadaire.yml et audit-cannibalisation-mensuel.yml).
 #
-# Cadence hebdomadaire (vendredi matin, demande operateur du 14/11/2026) :
-# la fenetre d'analyse elle-meme reste glissante sur 90 jours par defaut
-# (le site a un volume de clics encore trop faible pour qu'une fenetre
-# plus courte soit statistiquement lisible, voir le script) -- la cadence
-# hebdomadaire sert a repasser regulierement, pas a changer la fenetre.
+# **Cadence deplacee du VENDREDI (14/11/2026) au MERCREDI (21/11/2026)**,
+# demande operateur directement liee a l'historisation : le mercredi est
+# le premier jour qui garantit une semaine lundi-dimanche entierement
+# fiable cote GSC (CFG.GSC_LAG=3 dans apps-scripts/cme-gsc-to-bq.gs --
+# un run du lundi ou du vendredi n'aurait pas encore 3 jours de marge sur
+# le dimanche de la semaine mesuree, voir historiser_bilan_ctr_hebdo.py
+# pour le detail du calcul). La fenetre glissante de l'audit ad-hoc
+# (90 jours par defaut) n'est pas affectee par ce changement de jour --
+# elle reste glissante, seule la cadence de repassage change.
 
 on:
   schedule:
-    - cron: '0 6 * * 5'
+    - cron: '0 6 * * 3'
   workflow_dispatch:
     inputs:
       jours:
@@ -39,6 +49,11 @@ on:
         required: false
         type: string
         default: "15"
+      force_historisation:
+        description: "Forcer l'historisation hebdomadaire malgre la garde de date de demarrage (02/12/2026)"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   auditer:
@@ -63,10 +78,18 @@ jobs:
           echo "$GCP_KEY_JSON" > /tmp/gcp-key.json
           echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json" >> $GITHUB_ENV
 
-      - name: Lancer le bilan CTR
+      - name: Lancer le bilan CTR (ad-hoc, fenetre glissante)
         run: >
           python3 scripts-maintenance/auditer_ctr_potentiel_perdu.py
           --jours=${{ inputs.jours || '90' }}
           --position-max=${{ inputs.position_max || '20' }}
           --impressions-min=${{ inputs.impressions_min || '50' }}
           --top=${{ inputs.top || '15' }}
+
+      - name: Historiser le bilan CTR hebdomadaire (semaine exacte, ECRITURE)
+        run: >
+          python3 scripts-maintenance/historiser_bilan_ctr_hebdo.py
+          --position-max=${{ inputs.position_max || '20' }}
+          --impressions-min=${{ inputs.impressions_min || '50' }}
+          --top=${{ inputs.top || '15' }}
+          ${{ inputs.force_historisation == true && '--force' || '' }}

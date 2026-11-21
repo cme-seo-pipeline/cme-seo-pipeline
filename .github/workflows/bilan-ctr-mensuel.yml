@@ -1,0 +1,54 @@
+name: CME - Bilan CTR mensuel
+
+# Comparaison du bilan CTR par MOIS, a partir de l'historique hebdomadaire
+# deja stocke par historiser_bilan_ctr_hebdo.py (voir audit-ctr-hebdomadaire.yml
+# et scripts-maintenance/comparer_bilan_ctr.py) -- AUCUNE nouvelle requete
+# GSC, agregation pure des semaines deja historisees (demande operateur du
+# 21/11/2026, "la plus stratégique et rigoureuse"). Lecture seule : le
+# resultat s'affiche dans les logs de ce run (onglet Actions), rien n'est
+# commite dans le repo (meme convention que les autres audits recurrents).
+#
+# Cadence : le 1er du mois, decalee de l'audit reglementaire
+# (audit-mensuel.yml, 3h UTC) et de l'audit de cannibalisation
+# (audit-cannibalisation-mensuel.yml, 5h10 UTC) pour eviter toute
+# concurrence de credentials/quota GCP au meme instant.
+
+on:
+  schedule:
+    - cron: '30 6 1 * *'
+  workflow_dispatch:
+    inputs:
+      top:
+        description: "Nombre d'articles a afficher, tries par clics manques estimes (defaut : 15)"
+        required: false
+        type: string
+        default: "15"
+
+jobs:
+  bilan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dependances
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Configurer les identifiants GCP
+        env:
+          GCP_KEY_JSON: ${{ secrets.GCP_SA_KEY_CME }}
+        run: |
+          echo "$GCP_KEY_JSON" > /tmp/gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json" >> $GITHUB_ENV
+
+      - name: Lancer le bilan CTR mensuel
+        run: >
+          python3 scripts-maintenance/comparer_bilan_ctr.py
+          --periode=mois
+          --top=${{ inputs.top || '15' }}

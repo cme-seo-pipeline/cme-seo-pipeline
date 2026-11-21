@@ -3756,3 +3756,162 @@ le week-end) : plus aucune mention de "Linky" dans un article Gaz ni de
 "Gazpar" dans un article Électricité. Aucune correction rétroactive
 engagée — l'opérateur a confirmé avoir déjà corrigé à la main le seul
 article trouvé à ce jour.
+
+## Historisation du bilan CTR hebdomadaire + comparaisons par période (21/11/2026)
+
+Demande opérateur, suite à une vérification ponctuelle du bilan CTR de la
+semaine (via `audit-ctr-hebdomadaire.yml`) : historiser ce bilan,
+jusqu'ici purement ad-hoc/glissant (`auditer_ctr_potentiel_perdu.py`,
+aucune écriture nulle part), pour pouvoir comparer semaine/mois/
+trimestre/semestre/année — rituel à chacune de ces fréquences.
+
+**Décisions opérateur, prises via questions explicites avant toute
+implémentation** (coût d'une mauvaise architecture trop élevé pour
+deviner, même discipline que les autres chantiers d'automatisation
+récurrente de ce projet) :
+1. **Stockage** : table BigQuery dédiée ("LA plus stratégique et durable
+   sur le long terme") — pas de relais Google Sheets pour ce besoin
+   précis (contrairement aux leads inline, qui ont les deux
+   destinations) ; envisageable plus tard si explicitement demandé.
+2. **Calcul des comparaisons mois/trimestre/semestre/année** : "la plus
+   stratégique et rigoureuse" — interprété comme une agrégation SQL
+   PURE des lignes hebdomadaires déjà historisées, **sans jamais
+   ré-interroger GSC** à ces granularités (par opposition à relancer
+   l'audit avec une fenêtre glissante plus large à chaque fois, qui
+   donnerait un chiffre légèrement différent à chaque exécution même
+   pour une période déjà close).
+3. **Granularité historisée** : "Les deux (recommandé)" — le bilan par
+   silo ET le top 15 articles sous-performants, chaque semaine (pas
+   seulement les totaux silo).
+4. **Cadence hebdomadaire** : déplacer l'audit du vendredi (demande du
+   14/11/2026) — demande initiale opérateur : au lundi.
+
+**Découverte bloquante en cours de route, corrigée par une nouvelle
+question plutôt qu'implémentée silencieusement** : vérifié par calcul de
+dates avant d'écrire le moindre code — `CFG.GSC_LAG = 3`
+(`apps-scripts/cme-gsc-to-bq.gs`) signifie que les données GSC d'un jour
+calendaire ne sont fiables qu'à partir de J+3. Pour une semaine
+lundi-dimanche, le dernier jour à couvrir est le dimanche, fiable
+seulement à partir du **mercredi suivant** (dimanche+3j) — un run du
+**lundi** (demande initiale) n'aurait donc jamais eu que 1 jour de marge
+sur le samedi/dimanche de la semaine qui vient de se terminer,
+structurellement insuffisant. Signalé à l'opérateur avec les options
+possibles ; **décision : décaler le run au mercredi** (plutôt que
+lundi) — le mercredi est le premier jour qui garantit une semaine
+lundi-dimanche entièrement fiable.
+
+**Architecture implémentée** (lecture seule sauf les deux scripts
+explicitement DDL/ECRITURE, exception documentée comme pour
+`interactions_contenu`) :
+
+1. **`scripts-maintenance/creer_tables_historique_ctr.py`** (ECRITURE/DDL,
+   `create_table(..., exists_ok=True)`, idempotent, à exécuter UNE SEULE
+   FOIS avant tout premier run du collecteur — même précaution d'ordre
+   que pour `interactions_contenu`) crée deux tables, dataset
+   `04_pipeline_seo`, partitionnées par jour sur `periode_debut` :
+   - `bilan_ctr_historique_silo` (un bilan par (periode_debut/fin, silo) :
+     clics/impressions/position_moyenne/ctr_reel/ctr_attendu/ecart_pts).
+   - `bilan_ctr_historique_articles` (le top articles "bien positionnés
+     mais CTR faible" de la semaine, avec un `rang`, même colonnes que
+     `auditer_ctr_potentiel_perdu.py` + `url`/`silo`/`sous_silo`).
+   - `position_moyenne` y est stockée **pondérée par impressions**
+     (`SUM(position*impressions)/SUM(impressions)`) — condition
+     nécessaire pour permettre une recombinaison correcte à une
+     granularité supérieure (voir point 3).
+
+2. **`scripts-maintenance/historiser_bilan_ctr_hebdo.py`** (ECRITURE,
+   appelé chaque semaine par `audit-ctr-hebdomadaire.yml`, en plus de —
+   pas à la place de — l'audit ad-hoc existant) :
+   - `semaine_fiable_la_plus_recente(date_reference)` : calcule
+     (lundi, dimanche) de la semaine la plus récente dont le dimanche a
+     au moins `GSC_LAG=3` jours de marge — recule semaine par semaine si
+     besoin, donc robuste à un `workflow_dispatch` manuel un autre jour
+     de la semaine (rattrapage), pas seulement au cron du mercredi.
+     Testé localement (6 cas, dates mercredi/jeudi/lundi/mardi/dimanche) :
+     la marge résultante est toujours >= `GSC_LAG`.
+   - **Garde de démarrage** `DATE_DEBUT_HISTORISATION = 2026-12-02` :
+     demande opérateur explicite de sauter la toute première occurrence
+     du mercredi à venir au moment de la décision (25/11/2026, trop
+     proche pour avoir été anticipée dans le planning) et de démarrer
+     réellement à partir de celle d'après — même logique que l'intention
+     initiale ("on exclut le suivant, à partir de celui d'après"),
+     transposée du lundi au mercredi suite au changement de cadence.
+     `--force` permet de l'outrepasser (rattrapage manuel voulu).
+   - Requêtes GSC à **fenêtre exacte** (`WHERE date BETWEEN @debut AND
+     @fin`, paramétrées — jamais de concaténation de chaîne, évite toute
+     la famille de bugs d'échappement d'apostrophe déjà rencontrée
+     ailleurs dans ce fichier), même forme que les requêtes de
+     `auditer_ctr_potentiel_perdu.py` mais sur la semaine exacte au lieu
+     d'une fenêtre glissante.
+   - **Idempotent** : `DELETE` paramétré sur `periode_debut = @lundi`
+     puis `insert_rows_json` (même méthode d'insertion que
+     `patch_rafraichir_indicateurs.py`, convention déjà établie dans ce
+     repo) — un re-run sur la même semaine (rattrapage, correction)
+     écrase proprement sans dupliquer.
+   - Réutilise `ctr_attendu()`/`PALIERS_CTR_ATTENDU` de
+     `auditer_ctr_potentiel_perdu.py` par **import direct** (même
+     répertoire `scripts-maintenance/`) — jamais une seconde copie de la
+     grille qui pourrait dériver de l'original.
+
+3. **`scripts-maintenance/comparer_bilan_ctr.py`** (lecture seule,
+   `--periode=semaine|mois|trimestre|semestre|annee`) — agrège les
+   lignes hebdomadaires déjà stockées, sans jamais interroger GSC :
+   - **Point le plus important, rigueur de la recombinaison** :
+     `position_moyenne` étant déjà pondérée par impressions au niveau de
+     la semaine, la recombiner à une granularité supérieure exige une
+     **seconde pondération par impressions**
+     (`SUM(position_moyenne_semaine * impressions_semaine) /
+     SUM(impressions_semaine)`) — une simple moyenne arithmétique des
+     `position_moyenne` hebdomadaires donnerait le même poids à une
+     semaine de 50 impressions qu'à une semaine de 5000, donc un chiffre
+     faux. `ctr_attendu` de la période est **re-dérivé** de cette
+     position recombinée via la même grille (jamais une moyenne des
+     `ctr_attendu` hebdomadaires stockés, qui ne correspondrait pas à la
+     VRAIE position moyenne de la période). `ctr_reel` de la période =
+     `SUM(clics)/SUM(impressions)`, pas une moyenne de CTR non plus.
+   - Le top articles n'est **pas recombinable par rang** (deux semaines
+     peuvent avoir des top 15 complètement différents) — à la place,
+     agrégation par URL sur toute la période (somme clics/impressions,
+     recalcul ctr/écart sur cet agrégat), ce qui reste rigoureusement
+     correct.
+   - Compare toujours la **dernière période complète** (jamais la
+     période en cours, forcément partielle) à la période immédiatement
+     précédente de même durée — bornes de mois/trimestre/semestre
+     calculées avec gestion explicite du passage d'année (ex. trimestre
+     Q4 → fin au 1er janvier de l'année suivante).
+   - Testé localement (mock BigQuery, sans réseau — même limite déjà
+     documentée ailleurs dans ce fichier) : les 5 granularités + le rejet
+     d'une granularité invalide, + bornes de périodes vérifiées
+     séparément sur les cas de rollover d'année (déc→jan, Q4→Q1,
+     S2→S1 année suivante) — tous corrects.
+
+4. **Workflows** : `audit-ctr-hebdomadaire.yml` déplacé du vendredi au
+   **mercredi** (`cron: '0 6 * * 3'`), avec un nouveau step appelant
+   `historiser_bilan_ctr_hebdo.py` juste après l'audit ad-hoc existant
+   (inchangé, toujours en fenêtre glissante 90j) — même run, deux
+   scripts. Quatre nouveaux workflows, même convention que les audits
+   récurrents existants (lecture seule, résultat dans les logs du run,
+   rien commité) : `bilan-ctr-mensuel.yml` (1er du mois, 6h30 UTC),
+   `bilan-ctr-trimestriel.yml` (1er janv/avr/juil/oct, 6h40 UTC),
+   `bilan-ctr-semestriel.yml` (1er janv/juil, 6h50 UTC),
+   `bilan-ctr-annuel.yml` (1er janvier, 7h00 UTC) — horaires échelonnés
+   pour éviter toute concurrence de credentials/quota GCP avec
+   `audit-mensuel.yml` (3h UTC) et `audit-cannibalisation-mensuel.yml`
+   (5h10 UTC) le même jour.
+
+**Validation** : `python3 -m py_compile` OK sur les 3 nouveaux scripts.
+Tests locaux isolés (mock BigQuery complet, sans réseau — limite déjà
+documentée, `google-cloud-bigquery` indisponible dans ce sandbox) sur le
+collecteur (garde de démarrage active/inactive, `--force`, écriture
+idempotente) et sur le comparateur (5 granularités, rejet d'une
+granularité invalide, bornes de période incluant les rollovers
+d'année) — tous les cas passent. YAML des 5 workflows validé
+(`yaml.safe_load`). **Pas encore validé en conditions réelles** — les
+deux tables n'existent pas encore côté BigQuery (`creer_tables_historique_ctr.py`
+doit être exécuté une seule fois via le pont GitHub Actions avant le
+premier run réel du collecteur, même précaution d'ordre documentée pour
+`interactions_contenu`), et aucune semaine n'aura été historisée avant
+le 02/12/2026 (garde de démarrage). À confirmer après le 02/12/2026 que
+le run du mercredi écrit bien les deux tables, et après le 01/01/2027 au
+plus tard que chaque rollup (mensuel dès le 01/01, les autres selon leur
+cadence propre) produit un résultat cohérent avec l'historique accumulé.

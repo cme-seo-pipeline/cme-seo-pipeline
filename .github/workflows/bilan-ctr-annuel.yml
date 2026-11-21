@@ -1,0 +1,50 @@
+name: CME - Bilan CTR annuel
+
+# Comparaison du bilan CTR par ANNEE, a partir de l'historique
+# hebdomadaire deja stocke par historiser_bilan_ctr_hebdo.py -- voir
+# bilan-ctr-mensuel.yml pour le detail du principe (agregation pure,
+# aucune nouvelle requete GSC). Lecture seule, rien commite dans le repo.
+#
+# Cadence : 1er janvier, decalee des autres audits du 1er du mois/
+# trimestre/semestre pour eviter toute concurrence de credentials/quota
+# GCP au meme instant.
+
+on:
+  schedule:
+    - cron: '0 7 1 1 *'
+  workflow_dispatch:
+    inputs:
+      top:
+        description: "Nombre d'articles a afficher, tries par clics manques estimes (defaut : 15)"
+        required: false
+        type: string
+        default: "15"
+
+jobs:
+  bilan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installer les dependances
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Configurer les identifiants GCP
+        env:
+          GCP_KEY_JSON: ${{ secrets.GCP_SA_KEY_CME }}
+        run: |
+          echo "$GCP_KEY_JSON" > /tmp/gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json" >> $GITHUB_ENV
+
+      - name: Lancer le bilan CTR annuel
+        run: >
+          python3 scripts-maintenance/comparer_bilan_ctr.py
+          --periode=annee
+          --top=${{ inputs.top || '15' }}
