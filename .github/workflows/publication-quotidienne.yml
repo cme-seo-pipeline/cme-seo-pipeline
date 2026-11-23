@@ -1,13 +1,17 @@
 name: CME - Publication quotidienne
 
 on:
-  schedule:
-    # 5j/7 (Lundi-Vendredi) depuis le 11/11/2026, demande operateur --
-    # avant : 7j/7 ('0 3 * * *'). Le pipeline a de toute facon son propre
-    # garde-fou sur CONFIG["JOURS_PUBLICATION"] (pipeline/pipeline.py,
-    # est_jour_publication()) mis a jour en meme temps que ce cron --
-    # double securite coherente plutot qu'une seule source de verite.
-    - cron: '0 3 * * 1-5'
+  # ⏸️ PAUSE TEMPORAIRE (demande operateur, 23/11/2026) : declencheur
+  # schedule commente -- le workflow ne se lance plus automatiquement.
+  # Pour reprendre : decommenter le bloc `schedule:` / `- cron: ...`
+  # ci-dessous exactement comme il etait (5j/7, Lundi-Vendredi, 3h UTC).
+  # schedule:
+  #   # 5j/7 (Lundi-Vendredi) depuis le 11/11/2026, demande operateur --
+  #   # avant : 7j/7 ('0 3 * * *'). Le pipeline a de toute facon son propre
+  #   # garde-fou sur CONFIG["JOURS_PUBLICATION"] (pipeline/pipeline.py,
+  #   # est_jour_publication()) mis a jour en meme temps que ce cron --
+  #   # double securite coherente plutot qu'une seule source de verite.
+  #   - cron: '0 3 * * 1-5'
   workflow_dispatch:
     inputs:
       force:
