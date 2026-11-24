@@ -17,9 +17,12 @@ Lead cible (identifie par l'operateur, ligne Sheets fournie le 24/11/2026) :
     stricte, pour couvrir les deux ecritures possibles ("695410020" et
     "0695410020"))
   article = /electricite/demenagement/electricite-demenagement-checklist-avant-apres/
-  horodatage Sheets = 24/11/2026 17:37:35 (heure Paris, UTC+1 en novembre)
-    -> ~2026-11-24 16:37:35 UTC cote BigQuery (server.py stocke le
-    `timestamp` du payload client tel quel, en UTC -- voir ligne 68)
+  horodatage Sheets = 24/11/2026 17:37:35 -- CONFIRME par diagnostic
+    (diagnostiquer_lead_test_2411.py, 24/11/2026) que ce timestamp est deja
+    en UTC (2026-11-24 17:37:33.421583+00:00 cote BigQuery, pas une
+    conversion Paris->UTC comme suppose dans une premiere version de ce
+    script) -- telephone confirme stocke avec le zero de tete ('0695410020',
+    pas de piege supplementaire sur ce point).
 
 AUCUNE adresse email n'est utilisee comme filtre ici (et aucune n'est
 ecrite dans ce fichier) -- principe absolu du projet (ne jamais coder en
@@ -44,8 +47,8 @@ TABLE_REF = f"{PROJECT_ID}.04_pipeline_seo.leads_convertis"
 TOOL_CIBLE = "contact-expert-inline"
 TELEPHONE_SUFFIXE = "695410020"
 URL_ARTICLE = "https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist-avant-apres/"
-FENETRE_DEBUT = "2026-11-24 16:30:00"
-FENETRE_FIN = "2026-11-24 16:45:00"
+FENETRE_DEBUT = "2026-11-24 17:30:00"
+FENETRE_FIN = "2026-11-24 17:45:00"
 
 
 def main():
