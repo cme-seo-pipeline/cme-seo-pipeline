@@ -4035,17 +4035,55 @@ demandé), options des 2 champs à choix, et la fonction de validation
 réimplémentée à l'identique (code postal 5 chiffres avec zéro de tête
 accepté, email, choix vide rejeté) — tous les cas passent.
 
-**Ordre de déploiement à respecter quand l'opérateur sera prêt** (même
-principe de précaution que pour `interactions_contenu`/`temps_ms`) :
-(1) `ajouter_colonnes_logement_leads.py` via le pont GitHub Actions,
-(2) redéploiement Cloud Run de `tracking-api/server.py`, (3) redéploiement
-Apps Script de `cme-formulaire-article-leads.gs`, (4) déploiement cPanel
-habituel de `cme-cta-progressifs.php` (`cloudshell download` depuis un
-clone **frais** — voir piège documenté le 02-03/11/2026 — `.bak` horodaté,
-upload, purge des 2 caches LiteSpeed, vérifier avec `?t=$RANDOM` sur un
-article réel que les 3 écrans s'enchaînent correctement et que le lead de
-test apparaît bien dans `leads_convertis` avec les 6 champs renseignés et
-dans l'onglet Sheets avec les 2 nouvelles colonnes). Aucune étape de cette
-chaîne n'a encore été exécutée en conditions réelles — uniquement préparée
-et validée localement, à la demande explicite de l'opérateur ("préparer le
-prochain formulaire qu'on va mettre").
+**Clarification opérateur avant déploiement (24/11/2026, suite)** : au
+moment de passer à l'exécution, confirmation explicite que seulement **2
+colonnes Sheets sont réellement nouvelles** — Email (colonne D) et Code
+Postal (colonne E) existaient déjà dans l'onglet (vides pour
+`contact-expert-inline` depuis la réduction du 24/10/2026), seules "Type
+de logement" (J) et "Statut occupation" (K) sont des ajouts. Vérifié par
+relecture directe de `cme-formulaire-article-leads.gs` : c'était déjà
+exactement ce que le fichier committé faisait (`HEADERS`/`ecrireSheet()`
+réutilisent `d.email`/`d.code_postal` sans les dupliquer, les 2 nouvelles
+colonnes sont bien en toute fin de tableau) — aucune correction de code
+nécessaire sur ce point, simple confirmation.
+
+**Déployé et validé en conditions réelles le 24/11/2026**, dans l'ordre :
+1. `ajouter_colonnes_logement_leads.py` exécuté via le pont GitHub
+   Actions — schéma `leads_convertis` confirmé à 16 colonnes
+   (`type_logement`/`statut_occupation` présentes).
+2. Cloud Run `cme-tracking-api` redéployé par l'opérateur
+   (`gcloud run deploy --source tracking-api/`) — **piège rencontré** :
+   premier essai lancé depuis `~` (dossier personnel Cloud Shell, pas un
+   clone du repo) → `ERROR: could not find source [tracking-api/]`.
+   Corrigé en reclonant frais (`rm -rf ~/cme-fresh && git clone ... ~/cme-fresh`,
+   même précaution que le piège du 02-03/11) puis en relançant la commande
+   depuis l'intérieur de ce clone — révision `cme-tracking-api-00012-5rf`
+   déployée à 100% du trafic.
+3. Apps Script redéployé par l'opérateur (nouvelle version du déploiement
+   existant, pas un nouveau déploiement — URL `/exec` inchangée).
+4. `cme-cta-progressifs.php` déployé en cPanel (clone frais, `.bak`
+   horodaté, upload, purge des 2 caches) — **confirmé fonctionnel par un
+   test réel** : les 3 écrans (2→2→2) s'enchaînent correctement sur un
+   article live, lead de test visible à la fois dans `leads_convertis`
+   et dans l'onglet Sheets avec les 6 champs + colonnes J/K renseignées.
+
+**Nettoyage du lead de test** (`scripts-maintenance/nettoyer_lead_test_2411_demenagement.py`,
+dry-run par défaut puis `--apply`, pont GitHub Actions) : 1 ligne
+supprimée de `leads_convertis` (tool=`contact-expert-inline`, tel
+`0695410020`, article `/electricite/demenagement/electricite-demenagement-checklist-avant-apres/`).
+**Piège rencontré** : le tout premier dry-run (fenêtre horaire calculée
+en supposant que le timestamp BigQuery était une conversion
+Paris→UTC depuis l'heure affichée dans Sheets, par analogie avec le
+piège déjà documenté le 01/11 pour un autre lead de test) trouvait 0
+ligne — diagnostic (`diagnostiquer_lead_test_2411.py`, lecture seule)
+a montré que le timestamp était en réalité **déjà en UTC**
+(`17:37:33+00:00`, identique à l'heure Sheets affichée, pas décalé) ;
+le téléphone, lui, était bien stocké avec son zéro de tête
+(`0695410020`), aucun souci sur ce point. Fenêtre corrigée, nouveau
+dry-run → 1 ligne isolée avec certitude → suppression effective.
+Nettoyage du côté Sheets fait manuellement par l'opérateur, même
+précédent que les incidents "Lionel"/"QA-TEST"/"popup header".
+
+**Chantier entièrement clos** : BigQuery, Cloud Run, Apps Script et
+cPanel tous à jour et cohérents entre eux ; formulaire `contact-expert-inline`
+à 6 champs/3 écrans confirmé en production.
