@@ -3940,3 +3940,112 @@ intervention manuelle, et qu'à partir de janvier 2027 chaque rollup
 cadence propre) produit un résultat cohérent une fois plusieurs semaines
 réellement accumulées (le test du 21/11 n'a porté que sur une seule
 semaine, donc pas encore sur une vraie recombinaison multi-semaines).
+
+## Formulaire "contact-expert-inline" étendu à 6 champs, schéma 2→2→2 (24/11/2026)
+
+Demande opérateur explicite : le mini-formulaire inline des articles
+(`wordpress-mu-plugins/cme-cta-progressifs.php`, variante `'contact'`
+**uniquement** — pas le bouton d'appel, ni le popup header) passe de 2
+champs (nom et prénom, téléphone) à **6 champs**, affichés par paires de 2
+sur **3 écrans** (« 2 → 2 → 2 ») : (1) nom et prénom + téléphone, (2)
+appartement ou maison + propriétaire ou locataire, (3) code postal +
+adresse e-mail — ordre et groupement exactement ceux demandés.
+
+**Périmètre strictement respecté** : la variante `'appel'` ("avant
+d'appeler", fin d'article, bouton "Appeler maintenant") et le popup du
+bouton téléphone du header (`cme-tracking-conversion.php`) restent
+**totalement inchangés** — 2 champs, un seul écran, comme depuis le
+04/11/2026. Ceci revient donc, pour la variante `'contact'` seule, sur le
+principe "un seul écran" adopté le 04/11/2026 (qui reste la norme pour
+`'appel'`) — un compromis intermédiaire (2 champs par écran, pas un retour
+au Typeform un-champ-à-la-fois d'avant le 04/11).
+
+**Implémentation** (`cme-cta-progressifs.php`) :
+- `ETAPES` (partagé) scindé en `ETAPES_APPEL` (2 champs, inchangé,
+  utilisé uniquement par la branche `estAppel` de `creer()`) et
+  `PAGES_CONTACT` (6 champs groupés en 3 sous-tableaux de 2).
+- `creer()` restructuré en deux branches distinctes et indépendantes
+  (`estAppel` vs `'contact'`) — la branche `'appel'` est une copie
+  quasi-verbatim du code précédent (zéro logique partagée avec la nouvelle
+  branche `'contact'`, pour garantir qu'aucune régression ne puisse
+  l'affecter).
+- "Appartement ou maison" et "propriétaire ou locataire" : champs à choix
+  (2 boutons sélectionnables, `type:'choix'`), pas de saisie libre —
+  meilleure qualification du lead, zéro ambiguïté de saisie. Validation
+  ajoutée pour code postal (exactement 5 chiffres, `type="text"` — jamais
+  `type="number"`, même précaution que documentée ailleurs dans ce fichier
+  pour ne jamais perdre un zéro de tête) et email (regex basique).
+- Navigation : "Suivant →" sur les 2 premiers écrans, "Envoyer →" sur le
+  dernier ; Entrée (clavier) = étape suivante ; indicateur de progression
+  (3 points) ajouté, dans l'esprit de la barre de progression du tout
+  premier formulaire (22/10/2026).
+- Case RGPD toujours sur la DERNIÈRE étape de saisie (ici : code postal +
+  email), même principe qu'avant.
+- Tracking de progression étendu pour `'contact'` uniquement :
+  `form_etape` avec `etape='1'`/`'2'` à chaque écran franchi, en plus de
+  `form_vu`/`form_etape=termine` déjà en place — redonne une granularité
+  d'abandon par écran (`DERNIER_ETAT.etape`, utilisé par le handler
+  `form_abandon`, généralisé de `'vu'` fixe à `DERNIER_ETAT.etape ||
+  'vu'`), perdue lors du passage à l'écran unique du 04/11/2026. La
+  variante `'appel'` garde exactement son comportement actuel (`etape`
+  toujours `'vu'` jusqu'à `'termine'`).
+- `envoyerLead()` : 4 nouveaux champs dans le payload (`type_logement`,
+  `statut_occupation`, `code_postal`, `email`) ajoutés **uniquement** si
+  `variante !== 'appel'` — le payload de la variante `'appel'` reste
+  strictement identique à avant ce chantier.
+
+**Chaîne de données, 3 changements en cascade** (ordre de déploiement
+important, voir plus bas) :
+1. **BigQuery** : `leads_convertis` avait déjà les colonnes `email`/
+   `code_postal` (vides pour `contact-expert-inline` depuis la réduction du
+   24/10/2026, elles se rempliront à nouveau) mais pas `type_logement`/
+   `statut_occupation` (entièrement nouveaux) — nouveau script
+   `scripts-maintenance/ajouter_colonnes_logement_leads.py` (ÉCRITURE/DDL,
+   `ALTER TABLE ADD COLUMN IF NOT EXISTS`, idempotent, même exception
+   documentée que `ajouter_colonne_temps_ms_interactions.py`), **pas encore
+   exécuté** — à lancer via le pont GitHub Actions avant tout déploiement
+   du reste.
+2. **`tracking-api/server.py`** (`/api/log-lead`) : construit un `row` à
+   forme FIXE (pas de passthrough générique du payload reçu, vérifié par
+   lecture du code) — sans ce changement, les 2 nouveaux champs auraient
+   été silencieusement perdus. Ajout de `type_logement`/`statut_occupation`
+   au dict `row` (STRING, troncature `[:20]`, même convention que les
+   autres champs de cette route). **Nécessite un redéploiement Cloud Run
+   côté opérateur** (`gcloud run deploy cme-tracking-api --source
+   tracking-api/ ...`, pas de CI/CD Cloud Run dans ce repo) — à faire
+   APRÈS l'étape 1 (la colonne doit exister avant que ce code ne tente d'y
+   insérer une valeur).
+3. **`apps-scripts/cme-formulaire-article-leads.gs`** : 2 nouvelles
+   colonnes "Type de logement" / "Statut occupation" ajoutées en TOUTE FIN
+   de `HEADERS` (même convention que "CTA", jamais au milieu — ne décale
+   aucune colonne des lignes déjà écrites) + `ecrireSheet()` mis à jour.
+   **Nécessite un redéploiement opérateur sur script.google.com**
+   (`cloudshell download` n'existe pas pour ce type de fichier — l'URL
+   `/exec` déjà en place pointe vers l'ancienne version tant que
+   l'opérateur ne redéploie pas), hors de portée de ce sandbox.
+
+**Validation effectuée** (préparation uniquement, **pas de déploiement
+cPanel/Cloud Run/Apps Script à ce stade**) : `php -l` sur
+`cme-cta-progressifs.php` (OK), extraction du bloc JS + `node --check`
+(OK), `python3 -m py_compile` sur `server.py` et le nouveau script DDL
+(OK), `node --check` sur le `.gs` modifié (OK), et un test de logique
+hors-DOM dédié (jsdom indisponible dans ce sandbox) vérifiant : structure
+de `PAGES_CONTACT` (3 écrans de 2 champs, ordre exact des 6 champs
+demandé), options des 2 champs à choix, et la fonction de validation
+réimplémentée à l'identique (code postal 5 chiffres avec zéro de tête
+accepté, email, choix vide rejeté) — tous les cas passent.
+
+**Ordre de déploiement à respecter quand l'opérateur sera prêt** (même
+principe de précaution que pour `interactions_contenu`/`temps_ms`) :
+(1) `ajouter_colonnes_logement_leads.py` via le pont GitHub Actions,
+(2) redéploiement Cloud Run de `tracking-api/server.py`, (3) redéploiement
+Apps Script de `cme-formulaire-article-leads.gs`, (4) déploiement cPanel
+habituel de `cme-cta-progressifs.php` (`cloudshell download` depuis un
+clone **frais** — voir piège documenté le 02-03/11/2026 — `.bak` horodaté,
+upload, purge des 2 caches LiteSpeed, vérifier avec `?t=$RANDOM` sur un
+article réel que les 3 écrans s'enchaînent correctement et que le lead de
+test apparaît bien dans `leads_convertis` avec les 6 champs renseignés et
+dans l'onglet Sheets avec les 2 nouvelles colonnes). Aucune étape de cette
+chaîne n'a encore été exécutée en conditions réelles — uniquement préparée
+et validée localement, à la demande explicite de l'opérateur ("préparer le
+prochain formulaire qu'on va mettre").

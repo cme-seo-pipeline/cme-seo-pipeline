@@ -73,6 +73,16 @@ def log_lead():
             "telephone":         str(data.get("telephone", ""))[:30],
             "adresse":           str(data.get("adresse", ""))[:250],
             "code_postal":       str(data.get("code_postal", ""))[:10],
+            # Ajoutes le 24/11/2026 -- mini-formulaire inline "contact-expert-inline"
+            # etendu a 6 champs (voir cme-cta-progressifs.php, variante 'contact'
+            # uniquement). Absents du payload (variante 'appel', ou tout autre
+            # tool existant) -> chaine vide, colonnes BigQuery nullable, aucune
+            # erreur. Necessite les colonnes type_logement/statut_occupation sur
+            # leads_convertis (scripts-maintenance/ajouter_colonnes_logement_leads.py,
+            # a executer avant ce deploiement -- meme precaution d'ordre que les
+            # autres colonnes ajoutees a ce schema).
+            "type_logement":     str(data.get("type_logement", ""))[:20],
+            "statut_occupation": str(data.get("statut_occupation", ""))[:20],
             "montant_estime":    int(data.get("montant_estime", 0) or 0),
             "economie_estimee":  int(data.get("economie_estimee", 0) or 0),
             # Tout ce qui est specifique a l'outil (profil, offre, ROI...)

@@ -35,6 +35,20 @@
  * de ligne (reprend `tool` tel quel : 'contact-expert-inline' ou
  * 'appel-expert-inline') -- ajout en DERNIERE position pour rester
  * compatible avec les lignes deja ecrites (aucune migration necessaire).
+ *
+ * AJOUT DU 24/11/2026 (demande operateur) : le mini-formulaire
+ * "contact-expert-inline" (variante 'contact' de cme-cta-progressifs.php
+ * UNIQUEMENT -- pas la variante 'appel') passe de 2 a 6 champs (nom et
+ * prenom, telephone, appartement ou maison, proprietaire ou locataire,
+ * code postal, adresse e-mail). Email/Code Postal avaient deja leurs
+ * colonnes (vides pour ce tool depuis la reduction du 24/10/2026, elles se
+ * remplissent desormais a nouveau). Type de logement et Statut occupation
+ * sont entierement nouveaux -- 2 colonnes ajoutees en TOUTE FIN de ligne
+ * (meme convention que "CTA" ci-dessus : jamais au milieu, pour ne jamais
+ * decaler les colonnes des lignes deja ecrites). Valeurs attendues :
+ * 'appartement'/'maison' et 'proprietaire'/'locataire' -- vides pour toute
+ * ligne qui ne vient pas de contact-expert-inline (appel-expert-inline,
+ * appel-header-formulaire, contact-expert-formulaire), par construction.
  * ============================================================
  */
 
@@ -43,7 +57,8 @@ var SHEET_NAME = 'Leads Formulaire Article';
 
 var HEADERS = [
   'Date & Heure', 'Prenom', 'Telephone', 'Email', 'Code Postal',
-  'Silo', 'Position dans l\'article', 'URL de l\'article', 'CTA'
+  'Silo', 'Position dans l\'article', 'URL de l\'article', 'CTA',
+  'Type de logement', 'Statut occupation'
 ];
 
 function doGet(e) {
@@ -113,6 +128,7 @@ function ecrireSheet(d) {
     horodatage,
     d.prenom || '', d.telephone || '', d.email || '', d.code_postal || '',
     details.silo || '', details.position || '', d.source_page || '',
-    d.tool || ''
+    d.tool || '',
+    d.type_logement || '', d.statut_occupation || ''
   ]);
 }

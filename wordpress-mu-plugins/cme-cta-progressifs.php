@@ -1,12 +1,14 @@
 <?php
 /**
  * Plugin Name: CME - Formulaire de contact progressif
- * Description: Insere un mini-formulaire de contact interactif -- UN SEUL
- * ECRAN (nom/prenom + telephone affiches ensemble, case RGPD, un seul
- * bouton d'envoi, depuis le 04/11/2026 -- voir chantier plus bas) -- a une
- * cadence croissante (300, 500, 700, 900, 1100 mots, puis tous les 400 mots,
- * plafonnee a 7 occurrences) dans le corps de chaque article, avec les
- * couleurs unifiees du site. Remplace les anciens boutons CTA qui
+ * Description: Insere un mini-formulaire de contact interactif -- variante
+ * 'contact' : 3 ECRANS de 2 champs chacun depuis le 24/11/2026 (schema
+ * "2 -> 2 -> 2", voir chantier tout en bas) ; variante 'appel' : UN SEUL
+ * ECRAN inchange (nom/prenom + telephone affiches ensemble, depuis le
+ * 04/11/2026) -- case RGPD sur la derniere etape de saisie dans les deux
+ * cas -- a une cadence croissante (300, 500, 700, 900, 1100 mots, puis tous
+ * les 400 mots, plafonnee a 7 occurrences) dans le corps de chaque article,
+ * avec les couleurs unifiees du site. Remplace les anciens boutons CTA qui
  * renvoyaient vers /contactez-un-expert/ : desormais le visiteur remplit
  * directement un mini-formulaire dans l'article, sans changer de page. Mode
  * apercu par defaut : visible uniquement avec ?cta60=1 dans l'URL. Pour
@@ -231,6 +233,68 @@
  * uniquement. Demande explicite : laisser le lecteur choisir lui-meme, un
  * seul comparateur bi-energie partout, aucune presupposition par silo --
  * data-eg = 'dual' sans exception desormais.
+ *
+ * CHANTIER DU 24/11/2026 (formulaire "contact-expert-inline" etendu a 6
+ * champs, schema "2 -> 2 -> 2") -- demande operateur explicite, perimetre
+ * STRICTEMENT limite a la variante 'contact' (le mini-formulaire periodique
+ * dans le corps des articles) : la variante 'appel' ("avant d'appeler", fin
+ * d'article) et le popup du bouton telephone du header
+ * (cme-tracking-conversion.php) ne sont PAS concernes, inchanges a
+ * l'identique.
+ *  - Champs et ordre EXACTS demandes par l'operateur, groupes par paires de
+ *    2 sur 3 ecrans : (1) nom et prenom + telephone, (2) appartement ou
+ *    maison + proprietaire ou locataire, (3) code postal + adresse e-mail.
+ *    Revient donc sur le principe "un seul ecran" du 04/11/2026, mais
+ *    UNIQUEMENT pour cette variante -- pas un retour au Typeform
+ *    "un-champ-a-la-fois" d'avant le 04/11 non plus : un compromis
+ *    intermediaire (2 champs par ecran) propre a cette demande. La
+ *    variante 'appel' reste a 1 seul ecran/2 champs, totalement inchangee
+ *    (voir ETAPES_APPEL plus bas -- son code de rendu dans creer() est une
+ *    branche separee de celle de 'contact', par securite : zero logique
+ *    partagee qui pourrait regresser 'appel' en modifiant 'contact').
+ *  - "Appartement ou maison" et "proprietaire ou locataire" sont des choix
+ *    a 2 options (boutons a selectionner), pas des champs texte libres --
+ *    meilleure qualification, zero ambiguite de saisie. Validation code
+ *    postal (5 chiffres) et email (regex basique) ajoutee, memes principes
+ *    que la validation deja en place sur prenom/telephone.
+ *  - Indicateur de progression (3 points) ajoute en haut du formulaire --
+ *    dans l'esprit de la barre de progression du tout premier formulaire
+ *    (22/10/2026), disparue lors des simplifications successives.
+ *  - Navigation : bouton "Suivant ->" sur les 2 premiers ecrans, "Envoyer
+ *    ->" sur le dernier (ou la case RGPD, toujours sur la DERNIERE etape de
+ *    saisie, inchangeant ce principe). Entree (clavier) = etape suivante,
+ *    meme convention que l'ancien Typeform d'avant le 04/11/2026.
+ *  - Tracking de progression etendu pour 'contact' uniquement : form_etape
+ *    avec etape='1' (ecran 2 atteint) et etape='2' (ecran 3 atteint), en
+ *    plus de form_vu/form_etape=termine deja en place -- redonne une vraie
+ *    granularite d'abandon par ecran (DERNIER_ETAT.etape, utilise par le
+ *    handler form_abandon), perdue lors du passage a l'ecran unique du
+ *    04/11/2026. La variante 'appel' garde exactement son comportement
+ *    actuel (etape toujours 'vu' jusqu'a 'termine', aucun ecran
+ *    intermediaire -- rien ne change pour elle).
+ *  - Donnees : 4 nouveaux champs dans le payload envoyerLead() pour la
+ *    variante 'contact' uniquement (type_logement, statut_occupation,
+ *    code_postal, email -- prenom/telephone inchanges) -- payload de la
+ *    variante 'appel' strictement identique a avant (prenom/telephone
+ *    seuls). Necessite 2 nouvelles colonnes BigQuery sur leads_convertis
+ *    (type_logement, statut_occupation -- email/code_postal existaient
+ *    deja) via scripts-maintenance/ajouter_colonnes_logement_leads.py, et
+ *    un redeploiement de tracking-api/server.py (route /api/log-lead,
+ *    action operateur, pas de CI/CD Cloud Run dans ce repo) AVANT le
+ *    deploiement cPanel de ce fichier -- sinon ces 2 champs arriveraient
+ *    au relais mais ne seraient pas repris dans la ligne BigQuery ecrite
+ *    (le payload serait silencieusement tronque a ce que le code actuel du
+ *    relais sait deja faire). 2 nouvelles colonnes Google Sheets ajoutees
+ *    en derniere position de l'onglet "Leads Formulaire Article"
+ *    (apps-scripts/cme-formulaire-article-leads.gs), meme convention que
+ *    "CTA" -- necessite aussi un redeploiement operateur de ce script Apps
+ *    Script (hors de portee de ce sandbox, script.google.com).
+ *  - PREPARATION UNIQUEMENT a ce stade : build + validation locale (php -l,
+ *    node --check sur le bloc JS extrait), PAS de deploiement cPanel --
+ *    deploiement differe a la demande de l'operateur, suivant l'ordre
+ *    ci-dessus (BigQuery -> Cloud Run -> Apps Script -> cPanel, dans cet
+ *    ordre precis pour qu'aucun relais n'ecrive vers une colonne/un onglet
+ *    qui n'existe pas encore).
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -364,16 +428,43 @@ add_action('wp_footer', function () {
     'solaire/systeme-solaire-combine': 'Système solaire combiné : simulez votre installation'
   };
 
-  // Reduit a 2 questions le 24/10/2026 (demande operateur : minimiser la
-  // friction) -- email et code_postal retires. "prenom" porte desormais le
-  // nom ET le prenom en un seul champ (cle technique inchangee pour rester
-  // compatible avec le schema BigQuery/Sheets existant sans migration).
-  // Depuis le 04/11/2026, les deux champs sont affiches SIMULTANEMENT (un
-  // seul ecran, voir creer() plus bas) -- ce tableau ne decrit plus un
-  // enchainement d'etapes, juste la liste des champs a generer.
-  var ETAPES = [
+  // Variante 'appel' ("avant d'appeler") -- INCHANGEE depuis le 04/11/2026 :
+  // 2 champs affiches SIMULTANEMENT, un seul ecran. "prenom" porte le nom ET
+  // le prenom en un seul champ (cle technique inchangee pour rester
+  // compatible avec le schema BigQuery/Sheets existant). Non concernee par
+  // le chantier du 24/11/2026 (voir docblock) -- utilisee par la branche
+  // estAppel de creer() uniquement.
+  var ETAPES_APPEL = [
     { champ: 'prenom', icone: '👋', label: 'Vos nom et prénom ?', type: 'text', placeholder: 'Nom et prénom' },
     { champ: 'telephone', icone: '📱', label: 'Votre numéro de téléphone ?', type: 'tel', placeholder: '06 12 34 56 78' }
+  ];
+
+  // Variante 'contact' (24/11/2026, demande operateur -- voir docblock) :
+  // 6 champs, groupes par paires de 2 sur 3 ECRANS ("2 -> 2 -> 2"). Chaque
+  // sous-tableau = un ecran, affiche un a la fois (navigation "Suivant ->").
+  // Ordre et regroupement EXACTEMENT ceux demandes. type:'choix' = 2 boutons
+  // a selectionner (pas de saisie libre) ; les autres types se comportent
+  // comme avant (<input>). La case RGPD s'attache toujours au DERNIER ecran
+  // (ici : code postal + email), meme principe que ETAPES_APPEL.
+  var PAGES_CONTACT = [
+    [
+      { champ: 'prenom', icone: '👋', label: 'Vos nom et prénom ?', type: 'text', placeholder: 'Nom et prénom' },
+      { champ: 'telephone', icone: '📱', label: 'Votre numéro de téléphone ?', type: 'tel', placeholder: '06 12 34 56 78' }
+    ],
+    [
+      { champ: 'type_logement', icone: '🏠', label: 'Vous habitez en ?', type: 'choix', options: [
+          { valeur: 'appartement', texte: 'Appartement' },
+          { valeur: 'maison', texte: 'Maison' }
+        ] },
+      { champ: 'statut_occupation', icone: '🔑', label: 'Vous êtes ?', type: 'choix', options: [
+          { valeur: 'proprietaire', texte: 'Propriétaire' },
+          { valeur: 'locataire', texte: 'Locataire' }
+        ] }
+    ],
+    [
+      { champ: 'code_postal', icone: '📍', label: 'Votre code postal ?', type: 'text', inputmode: 'numeric', placeholder: '75001' },
+      { champ: 'email', icone: '✉️', label: 'Votre adresse e-mail ?', type: 'email', placeholder: 'vous@exemple.fr' }
+    ]
   ];
   // Lien vers la vraie page legale du site, meme URL et meme esprit de formule
   // que les cases RGPD des anciens simulateurs (wordpress-plugins/simulateur-*),
@@ -435,7 +526,11 @@ add_action('wp_footer', function () {
     style.textContent =
       '.cme-mf-input:focus{border-color:' + FORMULAIRE_FOND2 + '!important;box-shadow:0 0 0 3px rgba(30,58,138,.15)!important;}' +
       '.cme-mf-suiv:hover{background:#d97706!important;}' +
-      '.cme-mf-rgpd-case{accent-color:' + FORMULAIRE_FOND2 + ';width:16px;height:16px;}';
+      '.cme-mf-rgpd-case{accent-color:' + FORMULAIRE_FOND2 + ';width:16px;height:16px;}' +
+      // Boutons de choix (24/11/2026, variante 'contact' -- appartement/
+      // maison, proprietaire/locataire) : etat hover, meme esprit que les
+      // autres etats interactifs de ce fichier.
+      '.cme-mf-choix-btn:hover{border-color:' + FORMULAIRE_ACCENT + '!important;}';
     document.head.appendChild(style);
   }
 
@@ -498,7 +593,14 @@ add_action('wp_footer', function () {
       journaliserInteraction({
         type_evenement: 'form_abandon',
         position_contenu: DERNIER_ETAT.position,
-        etape: 'vu',
+        // Depuis le 24/11/2026 : reflete le dernier ecran reellement atteint
+        // pour la variante 'contact' ('0'/'1'/'2', mis a jour a chaque
+        // passage d'ecran dans creer()) -- avant, toujours 'vu' quel que
+        // soit l'etat. La variante 'appel' n'a pas d'ecran intermediaire :
+        // DERNIER_ETAT.etape y reste toujours 'vu', comportement identique
+        // a avant ce chantier (repli explicite au cas ou etape serait
+        // absent, memes raisons).
+        etape: DERNIER_ETAT.etape || 'vu',
         silo: DERNIER_ETAT.silo,
         cible: DERNIER_ETAT.variante
       });
@@ -525,6 +627,15 @@ add_action('wp_footer', function () {
         source_post_id: String(window.CME_POST_ID || ''),
         source_page: window.location.href
       };
+      if (!estAppel) {
+        // Nouveaux champs (24/11/2026, voir PAGES_CONTACT/docblock) --
+        // variante 'contact' uniquement. La variante 'appel' garde un
+        // payload strictement identique a avant ce chantier.
+        payload.type_logement = valeurs.type_logement || '';
+        payload.statut_occupation = valeurs.statut_occupation || '';
+        payload.code_postal = valeurs.code_postal || '';
+        payload.email = valeurs.email || '';
+      }
       var body = JSON.stringify(payload);
       if (navigator.sendBeacon) {
         navigator.sendBeacon(API_LEAD, new Blob([body], { type: 'application/json' }));
@@ -579,95 +690,209 @@ add_action('wp_footer', function () {
         d.setAttribute('data-pos', String(n));
         d.style.cssText = 'background:linear-gradient(135deg,' + FORMULAIRE_FOND1 + ',' + FORMULAIRE_FOND2 + ');border-radius:16px;margin:26px 0;overflow:hidden;clear:both;max-width:100%;box-sizing:border-box;';
 
-        // Les 2 champs (ETAPES) sont desormais affiches EN MEME TEMPS, pas
-        // l'un apres l'autre -- fini le type Typeform (04/11/2026).
-        var champsHtml = ETAPES.map(function (e) {
-          return '<div class="cme-mf-champ" style="margin-bottom:12px;">' +
-            '<label style="display:block;font-weight:700;font-size:14px;color:#111827;margin-bottom:6px;"><span style="font-size:18px;margin-right:6px;">' + e.icone + '</span>' + e.label + '</label>' +
-            '<input type="' + e.type + '" class="cme-mf-input" data-champ="' + e.champ + '" placeholder="' + e.placeholder + '" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s;">' +
-          '</div>';
-        }).join('');
-
         var rgpdHtml =
           '<label class="cme-mf-rgpd" style="display:flex;align-items:flex-start;gap:8px;margin:2px 0 14px;font-size:12px;color:#6b7280;line-height:1.5;cursor:pointer;">' +
             '<input type="checkbox" class="cme-mf-rgpd-case" style="margin-top:2px;flex-shrink:0;">' +
             '<span>J’accepte d’être recontacté(e) par un conseiller et le traitement de mes données, conformément à notre <a href="' + URL_CADRE_LEGAL + '" target="_blank" rel="noopener" style="color:' + FORMULAIRE_FOND2 + ';text-decoration:underline;">politique de confidentialité</a>.</span>' +
           '</label>';
 
-        var texteBouton = estAppel ? '📞 Appeler maintenant' : 'Envoyer →';
-        var formulaireHtml =
-          '<div class="cme-mf-formulaire">' +
-            champsHtml + rgpdHtml +
-            '<div class="cme-mf-erreur" style="color:#dc2626;font-size:13px;margin-bottom:10px;display:none;"></div>' +
-            '<button type="button" class="cme-mf-suiv" style="width:100%;background:' + FORMULAIRE_ACCENT + ';color:#1f2937;font-weight:700;font-size:16px;padding:13px 24px;border:none;border-radius:9px;cursor:pointer;">' + texteBouton + '</button>' +
+        function champHtml(e) {
+          if (e.type === 'choix') {
+            var boutonsHtml = e.options.map(function (opt) {
+              return '<button type="button" class="cme-mf-choix-btn" data-champ="' + e.champ + '" data-valeur="' + opt.valeur + '" style="flex:1;padding:12px 10px;border:2px solid #e5e7eb;border-radius:10px;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;transition:border-color .15s,background .15s,color .15s;">' + opt.texte + '</button>';
+            }).join('');
+            return '<div class="cme-mf-champ" style="margin-bottom:12px;">' +
+              '<label style="display:block;font-weight:700;font-size:14px;color:#111827;margin-bottom:6px;"><span style="font-size:18px;margin-right:6px;">' + e.icone + '</span>' + e.label + '</label>' +
+              '<div class="cme-mf-choix-groupe" style="display:flex;gap:10px;">' + boutonsHtml + '</div>' +
+            '</div>';
+          }
+          return '<div class="cme-mf-champ" style="margin-bottom:12px;">' +
+            '<label style="display:block;font-weight:700;font-size:14px;color:#111827;margin-bottom:6px;"><span style="font-size:18px;margin-right:6px;">' + e.icone + '</span>' + e.label + '</label>' +
+            '<input type="' + e.type + '" class="cme-mf-input" data-champ="' + e.champ + '" placeholder="' + e.placeholder + '"' + (e.inputmode ? ' inputmode="' + e.inputmode + '"' : '') + ' style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s;">' +
           '</div>';
+        }
+
+        var corpsWrap = document.createElement('div');
+        corpsWrap.className = 'cme-mf-corps';
+        corpsWrap.style.cssText = 'background:#eff6ff;padding:20px;';
+
+        if (estAppel) {
+          // ── VARIANTE 'appel' : INCHANGEE depuis le 04/11/2026 (2 champs, 1 seul ecran) ──
+          var champsHtmlAppel = ETAPES_APPEL.map(champHtml).join('');
+          corpsWrap.innerHTML =
+            '<div class="cme-mf-formulaire">' +
+              champsHtmlAppel + rgpdHtml +
+              '<div class="cme-mf-erreur" style="color:#dc2626;font-size:13px;margin-bottom:10px;display:none;"></div>' +
+              '<button type="button" class="cme-mf-suiv" style="width:100%;background:' + FORMULAIRE_ACCENT + ';color:#1f2937;font-weight:700;font-size:16px;padding:13px 24px;border:none;border-radius:9px;cursor:pointer;">📞 Appeler maintenant</button>' +
+            '</div>';
+
+          function validerAppel(champ, valeur) {
+            valeur = (valeur || '').trim();
+            if (champ === 'prenom') { return valeur.length >= 2 ? '' : 'Entrez vos nom et prénom.'; }
+            if (champ === 'telephone') { return valeur.replace(/\D/g, '').length >= 8 ? '' : 'Numéro invalide.'; }
+            return '';
+          }
+          function afficherErreurAppel(msg) {
+            var erreurEl = corpsWrap.querySelector('.cme-mf-erreur');
+            if (!erreurEl) { return; }
+            if (msg) { erreurEl.textContent = msg; erreurEl.style.display = 'block'; }
+            else { erreurEl.style.display = 'none'; }
+          }
+          function envoyerAppel() {
+            var inputs = Array.prototype.slice.call(corpsWrap.querySelectorAll('.cme-mf-input'));
+            var valeurs = {};
+            var premiereErreur = '';
+            for (var k = 0; k < inputs.length; k++) {
+              var champ = inputs[k].getAttribute('data-champ');
+              var val = inputs[k].value;
+              var erreur = validerAppel(champ, val);
+              if (erreur && !premiereErreur) { premiereErreur = erreur; }
+              valeurs[champ] = val.trim();
+            }
+            if (!premiereErreur) {
+              var caseRgpd = corpsWrap.querySelector('.cme-mf-rgpd-case');
+              if (caseRgpd && !caseRgpd.checked) { premiereErreur = 'Merci d’accepter la politique de confidentialité pour continuer.'; }
+            }
+            if (premiereErreur) { afficherErreurAppel(premiereErreur); return; }
+            afficherErreurAppel('');
+            envoyerLead(valeurs, n, prefixe, variante);
+            journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: 'termine', silo: prefixe, cible: variante });
+            DERNIER_ETAT = null;
+            // Meme comportement que le popup du bouton telephone du header
+            // (cme-tracking-conversion.php, deja en prod) : lead envoye PUIS
+            // appel declenche dans le meme clic, pas d'ecran intermediaire.
+            window.location.href = 'tel:' + TEL_NUMERO;
+          }
+          corpsWrap.querySelector('.cme-mf-suiv').addEventListener('click', envoyerAppel);
+          corpsWrap.addEventListener('keydown', function (evt) {
+            if (evt.key === 'Enter') { evt.preventDefault(); envoyerAppel(); }
+          });
+        } else {
+          // ── VARIANTE 'contact' (24/11/2026) : 3 ecrans de 2 champs ("2 -> 2 -> 2") ──
+          var pointsHtml = '<div class="cme-mf-progression" style="display:flex;gap:6px;margin-bottom:14px;">' +
+            PAGES_CONTACT.map(function (_, idx) {
+              return '<span class="cme-mf-point" data-idx="' + idx + '" style="height:5px;flex:1;border-radius:3px;background:rgba(15,23,42,.15);transition:background .2s;"></span>';
+            }).join('') +
+          '</div>';
+          corpsWrap.innerHTML = pointsHtml + PAGES_CONTACT.map(function (page, idx) {
+            var estDerniere = idx === PAGES_CONTACT.length - 1;
+            var champsHtml = page.map(champHtml).join('');
+            var piedHtml = estDerniere ? rgpdHtml : '';
+            var texteBtn = estDerniere ? 'Envoyer →' : 'Suivant →';
+            return '<div class="cme-mf-page" style="display:' + (idx === 0 ? '' : 'none') + ';">' +
+              champsHtml + piedHtml +
+              '<div class="cme-mf-erreur" style="color:#dc2626;font-size:13px;margin-bottom:10px;display:none;"></div>' +
+              '<button type="button" class="cme-mf-suiv" style="width:100%;background:' + FORMULAIRE_ACCENT + ';color:#1f2937;font-weight:700;font-size:16px;padding:13px 24px;border:none;border-radius:9px;cursor:pointer;">' + texteBtn + '</button>' +
+            '</div>';
+          }).join('');
+
+          var pagesEl = Array.prototype.slice.call(corpsWrap.querySelectorAll('.cme-mf-page'));
+          var pageActuelle = 0;
+          var valeursContact = {};
+
+          function majProgression() {
+            var points = corpsWrap.querySelectorAll('.cme-mf-point');
+            for (var k = 0; k < points.length; k++) {
+              points[k].style.background = k <= pageActuelle ? FORMULAIRE_ACCENT : 'rgba(15,23,42,.15)';
+            }
+          }
+          majProgression();
+
+          function marquerChoixSelectionne(groupeEl, valeur) {
+            var boutons = groupeEl.querySelectorAll('.cme-mf-choix-btn');
+            for (var k = 0; k < boutons.length; k++) {
+              var actif = boutons[k].getAttribute('data-valeur') === valeur;
+              boutons[k].style.borderColor = actif ? FORMULAIRE_ACCENT : '#e5e7eb';
+              boutons[k].style.background = actif ? '#fffbeb' : '#fff';
+              boutons[k].style.color = actif ? '#92400e' : '#374151';
+            }
+          }
+          corpsWrap.addEventListener('click', function (evt) {
+            var btn = evt.target.closest ? evt.target.closest('.cme-mf-choix-btn') : null;
+            if (!btn) { return; }
+            valeursContact[btn.getAttribute('data-champ')] = btn.getAttribute('data-valeur');
+            marquerChoixSelectionne(btn.parentNode, btn.getAttribute('data-valeur'));
+          });
+
+          function validerChampContact(champDef, valeur) {
+            valeur = (valeur || '').trim();
+            if (champDef.type === 'choix') { return valeur ? '' : 'Merci de faire un choix.'; }
+            if (champDef.champ === 'prenom') { return valeur.length >= 2 ? '' : 'Entrez vos nom et prénom.'; }
+            if (champDef.champ === 'telephone') { return valeur.replace(/\D/g, '').length >= 8 ? '' : 'Numéro invalide.'; }
+            if (champDef.champ === 'code_postal') { return valeur.replace(/\D/g, '').length === 5 ? '' : 'Code postal invalide.'; }
+            if (champDef.champ === 'email') { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valeur) ? '' : 'E-mail invalide.'; }
+            return '';
+          }
+          function afficherErreurPage(pageEl, msg) {
+            var erreurEl = pageEl.querySelector('.cme-mf-erreur');
+            if (!erreurEl) { return; }
+            if (msg) { erreurEl.textContent = msg; erreurEl.style.display = 'block'; }
+            else { erreurEl.style.display = 'none'; }
+          }
+          function afficherMerciContact() {
+            corpsWrap.innerHTML =
+              '<div style="text-align:center;padding:6px 0;">' +
+                '<div style="font-size:28px;">✅</div>' +
+                '<div style="font-weight:700;font-size:15px;color:#111827;margin-top:8px;">Merci, un expert vous recontacte rapidement.</div>' +
+              '</div>';
+          }
+          function validerPageActuelle() {
+            var pageEl = pagesEl[pageActuelle];
+            var page = PAGES_CONTACT[pageActuelle];
+            var premiereErreur = '';
+            for (var k = 0; k < page.length; k++) {
+              var champDef = page[k];
+              var valeurActuelle;
+              if (champDef.type === 'choix') {
+                valeurActuelle = valeursContact[champDef.champ] || '';
+              } else {
+                var inputEl = pageEl.querySelector('.cme-mf-input[data-champ="' + champDef.champ + '"]');
+                valeurActuelle = inputEl ? inputEl.value : '';
+                valeursContact[champDef.champ] = valeurActuelle.trim();
+              }
+              var erreur = validerChampContact(champDef, valeurActuelle);
+              if (erreur && !premiereErreur) { premiereErreur = erreur; }
+            }
+            if (!premiereErreur && pageActuelle === PAGES_CONTACT.length - 1) {
+              var caseRgpd = pageEl.querySelector('.cme-mf-rgpd-case');
+              if (caseRgpd && !caseRgpd.checked) { premiereErreur = 'Merci d’accepter la politique de confidentialité pour continuer.'; }
+            }
+            if (premiereErreur) { afficherErreurPage(pageEl, premiereErreur); return false; }
+            afficherErreurPage(pageEl, '');
+            return true;
+          }
+          function allerPageSuivante() {
+            if (!validerPageActuelle()) { return; }
+            if (pageActuelle === PAGES_CONTACT.length - 1) {
+              envoyerLead(valeursContact, n, prefixe, variante);
+              journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: 'termine', silo: prefixe, cible: variante });
+              DERNIER_ETAT = null;   // termine : plus rien a detecter comme abandon pour cette instance
+              afficherMerciContact();
+              return;
+            }
+            pagesEl[pageActuelle].style.display = 'none';
+            pageActuelle++;
+            pagesEl[pageActuelle].style.display = '';
+            majProgression();
+            journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: String(pageActuelle), silo: prefixe, cible: variante });
+            if (DERNIER_ETAT) { DERNIER_ETAT.etape = String(pageActuelle); }
+            var premierInput = pagesEl[pageActuelle].querySelector('.cme-mf-input');
+            if (premierInput) { premierInput.focus(); }
+          }
+          pagesEl.forEach(function (p) {
+            p.querySelector('.cme-mf-suiv').addEventListener('click', allerPageSuivante);
+          });
+          corpsWrap.addEventListener('keydown', function (evt) {
+            if (evt.key === 'Enter') { evt.preventDefault(); allerPageSuivante(); }
+          });
+        }
 
         d.innerHTML =
           '<div style="padding:18px 20px 10px;">' +
             '<div style="color:#fff;font-weight:700;font-size:16px;margin-bottom:6px;">' + texteIntro + '</div>' +
             '<div style="color:rgba(255,255,255,.8);font-size:12px;">' + texteReassurance + '</div>' +
-          '</div>' +
-          '<div style="background:#eff6ff;padding:20px;">' +
-            '<div class="cme-mf-corps">' + formulaireHtml + '</div>' +
           '</div>';
-
-        // ── validation + envoi (ferme sur d, n, prefixe) ──
-        function valider(champ, valeur) {
-          valeur = (valeur || '').trim();
-          if (champ === 'prenom') { return valeur.length >= 2 ? '' : 'Entrez vos nom et prénom.'; }
-          if (champ === 'telephone') { return valeur.replace(/\D/g, '').length >= 8 ? '' : 'Numéro invalide.'; }
-          return '';
-        }
-        function afficherErreur(msg) {
-          var erreurEl = d.querySelector('.cme-mf-erreur');
-          if (!erreurEl) { return; }
-          if (msg) { erreurEl.textContent = msg; erreurEl.style.display = 'block'; }
-          else { erreurEl.style.display = 'none'; }
-        }
-        function afficherMerci() {
-          var corps = d.querySelector('.cme-mf-corps');
-          if (!corps) { return; }
-          corps.innerHTML =
-            '<div style="text-align:center;padding:6px 0;">' +
-              '<div style="font-size:28px;">✅</div>' +
-              '<div style="font-weight:700;font-size:15px;color:#111827;margin-top:8px;">Merci, un expert vous recontacte rapidement.</div>' +
-            '</div>';
-        }
-        function envoyer() {
-          var inputs = Array.prototype.slice.call(d.querySelectorAll('.cme-mf-input'));
-          var valeurs = {};
-          var premiereErreur = '';
-          for (var k = 0; k < inputs.length; k++) {
-            var champ = inputs[k].getAttribute('data-champ');
-            var val = inputs[k].value;
-            var erreur = valider(champ, val);
-            if (erreur && !premiereErreur) { premiereErreur = erreur; }
-            valeurs[champ] = val.trim();
-          }
-          if (!premiereErreur) {
-            var caseRgpd = d.querySelector('.cme-mf-rgpd-case');
-            if (caseRgpd && !caseRgpd.checked) { premiereErreur = 'Merci d’accepter la politique de confidentialité pour continuer.'; }
-          }
-          if (premiereErreur) { afficherErreur(premiereErreur); return; }
-          afficherErreur('');
-          envoyerLead(valeurs, n, prefixe, variante);
-          journaliserInteraction({ type_evenement: 'form_etape', position_contenu: n, etape: 'termine', silo: prefixe, cible: variante });
-          DERNIER_ETAT = null;   // termine : plus rien a detecter comme abandon pour cette instance
-          if (estAppel) {
-            // Meme comportement que le popup du bouton telephone du header
-            // (cme-tracking-conversion.php, deja en prod) : lead envoye PUIS
-            // appel declenche dans le meme clic, pas d'ecran intermediaire.
-            window.location.href = 'tel:' + TEL_NUMERO;
-          } else {
-            afficherMerci();
-          }
-        }
-
-        var btnSuiv = d.querySelector('.cme-mf-suiv');
-        btnSuiv.addEventListener('click', envoyer);
-        d.addEventListener('keydown', function (evt) {
-          if (evt.key === 'Enter') { evt.preventDefault(); envoyer(); }
-        });
+        d.appendChild(corpsWrap);
 
         // Visibilite reelle (pas juste "present dans le DOM" -- insere via
         // JS, le formulaire existe souvent avant d'etre scrolle en vue) :
@@ -677,7 +902,11 @@ add_action('wp_footer', function () {
             for (var k = 0; k < entrees.length; k++) {
               if (entrees[k].isIntersecting) {
                 journaliserInteraction({ type_evenement: 'form_vu', position_contenu: n, silo: prefixe, cible: variante });
-                DERNIER_ETAT = { position: n, vu: true, silo: prefixe, variante: variante };
+                // etape initiale : 'vu' pour 'appel' (pas d'ecran
+                // intermediaire, inchange) ; '0' pour 'contact' (1er des 3
+                // ecrans, mis a jour a chaque allerPageSuivante() -- voir
+                // plus haut) -- 24/11/2026.
+                DERNIER_ETAT = { position: n, vu: true, silo: prefixe, variante: variante, etape: estAppel ? 'vu' : '0' };
                 observateurVue.disconnect();
                 break;
               }
