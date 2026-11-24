@@ -1,0 +1,27 @@
+# Execution du 2026-11-24T16:33:10Z
+# Script    : scripts-maintenance/ajouter_colonnes_logement_leads.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+Execution : ALTER TABLE `seo-data-hub-cme.04_pipeline_seo.leads_convertis` ADD COLUMN IF NOT EXISTS type_logement STRING
+Execution : ALTER TABLE `seo-data-hub-cme.04_pipeline_seo.leads_convertis` ADD COLUMN IF NOT EXISTS statut_occupation STRING
+✅ Colonnes type_logement / statut_occupation presentes (ajoutees ou deja existantes).
+
+Schema effectif :
+  - timestamp (TIMESTAMP)
+  - tool (STRING)
+  - prenom (STRING)
+  - nom (STRING)
+  - email (STRING)
+  - telephone (STRING)
+  - adresse (STRING)
+  - code_postal (STRING)
+  - montant_estime (INTEGER)
+  - economie_estimee (INTEGER)
+  - details (STRING)
+  - user_agent (STRING)
+  - source_page (STRING)
+  - source_post_id (STRING)
+  - type_logement (STRING)
+  - statut_occupation (STRING)
