@@ -4183,3 +4183,101 @@ risque UX actif sur du contenu publié, seulement un bénéfice cosmétique
 (visiteur externe suivant un lien périmé) et de consolidation SEO
 (repli propre plutôt qu'une page d'erreur si un ancien backlink/cache
 externe est encore suivi). Priorité plus faible que le chantier du 02/11.
+
+## Diagnostic d'un 2e lot de 12 URLs 404, profil très différent du 1er lot (25/11/2026)
+
+Même jour, même demande (diagnostic + propositions 301), mais un lot de 12
+URLs au profil structurellement différent du 1er lot (5 URLs, voir section
+précédente) : la plupart sont des permaliens **courts/racine** (sans le
+préfixe `/{silo}/{sous-silo}/` de la structure actuelle), 2 sous
+`/uncategorized/` (catégorie WordPress par défaut quand aucune catégorie
+n'est assignée), 1 ressemble à une page légale statique, et les titres
+évoqués par les slugs ne suivent pas le gabarit SEO du pipeline actuel.
+
+`scripts-maintenance/diagnostiquer_12_urls_404_2511_v2.py` (lecture seule,
+pont GitHub Actions) étend la méthodologie du 1er lot avec deux ajouts
+nécessaires vu ce profil : vérification de `/wp/v2/pages` en plus de
+`/wp/v2/posts` (tous statuts), et scan exhaustif du maillage interne sur
+les pages en plus des articles (**1154 posts + 13 pages** publiés scannés).
+
+**Résultat : zéro trace nulle part pour les 12, exactement comme le 1er
+lot** — aucun post ni page WordPress (même en corbeille), aucune ligne
+`historique_publications`/`01_raw.gsc_queries`/`wp_url_mapping`, absentes
+de tous les sous-sitemaps XML, et aucun lien interne dans l'intégralité
+des posts + pages publiés. Recherche "pickaxe" Git sur chacun des 12 slugs
+exacts : aucune référence antérieure à cette session (les seules
+occurrences sont mes propres nouveaux scripts/logs créés pour ce
+diagnostic) — à une exception notable, creusée séparément ci-dessous.
+
+**Exception trouvée et élucidée — "Ohm Énergie" et "EDF Tarif Bleu" existent
+bien dans le repo, mais comme offres d'un comparateur, pas comme pages** :
+le pickaxe sur `ohm-energie` remonte deux anciens commits
+(`wordpress-plugins/comparateur-energie/assets/comparateur-energie.js`,
+le vieux simulateur comparateur gaz/élec) où `Ohm Énergie` et `EDF` /
+`Tarif Bleu` apparaissent comme entrées d'un tableau JS statique
+d'offres fournisseurs (`ELEC`/`GAZ`), chacune avec un champ `url` pointant
+vers le site EXTERNE du fournisseur (`https://ohm-energie.com/...`,
+`https://particulier.edf.fr/...`) — jamais vers une page interne du site.
+Vérifié par grep exhaustif (`href`/`location.href`/`/${`) dans tout le
+fichier JS : **aucun code ne construit de lien interne a partir de ces
+noms de fournisseurs** (pas de `/ohm-energie/`, pas de
+`/tarif-bleu-edf-vs-autres-fournisseurs/` généré dynamiquement). Donc le
+comparateur n'est pas la source de ces 2 URLs 404 non plus — simple
+coïncidence de vocabulaire (ces 2 URLs 404 reprennent des noms de
+fournisseurs qui, par ailleurs, existent bien dans le comparateur, sous
+forme de lien EXTERNE jamais de lien interne).
+
+**Hypothèse la plus probable, cohérente avec le profil des 12 URLs** :
+contrairement au 1er lot (liens internes du pipeline vers des slugs
+inventés par le LLM), ce 2e lot ressemble à d'**anciennes pages
+légitimes, antérieures à la structure de permaliens actuelle**
+(`/{silo}/{sous-silo}/{slug}/`) **et à la mise en place du suivi
+BigQuery/`historique_publications`** — des titres au style manuel/générique
+("Comprendre ma facture d'électricité", "Les prix du kWh", "Comprendre le
+tarif de base électricité"), sans le gabarit SEO horodaté du pipeline
+actuel, et une page légale (`comprendre-mon-energie-mentions-legales`)
+qui ressemble au nom par défaut d'une page créée tôt dans la vie du site,
+avant sa fusion dans la page légale actuelle. Une fois ces pages
+supprimées (remplacées par le contenu actuel ou par la restructuration du
+site), elles sont devenues invisibles à toutes nos sources de données
+(qui ne couvrent que l'historique du pipeline actuel) — l'outil d'audit
+externe de l'opérateur les a probablement trouvées via un ancien
+crawl/index/cache (sitemap archivé, Wayback Machine, index de backlinks)
+qui ne reflète plus l'état réel du site. **Non vérifiable avec certitude
+depuis ce sandbox** (même limite que pour le 1er lot).
+
+**Propositions de cibles 301**, recherchées en 3 passes (recherche WP par
+mot-clé, puis BigQuery sur `historique_publications` avec motifs stricts
+puis élargis) — classées par niveau de confiance :
+
+*Correspondances solides (contenu réel très proche du sujet) :*
+
+| URL 404 | Cible 301 proposée | Note |
+|---|---|---|
+| `.../uncategorized/compteur-gaz-intelligent-linky-fonctionnement/` | `.../gaz/demenagement-gaz/compteur-gaz-communicant-linky/` | Même slug que l'URL #3 du 1er lot (même cible déjà proposée) |
+| `.../uncategorized/prime-energie-cee-comment-ca-marche/` | `.../aide-energetique/prime-energie/prime-energie-cee-fonctionnement-0902/` | Titre quasi identique : "Prime énergie CEE : comment ça marche en 2026" |
+| `.../comprendre-mon-energie-mentions-legales/` | `.../cadre-legal-et-confidentialite/` | Page légale réelle et vivante du site (confirmée via la liste des 13 pages statiques) |
+| `.../comprendre-ma-facture-delectricite/` | `.../electricite/facture-electricite/lire-comprendre-facture-electricite-1013/` | "Comprendre sa facture électricité : les lignes clés" (13/10/2026, le plus récent d'un cluster de quasi-doublons déjà connu) |
+| `.../choisir-votre-accompagnement/` | `.../contactez-un-expert/` | Page d'orientation probable vers les anciens simulateurs, cible = la destination CTA unique actuelle |
+| `.../reduire-vos-factures-delectricte/` | `.../electricite/contrat-electricite/aides-electricite-2026-reduire-facture/` | "Aides électricité 2026 : réduire votre facture" — correspondance de titre quasi exacte |
+
+*Correspondances faibles (meilleur contenu disponible, mais pas un vrai
+équivalent du sujet) — à valider ou à laisser en 404 simple selon le
+jugement de l'opérateur :*
+
+| URL 404 | Meilleure cible disponible | Pourquoi c'est faible |
+|---|---|---|
+| `.../electricite/facture-electricite/tarif-bleu-edf-vs-autres-fournisseurs/` | `.../electricite/contrat-electricite/comparatif-fournisseurs-electricite-prix/` | Aucun article ne traite spécifiquement du "tarif bleu EDF" ; comparatif fournisseurs généraliste le plus proche |
+| `.../comprendre-tarif-de-base-electricite/` | même cible que ci-dessus | "Tarif de base" (ancien nom du tarif réglementé EDF avant 2016) non couvert du tout par le pipeline actuel |
+| `.../ohm-energie/` | `.../electricite/contrat-electricite/comparatif-fournisseurs-electricite-prix/` | Aucune page dédiée à ce fournisseur ; il n'apparaît que comme offre externe dans l'ancien comparateur JS (voir plus haut) |
+| `.../les-prix-de-kwh/` | `.../electricite/contrat-electricite/comparatif-fournisseurs-electricite-prix/` | Aucun article dédié au prix du kWh en tant que tel |
+| `.../economies-denergie-le-guide-pratique-pour-reduire-vos-facture-en-2026/` | `.../electricite/comparatifs-fournisseurs-electricite/fournisseur-electricite-pas-cher-classement/` | "Électricité pas chère : stratégies pour réduire sa facture" — angle proche mais pas un vrai guide généraliste économies d'énergie |
+| `.../pourquoi-la-pompe-a-chaleur-est-elle-la-solution-de-chauffage-preferee-des-francais-en-2026/` | `.../electricite/chauffage-electricite/radiateur-electrique-vs-pompe-chaleur-comparatif/` | Pas d'article sur la popularité des PAC en 2026 ; comparatif chauffage le plus proche trouvé |
+
+**Même limite déjà documentée le 02/11 et plus haut le 25/11** : la
+création des redirections 301 reste une action manuelle opérateur dans
+wp-admin → RankMath → Redirections → Ajouter (aucune route REST/ajax
+utilisable avec l'authentification Application Password). **Aucune
+action corrective de code nécessaire** — comme pour le 1er lot, aucun
+lien interne vivant ne pointe vers ces 12 URLs aujourd'hui, donc aucun
+risque UX actif sur du contenu publié.
