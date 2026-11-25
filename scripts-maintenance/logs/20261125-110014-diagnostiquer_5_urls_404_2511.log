@@ -1,0 +1,100 @@
+# Execution du 2026-11-25T11:00:14Z
+# Script    : scripts-maintenance/diagnostiquer_5_urls_404_2511.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+==============================================================================================================
+ETAPE 1-5 : statut live, historique_publications, statuts WP, GSC, wp_url_mapping
+==============================================================================================================
+
+### https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/isolation-toiture-aides-financieres-demarches/
+    slug = 'isolation-toiture-aides-financieres-demarches'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP par slug (tous statuts) : AUCUN post, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0902-2/
+    slug = 'fonctionnement-chaudiere-gaz-0902-2'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP par slug (tous statuts) : AUCUN post, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-intelligent-linky-fonctionnement/
+    slug = 'compteur-gaz-intelligent-linky-fonctionnement'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP par slug (tous statuts) : AUCUN post, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0905/
+    slug = 'heures-pleines-creuses-fonctionnement-0905'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP par slug (tous statuts) : AUCUN post, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement-0905/
+    slug = 'heures-creuses-electricite-fonctionnement-0905'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP par slug (tous statuts) : AUCUN post, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+==============================================================================================================
+ETAPE 6 : sitemap XML live
+==============================================================================================================
+  sitemap_index.xml -> HTTP 200, 8 sous-sitemap(s)
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/isolation-toiture-aides-financieres-demarches/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0902-2/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-intelligent-linky-fonctionnement/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0905/
+    absent dans un sitemap post : https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement-0905/
+
+==============================================================================================================
+ETAPE 7 : scan EXHAUSTIF du maillage interne (TOUS les articles publies, pas un echantillon)
+==============================================================================================================
+Recuperation de tous les articles publies (contenu complet)...
+1154 article(s) recupere(s).
+
+
+https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/isolation-toiture-aides-financieres-demarches/ : aucun lien interne trouve dans les 1154 articles publies
+
+https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0902-2/ : aucun lien interne trouve dans les 1154 articles publies
+
+https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-intelligent-linky-fonctionnement/ : aucun lien interne trouve dans les 1154 articles publies
+
+https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0905/ : aucun lien interne trouve dans les 1154 articles publies
+
+https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement-0905/ : aucun lien interne trouve dans les 1154 articles publies
+
+==============================================================================================================
+TOTAL : 0 lien(s) interne(s) trouve(s) vers les 5 URLs, sur 1154 articles scannes.
+==============================================================================================================
