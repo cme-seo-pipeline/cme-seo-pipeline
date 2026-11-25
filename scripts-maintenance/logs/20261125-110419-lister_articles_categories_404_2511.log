@@ -1,0 +1,130 @@
+# Execution du 2026-11-25T11:04:19Z
+# Script    : scripts-maintenance/lister_articles_categories_404_2511.py
+# Arguments : 
+
+====================================================================================================
+CATEGORIE : Chauffage Gaz  (slug='chauffage-gaz')
+====================================================================================================
+  id=58 | name WP='Chauffage Gaz' | count=37
+  37 article(s) recupere(s) via l'API (categorie principale ou secondaire) :
+    - 2026-11-23 | Entretien chaudière gaz : fréquence, coûts et obligations | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz-optimisation/
+    - 2026-11-20 | Chaudière gaz : composants clés et cycle de combustion expliqué | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-1120/
+    - 2026-11-19 | Chaudière gaz vs pompe à chaleur : comparatif complet 2026 | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-1119/
+    - 2026-11-18 | Chaudière gaz : problèmes courants, dépannage et solutions | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-rendement/
+    - 2026-11-17 | Coût installation chaudière gaz : tarifs 2026 et devis | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-cout/
+    - 2026-11-16 | Chaudière gaz condensation : rendement et économies | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chaudiere-gaz-condensation-rendement/
+    - 2026-09-26 | Normes légales chaudière gaz 2026 : obligations et démarches | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installer-chaudiere-gaz-etapes-normes/
+    - 2026-09-25 | Aides chauffage gaz 2026 : critères d&rsquo;éligibilité | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026-0925/
+    - 2026-09-24 | Chaudière gaz : schéma de fonctionnement et optimisation | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0924/
+    - 2026-09-05 | Installation chaudière gaz : étapes et coûts 2026 | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz/
+    - 2026-09-02 | Comment fonctionne une chaudière gaz ? Guide complet | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0902/
+    - 2026-08-31 | Entretien chauffage gaz : guide complet et coûts | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chauffage-gaz/
+    - 2026-08-29 | Installation chauffage gaz : étapes et coûts expliqués | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chauffage-gaz/
+    - 2026-08-26 | Aides chauffage gaz 2026 : MaPrimeRénov et dispositifs | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026-0826/
+    - 2026-08-24 | Comment fonctionne un chauffage au gaz : guide complet | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chauffage-gaz/
+    - 2026-08-22 | Aides au chauffage gaz 2026 : les subventions à ne pas manquer | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026-0822/
+    - 2026-08-20 | Comment fonctionne une chaudière gaz : guide complet | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0820/
+    - 2026-08-17 | Aides chauffage gaz 2026 : MaPrimeRénov et CEE | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2026/
+    - 2026-08-17 | Radiateur gaz : fonctionnement et rendement expliqués | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/radiateur-gaz-fonctionnement-rendement/
+    - 2026-08-16 | Chauffage Gaz : hausse de 10.8% en août 2026 | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chauffage-gaz-aout-2026/
+    - 2026-08-16 | Chauffage Gaz August 2026 : baisse de 82.8% | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chauffage-gaz-august-2026/
+    - 2026-08-15 | Entretien chaudière gaz : fréquence et coûts annuels | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz-frequence-couts/
+    - 2026-08-15 | Installation chaudière gaz : étapes et normes 2026 | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes-0815/
+    - 2026-08-14 | Aides chauffage gaz 2024 : MaPrimeRénov et dispositifs | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/aides-chauffage-gaz-2024/
+    - 2026-08-14 | Chaudière gaz : comment fonctionne le système | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0814/
+    - 2026-08-14 | MaPrimeRénov gaz 2024 : conditions et montants | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/maprimer-nov-gaz-2024-conditions-montants/
+    - 2026-08-12 | Comment fonctionne une chaudière gaz ? Guide complet | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0812/
+    - 2026-08-07 | Installation chaudière gaz : coûts, étapes et normes | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-cout-etapes/
+    - 2026-08-01 | Comment fonctionne une chaudière gaz : explications | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz/
+    - 2026-07-28 | Installation chaudière gaz : étapes, normes et coûts | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes/
+    - 2026-07-23 | Chaudière gaz condensation vs classique : comparaison | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chaudiere-gaz-condensation-vs-classique/
+    - 2026-07-18 | Radiateur gaz : fonctionnement, types et entretien | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/radiateur-gaz-fonctionnement-entretien/
+    - 2026-07-13 | Installation chaudière gaz : étapes, coûts et normes 2024 | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-couts/
+    - 2026-07-07 | Chaudière gaz condensation : fonctionnement et avantages | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/chaudiere-gaz-condensation-fonctionnement/
+    - 2026-06-18 | Entretien chaudière gaz : votre demande en ligne en 2 minutes. | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz/
+    - 2026-01-29 | Est ce que l&rsquo;entretient de la chaudière est-il obligatoire et comment préserver l&rsquo;état technique de l&rsquo;équipement ? | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/entretien-chaudiere-gaz-2/
+    - 2026-01-29 | Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Économiser | https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+
+====================================================================================================
+CATEGORIE : Déménagement gaz  (slug='demenagement-gaz')
+====================================================================================================
+  id=65 | name WP='Déménagement gaz' | count=27
+  27 article(s) recupere(s) via l'API (categorie principale ou secondaire) :
+    - 2026-11-23 | Aides déménagement gaz pour propriétaires : conditions et montants | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz-reductions/
+    - 2026-11-20 | Gaz déménagement : guide pratique pour locataires et demande en ligne | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/checklist-demenagement-gaz/
+    - 2026-11-19 | Changer de fournisseur gaz sans résilier : solutions | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement-1119/
+    - 2026-11-18 | Mise en service gaz pour les propriétaires : tarifs | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/delai-mise-en-service-gaz-demenagement-1118/
+    - 2026-11-17 | Résiliation gaz déménagement : modèles de lettres | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/resilier-contrat-gaz-demenagement/
+    - 2026-11-16 | Checklist gaz déménagement : erreurs à éviter et étapes | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/checklist-demenagement-gaz-guide-complet/
+    - 2026-09-26 | Résilier son contrat gaz avant un déménagement | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+    - 2026-09-25 | Aides gaz déménagement pour locataires : droits et démarches | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-financieres-demenagement-gaz/
+    - 2026-09-24 | Ouverture compteur gaz déménagement | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/ouverture-compteur-gaz-demenagement-delais/
+    - 2026-09-08 | Est ce que je peux installer un compteur gaz sans un certificat de conformité délivré par un expert RGE | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/certificat-conformite-gaz-demenagement/
+    - 2026-09-05 | Changement fournisseur gaz déménagement : guide complet | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changement-fournisseur-gaz-demenagement/
+    - 2026-09-04 | Délai ouverture gaz déménagement : combien de temps ? | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/delai-ouverture-gaz-demenagement/
+    - 2026-09-03 | Aides déménagement gaz : réductions et financements 2026 | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz-reductions-financements/
+    - 2026-09-02 | Compteur gaz communicant Linky : fonctionnement et avantages | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-communicant-linky/
+    - 2026-09-01 | Installer le gaz dans votre nouveau logement | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/installer-gaz-nouveau-logement-delais/
+    - 2026-08-31 | Transfert gaz lors d&rsquo;un déménagement : guide complet | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/transfert-gaz-demenagement-guide/
+    - 2026-08-31 | Aides déménagement gaz : quelles économies en 2026 ? | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz/
+    - 2026-08-30 | Gaz coupé après déménagement : comment le rétablir | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/gaz-coupe-apres-demenagement-retablir/
+    - 2026-08-29 | Raccordement gaz après déménagement : étapes et délais | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/raccordement-gaz-demenagement-etapes-delais/
+    - 2026-08-28 | Comment fonctionne le gaz naturel ? Guide technique | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/comment-fonctionne-gaz-naturel/
+    - 2026-08-27 | Délai de mise en service gaz : combien de temps ? | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/delai-mise-en-service-gaz-demenagement-0827/
+    - 2026-08-26 | Aides financières gaz déménagement : les dispositifs 2026 | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-financieres-gaz-demenagement/
+    - 2026-08-25 | Raccordement gaz déménagement : normes et sécurité | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/raccordement-gaz-demenagement-normes-securite/
+    - 2026-08-24 | Installer le gaz dans un nouveau logement : étapes | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/installer-gaz-nouveau-logement/
+    - 2026-08-23 | Délai de mise en service gaz : combien de temps attendre | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/delai-mise-en-service-gaz-demenagement/
+    - 2026-08-22 | Gaz coupé lors du déménagement : comment le rétablir | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/gaz-coupe-demenagement-retablir/
+    - 2026-08-21 | Déménagement et changement de gaz : guide complet | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/demenagement-changement-fournisseur-gaz/
+
+====================================================================================================
+CATEGORIE : Heures pleines/creuses (Électricité)  (slug='heures-pleines-creuses')
+====================================================================================================
+  id=48 | name WP='Heures Pleines/Creuses' | count=20
+  20 article(s) recupere(s) via l'API (categorie principale ou secondaire) :
+    - 2026-09-26 | Heures creuses électricité : les appareils à brancher | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-fonctionnement-tarification/
+    - 2026-09-25 | Heures pleines creuses : les pièges cachés | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-heures-pleines-creuses-fonctionnement/
+    - 2026-09-24 | Heures pleines et creuses : les erreurs à éviter | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0924/
+    - 2026-09-05 | Heures creuses électricité : comment ça marche réellement | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-fonctionnement/
+    - 2026-08-29 | Heures pleines creuses : comment fonctionne ce tarif ? | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0829-2/
+    - 2026-08-29 | Heures creuses électricité : comment ça marche réellement | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/
+    - 2026-08-29 | Heures pleines et creuses : comment ça marche | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0829/
+    - 2026-08-22 | Économiser sur vos heures creuses : tarifs et astuces | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/economiser-heures-creuses-tarifs-astuces/
+    - 2026-08-22 | Heures creuses électricité : économisez jusqu&rsquo;à 40 % | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses-economiser-facture/
+    - 2026-08-22 | Heures pleines et creuses : comment ça marche | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0822/
+    - 2026-08-16 | Heures pleines et creuses : comment ça marche | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0816-2/
+    - 2026-08-16 | Heures pleines creuses : comment ça marche réellement | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0816/
+    - 2026-08-16 | Heures pleines creuses : comment ça marche et économiser | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-economies/
+    - 2026-08-13 | Aides heures creuses 2026 : réductions tarifaires et crédits | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/aides-heures-creuses-2026/
+    - 2026-07-31 | Tarif heures pleines creuses 2026 : prix par région | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-heures-pleines-creuses-2026-par-region/
+    - 2026-07-24 | Heures pleines creuses : comment ça marche vraiment ? | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0724/
+    - 2026-07-17 | Tarif heures pleines creuses 2026 : vrai prix comparé | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-heures-pleines-creuses-prix-2026/
+    - 2026-06-28 | Heures pleines creuses : comment ça marche vraiment | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement/
+    - 2026-02-10 | Heures Creuses 2026 : Le Guide Complet pour Maîtriser votre Facture | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+    - 2026-02-03 | Tarif de Base de l&rsquo;électricité et quelle est la différence avec le tarifs Heures creuses ? | https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/tarif-de-base/
+
+====================================================================================================
+CATEGORIE : Aides rénovation toiture  (slug='aides-renovation-toiture')
+====================================================================================================
+  id=37 | name WP='Aides rénovation toiture' | count=18
+  18 article(s) recupere(s) via l'API (categorie principale ou secondaire) :
+    - 2026-09-24 | Budget rénovation toiture par type de matériau : comparatif | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cout-renovation-toiture-tarifs-aides/
+    - 2026-09-05 | Cumul aides toiture : MaPrimeRénov&rsquo; + CEE + Éco-PTZ | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cumul-aides-toiture-maprimerenovcee-ecoptz/
+    - 2026-09-01 | Coût rénovation toiture : combien coûte vraiment ? | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cout-renovation-toiture-prix-exact/
+    - 2026-08-29 | Étapes pour obtenir une aide toiture sans erreur | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/obtenir-aide-toiture-etapes-sans-erreur/
+    - 2026-08-26 | Aides toiture 2026 : cumuler MaPrimeRénov&rsquo; et prime énergie | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-cumulables-toiture-2026/
+    - 2026-08-23 | Refaire sa toiture : étapes, matériaux et devis gratuit | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/refaire-toiture-etapes-materiaux-devis/
+    - 2026-08-20 | Aides toiture 2026 : quelles primes pour votre rénovation | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-toiture-2026-primes-renovation/
+    - 2026-08-17 | Installer une toiture végétalisée : aides et étapes | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/toiture-vegetalisee-installation-aides/
+    - 2026-08-15 | Tuiles solaires vs panneaux classiques : quelle aide? | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/tuiles-solaires-vs-panneaux-photovoltaiques-aides/
+    - 2026-08-14 | Rénovation toiture : matériaux et aides financières 2025 | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/renovation-toiture-materiaux-aides-2025/
+    - 2026-08-14 | Rénovation toiture : comparatif complet des aides 2025 | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-renovation-toiture-2025-comparatif/
+    - 2026-08-14 | Rénovation toiture : comparatif des aides 2025 | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/comparatif-aides-renovation-toiture-2025/
+    - 2026-08-14 | Rénovation toiture : comparer les aides 2025 | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/comparer-aides-renovation-toiture-2025/
+    - 2026-08-14 | Rénovation toiture : aides financières et conditions | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-renovation-toiture-2025/
+    - 2026-08-09 | Tuiles photovoltaïques ou panneaux solaires : quel choix ? | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/tuiles-photovoltaiques-vs-panneaux-solaires/
+    - 2026-07-31 | Pose toiture isolante : étapes, coûts et aides 2025 | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/pose-toiture-isolante-etapes-couts-aides/
+    - 2026-07-22 | Diagnostic toiture avant rénovation : checklist aide 2025 | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/diagnostic-toiture-avant-renovation-aide-2025/
+    - 2026-06-25 | Aides rénovation toiture : démarches et conditions 2025 | https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/demarches-conditions-aides-renovation-toiture/
+
