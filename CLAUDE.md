@@ -4087,3 +4087,99 @@ précédent que les incidents "Lionel"/"QA-TEST"/"popup header".
 **Chantier entièrement clos** : BigQuery, Cloud Run, Apps Script et
 cPanel tous à jour et cohérents entre eux ; formulaire `contact-expert-inline`
 à 6 champs/3 écrans confirmé en production.
+
+## Diagnostic de 5 nouvelles URLs 404 + propositions de redirections 301 (25/11/2026)
+
+Demande opérateur : 5 URLs signalées introuvables, même type de demande que
+l'audit 404 externe du 02/11/2026 (diagnostic de la source + propositions
+de cibles 301). Même méthodologie réutilisée, avec la leçon du 02/11 déjà
+intégrée dès le départ (ne jamais se limiter à un échantillon choisi à la
+main pour le scan de maillage interne) :
+
+`scripts-maintenance/diagnostiquer_5_urls_404_2511.py` (lecture seule, pont
+GitHub Actions) a vérifié, pour chacune des 5 URLs : statut HTTP live,
+`historique_publications`, tous statuts WordPress par slug (y compris
+corbeille/brouillon), `01_raw.gsc_queries`, `02_cleaned.wp_url_mapping`,
+sitemap XML, et un scan EXHAUSTIF du contenu des **1154** articles publiés
+(pas un échantillon).
+
+**Résultat, différent du 02/11** : les 5 URLs sont confirmées 404 en live,
+mais **aucune trace nulle part** — ni post WordPress (même en corbeille),
+ni ligne `historique_publications`, ni donnée GSC, ni présence dans le
+sitemap ou `wp_url_mapping`, et surtout **zéro lien interne** dans
+l'intégralité des 1154 articles publiés. Une recherche "pickaxe"
+(`git log --all -S"<slug>"`) sur chacun des 5 slugs exacts confirme aussi
+qu'aucun n'a jamais été référencé nulle part dans l'historique Git du
+repo (ni table de maillage pilier, ni script, ni CTA). **Contrairement au
+02/11, ce n'est donc pas un cas de lien interne généré par le pipeline
+vers une URL inventée** — rien n'indique que ce pipeline ait jamais produit
+ou lié ces 5 URLs.
+
+**Complément** (`scripts-maintenance/lister_articles_categories_404_2511.py`,
+lecture seule, API publique WordPress) : liste les vrais articles publiés
+dans les 4 catégories concernées (Chauffage Gaz, Déménagement gaz, Heures
+Pleines/Creuses, Aides rénovation toiture) pour identifier le meilleur
+candidat de redirection par proximité réelle. Constat notable : pour 4 des
+5 URLs, un **vrai article sœur** existe avec un slug quasi identique (même
+base, sans le suffixe de date/collision) :
+- `fonctionnement-chaudiere-gaz-0902-2` → le vrai `fonctionnement-chaudiere-gaz-0902`
+  (publié le 02/09/2026) existe, sans le suffixe `-2`.
+- `compteur-gaz-intelligent-linky-fonctionnement` → le vrai
+  `compteur-gaz-communicant-linky` (publié le 02/09/2026, même sous-silo
+  Déménagement gaz) existe — **coïncidence notable avec le bug de
+  confusion Linky/Gazpar documenté le 20/11/2026** : cet article réel
+  mentionne lui-même "Linky" dans un contexte Gaz, signe que ce type de
+  confusion a pu se produire plus d'une fois avant le correctif du 20/11
+  (`consigne_disambiguation_compteur()`). Non prouvé avec certitude comme
+  la cause de cette URL précise, mais un indice cohérent.
+- `heures-pleines-creuses-fonctionnement-0905` → le vrai
+  `heures-pleines-creuses-fonctionnement` (sans date, publié le 28/06/2026)
+  est la meilleure cible par correspondance de slug ET de sujet.
+- `heures-creuses-electricite-fonctionnement-0905` → le vrai
+  `heures-creuses-electricite-fonctionnement` (sans date, publié le
+  29/08/2026) est la meilleure cible, même logique.
+
+Pour la 5ᵉ (`isolation-toiture-aides-financieres-demarches`), aucun
+sibling quasi identique — la meilleure cible par proximité thématique
+réelle (démarches + aides + toiture) est `demarches-conditions-aides-renovation-toiture`
+(publié le 25/06/2026).
+
+**Propositions de cibles 301** :
+
+| URL 404 | Cible 301 proposée |
+|---|---|
+| `.../aide-energetique/aides-renovation-toiture/isolation-toiture-aides-financieres-demarches/` | `.../aide-energetique/aides-renovation-toiture/demarches-conditions-aides-renovation-toiture/` |
+| `.../gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0902-2/` | `.../gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0902/` |
+| `.../gaz/demenagement-gaz/compteur-gaz-intelligent-linky-fonctionnement/` | `.../gaz/demenagement-gaz/compteur-gaz-communicant-linky/` |
+| `.../electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement-0905/` | `.../electricite/heures-pleines-creuses/heures-pleines-creuses-fonctionnement/` |
+| `.../electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement-0905/` | `.../electricite/heures-pleines-creuses/heures-creuses-electricite-fonctionnement/` |
+
+**Hypothèse la plus probable sur l'origine** : ces 5 URLs n'ont jamais été
+publiées ni liées par ce pipeline (zéro trace, y compris dans tout
+l'historique git) — à la différence du 02/11 où le pipeline avait
+réellement généré les liens morts. L'explication la plus cohérente avec
+le reste du contexte du projet (chantiers de déduplication éditoriale
+d'octobre, plusieurs clusters de quasi-doublons publiés le même jour sous
+des slugs `-MMDD`/`-MMDD-2` puis nettoyés) est que ces URLs correspondent
+à des candidats de publication (briefs/slugs pré-calculés) qui n'ont
+jamais abouti à un vrai article WordPress, ou à d'anciens doublons
+supprimés manuellement par l'opérateur en dehors de tout script tracé
+ici (`historique_publications` ne consigne que ce que LE PIPELINE a
+publié — pas une suppression manuelle faite directement dans wp-admin) —
+puis reprises par un outil d'audit externe (backlink/crawl) qui les a
+indexées avant leur disparition, ou à partir d'un cache externe. **Pas
+vérifiable avec certitude depuis ce sandbox.**
+
+**Même limite déjà documentée le 02/11** : la création de redirections
+301 n'est pas automatisable depuis ce sandbox/ce pipeline (RankMath
+n'expose aucune route REST/ajax utilisable avec l'authentification par
+Application Password pour une redirection source→destination arbitraire)
+— action manuelle opérateur dans wp-admin → RankMath → Redirections →
+Ajouter, pour les 5 paires proposées ci-dessus.
+
+**Aucune action corrective de code nécessaire** : contrairement au 02/11,
+aucun lien interne vivant ne pointe vers ces URLs aujourd'hui — pas de
+risque UX actif sur du contenu publié, seulement un bénéfice cosmétique
+(visiteur externe suivant un lien périmé) et de consolidation SEO
+(repli propre plutôt qu'une page d'erreur si un ancien backlink/cache
+externe est encore suivi). Priorité plus faible que le chantier du 02/11.
