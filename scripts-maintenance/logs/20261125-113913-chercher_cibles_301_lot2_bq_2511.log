@@ -1,0 +1,108 @@
+# Execution du 2026-11-25T11:39:13Z
+# Script    : scripts-maintenance/chercher_cibles_301_lot2_bq_2511.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+### tarif-bleu-edf-vs-autres-fournisseurs
+    WHERE titre LIKE '%tarif bleu%' OR mot_cle LIKE '%tarif bleu%' OR titre LIKE '%tarif réglementé%' OR mot_cle LIKE '%tarif reglemente%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### prime-energie-cee-comment-ca-marche
+    WHERE titre LIKE '%CEE%' OR mot_cle LIKE '%CEE%' OR titre LIKE '%prime energie%' OR titre LIKE '%prime énergie%' OR mot_cle LIKE '%prime energie%'
+====================================================================================================
+    - 2026-11-23 12:07:59.267483+00:00 | CEE isolation : conditions d'éligibilité et montants | mot_cle='CEE isolation montants éligibilité certificats énergétiques conditions travaux'
+      https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/cee-isolation-cumul-maprimerenov/
+    - 2026-11-20 11:20:55.195771+00:00 | CEE chauffe-eau solaire 2026 : cumul MaPrimeRénov' | mot_cle='CEE certificats économies énergie chauffe-eau solaire cumul aides 2026'
+      https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026-1120/
+    - 2026-11-16 11:05:02.125986+00:00 | MaPrimeRénov' + CEE + éco-PTZ + MaPrimeRénov' Sérénité  | mot_cle="MaPrimeRénov' cumul stratégique CEE éco-PTZ Sérénité ordre optimal financement maximal"
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-cumul-autres-aides-1116/
+    - 2026-11-13 10:56:52.946906+00:00 | CEE chauffe-eau thermodynamique : demande et dossier | mot_cle='demande CEE chauffe-eau thermodynamique dossier administratif obtention certificats'
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cee-chauffe-eau-thermodynamique-certificats-economie-energie/
+    - 2026-10-28 09:38:36.037507+00:00 | MaPrimeRénov' + CEE + éco-PTZ : guide pratique du cumul | mot_cle='cumuler plusieurs aides rénovation stratégie maximale financement'
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-cumul-autres-aides-regles/
+    - 2026-10-28 09:36:34.510459+00:00 | MaPrimeRénov' : quelles aides cumuler et dans quel ordre | mot_cle="cumuler MaPrimeRénov' CEE éco-PTZ TVA réduite financement rénovation"
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-cumul-autres-aides/
+    - 2026-10-23 08:27:18.853796+00:00 | MaPrimeRénov' vs CEE vs éco-PTZ : comparatif complet des | mot_cle="comparatif aides rénovation MaPrimeRénov' CEE éco-PTZ"
+      https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-comparatif-autres-aides-energetiques-1023/
+    - 2026-09-05 03:11:37.871371+00:00 | Cumul aides toiture : MaPrimeRénov' + CEE + Éco-PTZ | mot_cle='cumul aides toiture'
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cumul-aides-toiture-maprimerenovcee-ecoptz/
+    - 2026-09-02 17:25:52.649307+00:00 | Prime énergie CEE : comment ça marche en 2026 | mot_cle='prime énergie CEE fonctionnement'
+      https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement-0902/
+    - 2026-08-31 11:47:13.792410+00:00 | Aides chaudière fioul : cumul MaPrimeRénov' et CEE | mot_cle='aides chaudière fioul cumul'
+      https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/aides-chaudiere-fioul-cumul-maprimerenov-cee-0831/
+
+====================================================================================================
+### comprendre-ma-facture-delectricite
+    WHERE titre LIKE '%comprendre%facture%' OR mot_cle LIKE '%comprendre%facture%électricité%' OR mot_cle LIKE '%comprendre facture electricite%'
+====================================================================================================
+    - 2026-10-13 21:34:50.977186+00:00 | Comprendre sa facture électricité : les lignes clés | mot_cle='comprendre facture électricité'
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite-1013/
+    - 2026-09-27 09:11:58.400452+00:00 | Décoder les frais cachés de votre facture électricité : ce | mot_cle='comprendre facture électricité'
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comprendre-facture-electricite-detail/
+    - 2026-09-01 03:09:58.444183+00:00 | Lire et comprendre sa facture de gaz : guide détaillé | mot_cle='lire facture gaz'
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-comprendre-facture-gaz/
+    - 2026-08-24 03:16:39.313795+00:00 | Tarifs électricité 2026 : comprendre votre facture | mot_cle='tarifs électricité'
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tarifs-electricite-comprendre-facture/
+    - 2026-08-18 03:55:40.191277+00:00 | Lire et comprendre sa facture d'électricité | mot_cle='lire facture électricité'
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite/
+    - 2026-07-20 03:09:25.146465+00:00 | Comprendre sa facture électricité : détail ligne par ligne | mot_cle='comprendre facture électricité'
+      https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-comprendre-facture-electricite-detail/
+
+====================================================================================================
+### comprendre-tarif-de-base-electricite
+    WHERE titre LIKE '%tarif de base%' OR mot_cle LIKE '%tarif de base%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### ohm-energie
+    WHERE titre LIKE '%Ohm Energie%' OR mot_cle LIKE '%ohm energie%' OR titre LIKE '%Ohm%' OR mot_cle LIKE '%ohm%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### les-prix-de-kwh
+    WHERE titre LIKE '%prix du kwh%' OR titre LIKE '%prix du kWh%' OR mot_cle LIKE '%prix du kwh%' OR mot_cle LIKE '%prix kwh%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### economies-denergie-le-guide-pratique
+    WHERE titre LIKE '%économies d%énergie%guide%' OR mot_cle LIKE '%economies energie guide%' OR titre LIKE '%guide%économies%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### reduire-vos-factures-delectricte
+    WHERE titre LIKE '%réduire%facture%électricité%' OR mot_cle LIKE '%reduire facture electricite%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### pourquoi-pompe-a-chaleur-preferee-francais
+    WHERE titre LIKE '%pompe à chaleur%préférée%' OR titre LIKE '%pompe a chaleur%francais%' OR mot_cle LIKE '%pompe a chaleur%francais%'
+====================================================================================================
+    Aucun resultat.
+
