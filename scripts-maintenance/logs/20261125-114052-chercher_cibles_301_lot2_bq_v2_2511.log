@@ -1,0 +1,85 @@
+# Execution du 2026-11-25T11:40:52Z
+# Script    : scripts-maintenance/chercher_cibles_301_lot2_bq_v2_2511.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+====================================================================================================
+### tarif-bleu-edf-vs-autres-fournisseurs (elargi)
+    WHERE mot_cle LIKE '%EDF%' OR titre LIKE '%EDF%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### comprendre-tarif-de-base-electricite (elargi)
+    WHERE titre LIKE '%tarif%' AND (titre LIKE '%reglement%' OR titre LIKE '%réglement%' OR mot_cle LIKE '%reglement%' OR mot_cle LIKE '%réglement%')
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### ohm-energie (elargi, sans accent)
+    WHERE mot_cle LIKE '%fournisseur alternatif%' OR titre LIKE '%fournisseur alternatif%' OR mot_cle LIKE '%comparatif fournisseur%'
+====================================================================================================
+    - 2026-10-22 08:20:05.999068+00:00 | Fournisseurs gaz naturel : guide complet pour changer | mot_cle='comparatif fournisseurs gaz naturel'
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparatif-fournisseurs-gaz-naturel/
+    - 2026-09-28 09:33:55.458888+00:00 | Comparatif fournisseurs électricité 2026 : prix | mot_cle='comparatif fournisseurs électricité'
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparatif-fournisseurs-electricite-prix/
+    - 2026-09-26 08:17:43.802784+00:00 | Négocier son contrat gaz : astuces pour réduire ses | mot_cle='comparatif fournisseurs gaz'
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs-gaz-marche/
+    - 2026-08-27 03:14:59.056413+00:00 | Comparatif fournisseurs électricité 2026 : tarifs et offres | mot_cle='comparatif fournisseurs électricité'
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparatif-fournisseurs-electricite-2026-tarifs-offres/
+    - 2026-08-20 04:16:40.303872+00:00 | Électricité verte : comparer les offres écologiques 2026 | mot_cle='électricité verte comparatif fournisseurs'
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparer-offres-electricite-verte/
+    - 2026-08-14 08:12:51.492470+00:00 | Meilleur fournisseur gaz 2024 : guide comparatif complet | mot_cle='comparatif fournisseurs gaz'
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs-gaz-2024/
+    - 2026-06-20 14:15:41.256136+00:00 | Comparatif fournisseurs gaz 2024 : qualité vs prix | mot_cle='comparatif fournisseurs gaz'
+      https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs/
+
+====================================================================================================
+### les-prix-de-kwh (elargi)
+    WHERE titre LIKE '%prix%kwh%' OR titre LIKE '%prix%kWh%' OR mot_cle LIKE '%prix%kwh%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### economies-denergie-guide (elargi)
+    WHERE titre LIKE '%économies%' AND titre LIKE '%énergie%'
+====================================================================================================
+    Aucun resultat.
+
+====================================================================================================
+### reduire-vos-factures-delectricte (elargi)
+    WHERE titre LIKE '%réduire%facture%' OR mot_cle LIKE '%reduire%facture%' OR titre LIKE '%baisser%facture%'
+====================================================================================================
+    - 2026-11-13 10:48:19.478477+00:00 | Consommation gaz : réduire sa facture par des changements | mot_cle='réduire consommation gaz économies comportement'
+      https://www.comprendre-mon-energie.fr/gaz/facture-gaz/consommation-facture-gaz/
+    - 2026-10-19 08:43:58.577840+00:00 | Aides électricité 2026 : réduire votre facture | mot_cle='aides électricité facture'
+      https://www.comprendre-mon-energie.fr/?p=9812
+    - 2026-09-26 08:22:51.567782+00:00 | Électricité pas chère : stratégies pour réduire sa facture | mot_cle='fournisseur électricité pas cher'
+      https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/fournisseur-electricite-pas-cher-classement/
+    - 2026-08-31 11:51:46.431875+00:00 | Aides électricité 2026 : réduire votre facture | mot_cle='aides électricité 2026'
+      https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-reduire-facture/
+
+====================================================================================================
+### pourquoi-pompe-a-chaleur-preferee-francais (elargi)
+    WHERE (titre LIKE '%pompe à chaleur%' OR mot_cle LIKE '%pompe a chaleur%') AND (titre LIKE '%2026%' OR titre LIKE '%meilleur%' OR titre LIKE '%populaire%')
+====================================================================================================
+    - 2026-11-19 11:20:29.957580+00:00 | Chaudière gaz vs pompe à chaleur : comparatif complet 2026 | mot_cle='chaudière gaz pompe à chaleur comparaison'
+      https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-1119/
+    - 2026-08-11 03:09:27.880835+00:00 | Radiateur électrique vs pompe à chaleur : comparatif 2026 | mot_cle='radiateur électrique vs pompe à chaleur'
+      https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/radiateur-electrique-vs-pompe-chaleur-comparatif/
+
