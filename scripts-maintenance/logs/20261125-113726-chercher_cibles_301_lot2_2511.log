@@ -1,0 +1,102 @@
+# Execution du 2026-11-25T11:37:26Z
+# Script    : scripts-maintenance/chercher_cibles_301_lot2_2511.py
+# Arguments : 
+
+====================================================================================================
+1. LISTE DES PAGES STATIQUES DU SITE (pour confirmer l'URL mentions legales)
+====================================================================================================
+13 page(s) publiee(s) :
+  - slug='simulateur-aides-renovation-energetique' | Simulateur d&rsquo;aides à la rénovation énergétique | https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/
+  - slug='enedis-callback' | Callback Enedis | https://www.comprendre-mon-energie.fr/enedis-callback/
+  - slug='devis-panneau-solaire' | Devis panneaux solaires | https://www.comprendre-mon-energie.fr/devis-panneau-solaire/
+  - slug='comparateur-energie-electricite-gaz' | Comparateur d&rsquo;énergie électricité et gaz | https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+  - slug='politique-de-cookies-ue' | Politique de cookies (UE) | https://www.comprendre-mon-energie.fr/politique-de-cookies-ue/
+  - slug='calculateur-deconomies-heures-creuses' | Calculateur d&rsquo;économies Heures Creuses : Est-ce rentable pour vous ? | https://www.comprendre-mon-energie.fr/calculateur-deconomies-heures-creuses/
+  - slug='plan-du-site' | Comprendre Mon Énergie : Plan du site | https://www.comprendre-mon-energie.fr/plan-du-site/
+  - slug='contact' | À propos de nous | Contact | Comprendre Mon Énergie &#8211; Guide Expert Indépendant | https://www.comprendre-mon-energie.fr/contact/
+  - slug='demande-confirmee' | Demande confirmée ✅ | https://www.comprendre-mon-energie.fr/demande-confirmee/
+  - slug='cadre-legal-et-confidentialite' | Politique de confidentialité (RGPD) | https://www.comprendre-mon-energie.fr/cadre-legal-et-confidentialite/
+  - slug='pourquoi-nous-faire-confiance' | Comprendre Mon Énergie : Pourquoi nous faire confiance ? | https://www.comprendre-mon-energie.fr/pourquoi-nous-faire-confiance/
+  - slug='comparatif-electricite' | Comprendre Mon Énergie | https://www.comprendre-mon-energie.fr/
+  - slug='contactez-un-expert' | Comprendre Mon Énergie : Contactez un expert | https://www.comprendre-mon-energie.fr/contactez-un-expert/
+
+====================================================================================================
+2. RECHERCHE DE CANDIDATS DE REDIRECTION PAR MOT-CLE (articles vivants)
+====================================================================================================
+
+### Pour : tarif-bleu-edf-vs-autres-fournisseurs  (recherche : 'tarif bleu EDF')
+    - 2026-11-23 | Aides facture gaz 2026 : liste complète des allocations | https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-allocations-demander/
+    - 2026-11-20 | CEE chauffe-eau solaire 2026 : cumul MaPrimeRénov&rsquo; et certificat d&rsquo;économies d&rsquo;énergie | https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026-1120/
+    - 2026-11-19 | Grille de lecture des offres électricité : décoder | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comparaison-contrats-electricite-offres-criteres/
+    - 2026-11-18 | Facture électricité : template vierge à annoter soi-même | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comment-lire-facture-electricite-guide-1118/
+    - 2026-11-18 | Pompe à chaleur : budget total propriétaire 2026 (achat + aides) | https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/cout-pompe-chaleur-devis-installation-aides/
+
+### Pour : tarif-bleu-edf-vs-autres-fournisseurs (bis)  (recherche : 'tarif reglemente electricite')
+    - 2026-11-23 | Heures creuses électricité : calculer votre économie réelle | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/heures-creuses-economies-facture/
+    - 2026-11-23 | Mise en service électricité : étapes administratives | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/delai-mise-en-service-electricite/
+    - 2026-11-20 | Changer de fournisseur électricité : simulateur de réelles économies possibles | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-facture-electricite-fournisseurs-tarifs/
+    - 2026-11-20 | Changer de fournisseur électricité : guide complet des démarches administratives | https://www.comprendre-mon-energie.fr/electricite/demenagement/changement-fournisseur-electricite-demarches/
+    - 2026-11-20 | Changer de fournisseur électricité : calculer vraiment vos économies (pas les promesses marketing) | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-demarches-economies/
+
+### Pour : prime-energie-cee-comment-ca-marche  (recherche : 'CEE certificat economie energie')
+    - 2026-11-23 | Panneaux solaires monocristallins vs polycristallins | https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1123/
+    - 2026-11-23 | Chauffe-eau solaire : guide complet d&rsquo;installation | https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-budget/
+    - 2026-11-23 | MaPrimeRénov&rsquo; refusée : recours et contestation auprès de l&rsquo;administration | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-refusee-causes-recours/
+    - 2026-11-23 | CEE isolation : conditions d&rsquo;éligibilité et montants | https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/cee-isolation-cumul-maprimerenov/
+    - 2026-11-23 | Aides déménagement gaz pour propriétaires : conditions et montants | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz-reductions/
+
+### Pour : prime-energie-cee-comment-ca-marche (bis)  (recherche : 'prime energie')
+    - 2026-11-23 | Mise en service électricité : étapes administratives | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/delai-mise-en-service-electricite/
+    - 2026-11-23 | Pompe à chaleur air-air : schéma de fonctionnement et cycle thermodynamique | https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/pompe-chaleur-air-air-fonctionnement/
+    - 2026-11-23 | Panneaux solaires monocristallins vs polycristallins | https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1123/
+    - 2026-11-23 | Kit solaire autonome vs raccordé : critères de décision | https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-vs-raccorde-1123/
+    - 2026-11-23 | Chauffe-eau solaire : guide complet d&rsquo;installation | https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-budget/
+
+### Pour : pourquoi-la-pompe-a-chaleur...  (recherche : 'pompe a chaleur solution chauffage')
+    - 2026-11-23 | Pompe à chaleur air-air : schéma de fonctionnement et cycle thermodynamique | https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/pompe-chaleur-air-air-fonctionnement/
+    - 2026-11-23 | Chauffe-eau solaire seul : vraiment suffisant pour chauffer | https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/systeme-solaire-combine-vs-chauffe-eau-solaire-1123/
+    - 2026-11-23 | Kit solaire autonome vs raccordé : critères de décision | https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-vs-raccorde-1123/
+    - 2026-11-23 | MaPrimeRénov&rsquo; refusée : recours et contestation auprès de l&rsquo;administration | https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-refusee-causes-recours/
+    - 2026-11-23 | Pompe à chaleur air-air : checklist de préparation et devis | https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/installation-pompe-a-chaleur-etapes-duree/
+
+### Pour : comprendre-ma-facture-delectricite  (recherche : 'comprendre facture electricite')
+    - 2026-11-23 | Heures creuses électricité : calculer votre économie réelle | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/heures-creuses-economies-facture/
+    - 2026-11-23 | Électricité déménagement : guide pratique étape par étape | https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist-avant-apres/
+    - 2026-11-23 | Mise en service électricité : étapes administratives | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/delai-mise-en-service-electricite/
+    - 2026-11-23 | Linky : données transmises, fréquence de relevé | https://www.comprendre-mon-energie.fr/electricite/compteur/linky-fonctionnement-compteur-communicant/
+    - 2026-11-23 | Pompe à chaleur air-air : schéma de fonctionnement et cycle thermodynamique | https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/pompe-chaleur-air-air-fonctionnement/
+
+### Pour : comprendre-tarif-de-base-electricite  (recherche : 'tarif de base electricite')
+    - 2026-11-23 | Heures creuses électricité : calculer votre économie réelle | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/heures-creuses-economies-facture/
+    - 2026-11-23 | Électricité déménagement : guide pratique étape par étape | https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist-avant-apres/
+    - 2026-11-23 | Mise en service électricité : étapes administratives | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/delai-mise-en-service-electricite/
+    - 2026-11-23 | Linky : données transmises, fréquence de relevé | https://www.comprendre-mon-energie.fr/electricite/compteur/linky-fonctionnement-compteur-communicant/
+    - 2026-11-23 | Pompe à chaleur air-air : schéma de fonctionnement et cycle thermodynamique | https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/pompe-chaleur-air-air-fonctionnement/
+
+### Pour : ohm-energie  (recherche : 'Ohm Energie')
+    - 2026-11-23 | Chèque énergie : montants et délais de remboursement | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseur-1123/
+    - 2026-11-20 | Branchement radiateur électrique : norme électrique et sécurité | https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-radiateur-electrique-branchement/
+    - 2026-11-20 | Chèque énergie : les erreurs de présentation qui font rejeter votre demande | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-factures/
+    - 2026-11-19 | Chèque énergie : usages interdits et cas de refus | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/ch-que-nergie-utilisation-fournisseur/
+    - 2026-11-11 | Chèque énergie : paiement en ligne, délais et plateformes | https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-utiliser-en-ligne/
+
+### Pour : les-prix-de-kwh  (recherche : 'prix du kwh electricite')
+    - 2026-11-23 | Heures creuses électricité : calculer votre économie réelle | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/heures-creuses-economies-facture/
+    - 2026-11-23 | Mise en service électricité : étapes administratives | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/delai-mise-en-service-electricite/
+    - 2026-11-23 | Panneaux solaires monocristallins vs polycristallins | https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1123/
+    - 2026-11-23 | Kit solaire autonome vs raccordé : critères de décision | https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-vs-raccorde-1123/
+    - 2026-11-23 | Aides déménagement gaz pour propriétaires : conditions et montants | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz-reductions/
+
+### Pour : economies-denergie-le-guide-pratique...  (recherche : 'guide economies energie reduire facture')
+    - 2026-11-23 | Heures creuses électricité : calculer votre économie réelle | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/heures-creuses-economies-facture/
+    - 2026-11-23 | Mise en service électricité : étapes administratives | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/delai-mise-en-service-electricite/
+    - 2026-11-23 | Kit solaire autonome vs raccordé : critères de décision | https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-vs-raccorde-1123/
+    - 2026-11-23 | Aides facture gaz 2026 : liste complète des allocations | https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-allocations-demander/
+    - 2026-11-23 | Aides déménagement gaz pour propriétaires : conditions et montants | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz-reductions/
+
+### Pour : reduire-vos-factures-delectricte  (recherche : 'reduire facture electricite')
+    - 2026-11-23 | Heures creuses électricité : calculer votre économie réelle | https://www.comprendre-mon-energie.fr/electricite/facture-electricite/heures-creuses-economies-facture/
+    - 2026-11-23 | Mise en service électricité : étapes administratives | https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/delai-mise-en-service-electricite/
+    - 2026-11-23 | Kit solaire autonome vs raccordé : critères de décision | https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-vs-raccorde-1123/
+    - 2026-11-23 | Aides déménagement gaz pour propriétaires : conditions et montants | https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/aides-demenagement-gaz-reductions/
+    - 2026-11-20 | Changer de fournisseur électricité : guide complet des démarches administratives | https://www.comprendre-mon-energie.fr/electricite/demenagement/changement-fournisseur-electricite-demarches/
