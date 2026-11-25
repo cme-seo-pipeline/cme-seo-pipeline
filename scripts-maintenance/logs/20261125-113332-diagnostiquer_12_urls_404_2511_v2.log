@@ -1,0 +1,219 @@
+# Execution du 2026-11-25T11:33:32Z
+# Script    : scripts-maintenance/diagnostiquer_12_urls_404_2511_v2.py
+# Arguments : 
+
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/api_core/_python_version_support.py:273: FutureWarning: You are using a Python version (3.11.18) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/google/cloud/bigquery/table.py:1727: UserWarning: BigQuery Storage module not found, fetch data with the REST endpoint instead.
+  warnings.warn(
+==============================================================================================================
+ETAPE 1-5 : statut live, historique_publications, statuts WP (posts ET pages), GSC, wp_url_mapping
+==============================================================================================================
+
+### https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-bleu-edf-vs-autres-fournisseurs/
+    slug = 'tarif-bleu-edf-vs-autres-fournisseurs'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/uncategorized/compteur-gaz-intelligent-linky-fonctionnement/
+    slug = 'compteur-gaz-intelligent-linky-fonctionnement'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/uncategorized/prime-energie-cee-comment-ca-marche/
+    slug = 'prime-energie-cee-comment-ca-marche'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/comprendre-mon-energie-mentions-legales/
+    slug = 'comprendre-mon-energie-mentions-legales'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/pourquoi-la-pompe-a-chaleur-est-elle-la-solution-de-chauffage-preferee-des-francais-en-2026/
+    slug = 'pourquoi-la-pompe-a-chaleur-est-elle-la-solution-de-chauffage-preferee-des-francais-en-2026'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/comprendre-ma-facture-delectricite/
+    slug = 'comprendre-ma-facture-delectricite'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/comprendre-tarif-de-base-electricite/
+    slug = 'comprendre-tarif-de-base-electricite'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/ohm-energie/
+    slug = 'ohm-energie'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/les-prix-de-kwh/
+    slug = 'les-prix-de-kwh'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/economies-denergie-le-guide-pratique-pour-reduire-vos-facture-en-2026/
+    slug = 'economies-denergie-le-guide-pratique-pour-reduire-vos-facture-en-2026'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/choisir-votre-accompagnement/
+    slug = 'choisir-votre-accompagnement'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+### https://www.comprendre-mon-energie.fr/reduire-vos-factures-delectricte/
+    slug = 'reduire-vos-factures-delectricte'
+    HTTP live : 404
+    historique_publications : AUCUNE ligne pour ce slug
+    Recherche WP /posts par slug (tous statuts) : AUCUN(e) post, meme en corbeille/brouillon
+    Recherche WP /pages par slug (tous statuts) : AUCUN(e) page, meme en corbeille/brouillon
+    01_raw.gsc_queries : AUCUNE ligne (meme partielle/LIKE) pour ce slug
+    02_cleaned.wp_url_mapping : AUCUNE ligne pour ce slug
+
+==============================================================================================================
+ETAPE 6 : sitemaps XML live (tous les sous-sitemaps, posts et pages)
+==============================================================================================================
+  sitemap_index.xml -> HTTP 200, 8 sous-sitemap(s)
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-bleu-edf-vs-autres-fournisseurs/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/uncategorized/compteur-gaz-intelligent-linky-fonctionnement/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/uncategorized/prime-energie-cee-comment-ca-marche/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/comprendre-mon-energie-mentions-legales/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/pourquoi-la-pompe-a-chaleur-est-elle-la-solution-de-chauffage-preferee-des-francais-en-2026/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/comprendre-ma-facture-delectricite/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/comprendre-tarif-de-base-electricite/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/ohm-energie/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/les-prix-de-kwh/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/economies-denergie-le-guide-pratique-pour-reduire-vos-facture-en-2026/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/choisir-votre-accompagnement/
+    absent dans un sitemap : https://www.comprendre-mon-energie.fr/reduire-vos-factures-delectricte/
+
+==============================================================================================================
+ETAPE 7 : scan EXHAUSTIF du maillage interne (TOUS les posts ET TOUTES les pages publies)
+==============================================================================================================
+Recuperation de tous les posts publies (contenu complet)...
+1154 post(s) recupere(s).
+Recuperation de toutes les pages publiees (contenu complet)...
+13 page(s) recuperee(s).
+
+
+https://www.comprendre-mon-energie.fr/electricite/facture-electricite/tarif-bleu-edf-vs-autres-fournisseurs/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/uncategorized/compteur-gaz-intelligent-linky-fonctionnement/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/uncategorized/prime-energie-cee-comment-ca-marche/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/comprendre-mon-energie-mentions-legales/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/pourquoi-la-pompe-a-chaleur-est-elle-la-solution-de-chauffage-preferee-des-francais-en-2026/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/comprendre-ma-facture-delectricite/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/comprendre-tarif-de-base-electricite/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/ohm-energie/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/les-prix-de-kwh/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/economies-denergie-le-guide-pratique-pour-reduire-vos-facture-en-2026/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/choisir-votre-accompagnement/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+https://www.comprendre-mon-energie.fr/reduire-vos-factures-delectricte/ : aucun lien interne trouve (dans 1154 posts + 13 pages)
+
+==============================================================================================================
+TOTAL : 0 lien(s) interne(s) trouve(s) vers les 12 URLs, sur 1154 posts + 13 pages scannes.
+==============================================================================================================
