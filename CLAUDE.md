@@ -4403,3 +4403,39 @@ refaire tourner `diagnostiquer_audit_ahrefs_2611.py` une fois ce clic
 effectué, pour confirmer si ça suffit ou si le trou de 349/272 a une
 cause plus profonde (ex. une limite de pagination RankMath qui ne se
 réajuste pas correctement à la hausse de volume de publication).
+
+### Résolu — "Enregistrer les modifications" sur RankMath a suffi (26/11/2026, suite)
+
+L'opérateur a cliqué "Enregistrer les modifications" sur Réglages
+RankMath → Sitemaps → Général (sans rien changer). Rejoué le même
+diagnostic aussitôt après : **chiffres passés de 858/272/349 à
+1193/0/14** —
+- URLs uniques en sitemap : 858 → **1193** (vs 1167 contenus indexables
+  réels — l'écart de +26 vient de la pagination recalculée des 8
+  sous-sitemaps qui se chevauche légèrement moins strictement, sans
+  conséquence).
+- URLs en double : 272 → **0**.
+- Indexable absent du sitemap : 349 → **14**.
+
+**Confirme l'hypothèse** : c'était bien le cache interne de RankMath
+(pas LiteSpeed) qui gelait une pagination de sitemap obsolète — un
+simple "Enregistrer" (sans changement de valeur) force RankMath à
+reconstruire son cache de sitemap, LiteSpeed n'y est pour rien dans ce
+cas précis.
+
+**Les 14 URLs encore absentes sont d'une tout autre nature que les 349
+précédentes** — majoritairement des pages structurellement exclues par
+design d'un sitemap (noindex/pages utilitaires), pas un vrai trou :
+`cadre-legal-et-confidentialite`, `politique-de-cookies-ue`,
+`plan-du-site`, `demande-confirmee`, `contactez-un-expert`,
+`calculateur-deconomies-heures-creuses`, `pourquoi-nous-faire-confiance`
+(7 pages) + 7 articles isolés (`cheque-energie-2026`,
+`aide-etat-thermostat-connecte`, `attestation-de-contrat-delectricite`
+— la page pilier au double-URL déjà documentée le 12/11,
+`comprendre-sa-facture-delectricite`, `reduire-sa-facture-delectricite`,
+`tarif-de-base`, `guide-chauffage-gaz`). Volume largement gérable,
+priorité basse comparée au trou de 349 déjà résolu — à investiguer
+seulement si l'opérateur le demande (probablement des réglages
+RankMath "exclure du sitemap" par article/page, pas un bug du pipeline).
+
+**Chantier sitemap principal clos.**
