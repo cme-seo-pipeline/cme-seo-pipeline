@@ -4374,3 +4374,32 @@ creusé.
 une action cPanel/wp-admin pure (purge de cache + régénération sitemap),
 hors de portée d'exécution directe depuis ce sandbox, comme les autres
 actions serveur de ce projet.
+
+### Purge LiteSpeed seule insuffisante — le cache interne de RankMath est une 3e couche distincte (26/11/2026, suite)
+
+L'opérateur a purgé les deux couches LiteSpeed habituelles (cPanel +
+wp-admin, voir section "Cache — deux couches distinctes à purger") puis
+demandé une revérification. **Rejoué le même diagnostic
+(`diagnostiquer_audit_ahrefs_2611.py`, aucune modification du script)** :
+chiffres **strictement identiques** à avant la purge — 858 URLs uniques,
+272 en double, 349 manquantes. **La purge LiteSpeed seule n'a rien changé
+— l'hypothèse "cache LiteSpeed sur les fichiers de sitemap" du diagnostic
+initial est donc écartée comme cause unique**, ou au minimum insuffisante
+à elle seule.
+
+**Nouvelle hypothèse, plus probable** : RankMath a son **propre cache
+interne de sitemap** (indépendant de LiteSpeed, stocké côté base de
+données) — la purge LiteSpeed ne le vide pas. Capture d'écran opérateur
+de Réglages RankMath → Sitemaps → Général (confirmant au passage "Liens
+par plan de site" = 202, cohérent avec les tailles réelles des
+sous-sitemaps mesurées : post-sitemap1=201, 2/3/4=202 chacun) : pas de
+bouton "regénérer" explicite sur cet écran — normal, RankMath génère ses
+sitemaps à la demande plutôt qu'en fichiers statiques à rebuilder.
+Recommandation donnée à l'opérateur : cliquer "Enregistrer les
+modifications" sur cet onglet (même sans rien changer) pour forcer
+RankMath à invalider son propre cache de sitemap, en plus de la purge
+LiteSpeed déjà faite. **Pas encore revérifié après cette action** — à
+refaire tourner `diagnostiquer_audit_ahrefs_2611.py` une fois ce clic
+effectué, pour confirmer si ça suffit ou si le trou de 349/272 a une
+cause plus profonde (ex. une limite de pagination RankMath qui ne se
+réajuste pas correctement à la hausse de volume de publication).
