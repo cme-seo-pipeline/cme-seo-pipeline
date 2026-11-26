@@ -4281,3 +4281,96 @@ utilisable avec l'authentification Application Password). **Aucune
 action corrective de code nécessaire** — comme pour le 1er lot, aucun
 lien interne vivant ne pointe vers ces 12 URLs aujourd'hui, donc aucun
 risque UX actif sur du contenu publié.
+
+## Audit Ahrefs du 21/11/2026 — sitemap cassé : 349 articles manquants, 272 en double (26/11/2026)
+
+Opérateur partage un export PDF (vue d'ensemble uniquement, pas de détail
+par URL) du Site Audit Ahrefs du 21/11/2026 (comparaison avec le 14/11) :
+Health Score 88, 508 erreurs/222 avertissements/2228 notices. Demande :
+corriger ce qui est prioritaire. Premier usage d'Ahrefs documenté dans ce
+projet — aucun accès API/credentials Ahrefs disponible depuis ce sandbox,
+donc diagnostic reconstruit à partir de nos propres sources (sitemap XML
+live + API REST WP publique), même méthodologie que les audits 404
+précédents, plutôt que de deviner à partir de la vue d'ensemble seule.
+
+`scripts-maintenance/diagnostiquer_audit_ahrefs_2611.py` (lecture seule,
+pont GitHub Actions, aucune authentification nécessaire — endpoints
+publics) : récupère les 8 sous-sitemaps, la liste complète des 1154 posts
++ 13 pages publiés (API REST), et croise les deux ensembles.
+
+**Constat principal, cohérent avec 2 des plus gros écarts de la vue
+d'ensemble Ahrefs ("Indexable page not in sitemap" 506, "Page in multiple
+sitemaps" 244)** :
+- **858 URLs uniques** dans l'ensemble des sitemaps, pour **1167 contenus
+  indexables réels** (1154 posts + 13 pages) → **349 articles publiés et
+  indexables sont absents de tout sous-sitemap** (`post-sitemap1.xml` à
+  `post-sitemap6.xml`, `page-sitemap.xml`, `category-sitemap.xml`).
+  Échantillon : des articles très récents comme des articles vieux de
+  plusieurs mois (`...-2024`, `...-2025` dans certains slugs) — exclut
+  l'hypothèse d'un simple délai de propagation pour les seules nouvelles
+  publications, signe d'un vrai trou structurel plutôt qu'un retard de
+  rafraîchissement.
+- **272 URLs apparaissent dans plus d'un sous-sitemap** à la fois (le
+  plus souvent 2 `post-sitemapN.xml` consécutifs, parfois 3) — jamais une
+  page/catégorie, toujours des articles.
+- Les deux chiffres (349 vs 506, 272 vs 244 côté Ahrefs) sont du même
+  ordre de grandeur sans être identiques — écart probablement dû à la
+  date du crawl Ahrefs (21/11, vs ce diagnostic du 26/11) et/ou à une
+  définition légèrement différente de "indexable", pas une contradiction
+  de fond.
+
+**Hypothèse de root cause la plus probable** (cohérente avec les deux
+symptômes à la fois, et avec la hausse de volume documentée le 13/11 —
+quota passé de 14 à 20 articles/jour en une seule soirée) : le cache
+LiteSpeed sur les fichiers de sitemap (générés/mis en cache par RankMath,
+paginés par `post-sitemapN.xml`) ne suit pas le rythme de publication —
+une page de sitemap mise en cache à un instant T, puis jamais repurgée
+alors que de nouveaux articles décalent la pagination réelle, explique à
+la fois des articles qui "tombent dans le trou" entre deux pages (jamais
+réintégrés) et des articles qui se retrouvent dans deux pages à la fois
+(une ancienne version du cache et une plus récente se chevauchant). Même
+famille de piège que documenté ailleurs dans ce fichier pour le cache
+LiteSpeed sur le contenu (section "Cache — deux couches distinctes à
+purger") — jamais vérifié spécifiquement sur les sitemaps jusqu'ici.
+**Non confirmée avec certitude depuis ce sandbox** (pas d'accès wp-admin/
+RankMath pour inspecter la configuration ou l'état du cache) — hypothèse
+la plus cohérente avec les données, pas une preuve directe.
+
+**Action recommandée, priorité n°1** : action manuelle opérateur —
+purger le cache LiteSpeed (cPanel **et** wp-admin, les deux couches
+habituelles) puis forcer une régénération du sitemap côté RankMath
+(Réglages RankMath → Sitemaps, ou simplement republier/mettre à jour un
+article pour déclencher un rebuild), puis revérifier
+`sitemap_index.xml?t=$RANDOM` : le total d'URLs uniques dans les
+sous-sitemaps devrait remonter de 858 à ~1167. Impact SEO potentiel réel
+(pas cosmétique) : un sitemap incomplet ralentit la découverte/le
+recrawl de 30% du contenu publié, dans un contexte où ce projet vise
+justement à renforcer la visibilité organique (cf. tous les chantiers
+cannibalisation/indexation déjà documentés).
+
+**Faux positif de CE diagnostic, à ignorer — ne pas confondre avec le
+"3XX redirect in sitemap" (4 URLs) d'Ahrefs** : la 5e étape du script
+(vérification HTTP de chaque URL de sitemap pour détecter des 3xx) a
+renvoyé 857 "redirections" sur 858 — bug du script, pas un vrai problème
+du site : les URLs avaient été normalisées sans slash final (`rstrip("/")`)
+pour la comparaison d'ensembles, puis réutilisées telles quelles pour la
+requête HTTP — WordPress redirige legitimement et normalement toute URL
+sans slash final vers sa version avec slash final (comportement standard,
+pas un défaut). Les 4 URLs réelles identifiées par Ahrefs restent donc
+non vérifiées par ce sandbox (pas de détail par URL dans le PDF reçu) —
+volume faible (4), priorité basse par rapport au point précédent.
+
+**Pas encore investigué** (nécessiterait un nouveau diagnostic si
+l'opérateur veut prioriser aussi ce point) : "Page has links to redirect"
+(81 pages selon Ahrefs, +7 nouvelles depuis le 14/11) — proche en esprit
+de `auditer_liens_internes.py` (audit hebdomadaire déjà en place), pourrait
+être rapproché d'un déclenchement manuel de ce workflow plutôt que
+d'écrire un nouveau script, si confirmé prioritaire par l'opérateur.
+"Slow page"/"Slow server response for AI crawlers" (performance/TTFB) :
+hors du périmètre de ce pipeline (probablement hébergement/cPanel), non
+creusé.
+
+**Aucune correction de code nécessaire** pour le point principal — c'est
+une action cPanel/wp-admin pure (purge de cache + régénération sitemap),
+hors de portée d'exécution directe depuis ce sandbox, comme les autres
+actions serveur de ce projet.
