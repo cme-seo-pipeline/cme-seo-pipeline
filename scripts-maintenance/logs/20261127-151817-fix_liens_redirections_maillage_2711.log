@@ -1,0 +1,12 @@
+# Execution du 2026-11-27T15:18:17Z
+# Script    : scripts-maintenance/fix_liens_redirections_maillage_2711.py
+# Arguments : 
+
+Table chargee : 112 entree(s) (avec variantes sans slash final).
+Recuperation de tous les articles publies (contenu brut, ?context=edit)...
+1154 article(s) recupere(s).
+
+
+====================================================================================================
+TOTAL : 0 article(s) traite(s), 0 lien(s) detecte(s) (dry-run).
+====================================================================================================
