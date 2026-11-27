@@ -4492,8 +4492,115 @@ liens corrigés, 0 erreur sur l'ensemble**. Dry-run final de vérification :
 `0 article(s) traité(s), 0 lien(s) détecté(s)` — plus aucun lien interne
 ne pointe vers une redirection. Chantier clos.
 
-**Pas encore investigué** (comme noté le 26/11) : "Slow page"/"Slow
-server response for AI crawlers" (performance/TTFB, hors périmètre de ce
-pipeline) et "3XX redirect in sitemap" (4 URLs, probablement déjà réglé
-par le fix RankMath du 26/11, pas revérifié spécifiquement) — à reprendre
-si l'opérateur le demande.
+**Pas encore investigué** (comme noté le 26/11) : "3XX redirect in
+sitemap" (4 URLs, probablement déjà réglé par le fix RankMath du 26/11,
+pas revérifié spécifiquement) — à reprendre si l'opérateur le demande.
+
+## "Slow page" / "Slow server response for AI crawlers" — cause confirmée, cPanel/LiteSpeed pas code (27/11/2026)
+
+Demande opérateur : cartographier comment corriger ce chantier Ahrefs (33
+pages "Slow page" + 1 "Slow server response for AI crawlers"), avec
+risque et étapes pas à pas, avant toute action.
+
+**Méthodologie** (lecture seule, pont GitHub Actions, même contrainte que
+d'habitude — sandbox sans accès direct au site live) : deux diagnostics
+plutôt qu'une hypothèse devinée.
+- `scripts-maintenance/diagnostiquer_lenteur_pages_2711.py` : échantillon
+  stratifié de 103 URLs (articles par quintile d'ancienneté, 13 pages
+  statiques, 40 archives de catégorie, l'accueil), chacune interrogée en
+  mode stream (mesure du temps jusqu'aux entêtes, proxy standard de TTFB)
+  avec un UA navigateur ET un UA GPTBot (crawler IA le plus répandu) —
+  pour tester directement l'hypothèse "le serveur traite différemment un
+  crawler IA identifié".
+- `scripts-maintenance/diagnostiquer_lenteur_pages_rechauffe_2711.py` :
+  les 16 pages les plus lentes du 1er diagnostic, chacune réinterrogée
+  **3 fois de suite** (même UA) — pour voir si un cache de page finit par
+  s'activer au 2e/3e hit.
+
+**Résultats, deux constats qui écartent les hypothèses initiales et en
+confirment une troisième** :
+1. **Pas un sous-ensemble de pages lentes — un plancher uniforme sur
+   TOUT le site** : médiane 959ms, P90 1141ms, et même la page la plus
+   "rapide" de tout l'échantillon (103 URLs, tous types confondus)
+   répond en 847ms. Aucune page, même statique/légère, ne descend sous
+   ~850ms.
+2. **Aucun entête de cache détecté, jamais, sur aucune des 103+16 URLs,
+   même au 3e hit consécutif sur la même URL** (`x-litespeed-cache`,
+   `age`, `cache-control`... — recherchés explicitement, zéro match,
+   seul `server: o2switch-PowerBoost-v3` est systématiquement présent).
+   Le rechauffe-cache (3 hits successifs, même URL, ~1.5s d'écart) ne
+   fait descendre aucune des 16 URLs testées sous ~900ms — exactement le
+   même plancher qu'au 1er hit. **Conclusion directe : le cache de page
+   ne sert JAMAIS ces URLs, quel que soit le nombre de requêtes** — à
+   l'opposé d'un vrai cache LiteSpeed actif, où un 2e hit immédiat
+   tomberait normalement à 50-200ms avec `x-litespeed-cache: hit`.
+3. **Hypothèse "crawler IA pénalisé" écartée par les données** : écart
+   moyen (crawler GPTBot − navigateur normal) sur les 103 paires = **-33ms**
+   (le crawler est en moyenne legèrement plus *rapide*, pas plus lent) —
+   aucun signe d'un traitement différencié/ralenti pour un UA de crawler
+   IA identifié. L'item Ahrefs "Slow server response for AI crawlers" (1
+   seule URL) est très probablement un simple échantillon ponctuel du
+   même phénomène général (page jamais servie du cache), pas un
+   mécanisme distinct de blocage/throttling de bots.
+4. **Pipeline et mu-plugins de CE repo innocentés par grep exhaustif**
+   (`setcookie`/`session_start`/`nocache_headers`/`header(...Cache-Control...)`
+   sur les 3 mu-plugins : `cme-cta-progressifs.php`,
+   `cme-tracking-conversion.php`, `cme-header-tel-style.php`) : **zéro
+   occurrence** — aucun ne force de cookie ni de no-cache sur quoi que
+   ce soit. La cause n'est donc pas dans le code de ce repo.
+
+**Conclusion** : ceci n'est **pas un problème de code du pipeline** (à la
+différence de tous les autres chantiers Ahrefs traités jusqu'ici) — c'est
+une configuration de cache serveur qui ne s'applique jamais, sur
+l'hébergement o2switch (plan "PowerBoost", confirmé par l'entête
+`server`). Rien n'est automatisable depuis ce sandbox pour ce chantier
+précis (ni code à corriger, ni route API/ajax à appeler — même limite
+déjà documentée pour RankMath Redirections : aucun accès cPanel/wp-admin
+authentifié depuis ici).
+
+**Hypothèses par ordre de probabilité, à vérifier côté opérateur** :
+- (a) **Le plugin LiteSpeed Cache (wp-admin) a le cache de page désactivé**
+  pour les visiteurs publics (`Cache` → `Enable Cache` pas sur `ON`), ou
+  une règle "Do Not Cache" (URI/Cookie/User-Agent) couvre tout le site
+  sans que ce soit voulu.
+- (b) **Le module LiteSpeed Cache cPanel (niveau serveur, couche DISTINCTE
+  du plugin wp-admin — voir plus haut "Cache — deux couches distinctes à
+  purger") n'est pas activé pour ce domaine** : même si le plugin
+  wp-admin pose les bonnes règles, rien ne les applique réellement côté
+  serveur sans ce module actif — hypothèse la plus cohérente avec "zéro
+  entête de cache même au 3e hit immédiat".
+- (c) **Un plugin tiers (hors de ce repo — sécurité, WPForms, etc.) force
+  un cookie/une session sur chaque visite**, rendant toute page "privée"
+  aux yeux de LiteSpeed (comportement standard : LiteSpeed ne met jamais
+  en cache une requête porteuse d'un cookie de session) — pas vérifiable
+  depuis ce sandbox (pas d'accès à la liste des plugins actifs ni à leur
+  code, contrairement aux mu-plugins qui vivent dans ce repo).
+
+**Étapes recommandées, toutes côté opérateur (cPanel + wp-admin)** :
+1. cPanel → LiteSpeed Cache Manager : confirmer que le cache est bien
+   **activé** pour `comprendre-mon-energie.fr` (pas seulement installé/
+   disponible sur l'hébergement).
+2. wp-admin → LiteSpeed Cache → Cache → Réglages : confirmer
+   `Enable Cache` = ON pour les visiteurs publics, et vérifier l'onglet
+   "Exclude" (URI/Cookie/User-Agent) pour une règle trop large.
+3. Revérifier avec un `curl -sI "<url>" | grep -i x-litespeed-cache` (ou
+   relancer `diagnostiquer_lenteur_pages_rechauffe_2711.py` via le pont) :
+   un 2e hit qui tombe vers ~100-250ms ET un entête
+   `x-litespeed-cache: hit` confirment que le cache fonctionne enfin.
+4. Si toujours aucun cache après (1) et (2) : lister les plugins actifs
+   (wp-admin → Extensions) et chercher lequel pourrait poser un cookie à
+   chaque visite (hypothèse c) — en dehors du périmètre de ce repo, donc
+   à investiguer directement en wp-admin.
+
+**Risque** : le diagnostic lui-même est à risque nul (lecture seule, GET
+publics, mêmes caractéristiques que tous les autres audits de ce projet).
+La remédiation est une action de configuration cPanel/wp-admin, pas un
+déploiement de code — risque faible et déjà connu : activer/modifier le
+cache peut servir du contenu périmé quelques minutes après une mise à
+jour d'article, exactement le risque déjà couvert par le rituel existant
+"purger les 2 caches LiteSpeed" (cPanel + wp-admin) après toute
+correction de contenu en masse.
+
+**Pas encore fait** — aucune action de configuration prise depuis ce
+sandbox (impossible, pas d'accès cPanel/wp-admin) : diagnostic et plan
+uniquement, en attente d'une vérification/action opérateur.
