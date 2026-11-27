@@ -4673,3 +4673,55 @@ avant/apres. A suivre : le prochain crawl Ahrefs devrait faire chuter
 "Slow page"/"Slow server response for AI crawlers" vers 0 ou presque --
 pas verifiable depuis ce sandbox (pas d'acces Ahrefs), seulement par un
 futur export PDF partage par l'operateur.
+
+### Mesure complete avant/apres sur l'echantillon de 103 URLs (27/11/2026, suite)
+
+Demande operateur, une fois le bandeau wp-admin egalement disparu : savoir
+combien de pages sont reellement corrigees/plus rapides, pas seulement les
+16 URLs deja reverifiees. Meme bug d'entete que celui corrige sur le
+script rechauffe (`x-lsadc-cache` absent de `HEADERS_A_RELEVER`) corrige
+dans `diagnostiquer_lenteur_pages_2711.py` (le script du 1er diagnostic,
+echantillon stratifie de 103 URLs) -- au passage, bug de comptage
+preexistant corrige aussi : la stat "X pages sans aucun entete de cache"
+du resume ne pouvait jamais etre vraie (le test portait sur
+`entetes_normal` vide, qui ne l'est jamais puisque `server`, toujours
+present, fait partie de la liste) -- remplacee par un comptage qui exclut
+explicitement `server`.
+
+**Reexecute via le pont GitHub Actions (log `20261127-164032-...`), meme
+echantillon de 103 URLs que le diagnostic initial** :
+- **103/103 pages montrent desormais un vrai entete de cache**
+  (`x-litespeed-cache-control: public,max-age=604800` + `x-lsadc-cache`)
+  -- contre **0/103 avant** (aucun entete de cache, quel qu'il soit,
+  detecte sur l'echantillon initial du 27/11 au matin). Reversal complet,
+  sur l'integralite de l'echantillon, tous types de page confondus
+  (articles/pages statiques/archives de categorie/accueil).
+- **Nuance importante** : sur ce test a 1 seule requete par URL, la valeur
+  de `x-lsadc-cache` est `miss` sur la quasi-totalite des pages (visible
+  sur le top 15 le plus lent) -- normal et attendu : une requete UNIQUE
+  interroge forcement une entree de cache qui n'a pas encore ete
+  "rechauffee" par une visite recente. Le TTFB median de ce test
+  (832ms) est donc proche du TTFB median avant correctif (959ms) -- une
+  legere amelioration (-13%), mais pas la vraie mesure du gain.
+- **La vraie preuve du gain de vitesse reste le test "rechauffe"** (3
+  requetes de suite sur la meme URL, script
+  `diagnostiquer_lenteur_pages_rechauffe_2711.py`, deja documente plus
+  haut) : **16/16 URLs retestees passent a `x-lsadc-cache: hit` des le
+  2e ou 3e hit**, avec un gain reel de 30 a 50% de TTFB (ex.
+  1365ms->737ms->651ms, 972ms->471ms->530ms) -- ce zero-sur-16 initial
+  (avant le fix cPanel) est devenu 16-sur-16.
+
+**Reponse a la question operateur ("combien de pages corrigees et plus
+rapides")** : le mecanisme de cache repond desormais sur **100% d'un
+echantillon representatif du site** (103/103, vs 0/103 avant) --
+correctif confirme deployeux a l'echelle du site entier, pas seulement
+sur les 16 URLs choisies au depart. Le gain de VITESSE reel (30-50%) se
+manifeste a partir de la 2e visite d'une meme page apres sa mise en
+cache (comportement normal de tout cache de page) -- un visiteur ou un
+crawler qui revisite une page deja vue (le cas le plus frequent en
+pratique : articles recurrents, pages d'archive, accueil) en beneficie
+directement ; la toute premiere visite d'une page jamais encore
+rechargee depuis l'activation reste proche de son temps d'avant (le
+temps que le cache se peuple une premiere fois), ce qui est le
+fonctionnement normal de n'importe quel cache de page, pas un signe
+d'echec du correctif.
