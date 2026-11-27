@@ -4604,3 +4604,33 @@ correction de contenu en masse.
 **Pas encore fait** — aucune action de configuration prise depuis ce
 sandbox (impossible, pas d'accès cPanel/wp-admin) : diagnostic et plan
 uniquement, en attente d'une vérification/action opérateur.
+
+### Étape 1 (cPanel) appliquée — insuffisante à elle seule pour l'instant (27/11/2026)
+
+L'opérateur a activé "LiteSpeed Web ADC - LSCache" en cPanel pour les deux
+lignes `comprendre-mon-energie` (capture confirmée). **Reverifié
+immediatement après** (`diagnostiquer_lenteur_pages_rechauffe_2711.py`,
+pont GitHub Actions, log `20261127-161526-...`) : **aucun changement** —
+memes ~900-1300ms sur les 3 hits consecutifs des 16 URLs, toujours zero
+entete `x-litespeed-cache`. Coherent avec le bandeau rouge vu par
+l'operateur sur wp-admin → LiteSpeed Cache → Cache : *"Les fonctions de
+mise en cache de LSCache sur cette page sont actuellement indisponibles !
+Pour utiliser les fonctions de mise en cache, vous devez avoir un serveur
+web LiteSpeed ou utiliser un CDN QUIC.cloud."* — le plugin lui-meme
+confirme ne detecter aucun serveur LiteSpeed actif cote infra, malgre
+l'activation cPanel. Cote plugin, `Activer la mise en cache` est deja sur
+`Actif` — rien a changer la.
+
+**Hypothese** : propagation serveur pas encore terminee (l'activation
+cPanel bascule un reglage, mais le vrai service LiteSpeed/OpenLiteSpeed
+derriere peut necessiter un redemarrage/une validation cote infra qui ne
+suit pas forcement de maniere instantanee), ou cette activation cPanel
+n'est en realite pas suffisante pour ce plan d'hebergement (o2switch
+"PowerBoost") et une etape supplementaire cote hebergeur est necessaire.
+
+**Prochaine etape (operateur)** : attendre 10-15 min et recharger
+wp-admin → LiteSpeed Cache → Cache sans rien reconfigurer — si le
+bandeau rouge disparait de lui-meme, relancer le test de verification
+(meme script). Si le bandeau persiste au-dela de ce delai, contacter le
+support o2switch pour confirmer que LiteSpeed/LSCache est bien actif
+niveau serveur pour ce domaine precis.
