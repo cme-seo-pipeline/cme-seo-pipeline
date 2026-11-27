@@ -25,6 +25,8 @@ import argparse
 import os
 import sys
 
+from urllib.parse import urljoin
+
 from bs4 import BeautifulSoup
 import requests
 
@@ -134,8 +136,14 @@ def corriger_contenu(contenu_raw):
     details = []
     for a in soup.find_all("a", href=True):
         href = a["href"]
-        if href in REMPLACEMENTS:
-            cible = REMPLACEMENTS[href]
+        # Resout en absolu avant de comparer -- certains liens du contenu
+        # sont relatifs (ex. post_id=8340, "/aides-renovation-energetique"),
+        # alors que REMPLACEMENTS est toujours indexe en URL absolue (meme
+        # forme que le diagnostic, qui fait deja ce urljoin avant de
+        # regrouper). Sans ca, un lien relatif ne matcherait jamais.
+        href_absolu = urljoin(WP_URL + "/", href)
+        if href_absolu in REMPLACEMENTS:
+            cible = REMPLACEMENTS[href_absolu]
             details.append((href, cible, a.get_text()))
             a["href"] = cible
             nb_corriges += 1
@@ -156,9 +164,12 @@ def main():
     total_liens_corriges = 0
     for post in posts:
         contenu_raw = post.get("content", {}).get("raw", "") or post.get("content", {}).get("rendered", "")
-        if not any(url in contenu_raw for url in REMPLACEMENTS):
-            continue
-
+        # Pas de pre-filtre par sous-chaine ici (contrairement a
+        # fix_liens_morts_maillage_0211.py) : certains hrefs du contenu
+        # sont relatifs, donc la forme absolue des cles de REMPLACEMENTS
+        # ne serait pas forcement une sous-chaine litterale du contenu
+        # brut -- on passe directement par BeautifulSoup + urljoin pour
+        # chaque article, qui gere correctement les deux formes.
         nouveau_contenu, nb_corriges, details = corriger_contenu(contenu_raw)
         if nb_corriges == 0:
             continue
