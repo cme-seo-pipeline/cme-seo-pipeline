@@ -4634,3 +4634,42 @@ bandeau rouge disparait de lui-meme, relancer le test de verification
 (meme script). Si le bandeau persiste au-dela de ce delai, contacter le
 support o2switch pour confirmer que LiteSpeed/LSCache est bien actif
 niveau serveur pour ce domaine precis.
+
+### Resolu — confirme par mesure reelle, chantier clos (27/11/2026, meme soiree)
+
+Apres le delai d'attente, l'operateur a utilise l'assistant de
+verification de cache natif o2switch (cPanel → LSCache → "Verifier le
+cache") sur `https://www.comprendre-mon-energie.fr/` (en "Avec WWW" --
+corrige depuis "Sans WWW", choisi par defaut, qui aurait teste le mauvais
+host) : **"La page a ete servie depuis le cache"**, avec un entete
+`x-lsadc-cache: hit` -- nom specifique a o2switch (leur "LiteSpeed
+Accelerator/ADC"), different du `x-litespeed-cache` generique que mon
+script cherchait jusque-la. **Corrige** (`diagnostiquer_lenteur_pages_rechauffe_2711.py`,
+commit `100a12f`) : `x-lsadc-cache` ajoute a `HEADERS_A_RELEVER`.
+
+**Reverifie immediatement** (meme script, log `20261127-162648-...`) :
+`x-lsadc-cache: hit` present sur les **16/16 URLs** (contre 0/16 avant
+l'activation cPanel) + chute reelle du temps de reponse au 2e/3e hit sur
+la quasi-totalite (ex. 1365→737→651ms, 972→471→530ms, 987→475→689ms) --
+pas aussi bas que le ~100-200ms theorique d'un cache HTML pur, mais un
+gain reel de 30-50%, et surtout la **preuve directe par entete HTTP que
+le cache sert desormais ces pages**, ce qui etait totalement absent
+avant ce chantier (0/103 dans le diagnostic initial du 27/11 au matin).
+
+**Note sur le bandeau wp-admin** : le plugin LiteSpeed Cache (wp-admin)
+pouvait encore afficher son bandeau "serveur LiteSpeed non detecte" meme
+apres ce succes -- `x-lsadc-cache` est le produit d'acceleration propre
+a o2switch (un accelerateur/proxy de cache, pas forcement un vrai
+serveur web LiteSpeed/OpenLiteSpeed que le plugin sait reconnaitre par sa
+propre methode de detection). Sans consequence pratique : ce qui compte
+pour un visiteur ou pour le crawler Ahrefs est la reponse HTTP reelle
+servie en bout de chaine, deja confirmee par la mesure directe
+ci-dessus, pas ce que le plugin pense detecter.
+
+**Chantier clos** -- cause (cache serveur jamais actif) confirmee par
+mesure, corrigee par activation cPanel (LiteSpeed Web ADC - LSCache,
+les 2 lignes `comprendre-mon-energie`), fix verifie par mesure reelle
+avant/apres. A suivre : le prochain crawl Ahrefs devrait faire chuter
+"Slow page"/"Slow server response for AI crawlers" vers 0 ou presque --
+pas verifiable depuis ce sandbox (pas d'acces Ahrefs), seulement par un
+futur export PDF partage par l'operateur.
