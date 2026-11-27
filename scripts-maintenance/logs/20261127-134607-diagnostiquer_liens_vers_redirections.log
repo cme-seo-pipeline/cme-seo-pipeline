@@ -1,0 +1,564 @@
+# Execution du 2026-11-27T13:46:07Z
+# Script    : scripts-maintenance/diagnostiquer_liens_vers_redirections.py
+# Arguments : 
+
+📥 Recuperation de tous les articles publies...
+   1154 articles a analyser
+
+🔎 Extraction des liens internes dans le contenu...
+   1087 URLs internes uniques ciblees
+
+🌐 Verification de la toute PREMIERE reponse de chaque lien (sans suivre)...
+   ... 50/1087 verifies
+   ... 100/1087 verifies
+   ... 150/1087 verifies
+   ... 200/1087 verifies
+   ... 250/1087 verifies
+   ... 300/1087 verifies
+   ... 350/1087 verifies
+   ... 400/1087 verifies
+   ... 450/1087 verifies
+   ... 500/1087 verifies
+   ... 550/1087 verifies
+   ... 600/1087 verifies
+   ... 650/1087 verifies
+   ... 700/1087 verifies
+   ... 750/1087 verifies
+   ... 800/1087 verifies
+   ... 850/1087 verifies
+   ... 900/1087 verifies
+   ... 950/1087 verifies
+   ... 1000/1087 verifies
+   ... 1050/1087 verifies
+
+======================================================================
+RAPPORT — LIENS INTERNES POINTANT VERS UNE REDIRECTION
+======================================================================
+Articles analyses              : 1154
+URLs internes uniques ciblees   : 1087
+OK (reponse directe, pas de 3xx): 1029
+Liens pointant vers une redirection : 58
+Articles concernes (au moins 1 lien): 68
+======================================================================
+
+⚠️ LIENS A CORRIGER (58) :
+
+  🔗 https://www.comprendre-mon-energie.fr/comparateur-electricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/ (HTTP 200)
+     Cite dans 16 article(s) :
+       - post_id=2218 "Comparer les offres ⚡" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=2218 "Comparer les tarifs ici 👈" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=2218 "Baisser ma facture d'électricité 📉" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=2218 "Réduire mes factures ⚡" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=2218 "Comparer les fournisseurs⚡" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       ... et 11 autre(s)
+
+  🔗 https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/ (HTTP 200)
+     Cite dans 10 article(s) :
+       - post_id=2218 "facture" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=1333 "comprendre votre facture d'électricité" — Réduire sa Facture d’Électricité en 2026 : Économiser jusqu&rsquo;à 60
+         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+       - post_id=1333 "guide sur la compréhension de facture" — Réduire sa Facture d’Électricité en 2026 : Économiser jusqu&rsquo;à 60
+         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+       - post_id=1333 "Identifier mes frais cachés 🔍" — Réduire sa Facture d’Électricité en 2026 : Économiser jusqu&rsquo;à 60
+         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+       - post_id=1150 "Décrypter ma facture ici 💰" — Heures Creuses 2026 : Le Guide Complet pour Maîtriser votre Facture
+         https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+       ... et 5 autre(s)
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-baremes-2026/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/ (HTTP 200)
+     Cite dans 5 article(s) :
+       - post_id=10824 "MaPrimeRénov’ 2026 : montants et barèmes par revenus" — Chèque énergie : comment l&rsquo;utiliser pour vos factures
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/ch-que-nergie-comment-utiliser/
+       - post_id=10822 "financer des travaux de rénovation énergétique" — Chèque énergie : mode d&#8217;emploi pour le déclarer auprès de votre 
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs-1018/
+       - post_id=10820 "MaPrimeRénov’ 2026 : montants et barèmes par revenus" — Chauffe-eau thermodynamique : quel prix et quel budget
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-prix-budget/
+       - post_id=10818 "MaPrimeRénov’ 2026 : montants et barèmes par revenus" — Chauffe-eau thermodynamique : dimensionnement
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1018/
+       - post_id=10732 "guide détaillé sur les montants et barèmes de MaPrimeRénov’" — MaPrimeRénov&rsquo; vs autres aides : laquelle choisir
+         https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-autres-aides-comparatif/
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/facture-gaz/strategies-maitrise-facture-gaz/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-ttc-vs-ht-taxes/ (HTTP 200)
+     Cite dans 4 article(s) :
+       - post_id=5937 "Résilience facture gaz : stratégies pour" — Meilleur fournisseur gaz 2026 : guide comparatif complet
+         https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs-gaz-2024/
+       - post_id=5935 "Résilience facture gaz : stratégies pour maîtriser" — Chaudière gaz : comment fonctionne le système
+         https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0814/
+       - post_id=5780 "Comprendre les stratégies pour maîtriser votre facture gaz" — Facture gaz TTC vs HT : comprendre la différence
+         https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-ttc-vs-ht-taxes/
+       - post_id=5778 "stratégies pour maîtriser votre facture gaz" — Consommation gaz : calcul m³ et impact facture
+         https://www.comprendre-mon-energie.fr/gaz/facture-gaz/consommation-gaz-calcul-impact-facture/
+
+  🔗 https://www.comprendre-mon-energie.fr/demenagement-electricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/ (HTTP 200)
+     Cite dans 4 article(s) :
+       - post_id=2218 "mise en service" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=2218 "Réussir mon déménagement sans coupure 🔌" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=821 "Réussir mon déménagement sans coupure ⚡" — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Économiser
+         https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+       - post_id=659 "Mon déménagement sans coupure ⚡" — Chèque Énergie 2026 : Guide pour Obtenir votre Aide
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+
+  🔗 https://www.comprendre-mon-energie.fr/guide-gratuit-travaux-de-renovation-energetique/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/ (HTTP 200)
+     Cite dans 4 article(s) :
+       - post_id=2218 "travaux de rénovation" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=1333 "👉 Consultez notre Guide Gratuit : Tout savoir sur la Rénovation Énergétique et l" — Réduire sa Facture d’Électricité en 2026 : Économiser jusqu&rsquo;à 60
+         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+       - post_id=821 "Vérifier mon éligibilité aux aides 💰" — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Économiser
+         https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+       - post_id=659 "Vérifier mon éligibilité aux aides 💰" — Chèque Énergie 2026 : Guide pour Obtenir votre Aide
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+
+  🔗 https://www.comprendre-mon-energie.fr/pompe-a-chaleur/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/ (HTTP 200)
+     Cite dans 4 article(s) :
+       - post_id=2039 "pompe à chaleur" — Pompe à chaleur air-eau : Pourquoi est-elle le choix n°1 pour remplace
+         https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-eau/
+       - post_id=906 "pompe à chaleur" — Pompe à chaleur air air : pourquoi choisir une pour climatiser et chau
+         https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air/
+       - post_id=825 "pompe à chaleur" — Sèche linge pompe à chaleur : pourquoi choisir un  pour optimiser votr
+         https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/seche-linge-pompe-a-chaleur/
+       - post_id=659 "pompe à chaleur" — Chèque Énergie 2026 : Guide pour Obtenir votre Aide
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+
+  🔗 https://www.comprendre-mon-energie.fr/reduire-sa-facture-delectricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/ (HTTP 200)
+     Cite dans 4 article(s) :
+       - post_id=1150 "réduire sa facture" — Heures Creuses 2026 : Le Guide Complet pour Maîtriser votre Facture
+         https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+       - post_id=851 "guide complet pour réduire votre consommation" — Comprendre sa facture d&rsquo;électricité 2026 : comment décrypter les
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+       - post_id=851 "Identifier mes frais cachés 🔍" — Comprendre sa facture d&rsquo;électricité 2026 : comment décrypter les
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+       - post_id=821 "réduire votre facture d'énergie" — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Économiser
+         https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+
+  🔗 https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/ (HTTP 200)
+     Cite dans 4 article(s) :
+       - post_id=1150 "Télécharger mon attestation 📥" — Heures Creuses 2026 : Le Guide Complet pour Maîtriser votre Facture
+         https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+       - post_id=821 "attestation de contrat d'électricité" — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Économiser
+         https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+       - post_id=821 "Télécharger mon attestation en 2 min 📥" — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Économiser
+         https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+       - post_id=659 "Télécharger mon attestation  📥" — Chèque Énergie 2026 : Guide pour Obtenir votre Aide
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+
+  🔗 https://www.comprendre-mon-energie.fr/demande-de-rappel-gratuit/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/contactez-un-expert/ (HTTP 200)
+     Cite dans 4 article(s) :
+       - post_id=840 "Obtenir mon étude personnalisée" — Panneaux Photovoltaïques : comment trouver un installateur et négocier
+         https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-photovoltaiques/
+       - post_id=661 "Résilier et économiser maintenant" — Résiliation contrat électricité : quelles démarches et est ce que cela
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite/
+       - post_id=563 "DÉCOUVRIR LES OFFRES LES MOINS CHÈRES DE 2026" — Changer de fournisseur d&rsquo;électricité : est ce que cela se fait l
+         https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/changer-fournisseur-electricite/
+       - post_id=561 "Décrypter ma facture et simuler mes leviers d'économies" — Prix de électricité : pourquoi varie-t-il ? Comprendre les mécanismes 
+         https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/prix-electricite/
+
+  🔗 https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/ (HTTP 200)
+     Cite dans 3 article(s) :
+       - post_id=14379 "MaPrimeRénov&rsquo; chauffe-eau solaire 2026 : conditions" — Chauffe-eau solaire : guide complet d&rsquo;installation
+         https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-budget/
+       - post_id=14065 "aides MaPrimeRénov chauffe-eau solaire 2026" — Chauffe-eau solaire : schéma et composants clés expliqués
+         https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/fonctionnement-chauffe-eau-solaire/
+       - post_id=13941 "Consultez les conditions actuelles de MaPrimeRénov&rsquo; pour chauffe-eau solai" — Chauffe-eau thermodynamique vs solaire : lequel choisir
+         https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique-1118/
+
+  🔗 https://www.comprendre-mon-energie.fr/?p=4456
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/fonctionnement-panneaux-solaires-photovoltaiques/ (HTTP 200)
+     Cite dans 3 article(s) :
+       - post_id=12513 "comment fonctionnent les panneaux solaires photovoltaïques" — Panneaux solaires monocristallins vs polycristallins
+         https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1028-2/
+       - post_id=12361 "Comment fonctionnent les panneaux solaires photovoltaïques" — Rentabilité panneaux solaires : temps de retour réel
+         https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/
+       - post_id=12360 "comment fonctionnent les panneaux solaires photovoltaïques" — Combien de panneaux solaires faut-il pour une maison budget
+         https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/
+
+  🔗 https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2026-0812/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/ (HTTP 200)
+     Cite dans 3 article(s) :
+       - post_id=7984 "aides pompe à chaleur 2026 et autres dispositifs d’aide à la rénovation énergéti" — Audit énergétique obligatoire : qui est concerné en 2026
+         https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-obligatoire/
+       - post_id=7895 "Aides pompe à chaleur 2026-2027 : financement et conditions" — Fenêtres simple ou double vitrage : quel choix pour rénover
+         https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/fenetre-simple-double-vitrage-comparatif-0908/
+       - post_id=7893 "Les aides pompe à chaleur" — Fenêtres simple ou double vitrage : lequel choisir ?
+         https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/fenetre-simple-double-vitrage-comparatif/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2026/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2025/ (HTTP 200)
+     Cite dans 3 article(s) :
+       - post_id=6671 "cumul des aides énergétiques" — Chèque énergie : comment l&rsquo;utiliser chez vos fournisseurs
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs/
+       - post_id=6609 "cumul des aides énergétiques en 2026" — TVA réduite travaux : qui peut en bénéficier vraiment
+         https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-eligibilite/
+       - post_id=4393 "dispositifs d’aides pour financer vos travaux d’isolation" — Isolation combles perdus : étapes et techniques 2025
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isolation-combles-perdus-etapes-techniques/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-renovation-2026/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/cout-isolation-combles-perdus-devis-aides/ (HTTP 200)
+     Cite dans 3 article(s) :
+       - post_id=6137 "TVA Réduite Travaux Rénovation : Guide Complet 2026" — Coût isolation combles perdus : devis et aides 2026
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/cout-isolation-combles-perdus-devis-aides/
+       - post_id=6067 "TVA Réduite Travaux Rénovation : Guide Complet 2026" — Chèque énergie : comment l&rsquo;utiliser pour vos factures
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie/
+       - post_id=6065 "TVA réduite sur les travaux de rénovation" — Tuiles solaires vs panneaux classiques : quelle aide?
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/tuiles-solaires-vs-panneaux-photovoltaiques-aides/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026-eligibilite-obtention/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-refuse-causes-solutions/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=11254 "Chèque énergie 2026 : simulation personnalisée du montant" — MaPrimeRénov&rsquo; : qui peut vraiment installer les travaux
+         https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-artisans-installation-conditions/
+       - post_id=11252 "simulez votre montant de chèque énergie personnalisé" — MaPrimeRénov&rsquo; 2026 : conditions d&rsquo;éligibilité mise à jour
+         https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/conditions-eligibilite-maprimerenov-2026/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetic/cheque-energie/cheque-energie-comment-utiliser-fournisseur/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-comment-utiliser-fournisseur/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=9452 "Le Chèque énergie s’utilise auprès de votre fournisseur ou directement chez l’in" — Chauffe-eau thermodynamique : coûts et étapes d&rsquo;installation
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cout-installation-chauffe-eau-thermodynamique/
+       - post_id=9452 "Chèque énergie couvre 48 à 277 euros" — Chauffe-eau thermodynamique : coûts et étapes d&rsquo;installation
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cout-installation-chauffe-eau-thermodynamique/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetic/maprimerenov/maprimerenov-montants-conditions-eligibilite-2026/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2026/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=9452 "Vérifiez les conditions d’éligibilité 2026" — Chauffe-eau thermodynamique : coûts et étapes d&rsquo;installation
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cout-installation-chauffe-eau-thermodynamique/
+       - post_id=9452 "MaPrimeRénov’ couvre 1 500 à 2 500 euros" — Chauffe-eau thermodynamique : coûts et étapes d&rsquo;installation
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cout-installation-chauffe-eau-thermodynamique/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-pret-sans-interet/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-energetiques-conditions/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=7484 "Éco-PTZ (prêt écologique sans intérêt)" — TVA réduite travaux énergétiques : conditions et
+         https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-energetiques-conditions/
+       - post_id=7480 "Éco-PTZ" — Prime énergie CEE : comment ça marche en 2026
+         https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement-0902/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-delais-procedure/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-chauffage-electrique-normes-cout/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=6002 "changement de fournisseur d’électricité" — Installation chauffage électrique : normes, coûts et étapes
+         https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-chauffage-electrique-normes-cout/
+       - post_id=5947 "changement fournisseur électricité : délais et procédure" — Réduction facture électricité : aides et dispositifs 2026
+         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduction-facture-electricite-aides-2026/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-air-air-vs-climatisation/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-complet/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=5996 "pompe à chaleur air-air vs climatisation : économies réelles" — Éco-PTZ : comment fonctionne le prêt sans intérêt ?
+         https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-complet/
+       - post_id=5796 "Pompe à chaleur air-air vs climatisation : économies réelles" — Pompe à chaleur air-air vs chaudière gaz 2025
+         https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-air-air-vs-chaudiere-gaz-0814/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-trop-chere-reduire/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=4497 "réduction de facture électrique" — Électricité en déménagement : checklist complète
+         https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist/
+       - post_id=4354 "réduire une facture d&rsquo;électricité trop chère" — Consommation électrique : Réduisez vos factures jusqu&rsquo;à 40%
+         https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electrique-mesure-optimisation/
+
+  🔗 https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=4363 "Aides chauffe-eau solaire : MaPrimeRénov et subventions" — Coût système solaire combiné : budget réel 2025
+         https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-prix-systeme-solaire-combine/
+       - post_id=4150 "aides pour chauffe-eau solaire" — Chauffe-eau solaire vs thermodynamique : quel système choisi
+         https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-etat-thermostat-connecte/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aide-etat-thermostat-connecte/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=2218 "Obtenir mon thermostat 100% gratuit 🎁" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+       - post_id=1150 "Obtenir mon aide financière ici 🪙" — Heures Creuses 2026 : Le Guide Complet pour Maîtriser votre Facture
+         https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+
+  🔗 https://www.comprendre-mon-energie.fr/chauffage-gaz/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=1150 "Choisir mon chauffage gaz ⛽" — Heures Creuses 2026 : Le Guide Complet pour Maîtriser votre Facture
+         https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+       - post_id=659 "Lire le guide♨️" — Chèque Énergie 2026 : Guide pour Obtenir votre Aide
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+
+  🔗 https://www.comprendre-mon-energie.fr/cheque-energie-2026/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=847 "Vérifier mon éligibilité au chèque" — Thermostat Connecté Gratuit : demande en ligne en 2 minutes
+         https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aide-etat-thermostat-connecte/
+       - post_id=561 "Vérifier mon éligibilité au chèque" — Prix de électricité : pourquoi varie-t-il ? Comprendre les mécanismes 
+         https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/prix-electricite/
+
+  🔗 https://www.comprendre-mon-energie.fr/installation-panneaux-photovoltaiques/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-photovoltaiques/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=847 "Calculer mon potentiel solaire" — Thermostat Connecté Gratuit : demande en ligne en 2 minutes
+         https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aide-etat-thermostat-connecte/
+       - post_id=561 "Calculer mon potentiel solaire" — Prix de électricité : pourquoi varie-t-il ? Comprendre les mécanismes 
+         https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/prix-electricite/
+
+  🔗 https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-2026-calculez-votre-reste-a-charge-0-en-2-min/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/contactez-un-expert/ (HTTP 200)
+     Cite dans 2 article(s) :
+       - post_id=821 "aides de l'Ét" — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Économiser
+         https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+       - post_id=821 "t pour le chauffage au gaz" — Chauffage Gaz 2026 : Guide Complet pour Bien Choisir et Économiser
+         https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/aides-locales-chauffe-eau-thermodynamique-region/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-locales-chauffe-eau-thermodynamique-region/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=13503 "les aides locales pour votre région" — MaPrimeRénov&rsquo; 2026 : tableau des plafonds revenus
+         https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-2026-eligibilite/
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/bouteilles/comparatif-fournisseurs-gaz-naturel/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparatif-fournisseurs-gaz-naturel/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=11454 "comparatif des fournisseurs gaz" — Bouteille de gaz : autonomie réelle et calcul sur mesure
+         https://www.comprendre-mon-energie.fr/gaz/bouteilles/consommation-bouteille-gaz-economies/
+
+  🔗 https://www.comprendre-mon-energie.fr/aides-renovation-energetique/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-septembre-2026/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=11027 "aides à la rénovation énergétique" — Facture gaz : comprendre chaque ligne pour détecter les anomalies
+         https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comment-lire-facture-gaz-1020/
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-de-gaz-normes-securite-1018/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=10917 "Installation bouteille de gaz : étapes et normes de sécurité" — Facture gaz : décrypter les postes de consommation
+         https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-guide-complet-1019/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-electricite-2026-reductions/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-reductions/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=9464 "aides électricité 2026 : obtenir vos réductions" — Résiliation contrat électricité : droits et modalités
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-droits-modalites/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetic/cheque-energie/comment-utiliser-cheque-energie-1002/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1002/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=9452 "Consultez la liste complète des dépenses éligibles" — Chauffe-eau thermodynamique : coûts et étapes d&rsquo;installation
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cout-installation-chauffe-eau-thermodynamique/
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/bouteilles/negocier-ses-tarifs-et-reduire-sa/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1002/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=9347 "consulter nos guides sur la réduction des coûts énergétiques" — Prix bouteille de gaz : tarifs et frais cachés 2026
+         https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1002/
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-de-gaz-securite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1002/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=9347 "Comment recharger une bouteille de gaz en toute sécurité" — Prix bouteille de gaz : tarifs et frais cachés 2026
+         https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1002/
+
+  🔗 https://www.comprendre-mon-energie.fr/aides-renovation-energetique
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-septembre-2026/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=8340 "rénovation énergétique" — Facture Gaz : hausse de 6.3% en septembre 2026
+         https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-septembre-2026/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetic/aides-renovation-toiture/cout-renovation-toiture-tarifs-aides/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cout-renovation-toiture-tarifs-aides/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=8285 "comparatif des coûts de rénovation toiture par type de matériau" — Isoler combles perdus soi-même : matériel nécessaire
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isoler-combles-perdus-etapes-installation/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetic/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=8285 "tarifs et comparatif des chauffe-eau thermodynamiques" — Isoler combles perdus soi-même : matériel nécessaire
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isoler-combles-perdus-etapes-installation/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetic/tva-reduite/tva-reduite-fenetres-economies-conditions/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-fenetres-economies-conditions/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=8285 "TVA réduite pour fenêtres" — Isoler combles perdus soi-même : matériel nécessaire
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isoler-combles-perdus-etapes-installation/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetic/maprimerenov/comment-fonctionne-maprimerenov-2026/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-2026/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=8285 "consultez notre décryptage de MaPrimeRénov’ et son fonctionnement actualisé" — Isoler combles perdus soi-même : matériel nécessaire
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isoler-combles-perdus-etapes-installation/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite/les meilleures comparaisons
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0924/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=8215 "nos comparatifs détaillés des fournisseurs" — Changer de fournisseur électricité après un déménagement
+         https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0924/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/demenagement/transfert-contrat-electricite-demenagement/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet-0904/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=7666 "comment transférer votre contrat électricité lors d’un déménagement" — Électricité lors d&rsquo;un déménagement : faites votre demande en 2 m
+         https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet-0904/
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-propane-fonctionnement/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-communicant-linky/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=7472 "comprendre le fonctionnement de la bouteille gaz propane" — Compteur gaz communicant Linky : fonctionnement et avantages
+         https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-communicant-linky/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetic/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-quel-financement-choisir/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-quel-financement-choisir/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=7272 "Comparaison détaillée Éco-PTZ vs MaPrimeRénov’" — Prime énergie vs MaPrimeRénov&rsquo; : laquelle choisir
+         https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov-comparaison/
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=5671 "meilleurs fournisseurs de gaz et leurs tarifs" — Bouteille de gaz : guide complet d&rsquo;utilisation sécurisée
+         https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-guide-utilisation-securisee/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electricite-mesure-optimisation/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electrique-mesure-optimisation/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=4497 "mesure et l’optimisation de votre consommation électrique" — Électricité en déménagement : checklist complète
+         https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist/
+
+  🔗 https://www.comprendre-mon-energie.fr/solaire/kit-solaire/installation-kit-solaire/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-dimensionnement/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=4363 "Installation kit solaire : guide étape par étape 2025" — Coût système solaire combiné : budget réel 2025
+         https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-prix-systeme-solaire-combine/
+
+  🔗 https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/raccordement-au-gaz/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=3774 "relève du compteur" — Résilier son contrat gaz : démarches et délais 2024
+         https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/facture/lire-sa-facture-d-electricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=3665 "consultez notre guide complet pour lire sa facture d'électricité" — Chauffage électrique : fonctionnement et rendement
+         https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/fonctionnement-chauffage-electrique/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/facture/reduire-sa-facture-delectricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=3665 "des stratégies de réduction de facture d'électricité" — Chauffage électrique : fonctionnement et rendement
+         https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/fonctionnement-chauffage-electrique/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/aides-energetiques/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/aides-energetiques-guide-2/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=3559 "le guide complet des aides énergétiques 2026" — Aides chaudière : comparatif complet par type de chauffage
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/comparatifs-aides-chaudieres/
+
+  🔗 https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aides-energetiques-2/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aides-energetiques-guide/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=3559 "erreurs à éviter pour obtenir ses aides énergétiques" — Aides chaudière : comparatif complet par type de chauffage
+         https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/comparatifs-aides-chaudieres/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/contrat/attestation-de-contrat-delectricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=3561 "attestation de contrat d’électricité" — Lire sa facture d&rsquo;électricité : guide complet 2025
+         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/
+
+  🔗 https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs/comparateur-electricite/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-electricite/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=3561 "comparateur d’électricité" — Lire sa facture d&rsquo;électricité : guide complet 2025
+         https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/
+
+  🔗 https://www.comprendre-mon-energie.fr/justificatif-de-domicile/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=2218 "justificatif de domicile" — Attestation Contrat Électricité : Copie en 2 min (2026)
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+
+  🔗 https://www.comprendre-mon-energie.fr/heures-creuses-heures-pleines/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=851 "Heures Pleines / Heures Creuses" — Comprendre sa facture d&rsquo;électricité 2026 : comment décrypter les
+         https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+
+  🔗 https://www.comprendre-mon-energie.fr/la-transition-energetique/
+     Statut initial : HTTP 301
+     → Destination finale : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/transition-energetique/ (HTTP 200)
+     Cite dans 1 article(s) :
+       - post_id=659 "maîtrise énergétique" — Chèque Énergie 2026 : Guide pour Obtenir votre Aide
+         https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
