@@ -4439,3 +4439,61 @@ seulement si l'opérateur le demande (probablement des réglages
 RankMath "exclure du sitemap" par article/page, pas un bug du pipeline).
 
 **Chantier sitemap principal clos.**
+
+## "Page has links to redirect" — 58 liens corrigés sur 68 articles (27/11/2026)
+
+Suite du même audit Ahrefs (21/11/2026) : "Page has links to redirect"
+(81 pages, en croissance de +7 en une semaine) était le problème
+prioritaire restant une fois le sitemap réglé — seul volume significatif,
+en croissance active, et dans le périmètre du pipeline (contenu/maillage,
+pas hébergement), contrairement aux "Slow page"/"Slow server response"
+(hors scope).
+
+**Angle mort confirmé de l'audit hebdomadaire existant** : `auditer_liens_internes.py`
+ne signale un lien comme problème que si `nb_redirections > 1` (une
+CHAÎNE de redirections) — un lien qui redirige une seule fois avant sa
+destination finale est compté "OK", exactement le seuil qu'Ahrefs
+considère pourtant sous-optimal. D'où ce chantier n'a jamais été remonté
+par le rituel hebdomadaire malgré sa croissance.
+
+**Diagnostic** (`scripts-maintenance/diagnostiquer_liens_vers_redirections.py`,
+lecture seule, pont GitHub Actions) : reprend l'extraction de liens
+internes existante, vérifie la toute première réponse HTTP de chaque
+lien SANS suivre la redirection (seuil Ahrefs, >=1 saut) — **58 liens
+internes uniques pointant vers une redirection, répartis sur 68 articles
+vivants, 130 occurrences au total**. Concentration notable sur l'article
+pilier `attestation-de-contrat-delectricite` (post_id=2218, déjà connu
+pour son souci de double-URL/canonical du 12/11) : plusieurs anciens
+liens de maillage (comparateur, facture, déménagement, guide rénovation)
+glissés vers des redirections au fil des restructurations d'URL du site.
+
+**Correctif** (`scripts-maintenance/fix_liens_redirections_maillage_2711.py`),
+même schéma que `fix_liens_morts_maillage_0211.py` : BeautifulSoup,
+dry-run par défaut, garde le texte de l'ancre, remplace l'URL par la
+destination finale déjà confirmée HTTP 200. Table `REMPLACEMENTS` (58
+paires + variantes sans slash final) générée programmatiquement depuis
+le log du diagnostic, pas transcrite à la main.
+
+**Bug trouvé et corrigé entre les deux dry-run** (même session) : le
+premier dry-run ne traitait que 67/68 articles — `post_id=8340` contient
+un lien écrit en **relatif** (`/aides-renovation-energetique`) dans le
+contenu, alors que `REMPLACEMENTS` est indexé en URL absolue (même forme
+que le diagnostic) ; ni le pré-filtre par sous-chaîne ni la comparaison
+directe sur `a['href']` ne pouvaient le détecter. Corrigé par
+`urljoin(WP_URL, href)` avant comparaison (même normalisation que le
+diagnostic) + suppression du pré-filtre par sous-chaîne (même angle
+mort) — chaque article est désormais parsé sans présupposer la forme du
+href. Second dry-run : 68/68 articles, 130 liens.
+
+**Appliqué en conditions réelles le 27/11** : canari `--limite=5 --apply`
+validé (5 articles, 5 liens, 0 erreur), puis `--apply` sans limite sur le
+reste (63 articles, 125 liens, 0 erreur) — total **68 articles, 130
+liens corrigés, 0 erreur sur l'ensemble**. Dry-run final de vérification :
+`0 article(s) traité(s), 0 lien(s) détecté(s)` — plus aucun lien interne
+ne pointe vers une redirection. Chantier clos.
+
+**Pas encore investigué** (comme noté le 26/11) : "Slow page"/"Slow
+server response for AI crawlers" (performance/TTFB, hors périmètre de ce
+pipeline) et "3XX redirect in sitemap" (4 URLs, probablement déjà réglé
+par le fix RankMath du 26/11, pas revérifié spécifiquement) — à reprendre
+si l'opérateur le demande.
