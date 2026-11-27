@@ -1,0 +1,49 @@
+# Execution du 2026-11-27T15:11:51Z
+# Script    : scripts-maintenance/fix_liens_redirections_maillage_2711.py
+# Arguments : --limite=5 --apply
+
+Table chargee : 112 entree(s) (avec variantes sans slash final).
+Recuperation de tous les articles publies (contenu brut, ?context=edit)...
+1154 article(s) recupere(s).
+
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-budget/ (id=14379)
+  1 lien(s) vers une redirection a corriger :
+    - "MaPrimeRénov’ chauffe-eau solaire 2026 : conditions" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/fonctionnement-chauffe-eau-solaire/ (id=14065)
+  1 lien(s) vers une redirection a corriger :
+    - "aides MaPrimeRénov chauffe-eau solaire 2026" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique-1118/ (id=13941)
+  1 lien(s) vers une redirection a corriger :
+    - "Consultez les conditions actuelles de MaPrimeRénov’ pour chauffe-eau solaire" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-2026-eligibilite/ (id=13503)
+  1 lien(s) vers une redirection a corriger :
+    - "les aides locales pour votre région" : https://www.comprendre-mon-energie.fr/aide-energetique/aides-locales-chauffe-eau-thermodynamique-region/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-locales-chauffe-eau-thermodynamique-region/
+  ✅ Corrige et publie.
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1028-2/ (id=12513)
+  1 lien(s) vers une redirection a corriger :
+    - "comment fonctionnent les panneaux solaires photovoltaïques" : https://www.comprendre-mon-energie.fr/?p=4456
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/fonctionnement-panneaux-solaires-photovoltaiques/
+  ✅ Corrige et publie.
+
+⏹️ Limite de 5 article(s) atteinte, arret.
+
+====================================================================================================
+TOTAL : 5 article(s) traite(s), 5 lien(s) corrige(s).
+====================================================================================================
