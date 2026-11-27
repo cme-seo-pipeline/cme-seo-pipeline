@@ -50,6 +50,7 @@ UA_CRAWLER_IA = "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible;
 HEADERS_A_RELEVER = [
     "x-litespeed-cache",
     "x-litespeed-cache-control",
+    "x-lsadc-cache",
     "x-qc-cache",
     "x-cache",
     "cf-cache-status",
@@ -236,9 +237,28 @@ def main():
         for r in erreurs:
             print(f"  {r['url']}  normal={r['err_normal']}  crawler={r['err_crawler']}")
 
-    # Presence/absence d'entete de cache LiteSpeed, par page.
-    sans_cache_header = [r for r in resultats if r["ttfb_normal"] is not None and not r["entetes_normal"]]
-    print(f"\n{len(sans_cache_header)}/{len(avec_ttfb)} pages sans AUCUN entete de cache detectable dans la reponse.")
+    # Presence/absence d'un VRAI signal de cache (hors "server", toujours
+    # present meme sans cache actif -- bug corrige le 27/11/2026 : l'ancienne
+    # version comptait "entetes_normal non vide", qui ne pouvait jamais etre
+    # vide puisque "server" y figure toujours).
+    HEADERS_CACHE_REEL = [h for h in HEADERS_A_RELEVER if h != "server"]
+    avec_cache = [
+        r for r in avec_ttfb
+        if any(h in r["entetes_normal"] for h in HEADERS_CACHE_REEL)
+    ]
+    sans_cache = [r for r in avec_ttfb if r not in avec_cache]
+    print(f"\n{len(avec_cache)}/{len(avec_ttfb)} pages avec un VRAI entete de cache detecte (x-lsadc-cache ou equivalent).")
+    print(f"{len(sans_cache)}/{len(avec_ttfb)} pages encore SANS aucun entete de cache.")
+    if avec_cache:
+        ttfb_avec_cache = [r["ttfb_normal"] for r in avec_cache]
+        print(f"  TTFB median (pages AVEC cache)  : {statistics.median(ttfb_avec_cache)*1000:.0f}ms")
+    if sans_cache:
+        ttfb_sans_cache = [r["ttfb_normal"] for r in sans_cache]
+        print(f"  TTFB median (pages SANS cache)  : {statistics.median(ttfb_sans_cache)*1000:.0f}ms")
+    if sans_cache:
+        print(f"\n  Pages encore sans cache (a surveiller) :")
+        for r in sans_cache:
+            print(f"    [{r['type']}] {r['url']}")
 
 
 if __name__ == "__main__":
