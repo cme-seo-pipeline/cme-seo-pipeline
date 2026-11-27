@@ -1,0 +1,159 @@
+# Execution du 2026-11-27T15:31:31Z
+# Script    : scripts-maintenance/diagnostiquer_lenteur_pages_2711.py
+# Arguments : 
+
+Recuperation des articles et pages publies (API REST, publique)...
+  1154 articles, 13 pages, 45 categories.
+
+Echantillon final : 103 URLs uniques.
+
+[1/103] article            normal=      1024ms crawler_ia=       958ms  https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/marche-electricite/
+[2/103] article            normal=      1077ms crawler_ia=      1016ms  https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-eau/
+[3/103] article            normal=       963ms crawler_ia=       956ms  https://www.comprendre-mon-energie.fr/renovation-energetique/poele/meilleur-poele-comparatif/
+[4/103] article            normal=      1141ms crawler_ia=      1073ms  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026/
+[5/103] article            normal=      1175ms crawler_ia=      1084ms  https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-explications/
+[6/103] article            normal=      1127ms crawler_ia=      1246ms  https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky-fonctionnement/
+[7/103] article            normal=      1155ms crawler_ia=       941ms  https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement/
+[8/103] article            normal=       959ms crawler_ia=      1067ms  https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes/
+[9/103] article            normal=       961ms crawler_ia=      1342ms  https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenovconditionnement/
+[10/103] article            normal=       982ms crawler_ia=       971ms  https://www.comprendre-mon-energie.fr/gaz/facture-gaz/augmentation-facture-gaz-causes-solutions/
+[11/103] article            normal=      1262ms crawler_ia=       933ms  https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-2024/
+[12/103] article            normal=       950ms crawler_ia=       927ms  https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/fournisseurs-gaz-regules-vs-alternatifs/
+[13/103] article            normal=      1117ms crawler_ia=      1140ms  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-procedure/
+[14/103] article            normal=       924ms crawler_ia=       932ms  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie/
+[15/103] article            normal=      1029ms crawler_ia=       969ms  https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/radiateur-gaz-fonctionnement-rendement/
+[16/103] article            normal=      1207ms crawler_ia=       917ms  https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-calculer-economies/
+[17/103] article            normal=       929ms crawler_ia=       912ms  https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-comparatif-0821/
+[18/103] article            normal=       937ms crawler_ia=       920ms  https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chauffage-gaz/
+[19/103] article            normal=       944ms crawler_ia=       898ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/aides-cumulables-toiture-2026/
+[20/103] article            normal=      1252ms crawler_ia=       937ms  https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/comment-fonctionne-gaz-naturel/
+[21/103] article            normal=       939ms crawler_ia=      1013ms  https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-5-5-vs-20-economies/
+[22/103] article            normal=      1029ms crawler_ia=       955ms  https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-communicant-linky/
+[23/103] article            normal=       928ms crawler_ia=       978ms  https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet-0904/
+[24/103] article            normal=      1104ms crawler_ia=       955ms  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tarif-reglemente-vs-marche-libre/
+[25/103] article            normal=       937ms crawler_ia=       888ms  https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0924/
+[26/103] article            normal=       916ms crawler_ia=      1031ms  https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+[27/103] article            normal=       951ms crawler_ia=       920ms  https://www.comprendre-mon-energie.fr/gaz/bouteilles/duree-vie-bouteille-gaz-0928/
+[28/103] article            normal=       950ms crawler_ia=       916ms  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/offres-electricite-fixe-variable-comparaison/
+[29/103] article            normal=       906ms crawler_ia=       970ms  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-qui-y-a-droit-utilisation/
+[30/103] article            normal=      1072ms crawler_ia=       921ms  https://www.comprendre-mon-energie.fr/gaz/bouteilles/aides-installation-bouteille-gaz/
+[31/103] article            normal=       930ms crawler_ia=       955ms  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/fonctionnement-contrat-electricite-1013/
+[32/103] article            normal=       946ms crawler_ia=       925ms  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1015/
+[33/103] article            normal=      1029ms crawler_ia=       983ms  https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-butane-propane-differences/
+[34/103] article            normal=       978ms crawler_ia=       979ms  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changer-fournisseur-electricite-economies/
+[35/103] article            normal=      1041ms crawler_ia=       947ms  https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-comparatif-autres-aides-energetiques/
+[36/103] article            normal=       964ms crawler_ia=       966ms  https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparatif-fournisseurs-gaz-naturel/
+[37/103] article            normal=       952ms crawler_ia=       963ms  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-facture-electricite-dispositifs/
+[38/103] article            normal=       988ms crawler_ia=       958ms  https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-electrique-economique/
+[39/103] article            normal=       963ms crawler_ia=       921ms  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-fonctionnement-comment-ca-marche/
+[40/103] article            normal=       911ms crawler_ia=       967ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-cout-installation-chauffe-eau-thermodynamique/
+[41/103] article            normal=       993ms crawler_ia=       981ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-chauffe-eau-thermodynamique-2026-liste-complete/
+[42/103] article            normal=      1000ms crawler_ia=       958ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-2026/
+[43/103] article            normal=       970ms crawler_ia=      1008ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-1101/
+[44/103] article            normal=       935ms crawler_ia=       943ms  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilition-contrat-electricite-delais-procedure/
+[45/103] article            normal=       938ms crawler_ia=       914ms  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-facture-electricite-guide-complet-1112/
+[46/103] article            normal=       926ms crawler_ia=       939ms  https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-propane-butane-comparatif/
+[47/103] article            normal=      1738ms crawler_ia=       942ms  https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/resilier-contrat-gaz-demenagement/
+[48/103] article            normal=       938ms crawler_ia=       895ms  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-montant-conditions-2026/
+[49/103] article            normal=       963ms crawler_ia=       921ms  https://www.comprendre-mon-energie.fr/solaire/kit-solaire/fonctionnement-kit-solaire-explique/
+[50/103] article            normal=       976ms crawler_ia=       944ms  https://www.comprendre-mon-energie.fr/electricite/compteur/fonctionnement-compteur-electrique-explication/
+[51/103] page statique      normal=       910ms crawler_ia=       856ms  https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-energetique/
+[52/103] page statique      normal=       864ms crawler_ia=       880ms  https://www.comprendre-mon-energie.fr/enedis-callback/
+[53/103] page statique      normal=       959ms crawler_ia=       922ms  https://www.comprendre-mon-energie.fr/devis-panneau-solaire/
+[54/103] page statique      normal=       959ms crawler_ia=       888ms  https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+[55/103] page statique      normal=       948ms crawler_ia=       974ms  https://www.comprendre-mon-energie.fr/politique-de-cookies-ue/
+[56/103] page statique      normal=       900ms crawler_ia=       847ms  https://www.comprendre-mon-energie.fr/calculateur-deconomies-heures-creuses/
+[57/103] page statique      normal=       887ms crawler_ia=       856ms  https://www.comprendre-mon-energie.fr/plan-du-site/
+[58/103] page statique      normal=       887ms crawler_ia=       886ms  https://www.comprendre-mon-energie.fr/contact/
+[59/103] page statique      normal=       899ms crawler_ia=       917ms  https://www.comprendre-mon-energie.fr/demande-confirmee/
+[60/103] page statique      normal=       916ms crawler_ia=       891ms  https://www.comprendre-mon-energie.fr/cadre-legal-et-confidentialite/
+[61/103] page statique      normal=       987ms crawler_ia=       954ms  https://www.comprendre-mon-energie.fr/pourquoi-nous-faire-confiance/
+[62/103] page statique      normal=      1015ms crawler_ia=      1070ms  https://www.comprendre-mon-energie.fr/
+[63/103] page statique      normal=       906ms crawler_ia=       936ms  https://www.comprendre-mon-energie.fr/contactez-un-expert/
+[64/103] archive categorie  normal=       912ms crawler_ia=       919ms  https://www.comprendre-mon-energie.fr/aide-energetique/aide-isolation/
+[65/103] archive categorie  normal=       972ms crawler_ia=       937ms  https://www.comprendre-mon-energie.fr/aide-energetique/aide-pompe-a-chaleur/
+[66/103] archive categorie  normal=       969ms crawler_ia=       962ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/
+[67/103] archive categorie  normal=       932ms crawler_ia=       943ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/
+[68/103] archive categorie  normal=       966ms crawler_ia=       907ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/
+[69/103] archive categorie  normal=      1019ms crawler_ia=       932ms  https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/
+[70/103] archive categorie  normal=       909ms crawler_ia=       955ms  https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/
+[71/103] archive categorie  normal=      1505ms crawler_ia=       958ms  https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/
+[72/103] archive categorie  normal=       916ms crawler_ia=       909ms  https://www.comprendre-mon-energie.fr/renovation-energetique/bilan-energetique/
+[73/103] archive categorie  normal=       972ms crawler_ia=       961ms  https://www.comprendre-mon-energie.fr/gaz/bouteilles/
+[74/103] archive categorie  normal=       923ms crawler_ia=       921ms  https://www.comprendre-mon-energie.fr/renovation-energetique/chaudiere/
+[75/103] archive categorie  normal=       961ms crawler_ia=       986ms  https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/
+[76/103] archive categorie  normal=       943ms crawler_ia=       923ms  https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/
+[77/103] archive categorie  normal=      1014ms crawler_ia=       946ms  https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/
+[78/103] archive categorie  normal=       928ms crawler_ia=       890ms  https://www.comprendre-mon-energie.fr/renovation-energetique/chauffe-eau-thermodynamique/
+[79/103] archive categorie  normal=       938ms crawler_ia=       934ms  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/
+[80/103] archive categorie  normal=       957ms crawler_ia=       945ms  https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/
+[81/103] archive categorie  normal=       955ms crawler_ia=       961ms  https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/
+[82/103] archive categorie  normal=       946ms crawler_ia=       922ms  https://www.comprendre-mon-energie.fr/electricite/compteur/
+[83/103] archive categorie  normal=       919ms crawler_ia=       936ms  https://www.comprendre-mon-energie.fr/gaz/compteur-gaz/
+[84/103] archive categorie  normal=      1097ms crawler_ia=      1020ms  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/
+[85/103] archive categorie  normal=       968ms crawler_ia=       950ms  https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/
+[86/103] archive categorie  normal=       981ms crawler_ia=       935ms  https://www.comprendre-mon-energie.fr/electricite/demenagement/
+[87/103] archive categorie  normal=       930ms crawler_ia=       956ms  https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/
+[88/103] archive categorie  normal=       959ms crawler_ia=       938ms  https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/
+[89/103] archive categorie  normal=       984ms crawler_ia=       929ms  https://www.comprendre-mon-energie.fr/electricite/facture-electricite/
+[90/103] archive categorie  normal=       969ms crawler_ia=       937ms  https://www.comprendre-mon-energie.fr/gaz/facture-gaz/
+[91/103] archive categorie  normal=       939ms crawler_ia=       933ms  https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/
+[92/103] archive categorie  normal=       941ms crawler_ia=       906ms  https://www.comprendre-mon-energie.fr/renovation-energetique/isolation/
+[93/103] archive categorie  normal=      1225ms crawler_ia=       969ms  https://www.comprendre-mon-energie.fr/solaire/kit-solaire/
+[94/103] archive categorie  normal=       981ms crawler_ia=       906ms  https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/
+[95/103] archive categorie  normal=       934ms crawler_ia=       940ms  https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/
+[96/103] archive categorie  normal=       905ms crawler_ia=       904ms  https://www.comprendre-mon-energie.fr/renovation-energetique/poele/
+[97/103] archive categorie  normal=       981ms crawler_ia=      1006ms  https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/
+[98/103] archive categorie  normal=       958ms crawler_ia=       948ms  https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/
+[99/103] archive categorie  normal=      1110ms crawler_ia=      1078ms  https://www.comprendre-mon-energie.fr/renovation-energetique/
+[100/103] archive categorie  normal=      1224ms crawler_ia=      1050ms  https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/
+[101/103] archive categorie  normal=      1152ms crawler_ia=      1688ms  https://www.comprendre-mon-energie.fr/solaire/
+[102/103] archive categorie  normal=       941ms crawler_ia=       931ms  https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/
+[103/103] archive categorie  normal=      1090ms crawler_ia=      1100ms  https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/
+
+====================================================================================================
+RESUME
+====================================================================================================
+
+User-agent NORMAL (navigateur) -- 103 mesures reussies :
+  Min=864ms  Median=959ms  P90=1141ms  Max=1738ms
+
+User-agent CRAWLER IA (GPTBot) -- 103 mesures reussies :
+  Min=847ms  Median=943ms  P90=1050ms  Max=1688ms
+
+Top 10 ecarts (crawler IA plus LENT que normal), sur 103 paires completes :
+  ++536ms  (normal=1152ms -> crawler=1688ms)  https://www.comprendre-mon-energie.fr/solaire/
+  ++381ms  (normal=961ms -> crawler=1342ms)  https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenovconditionnement/
+  ++119ms  (normal=1127ms -> crawler=1246ms)  https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky-fonctionnement/
+  ++116ms  (normal=916ms -> crawler=1031ms)  https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/changer-fournisseur-gaz-demenagement/
+  ++107ms  (normal=959ms -> crawler=1067ms)  https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/installation-chaudiere-gaz-etapes-normes/
+  ++74ms  (normal=939ms -> crawler=1013ms)  https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-5-5-vs-20-economies/
+  ++64ms  (normal=906ms -> crawler=970ms)  https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-qui-y-a-droit-utilisation/
+  ++55ms  (normal=911ms -> crawler=967ms)  https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-cout-installation-chauffe-eau-thermodynamique/
+  ++55ms  (normal=1015ms -> crawler=1070ms)  https://www.comprendre-mon-energie.fr/
+  ++51ms  (normal=928ms -> crawler=978ms)  https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet-0904/
+  Ecart moyen (crawler - normal) sur l'echantillon : -33ms
+
+Top 15 pages les plus lentes (UA normal) :
+  1738ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/resilier-contrat-gaz-demenagement/
+  1505ms  [archive categorie]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/
+  1262ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-2024/
+  1252ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/comment-fonctionne-gaz-naturel/
+  1225ms  [archive categorie]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/solaire/kit-solaire/
+  1224ms  [archive categorie]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/
+  1207ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-calculer-economies/
+  1175ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-explications/
+  1155ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement/
+  1152ms  [archive categorie]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/solaire/
+  1141ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026/
+  1127ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky-fonctionnement/
+  1117ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-procedure/
+  1110ms  [archive categorie]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/renovation-energetique/
+  1104ms  [article]  entetes={'server': 'o2switch-PowerBoost-v3'}  https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tarif-reglemente-vs-marche-libre/
+
+Mediane TTFB par type de page (UA normal) :
+  article            n= 50  mediane=964ms  max=1738ms
+  archive categorie  n= 40  mediane=960ms  max=1505ms
+  page statique      n= 13  mediane=910ms  max=1015ms
+
+0/103 pages sans AUCUN entete de cache detectable dans la reponse.
