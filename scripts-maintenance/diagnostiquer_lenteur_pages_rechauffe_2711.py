@@ -31,6 +31,7 @@ UA = (
 HEADERS_A_RELEVER = [
     "x-litespeed-cache",
     "x-litespeed-cache-control",
+    "x-lsadc-cache",
     "x-qc-cache",
     "x-cache",
     "cf-cache-status",
