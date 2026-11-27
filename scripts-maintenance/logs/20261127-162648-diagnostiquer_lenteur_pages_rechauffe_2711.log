@@ -1,0 +1,26 @@
+# Execution du 2026-11-27T16:26:48Z
+# Script    : scripts-maintenance/diagnostiquer_lenteur_pages_rechauffe_2711.py
+# Arguments : 
+
+16 URLs, 3 requetes successives chacune (meme UA navigateur).
+
+[1/16] hit1=1365ms | hit2=737ms | hit3=651ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/resilier-contrat-gaz-demenagement/
+[2/16] hit1=1101ms | hit2=524ms | hit3=741ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/solaire/batterie-panneaux-solaires/
+[3/16] hit1=1151ms | hit2=716ms | hit3=844ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/gaz/facture-gaz/aides-facture-gaz-2024/
+[4/16] hit1=897ms | hit2=702ms | hit3=822ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/comment-fonctionne-gaz-naturel/
+[5/16] hit1=987ms | hit2=475ms | hit3=689ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/solaire/kit-solaire/
+[6/16] hit1=947ms | hit2=743ms | hit3=478ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/
+[7/16] hit1=913ms | hit2=651ms | hit3=531ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-calculer-economies/
+[8/16] hit1=972ms | hit2=471ms | hit3=530ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-explications/
+[9/16] hit1=929ms | hit2=484ms | hit3=473ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement/
+[10/16] hit1=935ms | hit2=747ms | hit3=939ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/solaire/
+[11/16] hit1=911ms | hit2=697ms | hit3=524ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026/
+[12/16] hit1=914ms | hit2=486ms | hit3=475ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/electricite/compteur/compteur-linky-fonctionnement/
+[13/16] hit1=984ms | hit2=474ms | hit3=484ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-procedure/
+[14/16] hit1=918ms | hit2=524ms | hit3=514ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/renovation-energetique/
+[15/16] hit1=963ms | hit2=471ms | hit3=524ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/tarif-reglemente-vs-marche-libre/
+[16/16] hit1=481ms | hit2=515ms | hit3=472ms   entetes(dernier hit)={'x-lsadc-cache': 'hit', 'server': 'o2switch-PowerBoost-v3'}   https://www.comprendre-mon-energie.fr/
+
+Si hit2/hit3 restent proches de hit1 (pas de chute vers ~100-200ms),
+le cache de page ne sert jamais ces URLs -- chaque requete, meme repetee
+immediatement, retombe sur un rendu PHP/WordPress complet.
