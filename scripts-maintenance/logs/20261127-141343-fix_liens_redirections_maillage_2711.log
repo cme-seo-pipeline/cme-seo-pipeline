@@ -1,0 +1,605 @@
+# Execution du 2026-11-27T14:13:43Z
+# Script    : scripts-maintenance/fix_liens_redirections_maillage_2711.py
+# Arguments : 
+
+Table chargee : 112 entree(s) (avec variantes sans slash final).
+Recuperation de tous les articles publies (contenu brut, ?context=edit)...
+1154 article(s) recupere(s).
+
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/installation-chauffe-eau-solaire-etapes-budget/ (id=14379)
+  1 lien(s) vers une redirection a corriger :
+    - "MaPrimeRénov’ chauffe-eau solaire 2026 : conditions" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/fonctionnement-chauffe-eau-solaire/ (id=14065)
+  1 lien(s) vers une redirection a corriger :
+    - "aides MaPrimeRénov chauffe-eau solaire 2026" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique-1118/ (id=13941)
+  1 lien(s) vers une redirection a corriger :
+    - "Consultez les conditions actuelles de MaPrimeRénov’ pour chauffe-eau solaire" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire-2026/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-gaz-roi/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-plafonds-revenus-2026-eligibilite/ (id=13503)
+  1 lien(s) vers une redirection a corriger :
+    - "les aides locales pour votre région" : https://www.comprendre-mon-energie.fr/aide-energetique/aides-locales-chauffe-eau-thermodynamique-region/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/aides-locales-chauffe-eau-thermodynamique-region/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/panneaux-solaires-monocristallins-vs-polycristallins-1028-2/ (id=12513)
+  1 lien(s) vers une redirection a corriger :
+    - "comment fonctionnent les panneaux solaires photovoltaïques" : https://www.comprendre-mon-energie.fr/?p=4456
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/fonctionnement-panneaux-solaires-photovoltaiques/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/rentabilite-panneaux-solaires-temps-retour-investissement/ (id=12361)
+  1 lien(s) vers une redirection a corriger :
+    - "Comment fonctionnent les panneaux solaires photovoltaïques" : https://www.comprendre-mon-energie.fr/?p=4456
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/fonctionnement-panneaux-solaires-photovoltaiques/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/combien-panneaux-solaires-maison-budget/ (id=12360)
+  1 lien(s) vers une redirection a corriger :
+    - "comment fonctionnent les panneaux solaires photovoltaïques" : https://www.comprendre-mon-energie.fr/?p=4456
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/fonctionnement-panneaux-solaires-photovoltaiques/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/bouteilles/consommation-bouteille-gaz-economies/ (id=11454)
+  1 lien(s) vers une redirection a corriger :
+    - "comparatif des fournisseurs gaz" : https://www.comprendre-mon-energie.fr/gaz/bouteilles/comparatif-fournisseurs-gaz-naturel/
+      -> https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comparatif-fournisseurs-gaz-naturel/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-artisans-installation-conditions/ (id=11254)
+  1 lien(s) vers une redirection a corriger :
+    - "Chèque énergie 2026 : simulation personnalisée du montant" : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026-eligibilite-obtention/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-refuse-causes-solutions/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/conditions-eligibilite-maprimerenov-2026/ (id=11252)
+  1 lien(s) vers une redirection a corriger :
+    - "simulez votre montant de chèque énergie personnalisé" : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026-eligibilite-obtention/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-refuse-causes-solutions/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/comment-lire-facture-gaz-1020/ (id=11027)
+  1 lien(s) vers une redirection a corriger :
+    - "aides à la rénovation énergétique" : https://www.comprendre-mon-energie.fr/aides-renovation-energetique/
+      -> https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-septembre-2026/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/lire-facture-gaz-guide-complet-1019/ (id=10917)
+  1 lien(s) vers une redirection a corriger :
+    - "Installation bouteille de gaz : étapes et normes de sécurité" : https://www.comprendre-mon-energie.fr/gaz/bouteilles/installation-bouteille-de-gaz-normes-securite-1018/
+      -> https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-gaz-2024/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/ch-que-nergie-comment-utiliser/ (id=10824)
+  1 lien(s) vers une redirection a corriger :
+    - "MaPrimeRénov’ 2026 : montants et barèmes par revenus" : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-baremes-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs-1018/ (id=10822)
+  1 lien(s) vers une redirection a corriger :
+    - "financer des travaux de rénovation énergétique" : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-baremes-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/chauffe-eau-thermodynamique-prix-budget/ (id=10820)
+  1 lien(s) vers une redirection a corriger :
+    - "MaPrimeRénov’ 2026 : montants et barèmes par revenus" : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-baremes-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/installation-chauffe-eau-thermodynamique-etapes-couts-1018/ (id=10818)
+  1 lien(s) vers une redirection a corriger :
+    - "MaPrimeRénov’ 2026 : montants et barèmes par revenus" : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-baremes-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-vs-autres-aides-comparatif/ (id=10732)
+  1 lien(s) vers une redirection a corriger :
+    - "guide détaillé sur les montants et barèmes de MaPrimeRénov’" : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-baremes-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/delais-versement-maprimerenov-2025/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resilier-contrat-electricite-droits-modalites/ (id=9464)
+  1 lien(s) vers une redirection a corriger :
+    - "aides électricité 2026 : obtenir vos réductions" : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/aides-electricite-2026-reductions/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/aides-electricite-2026-reductions/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/cout-installation-chauffe-eau-thermodynamique/ (id=9452)
+  5 lien(s) vers une redirection a corriger :
+    - "Le Chèque énergie s’utilise auprès de votre fournisseur ou directement chez l’installateur" : https://www.comprendre-mon-energie.fr/aide-energetic/cheque-energie/cheque-energie-comment-utiliser-fournisseur/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-comment-utiliser-fournisseur/
+    - "Consultez la liste complète des dépenses éligibles" : https://www.comprendre-mon-energie.fr/aide-energetic/cheque-energie/comment-utiliser-cheque-energie-1002/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-1002/
+    - "Vérifiez les conditions d’éligibilité 2026" : https://www.comprendre-mon-energie.fr/aide-energetic/maprimerenov/maprimerenov-montants-conditions-eligibilite-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2026/
+    - "MaPrimeRénov’ couvre 1 500 à 2 500 euros" : https://www.comprendre-mon-energie.fr/aide-energetic/maprimerenov/maprimerenov-montants-conditions-eligibilite-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/maprimerenov-montants-conditions-eligibilite-2026/
+    - "Chèque énergie couvre 48 à 277 euros" : https://www.comprendre-mon-energie.fr/aide-energetic/cheque-energie/cheque-energie-comment-utiliser-fournisseur/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-comment-utiliser-fournisseur/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1002/ (id=9347)
+  2 lien(s) vers une redirection a corriger :
+    - "consulter nos guides sur la réduction des coûts énergétiques" : https://www.comprendre-mon-energie.fr/gaz/bouteilles/negocier-ses-tarifs-et-reduire-sa/
+      -> https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1002/
+    - "Comment recharger une bouteille de gaz en toute sécurité" : https://www.comprendre-mon-energie.fr/gaz/bouteilles/recharger-bouteille-de-gaz-securite/
+      -> https://www.comprendre-mon-energie.fr/gaz/bouteilles/prix-bouteille-de-gaz-tarifs-1002/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isoler-combles-perdus-etapes-installation/ (id=8285)
+  4 lien(s) vers une redirection a corriger :
+    - "comparatif des coûts de rénovation toiture par type de matériau" : https://www.comprendre-mon-energie.fr/aide-energetic/aides-renovation-toiture/cout-renovation-toiture-tarifs-aides/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/cout-renovation-toiture-tarifs-aides/
+    - "tarifs et comparatif des chauffe-eau thermodynamiques" : https://www.comprendre-mon-energie.fr/aide-energetic/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/aides-chauffe-eau-thermodynamique/prix-chauffe-eau-thermodynamique-tarifs/
+    - "TVA réduite pour fenêtres" : https://www.comprendre-mon-energie.fr/aide-energetic/tva-reduite/tva-reduite-fenetres-economies-conditions/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-fenetres-economies-conditions/
+    - "consultez notre décryptage de MaPrimeRénov’ et son fonctionnement actualisé" : https://www.comprendre-mon-energie.fr/aide-energetic/maprimerenov/comment-fonctionne-maprimerenov-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/comment-fonctionne-maprimerenov-2026/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0924/ (id=8215)
+  1 lien(s) vers une redirection a corriger :
+    - "nos comparatifs détaillés des fournisseurs" : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/comparer-fournisseurs-electricite/les meilleures comparaisons
+      -> https://www.comprendre-mon-energie.fr/electricite/demenagement/changer-fournisseur-electricite-demenagement-0924/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/renovation-energetique/audit-energetique/audit-energetique-obligatoire/ (id=7984)
+  1 lien(s) vers une redirection a corriger :
+    - "aides pompe à chaleur 2026 et autres dispositifs d’aide à la rénovation énergétique" : https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2026-0812/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/fenetre-simple-double-vitrage-comparatif-0908/ (id=7895)
+  1 lien(s) vers une redirection a corriger :
+    - "Aides pompe à chaleur 2026-2027 : financement et conditions" : https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2026-0812/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/fenetre-simple-double-vitrage-comparatif/ (id=7893)
+  1 lien(s) vers une redirection a corriger :
+    - "Les aides pompe à chaleur" : https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2026-0812/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/aides-pompe-a-chaleur-2024-0812/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet-0904/ (id=7666)
+  1 lien(s) vers une redirection a corriger :
+    - "comment transférer votre contrat électricité lors d’un déménagement" : https://www.comprendre-mon-energie.fr/electricite/demenagement/transfert-contrat-electricite-demenagement/
+      -> https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-guide-complet-0904/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-energetiques-conditions/ (id=7484)
+  1 lien(s) vers une redirection a corriger :
+    - "Éco-PTZ (prêt écologique sans intérêt)" : https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-pret-sans-interet/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-energetiques-conditions/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-cee-fonctionnement-0902/ (id=7480)
+  1 lien(s) vers une redirection a corriger :
+    - "Éco-PTZ" : https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-pret-sans-interet/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-energetiques-conditions/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-communicant-linky/ (id=7472)
+  1 lien(s) vers une redirection a corriger :
+    - "comprendre le fonctionnement de la bouteille gaz propane" : https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-propane-fonctionnement/
+      -> https://www.comprendre-mon-energie.fr/gaz/demenagement-gaz/compteur-gaz-communicant-linky/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/prime-energie-vs-maprimerenov-comparaison/ (id=7272)
+  1 lien(s) vers une redirection a corriger :
+    - "Comparaison détaillée Éco-PTZ vs MaPrimeRénov’" : https://www.comprendre-mon-energie.fr/aide-energetic/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-quel-financement-choisir/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-vs-maprimerenov-quel-financement-choisir/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie-fournisseurs/ (id=6671)
+  1 lien(s) vers une redirection a corriger :
+    - "cumul des aides énergétiques" : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2025/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-eligibilite/ (id=6609)
+  1 lien(s) vers une redirection a corriger :
+    - "cumul des aides énergétiques en 2026" : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2025/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/cout-isolation-combles-perdus-devis-aides/ (id=6137)
+  1 lien(s) vers une redirection a corriger :
+    - "TVA Réduite Travaux Rénovation : Guide Complet 2026" : https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-renovation-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/cout-isolation-combles-perdus-devis-aides/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/comment-utiliser-cheque-energie/ (id=6067)
+  1 lien(s) vers une redirection a corriger :
+    - "TVA Réduite Travaux Rénovation : Guide Complet 2026" : https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-renovation-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/cout-isolation-combles-perdus-devis-aides/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-renovation-toiture/tuiles-solaires-vs-panneaux-photovoltaiques-aides/ (id=6065)
+  1 lien(s) vers une redirection a corriger :
+    - "TVA réduite sur les travaux de rénovation" : https://www.comprendre-mon-energie.fr/aide-energetique/tva-reduite/tva-reduite-travaux-renovation-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/cout-isolation-combles-perdus-devis-aides/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-chauffage-electrique-normes-cout/ (id=6002)
+  1 lien(s) vers une redirection a corriger :
+    - "changement de fournisseur d’électricité" : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-delais-procedure/
+      -> https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-chauffage-electrique-normes-cout/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-complet/ (id=5996)
+  1 lien(s) vers une redirection a corriger :
+    - "pompe à chaleur air-air vs climatisation : économies réelles" : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-air-air-vs-climatisation/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-complet/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduction-facture-electricite-aides-2026/ (id=5947)
+  1 lien(s) vers une redirection a corriger :
+    - "changement fournisseur électricité : délais et procédure" : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/changement-fournisseur-electricite-delais-procedure/
+      -> https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/installation-chauffage-electrique-normes-cout/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/comparatif-fournisseurs-gaz-2024/ (id=5937)
+  1 lien(s) vers une redirection a corriger :
+    - "Résilience facture gaz : stratégies pour" : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/strategies-maitrise-facture-gaz/
+      -> https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-ttc-vs-ht-taxes/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/fonctionnement-chaudiere-gaz-0814/ (id=5935)
+  1 lien(s) vers une redirection a corriger :
+    - "Résilience facture gaz : stratégies pour maîtriser" : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/strategies-maitrise-facture-gaz/
+      -> https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-ttc-vs-ht-taxes/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-air-air-vs-chaudiere-gaz-0814/ (id=5796)
+  1 lien(s) vers une redirection a corriger :
+    - "Pompe à chaleur air-air vs climatisation : économies réelles" : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/pompe-chaleur-air-air-vs-climatisation/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/eco-pret-a-taux-zero/eco-ptz-fonctionnement-complet/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-ttc-vs-ht-taxes/ (id=5780)
+  1 lien(s) vers une redirection a corriger :
+    - "Comprendre les stratégies pour maîtriser votre facture gaz" : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/strategies-maitrise-facture-gaz/
+      -> https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-ttc-vs-ht-taxes/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/consommation-gaz-calcul-impact-facture/ (id=5778)
+  1 lien(s) vers une redirection a corriger :
+    - "stratégies pour maîtriser votre facture gaz" : https://www.comprendre-mon-energie.fr/gaz/facture-gaz/strategies-maitrise-facture-gaz/
+      -> https://www.comprendre-mon-energie.fr/gaz/facture-gaz/facture-gaz-ttc-vs-ht-taxes/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/bouteilles/bouteille-gaz-guide-utilisation-securisee/ (id=5671)
+  1 lien(s) vers une redirection a corriger :
+    - "meilleurs fournisseurs de gaz et leurs tarifs" : https://www.comprendre-mon-energie.fr/gaz/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/
+      -> https://www.comprendre-mon-energie.fr/gaz/comparatifs-fournisseurs-gaz/meilleurs-fournisseurs-gaz-comparatif-tarifs-2024/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/demenagement/electricite-demenagement-checklist/ (id=4497)
+  2 lien(s) vers une redirection a corriger :
+    - "réduction de facture électrique" : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-trop-chere-reduire/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+    - "mesure et l’optimisation de votre consommation électrique" : https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electricite-mesure-optimisation/
+      -> https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electrique-mesure-optimisation/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-combles-perdus/isolation-combles-perdus-etapes-techniques/ (id=4393)
+  1 lien(s) vers une redirection a corriger :
+    - "dispositifs d’aides pour financer vos travaux d’isolation" : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/cumul-aides-energetiques-2025/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/systeme-solaire-combine/cout-prix-systeme-solaire-combine/ (id=4363)
+  2 lien(s) vers une redirection a corriger :
+    - "Aides chauffe-eau solaire : MaPrimeRénov et subventions" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique/
+    - "Installation kit solaire : guide étape par étape 2025" : https://www.comprendre-mon-energie.fr/solaire/kit-solaire/installation-kit-solaire/
+      -> https://www.comprendre-mon-energie.fr/solaire/kit-solaire/kit-solaire-autonome-dimensionnement/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/compteur/consommation-electrique-mesure-optimisation/ (id=4354)
+  1 lien(s) vers une redirection a corriger :
+    - "réduire une facture d’électricité trop chère" : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/facture-electricite-trop-chere-reduire/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique/ (id=4150)
+  1 lien(s) vers une redirection a corriger :
+    - "aides pour chauffe-eau solaire" : https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/aides-chauffe-eau-solaire/
+      -> https://www.comprendre-mon-energie.fr/solaire/chauffe-eau-solaire/chauffe-eau-solaire-vs-thermodynamique/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/contrat-gaz/resilier-contrat-gaz/ (id=3774)
+  1 lien(s) vers une redirection a corriger :
+    - "relève du compteur" : https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/raccordement-au-gaz/
+      -> https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/chauffage-electricite/fonctionnement-chauffage-electrique/ (id=3665)
+  2 lien(s) vers une redirection a corriger :
+    - "consultez notre guide complet pour lire sa facture d'électricité" : https://www.comprendre-mon-energie.fr/electricite/facture/lire-sa-facture-d-electricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/
+    - "des stratégies de réduction de facture d'électricité" : https://www.comprendre-mon-energie.fr/electricite/facture/reduire-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/aides-chaudiere/comparatifs-aides-chaudieres/ (id=3559)
+  2 lien(s) vers une redirection a corriger :
+    - "le guide complet des aides énergétiques 2026" : https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/aides-energetiques/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/maprimerenov/aides-energetiques-guide-2/
+    - "erreurs à éviter pour obtenir ses aides énergétiques" : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aides-energetiques-2/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aides-energetiques-guide/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/lire-sa-facture-d-electricite/ (id=3561)
+  2 lien(s) vers une redirection a corriger :
+    - "attestation de contrat d’électricité" : https://www.comprendre-mon-energie.fr/electricite/contrat/attestation-de-contrat-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+    - "comparateur d’électricité" : https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/comparateur-electricite/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/ (id=2218)
+  13 lien(s) vers une redirection a corriger :
+    - "justificatif de domicile" : https://www.comprendre-mon-energie.fr/justificatif-de-domicile/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/justificatif-de-domicile/
+    - "Comparer les offres ⚡" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Comparer les tarifs ici 👈" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "facture" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+    - "Baisser ma facture d'électricité 📉" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Réduire mes factures ⚡" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "mise en service" : https://www.comprendre-mon-energie.fr/demenagement-electricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/
+    - "travaux de rénovation" : https://www.comprendre-mon-energie.fr/guide-gratuit-travaux-de-renovation-energetique/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/
+    - "Comparer les fournisseurs⚡" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Comparer les prix 👈" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Réussir mon déménagement sans coupure 🔌" : https://www.comprendre-mon-energie.fr/demenagement-electricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/
+    - "Obtenir mon thermostat 100% gratuit 🎁" : https://www.comprendre-mon-energie.fr/aide-etat-thermostat-connecte/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aide-etat-thermostat-connecte/
+    - "Comparer les prix et économiser 📉" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-eau/ (id=2039)
+  1 lien(s) vers une redirection a corriger :
+    - "pompe à chaleur" : https://www.comprendre-mon-energie.fr/pompe-a-chaleur/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/ (id=1333)
+  6 lien(s) vers une redirection a corriger :
+    - "comprendre votre facture d'électricité" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+    - "guide sur la compréhension de facture" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+    - "Estimer mes économies possibles 👈" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "👉 Consultez notre Guide Gratuit : Tout savoir sur la Rénovation Énergétique et les Aides 2026 ➡️ " : https://www.comprendre-mon-energie.fr/guide-gratuit-travaux-de-renovation-energetique/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/
+    - "Comparer & Économiser immédiatement 👈" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Identifier mes frais cachés 🔍" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/ (id=1150)
+  8 lien(s) vers une redirection a corriger :
+    - "Comparer les tarifs 2026 👈" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Comparer les offres 2026 👈" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "réduire sa facture" : https://www.comprendre-mon-energie.fr/reduire-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+    - "Comparez les fournisseurs pour l'obtenir 👈" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Décrypter ma facture ici 💰" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+    - "Télécharger mon attestation 📥" : https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+    - "Obtenir mon aide financière ici 🪙" : https://www.comprendre-mon-energie.fr/aide-etat-thermostat-connecte/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aide-etat-thermostat-connecte/
+    - "Choisir mon chauffage gaz ⛽" : https://www.comprendre-mon-energie.fr/chauffage-gaz/
+      -> https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/pompe-a-chaleur-air-air/ (id=906)
+  1 lien(s) vers une redirection a corriger :
+    - "pompe à chaleur" : https://www.comprendre-mon-energie.fr/pompe-a-chaleur/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/ (id=851)
+  7 lien(s) vers une redirection a corriger :
+    - "Vérifier ma facture gratuitement →" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Heures Pleines / Heures Creuses" : https://www.comprendre-mon-energie.fr/heures-creuses-heures-pleines/
+      -> https://www.comprendre-mon-energie.fr/electricite/heures-pleines-creuses/heures-creuses/
+    - "Comparer les offres en 2 minutes →" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "Vérifiez si vous payez trop cher ici" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+    - "guide complet pour réduire votre consommation" : https://www.comprendre-mon-energie.fr/reduire-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+    - "Identifier mes frais cachés 🔍" : https://www.comprendre-mon-energie.fr/reduire-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+    - "Comparer & Économiser immédiatement 👈" : https://www.comprendre-mon-energie.fr/comparateur-electricite/
+      -> https://www.comprendre-mon-energie.fr/comparateur-energie-electricite-gaz/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/aide-etat-thermostat-connecte/ (id=847)
+  3 lien(s) vers une redirection a corriger :
+    - "Vérifier mon éligibilité au chèque" : https://www.comprendre-mon-energie.fr/cheque-energie-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+    - "Calculer mon potentiel solaire" : https://www.comprendre-mon-energie.fr/installation-panneaux-photovoltaiques/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-photovoltaiques/
+    - "Décrypter ma facture maintenant" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-photovoltaiques/ (id=840)
+  2 lien(s) vers une redirection a corriger :
+    - "comprendre ma facture d'électricité" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+    - "Obtenir mon étude personnalisée" : https://www.comprendre-mon-energie.fr/demande-de-rappel-gratuit/
+      -> https://www.comprendre-mon-energie.fr/contactez-un-expert/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/seche-linge-pompe-a-chaleur/ (id=825)
+  1 lien(s) vers une redirection a corriger :
+    - "pompe à chaleur" : https://www.comprendre-mon-energie.fr/pompe-a-chaleur/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/guide-chauffage-gaz/ (id=821)
+  7 lien(s) vers une redirection a corriger :
+    - "réduire votre facture d'énergie" : https://www.comprendre-mon-energie.fr/reduire-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/facture-electricite/reduire-sa-facture-delectricite/
+    - "attestation de contrat d'électricité" : https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+    - "aides de l'Ét" : https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-2026-calculez-votre-reste-a-charge-0-en-2-min/
+      -> https://www.comprendre-mon-energie.fr/contactez-un-expert/
+    - "t pour le chauffage au gaz" : https://www.comprendre-mon-energie.fr/simulateur-aides-renovation-2026-calculez-votre-reste-a-charge-0-en-2-min/
+      -> https://www.comprendre-mon-energie.fr/contactez-un-expert/
+    - "Réussir mon déménagement sans coupure ⚡" : https://www.comprendre-mon-energie.fr/demenagement-electricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/
+    - "Télécharger mon attestation en 2 min 📥" : https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+    - "Vérifier mon éligibilité aux aides 💰" : https://www.comprendre-mon-energie.fr/guide-gratuit-travaux-de-renovation-energetique/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/resiliation-contrat-electricite/ (id=661)
+  1 lien(s) vers une redirection a corriger :
+    - "Résilier et économiser maintenant" : https://www.comprendre-mon-energie.fr/demande-de-rappel-gratuit/
+      -> https://www.comprendre-mon-energie.fr/contactez-un-expert/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/ (id=659)
+  8 lien(s) vers une redirection a corriger :
+    - "facture énergétique" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+    - "maîtrise énergétique" : https://www.comprendre-mon-energie.fr/la-transition-energetique/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/prime-energie/transition-energetique/
+    - "pompe à chaleur" : https://www.comprendre-mon-energie.fr/pompe-a-chaleur/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/pompe-a-chaleur/
+    - "Vérifier mon éligibilité aux aides 💰" : https://www.comprendre-mon-energie.fr/guide-gratuit-travaux-de-renovation-energetique/
+      -> https://www.comprendre-mon-energie.fr/renovation-energetique/renovation-globale/guide-gratuit-travaux-de-renovation-energetique/
+    - "Analyser ma facture 🔍" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+    - "Télécharger mon attestation  📥" : https://www.comprendre-mon-energie.fr/attestation-de-contrat-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/attestation-de-contrat-delectricite/
+    - "Lire le guide♨️" : https://www.comprendre-mon-energie.fr/chauffage-gaz/
+      -> https://www.comprendre-mon-energie.fr/gaz/chauffage-gaz/
+    - " Mon déménagement sans coupure ⚡" : https://www.comprendre-mon-energie.fr/demenagement-electricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/demenagement/normes-electriques/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/changer-fournisseur-electricite/ (id=563)
+  1 lien(s) vers une redirection a corriger :
+    - "DÉCOUVRIR LES OFFRES LES MOINS CHÈRES DE 2026" : https://www.comprendre-mon-energie.fr/demande-de-rappel-gratuit/
+      -> https://www.comprendre-mon-energie.fr/contactez-un-expert/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+ARTICLE : https://www.comprendre-mon-energie.fr/electricite/comparatifs-fournisseurs-electricite/prix-electricite/ (id=561)
+  4 lien(s) vers une redirection a corriger :
+    - "Décrypter ma facture et simuler mes leviers d'économies" : https://www.comprendre-mon-energie.fr/demande-de-rappel-gratuit/
+      -> https://www.comprendre-mon-energie.fr/contactez-un-expert/
+    - "Vérifier mon éligibilité au chèque" : https://www.comprendre-mon-energie.fr/cheque-energie-2026/
+      -> https://www.comprendre-mon-energie.fr/aide-energetique/cheque-energie/cheque-energie-2026/
+    - "Calculer mon potentiel solaire" : https://www.comprendre-mon-energie.fr/installation-panneaux-photovoltaiques/
+      -> https://www.comprendre-mon-energie.fr/solaire/panneaux-solaires/installation-panneaux-photovoltaiques/
+    - "Décrypter ma facture maintenant" : https://www.comprendre-mon-energie.fr/comprendre-sa-facture-delectricite/
+      -> https://www.comprendre-mon-energie.fr/electricite/contrat-electricite/comprendre-sa-facture-delectricite/
+  (dry-run -- rien ecrit, relancer avec --apply pour corriger reellement)
+
+====================================================================================================
+TOTAL : 67 article(s) traite(s), 129 lien(s) detecte(s) (dry-run).
+====================================================================================================
